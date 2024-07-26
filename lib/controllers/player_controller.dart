@@ -33,7 +33,7 @@ class PlayerController extends GetxController {
 
   playSong(String? uri, index) {
     playerIndex.value = index;
-    try {
+    // try {
       audioPlayer.setAudioSource(
         AudioSource.uri(
           Uri.parse(uri!),
@@ -42,8 +42,8 @@ class PlayerController extends GetxController {
       audioPlayer.play();
       isPLaying.value = true;
       updatePosition();
-    } on Exception catch (e) {
-      print(e.toString());
-    }
+    // } on Exception catch (e) {
+    //   print(e.toString());
+    // }
   }
 }

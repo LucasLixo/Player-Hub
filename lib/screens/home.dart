@@ -86,18 +86,22 @@ class _HomeState extends State<Home> {
                               color: colorWhite,
                               size: 28,
                             ),
-                          const SizedBox(width: 8),
-                          const Icon(
-                            Icons.share,
-                            color: colorWhite,
-                            size: 24,
+                          /* const SizedBox(width: 8),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.share,
+                              color: colorWhite,
+                              size: 24,
+                            ),
+                            onPressed: () {
+                            },
                           ),
                           const SizedBox(width: 8),
                           const Icon(
                             Icons.more_vert,
                             color: colorWhite,
                             size: 28,
-                          ),
+                          ), */
                         ],
                       ),
                       onTap: () {
