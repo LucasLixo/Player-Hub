@@ -1,5 +1,0 @@
-
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(52),
-                  color: colorSlider,
-                ),

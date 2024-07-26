@@ -37,16 +37,25 @@ class MyApp extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () {},
-              icon: const Icon(Icons.search, color: colorWhite),
+              icon: const Icon(
+                Icons.search,
+                color: colorWhite,
+                size: 32,
+              ),
             ),
           ],
-          leading: const Icon(Icons.sort_rounded, color: colorWhite),
+          leading: const Icon(
+            Icons.sort_rounded,
+            color: colorWhite,
+            size: 32,
+          ),
           title: Text('Player Hub', style: styleText(fontFamily: bold)),
         ),
         body: permission
             ? const Home()
             : Center(
-                child: Text('Permissão Negada', style: styleText(fontFamily: bold)),
+                child: Text('Permissão Negada',
+                    style: styleText(fontFamily: bold)),
               ),
       ),
     );

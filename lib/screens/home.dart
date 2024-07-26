@@ -81,7 +81,7 @@ class _HomeState extends State<Home> {
                           ? const Icon(
                               Icons.play_arrow,
                               color: colorWhite,
-                              size: 26,
+                              size: 32,
                             )
                           : null,
                       onTap: () {
