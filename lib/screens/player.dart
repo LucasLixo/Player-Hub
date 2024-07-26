@@ -63,7 +63,7 @@ class _PlayerState extends State<Player> {
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
                       onTap: () {
-                        Navigator.of(context).pop();
+                        Get.back();
                       },
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,

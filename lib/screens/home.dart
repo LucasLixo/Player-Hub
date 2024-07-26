@@ -76,14 +76,30 @@ class _HomeState extends State<Home> {
                           size: 32,
                         ),
                       ),
-                      trailing: playerController.playerIndex.value == index &&
-                              playerController.isPLaying.value
-                          ? const Icon(
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (playerController.playerIndex.value == index &&
+                              playerController.isPLaying.value)
+                            const Icon(
                               Icons.play_arrow,
                               color: colorWhite,
-                              size: 32,
-                            )
-                          : null,
+                              size: 28,
+                            ),
+                          const SizedBox(width: 8),
+                          const Icon(
+                            Icons.share,
+                            color: colorWhite,
+                            size: 24,
+                          ),
+                          const SizedBox(width: 8),
+                          const Icon(
+                            Icons.more_vert,
+                            color: colorWhite,
+                            size: 28,
+                          ),
+                        ],
+                      ),
                       onTap: () {
                         Get.to(
                           () => Player(data: song),
