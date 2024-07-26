@@ -35,8 +35,8 @@ class _PlayerState extends State<Player> {
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 height: 300,
                 width: 300,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(52),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
                   color: colorSlider,
                 ),
                 alignment: Alignment.center,
