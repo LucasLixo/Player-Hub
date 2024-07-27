@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class PlayerController extends GetxController {
@@ -25,13 +26,16 @@ class PlayerController extends GetxController {
         nextSong();
       }
     });
+    audioPlayer.playerStateStream.listen((state) {
+      isPlaying.value = state.playing;
+    });
   }
 
   void loadSongs(List<SongModel> songList) {
     songs = songList;
   }
 
-  updatePosition() {
+  void updatePosition() {
     audioPlayer.durationStream.listen((d) {
       duration.value = d.toString().split(".")[0];
       max.value = d!.inSeconds.toDouble();
@@ -42,32 +46,42 @@ class PlayerController extends GetxController {
     });
   }
 
-  chargeDurationToSeconds(int seconds) {
+  void chargeDurationToSeconds(int seconds) {
     var duration = Duration(seconds: seconds);
     audioPlayer.seek(duration);
   }
 
-  playSong(String? uri, int index) {
+  Future<void> playSong(int index) async {
     playerIndex.value = index;
-    audioPlayer.setAudioSource(AudioSource.uri(Uri.parse(uri!)));
-    audioPlayer.play();
-    isPlaying.value = true;
+
+    await audioPlayer.setAudioSource(
+      AudioSource.uri(
+        Uri.parse(songs[index].uri!),
+        tag: MediaItem(
+          id: songs[index].id.toString(),
+          title: songs[index].displayName,
+          artist: songs[index].artist,
+          artUri: null,
+        ),
+      ),
+    );
+    await audioPlayer.play();
     updatePosition();
   }
 
-  previousSong() {
+  void previousSong() {
     if (playerIndex.value > 0) {
-      playSong(songs[playerIndex.value - 1].uri, playerIndex.value - 1);
+      playSong(playerIndex.value - 1);
     } else {
-      playSong(songs[songs.length - 1].uri, songs.length - 1);
+      playSong(songs.length - 1);
     }
   }
 
-  nextSong() {
+  void nextSong() {
     if (playerIndex.value < songs.length - 1) {
-      playSong(songs[playerIndex.value + 1].uri, playerIndex.value + 1);
+      playSong(playerIndex.value + 1);
     } else {
-      playSong(songs[0].uri, 0);
+      playSong(0);
     }
   }
 }

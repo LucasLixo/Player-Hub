@@ -28,7 +28,8 @@ class _PlayerState extends State<Player> {
       backgroundColor: colorBackground,
       appBar: null,
       body: Obx(() {
-        final currentSong = playerController.songs[playerController.playerIndex.value];
+        final currentSong =
+            playerController.songs[playerController.playerIndex.value];
         return Stack(
           children: [
             Positioned.fill(
@@ -79,7 +80,7 @@ class _PlayerState extends State<Player> {
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                         child: const Icon(
-                          Icons.share,
+                          Icons.more_vert,
                           color: colorWhite,
                           size: 32,
                         ),
@@ -120,46 +121,48 @@ class _PlayerState extends State<Player> {
                       padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
                       child: Column(
                         children: [
-                          Text(
-                            currentSong.displayName,
-                            style: styleText(
-                              fontFamily: bold,
-                              fontSize: 22,
+                          SizedBox(
+                            width: double.infinity,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 12,
+                                ),
+                                Text(
+                                  currentSong.displayName,
+                                  style: styleText(
+                                    fontFamily: bold,
+                                    fontSize: 22,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(
+                                  height: 4,
+                                ),
+                                Text(
+                                  currentSong.artist.toString(),
+                                  style: styleText(
+                                    fontFamily: regular,
+                                    fontSize: 18,
+                                    color: colorWhiteGray,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(
+                                  height: 4,
+                                ),
+                              ],
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            currentSong.artist.toString(),
-                            style: styleText(
-                              fontFamily: regular,
-                              fontSize: 18,
-                              color: colorWhiteGray,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(
-                            height: 12,
                           ),
                           Obx(
                             () => Column(
                               children: [
-                                Slider(
-                                  thumbColor: colorWhite,
-                                  inactiveColor: colorGray,
-                                  activeColor: colorWhite,
-                                  min: 0.0,
-                                  max: playerController.max.value.toDouble(),
-                                  value: playerController.value.value.toDouble(),
-                                  onChanged: (newValue) {
-                                    playerController.chargeDurationToSeconds(
-                                      newValue.toInt(),
-                                    );
-                                  },
-                                ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       playerController.position.value,
@@ -173,6 +176,23 @@ class _PlayerState extends State<Player> {
                                     ),
                                   ],
                                 ),
+                                const SizedBox(
+                                  height: 12,
+                                ),
+                                Slider(
+                                  thumbColor: colorWhite,
+                                  inactiveColor: colorGray,
+                                  activeColor: colorWhite,
+                                  min: 0.0,
+                                  max: playerController.max.value.toDouble(),
+                                  value:
+                                      playerController.value.value.toDouble(),
+                                  onChanged: (newValue) {
+                                    playerController.chargeDurationToSeconds(
+                                      newValue.toInt(),
+                                    );
+                                  },
+                                ),
                               ],
                             ),
                           ),
@@ -180,8 +200,16 @@ class _PlayerState extends State<Player> {
                             height: 12,
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.repeat,
+                                  size: 30,
+                                  color: colorWhite,
+                                ),
+                              ),
                               IconButton(
                                 onPressed: playerController.previousSong,
                                 icon: const Icon(
@@ -204,6 +232,14 @@ class _PlayerState extends State<Player> {
                                 icon: const Icon(
                                   Icons.skip_next_rounded,
                                   size: 40,
+                                  color: colorWhite,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.share,
+                                  size: 30,
                                   color: colorWhite,
                                 ),
                               ),

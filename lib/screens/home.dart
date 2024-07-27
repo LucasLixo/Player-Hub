@@ -51,72 +51,52 @@ class _HomeState extends State<Home> {
 
                 return Container(
                   margin: const EdgeInsets.only(bottom: 8),
-                  child: Obx(
-                    () => ListTile(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                  child: ListTile(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    tileColor: colorBackground,
+                    title: Text(
+                      song.title,
+                      style: styleText(fontFamily: bold, fontSize: 15),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    subtitle: Text(
+                      song.artist ?? '',
+                      style: styleText(fontFamily: regular, fontSize: 15),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    leading: QueryArtworkWidget(
+                      id: song.id,
+                      type: ArtworkType.AUDIO,
+                      nullArtworkWidget: const Icon(
+                        Icons.music_note,
+                        color: colorWhite,
+                        size: 32,
                       ),
-                      tileColor: colorBackground,
-                      title: Text(
-                        song.title,
-                        style: styleText(fontFamily: bold, fontSize: 15),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      subtitle: Row(
-                        children: [
-                          if (playerController.playerIndex.value == index &&
-                              playerController.isPlaying.value)
-                            const Icon(
-                              Icons.equalizer,
-                              color: colorWhite,
-                              size: 20,
-                            ),
-                          Text(
-                            song.artist ?? '',
-                            style: styleText(fontFamily: regular, fontSize: 15),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                      leading: QueryArtworkWidget(
-                        id: song.id,
-                        type: ArtworkType.AUDIO,
-                        nullArtworkWidget: const Icon(
-                          Icons.music_note,
-                          color: colorWhite,
-                          size: 32,
-                        ),
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const SizedBox(width: 8),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.share,
-                              color: colorWhite,
-                              size: 28,
-                            ),
-                            onPressed: () {},
-                          ),
-                          const SizedBox(width: 8),
-                          const Icon(
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(
                             Icons.more_vert,
                             color: colorWhite,
                             size: 28,
                           ),
-                        ],
-                      ),
-                      onTap: () {
-                        playerController.playSong(song.uri, index);
-                        Get.to(
-                          () => const Player(),
-                          transition: Transition.downToUp,
-                        );
-                      },
+                          onPressed: () {},
+                        ),
+                      ],
                     ),
+                    onTap: () {
+                      playerController.playSong(index);
+                      Get.to(
+                        () => const Player(),
+                        transition: Transition.downToUp,
+                      );
+                    },
                   ),
                 );
               },

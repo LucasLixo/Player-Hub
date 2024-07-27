@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:player/components/style_text.dart';
 import 'package:player/screens/home.dart';
 import 'package:player/utils/request_storage.dart';
 import 'package:player/utils/request_notifications.dart';
 import 'package:player/utils/const.dart';
 
-void main() async {
+Future<void> main() async {
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+    androidNotificationChannelName: 'Audio playback',
+    androidNotificationOngoing: true,
+  );
+
   WidgetsFlutterBinding.ensureInitialized();
 
   bool permissionStorage = await requestStorage();
