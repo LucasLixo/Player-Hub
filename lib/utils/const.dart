@@ -7,5 +7,3 @@ const Color colorButton = Color(0xFF60E95D);
 const Color colorGray = Color(0xFFCCCCCC);
 const Color colorWhiteGray = Color(0xFFDDDDDD);
 const Color colorBackgroundDark = Color(0xFF070B11);
-
-const EdgeInsets screenPadding = EdgeInsets.fromLTRB(8, 12, 8, 0);

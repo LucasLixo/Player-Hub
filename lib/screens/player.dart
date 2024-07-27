@@ -53,7 +53,7 @@ class _PlayerState extends State<Player> {
               ),
             ),
             Padding(
-              padding: screenPadding,
+              padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
               child: Column(
                 children: [
                   const SizedBox(
@@ -117,7 +117,7 @@ class _PlayerState extends State<Player> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: screenPadding,
+                      padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
                       child: Column(
                         children: [
                           Text(

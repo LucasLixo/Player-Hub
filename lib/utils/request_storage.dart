@@ -1,7 +1,7 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-Future<bool> requestPermission() async {
+Future<bool> requestStorage() async {
   AndroidDeviceInfo build = await DeviceInfoPlugin().androidInfo;
 
   PermissionStatus request;
