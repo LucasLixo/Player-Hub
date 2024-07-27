@@ -8,7 +8,7 @@ const String italic = 'italic';
 styleText({
   String fontFamily = regular,
   double? fontSize = 18,
-  color = colorWhite,
+  Color color = colorWhite,
 }) {
   return TextStyle(
     fontFamily: fontFamily,

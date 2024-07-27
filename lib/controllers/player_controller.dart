@@ -6,14 +6,30 @@ class PlayerController extends GetxController {
   final audioQuery = OnAudioQuery();
   final audioPlayer = AudioPlayer();
 
-  var playerIndex = 0.obs;
-  var isPLaying = false.obs;
+  RxInt playerIndex = 0.obs;
+  RxBool isPlaying = false.obs;
 
-  var duration = ''.obs;
-  var position = ''.obs;
+  RxString duration = ''.obs;
+  RxString position = ''.obs;
 
-  var max = 0.0.obs;
-  var value = 0.0.obs;
+  RxDouble max = 0.0.obs;
+  RxDouble value = 0.0.obs;
+
+  List<SongModel> songs = [];
+
+  @override
+  void onInit() {
+    super.onInit();
+    audioPlayer.processingStateStream.listen((state) {
+      if (state == ProcessingState.completed) {
+        nextSong();
+      }
+    });
+  }
+
+  void loadSongs(List<SongModel> songList) {
+    songs = songList;
+  }
 
   updatePosition() {
     audioPlayer.durationStream.listen((d) {
@@ -31,19 +47,27 @@ class PlayerController extends GetxController {
     audioPlayer.seek(duration);
   }
 
-  playSong(String? uri, index) {
+  playSong(String? uri, int index) {
     playerIndex.value = index;
-    // try {
-      audioPlayer.setAudioSource(
-        AudioSource.uri(
-          Uri.parse(uri!),
-        ),
-      );
-      audioPlayer.play();
-      isPLaying.value = true;
-      updatePosition();
-    // } on Exception catch (e) {
-    //   print(e.toString());
-    // }
+    audioPlayer.setAudioSource(AudioSource.uri(Uri.parse(uri!)));
+    audioPlayer.play();
+    isPlaying.value = true;
+    updatePosition();
+  }
+
+  previousSong() {
+    if (playerIndex.value > 0) {
+      playSong(songs[playerIndex.value - 1].uri, playerIndex.value - 1);
+    } else {
+      playSong(songs[songs.length - 1].uri, songs.length - 1);
+    }
+  }
+
+  nextSong() {
+    if (playerIndex.value < songs.length - 1) {
+      playSong(songs[playerIndex.value + 1].uri, playerIndex.value + 1);
+    } else {
+      playSong(songs[0].uri, 0);
+    }
   }
 }

@@ -83,14 +83,12 @@ fonts:
   - family: bold
     fonts:
       - asset: assets/fonts/Open-Sans-Bold.ttf
-        weight: 700
   - family: regular
     fonts:
       - asset: assets/fonts/Open-Sans-Regular.ttf
   - family: italic
     fonts:
       - asset: assets/fonts/Open-Sans-Italic.ttf
-        style: italic
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -47,6 +47,8 @@ class _HomeState extends State<Home> {
               itemCount: snapshot.data!.length,
               itemBuilder: (BuildContext context, int index) {
                 var song = snapshot.data![index];
+                playerController.songs = snapshot.data!;
+
                 return Container(
                   margin: const EdgeInsets.only(bottom: 8),
                   child: Obx(
@@ -61,11 +63,22 @@ class _HomeState extends State<Home> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      subtitle: Text(
-                        song.artist ?? '',
-                        style: styleText(fontFamily: regular, fontSize: 15),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      subtitle: Row(
+                        children: [
+                          if (playerController.playerIndex.value == index &&
+                              playerController.isPlaying.value)
+                            const Icon(
+                              Icons.equalizer,
+                              color: colorWhite,
+                              size: 20,
+                            ),
+                          Text(
+                            song.artist ?? '',
+                            style: styleText(fontFamily: regular, fontSize: 15),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
                       leading: QueryArtworkWidget(
                         id: song.id,
@@ -79,37 +92,29 @@ class _HomeState extends State<Home> {
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          if (playerController.playerIndex.value == index &&
-                              playerController.isPLaying.value)
-                            const Icon(
-                              Icons.play_arrow,
-                              color: colorWhite,
-                              size: 28,
-                            ),
-                          /* const SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           IconButton(
                             icon: const Icon(
                               Icons.share,
                               color: colorWhite,
-                              size: 24,
+                              size: 28,
                             ),
-                            onPressed: () {
-                            },
+                            onPressed: () {},
                           ),
                           const SizedBox(width: 8),
                           const Icon(
                             Icons.more_vert,
                             color: colorWhite,
                             size: 28,
-                          ), */
+                          ),
                         ],
                       ),
                       onTap: () {
+                        playerController.playSong(song.uri, index);
                         Get.to(
-                          () => Player(data: song),
+                          () => const Player(),
                           transition: Transition.downToUp,
                         );
-                        playerController.playSong(song.uri, index);
                       },
                     ),
                   ),
