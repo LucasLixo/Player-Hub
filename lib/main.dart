@@ -12,14 +12,20 @@ void main() async {
   bool permissionStorage = await requestStorage();
   bool permissionNotifications = await requestNotifications();
 
-  runApp(MyApp(permissionStorage: permissionStorage, permissionNotifications: permissionNotifications,));
+  runApp(MyApp(
+    permissionStorage: permissionStorage,
+    permissionNotifications: permissionNotifications,
+  ));
 }
 
 class MyApp extends StatelessWidget {
   final bool permissionStorage;
   final bool permissionNotifications;
 
-  const MyApp({super.key, required this.permissionStorage, required this.permissionNotifications});
+  const MyApp(
+      {super.key,
+      required this.permissionStorage,
+      required this.permissionNotifications});
 
   @override
   Widget build(BuildContext context) {
