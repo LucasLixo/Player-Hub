@@ -131,7 +131,7 @@ class _PlayerState extends State<Player> {
                                   height: 12,
                                 ),
                                 Text(
-                                  currentSong.displayName,
+                                  currentSong.title.trim(),
                                   style: styleText(
                                     fontFamily: bold,
                                     fontSize: 22,
@@ -143,7 +143,7 @@ class _PlayerState extends State<Player> {
                                   height: 4,
                                 ),
                                 Text(
-                                  currentSong.artist.toString(),
+                                  currentSong.artist!.trim(),
                                   style: styleText(
                                     fontFamily: regular,
                                     fontSize: 18,

@@ -58,13 +58,13 @@ class _HomeState extends State<Home> {
                     ),
                     tileColor: Colors.transparent,
                     title: Text(
-                      song.title,
+                      song.title.trim(),
                       style: styleText(fontFamily: bold, fontSize: 15),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     subtitle: Text(
-                      song.artist ?? '',
+                      song.artist!.trim(),
                       style: styleText(fontFamily: regular, fontSize: 15),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
