@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:player/components/pause_play.dart';
+import 'package:player/components/repeat_shuffle.dart';
 import 'package:player/components/style_text.dart';
 import 'package:player/controllers/player_controller.dart';
 import 'package:player/utils/const.dart';
@@ -202,14 +203,7 @@ class _PlayerState extends State<Player> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Icons.repeat,
-                                  size: 30,
-                                  color: colorWhite,
-                                ),
-                              ),
+                              const RepeatShuffle(),
                               IconButton(
                                 onPressed: playerController.previousSong,
                                 icon: const Icon(

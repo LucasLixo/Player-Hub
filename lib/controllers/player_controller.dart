@@ -18,6 +18,11 @@ class PlayerController extends GetxController {
 
   List<SongModel> songs = [];
 
+  RxBool shufflePlaylist = false.obs;
+
+  RxBool isLooping = false.obs;
+  RxBool isShuffle = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -29,16 +34,40 @@ class PlayerController extends GetxController {
     audioPlayer.playerStateStream.listen((state) {
       isPlaying.value = state.playing;
     });
+    audioPlayer.currentIndexStream.listen((index) {
+      if (index != null) {
+        playerIndex.value = index;
+      }
+    });
+    updatePosition();
   }
 
-  void loadSongs(List<SongModel> songList) {
+  Future<void> loadSongs(List<SongModel> songList) async {
     songs = songList;
+
+    List<AudioSource> playlist = songs.map((song) {
+      return AudioSource.uri(
+        Uri.parse(song.uri!),
+        tag: MediaItem(
+          id: song.id.toString(),
+          title: song.displayName,
+          artist: song.artist,
+        ),
+      );
+    }).toList();
+
+    await audioPlayer.setAudioSource(
+      ConcatenatingAudioSource(children: playlist),
+      initialIndex: playerIndex.value,
+    );
   }
 
   void updatePosition() {
     audioPlayer.durationStream.listen((d) {
-      duration.value = d.toString().split(".")[0];
-      max.value = d!.inSeconds.toDouble();
+      if (d != null) {
+        duration.value = d.toString().split(".")[0];
+        max.value = d.inSeconds.toDouble();
+      }
     });
     audioPlayer.positionStream.listen((p) {
       position.value = p.toString().split(".")[0];
@@ -52,36 +81,47 @@ class PlayerController extends GetxController {
   }
 
   Future<void> playSong(int index) async {
-    playerIndex.value = index;
-
-    await audioPlayer.setAudioSource(
-      AudioSource.uri(
-        Uri.parse(songs[index].uri!),
-        tag: MediaItem(
-          id: songs[index].id.toString(),
-          title: songs[index].displayName,
-          artist: songs[index].artist,
-          artUri: null,
-        ),
-      ),
-    );
+    if (playerIndex.value != index) {
+      playerIndex.value = index;
+      await audioPlayer.seek(Duration.zero, index: index);
+    }
     await audioPlayer.play();
+    isPlaying.value = true;
     updatePosition();
   }
 
-  void previousSong() {
-    if (playerIndex.value > 0) {
-      playSong(playerIndex.value - 1);
-    } else {
-      playSong(songs.length - 1);
+  Future<void> pauseSong() async {
+    await audioPlayer.pause();
+    isPlaying.value = false;
+  }
+
+  Future<void> nextSong() async {
+    if (songs.isNotEmpty) {
+      await audioPlayer.seekToNext();
     }
   }
 
-  void nextSong() {
-    if (playerIndex.value < songs.length - 1) {
-      playSong(playerIndex.value + 1);
+  Future<void> previousSong() async {
+    if (songs.isNotEmpty) {
+      await audioPlayer.seekToPrevious();
+    }
+  }
+
+  Future<void> shufflePlaylistToggle() async {
+    isShuffle.value = !isShuffle.value;
+    if (isShuffle.value) {
+      await audioPlayer.setShuffleModeEnabled(true);
     } else {
-      playSong(0);
+      await audioPlayer.setShuffleModeEnabled(false);
+    }
+  }
+
+  void toggleLooping() {
+    isLooping.value = !isLooping.value;
+    if (isLooping.value) {
+      audioPlayer.setLoopMode(LoopMode.one);
+    } else {
+      audioPlayer.setLoopMode(LoopMode.off);
     }
   }
 }

@@ -21,7 +21,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    var playerController = Get.put(PlayerController());
+    final playerController = Get.put(PlayerController());
 
     return FutureBuilder<List<SongModel>>(
       future: playerController.audioQuery.querySongs(
@@ -40,6 +40,8 @@ class _HomeState extends State<Home> {
             child: Text('Sem Músicas', style: styleText()),
           );
         } else {
+          playerController.loadSongs(snapshot.data!);
+
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListView.builder(
@@ -47,7 +49,6 @@ class _HomeState extends State<Home> {
               itemCount: snapshot.data!.length,
               itemBuilder: (BuildContext context, int index) {
                 var song = snapshot.data![index];
-                playerController.songs = snapshot.data!;
 
                 return Container(
                   margin: const EdgeInsets.only(bottom: 8),
@@ -55,7 +56,7 @@ class _HomeState extends State<Home> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    tileColor: colorBackground,
+                    tileColor: Colors.transparent,
                     title: Text(
                       song.title,
                       style: styleText(fontFamily: bold, fontSize: 15),

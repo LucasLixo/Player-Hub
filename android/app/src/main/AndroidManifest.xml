@@ -29,7 +29,8 @@
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustPan"
             android:showWhenLocked="true"
-            android:turnScreenOn="true">
+            android:turnScreenOn="true"
+            android:screenOrientation="portrait">
             <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme" />

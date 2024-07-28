@@ -41,16 +41,12 @@ class _AnimatedPausePlayState extends State<AnimatedPausePlay>
     super.dispose();
   }
 
-  void _togglePlayPause() {
-    setState(() {
-      if (playerController.isPlaying.value) {
-        playerController.audioPlayer.pause();
-        playerController.isPlaying.value = false;
-      } else {
-        playerController.audioPlayer.play();
-        playerController.isPlaying.value = true;
-      }
-    });
+  Future<void> _togglePlayPause() async {
+    if (playerController.isPlaying.value) {
+      await playerController.pauseSong();
+    } else {
+      await playerController.playSong(playerController.playerIndex.value);
+    }
   }
 
   @override
