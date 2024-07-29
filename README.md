@@ -45,8 +45,8 @@
 
 ## 🧱 Créditos
 
-- [Material Design 3](https://github.com/callstack/react-native-paper)
-- [Material Design 3](https://github.com/callstack/react-native-paper)
+- [Just Audio](https://pub.dev/packages/just_audio).
+- [Just Audio Background](https://pub.dev/packages/just_audio_background).
 
 ## 📃 Licença
 
