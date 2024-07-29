@@ -27,7 +27,7 @@ class _RepeatShuffleState extends State<RepeatShuffle> {
   void setCurrentIcon() {
     if (!mounted) return;
     
-    if (playerController.isShuffle.value && playerController.isLooping.value) {
+    if (playerController.isShuffle.value) {
       setState(() {
         currentIndex = icons.indexOf(Icons.shuffle);
       });
@@ -51,13 +51,15 @@ class _RepeatShuffleState extends State<RepeatShuffle> {
 
     switch (icons[currentIndex]) {
       case Icons.repeat:
-        await playerController.shufflePlaylistToggle();
-        playerController.toggleLooping();
+        if(playerController.isShuffle.value) {
+          await playerController.shufflePlaylistToggle();
+        }
         break;
       case Icons.repeat_one:
         playerController.toggleLooping();
         break;
       case Icons.shuffle:
+        playerController.toggleLooping();
         await playerController.shufflePlaylistToggle();
         break;
     }

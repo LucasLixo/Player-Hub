@@ -20,7 +20,7 @@ class _AnimatedPausePlayState extends State<AnimatedPausePlay>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 300),
     );
 
     playerController.isPlaying.listen((isPlaying) {
