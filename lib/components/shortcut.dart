@@ -24,42 +24,58 @@ class _ShortcutState extends State<Shortcut> {
   Widget build(BuildContext context) {
     var playerController = Get.find<PlayerController>();
 
-    return Obx(() {
-      final song = playerController.songs[playerController.playerIndex.value];
-      return ListTile(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        tileColor: colorBackground,
-        title: Text(
-          song.title.trim(),
-          style: styleText(fontFamily: bold, fontSize: 14),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: Text(
-          song.artist!.trim(),
-          style: styleText(fontFamily: regular, fontSize: 12),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        leading: QueryArtworkWidget(
-          id: song.id,
-          type: ArtworkType.AUDIO,
-          nullArtworkWidget: const Icon(
-            Icons.music_note,
-            color: Colors.white,
-            size: 32,
+    return Obx(
+      () {
+        final song = playerController.songs[playerController.playerIndex.value];
+        return GestureDetector(
+          onPanUpdate: (details) {
+            if (details.delta.dx > 0) {
+              playerController.previousSong();
+            } else if (details.delta.dx < 0) {
+              playerController.nextSong();
+            }
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: colorBackground,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: ListTile(
+              title: Text(
+                song.title.trim(),
+                style: styleText(fontFamily: bold, fontSize: 18),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              subtitle: Text(
+                song.artist!.trim(),
+                style: styleText(fontFamily: regular, fontSize: 16),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              leading: QueryArtworkWidget(
+                id: song.id,
+                type: ArtworkType.AUDIO,
+                nullArtworkWidget: const Icon(
+                  Icons.music_note,
+                  color: Colors.white,
+                  size: 32,
+                ),
+              ),
+              trailing: Transform.scale(
+                scale: 1.5,
+                child: const AnimatedPausePlay(),
+              ),
+              onTap: () {
+                Get.to(
+                  () => const Player(),
+                  transition: Transition.downToUp,
+                );
+              },
+            ),
           ),
-        ),
-        trailing: const AnimatedPausePlay(),
-        onTap: () {
-          Get.to(
-            () => const Player(),
-            transition: Transition.downToUp,
-          );
-        },
-      );
-    });
+        );
+      },
+    );
   }
 }

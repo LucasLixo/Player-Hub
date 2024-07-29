@@ -100,17 +100,28 @@ class _PlayerState extends State<Player> {
                       color: colorBackgroundDark,
                     ),
                     alignment: Alignment.center,
-                    child: QueryArtworkWidget(
-                      id: currentSong.id,
-                      type: ArtworkType.AUDIO,
-                      artworkFit: BoxFit.cover,
-                      quality: 100,
-                      artworkHeight: double.infinity,
-                      artworkWidth: double.infinity,
-                      nullArtworkWidget: const Icon(
-                        Icons.music_note,
-                        color: colorWhite,
-                        size: 320,
+                    child: GestureDetector(
+                      onPanUpdate: (details) {
+                        if (details.delta.dx > 0) {
+                          // Swipe para a direita
+                          playerController.previousSong();
+                        } else if (details.delta.dx < 0) {
+                          // Swipe para a esquerda
+                          playerController.nextSong();
+                        }
+                      },
+                      child: QueryArtworkWidget(
+                        id: currentSong.id,
+                        type: ArtworkType.AUDIO,
+                        artworkFit: BoxFit.cover,
+                        quality: 100,
+                        artworkHeight: 300,
+                        artworkWidth: 300,
+                        nullArtworkWidget: const Icon(
+                          Icons.music_note,
+                          color: colorWhite,
+                          size: 320,
+                        ),
                       ),
                     ),
                   ),

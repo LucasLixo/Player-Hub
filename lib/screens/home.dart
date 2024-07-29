@@ -81,7 +81,7 @@ class _HomeState extends State<Home> {
                             size: 32,
                           ),
                         ),
-                        trailing: Row(
+                        /* trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
@@ -93,7 +93,7 @@ class _HomeState extends State<Home> {
                               onPressed: () {},
                             ),
                           ],
-                        ),
+                        ), */
                         onTap: () {
                           playerController.playSong(index);
                           Get.to(
