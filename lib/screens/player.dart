@@ -117,130 +117,127 @@ class _PlayerState extends State<Player> {
                   const SizedBox(
                     height: 12,
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            width: double.infinity,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(
-                                  height: 12,
-                                ),
-                                Text(
-                                  currentSong.title.trim(),
-                                  style: styleText(
-                                    fontFamily: bold,
-                                    fontSize: 22,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  currentSong.artist!.trim(),
-                                  style: styleText(
-                                    fontFamily: regular,
-                                    fontSize: 18,
-                                    color: colorWhiteGray,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Obx(
-                            () => Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      playerController.position.value,
-                                      style: styleText(
-                                          fontFamily: bold, fontSize: 14),
-                                    ),
-                                    Text(
-                                      playerController.duration.value,
-                                      style: styleText(
-                                          fontFamily: bold, fontSize: 14),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 12,
-                                ),
-                                Slider(
-                                  thumbColor: colorWhite,
-                                  inactiveColor: colorGray,
-                                  activeColor: colorWhite,
-                                  min: 0.0,
-                                  max: playerController.max.value.toDouble(),
-                                  value:
-                                      playerController.value.value.toDouble(),
-                                  onChanged: (newValue) {
-                                    playerController.chargeDurationToSeconds(
-                                      newValue.toInt(),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 12,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const RepeatShuffle(),
-                              IconButton(
-                                onPressed: playerController.previousSong,
-                                icon: const Icon(
-                                  Icons.skip_previous_rounded,
-                                  size: 40,
-                                  color: colorWhite,
-                                ),
+                              const SizedBox(
+                                height: 12,
                               ),
-                              CircleAvatar(
-                                radius: 35,
-                                backgroundColor: Colors.transparent,
-                                foregroundColor: Colors.transparent,
-                                child: Transform.scale(
-                                  scale: 2.5,
-                                  child: const AnimatedPausePlay(),
+                              Text(
+                                currentSong.title.trim(),
+                                style: styleText(
+                                  fontFamily: bold,
+                                  fontSize: 18,
                                 ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              IconButton(
-                                onPressed: playerController.nextSong,
-                                icon: const Icon(
-                                  Icons.skip_next_rounded,
-                                  size: 40,
-                                  color: colorWhite,
-                                ),
+                              const SizedBox(
+                                height: 4,
                               ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Icons.share,
-                                  size: 30,
-                                  color: colorWhite,
+                              Text(
+                                currentSong.artist!.trim(),
+                                style: styleText(
+                                  fontFamily: regular,
+                                  fontSize: 16,
+                                  color: colorWhiteGray,
                                 ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(
+                                height: 4,
                               ),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                        Obx(
+                          () => Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    playerController.position.value,
+                                    style: styleText(
+                                        fontFamily: bold, fontSize: 14),
+                                  ),
+                                  Text(
+                                    playerController.duration.value,
+                                    style: styleText(
+                                        fontFamily: bold, fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              Slider(
+                                thumbColor: colorWhite,
+                                inactiveColor: colorGray,
+                                activeColor: colorWhite,
+                                min: 0.0,
+                                max: playerController.max.value.toDouble(),
+                                value: playerController.value.value.toDouble(),
+                                onChanged: (newValue) {
+                                  playerController.chargeDurationToSeconds(
+                                    newValue.toInt(),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const RepeatShuffle(),
+                            IconButton(
+                              onPressed: playerController.previousSong,
+                              icon: const Icon(
+                                Icons.skip_previous_rounded,
+                                size: 40,
+                                color: colorWhite,
+                              ),
+                            ),
+                            CircleAvatar(
+                              radius: 35,
+                              backgroundColor: Colors.transparent,
+                              foregroundColor: Colors.transparent,
+                              child: Transform.scale(
+                                scale: 2.5,
+                                child: const AnimatedPausePlay(),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: playerController.nextSong,
+                              icon: const Icon(
+                                Icons.skip_next_rounded,
+                                size: 40,
+                                color: colorWhite,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.share,
+                                size: 30,
+                                color: colorWhite,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ],

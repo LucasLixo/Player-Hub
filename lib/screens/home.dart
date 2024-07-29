@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:player/components/shortcut.dart';
 import 'package:player/components/style_text.dart';
 import 'package:player/controllers/player_controller.dart';
 import 'package:player/screens/player.dart';
@@ -42,66 +43,76 @@ class _HomeState extends State<Home> {
         } else {
           playerController.loadSongs(snapshot.data!);
 
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: snapshot.data!.length,
-              itemBuilder: (BuildContext context, int index) {
-                var song = snapshot.data![index];
+          return Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    var song = snapshot.data![index];
 
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  child: ListTile(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    tileColor: Colors.transparent,
-                    title: Text(
-                      song.title.trim(),
-                      style: styleText(fontFamily: bold, fontSize: 15),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    subtitle: Text(
-                      song.artist!.trim(),
-                      style: styleText(fontFamily: regular, fontSize: 15),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    leading: QueryArtworkWidget(
-                      id: song.id,
-                      type: ArtworkType.AUDIO,
-                      nullArtworkWidget: const Icon(
-                        Icons.music_note,
-                        color: colorWhite,
-                        size: 32,
-                      ),
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: const Icon(
-                            Icons.more_vert,
-                            color: colorWhite,
-                            size: 28,
-                          ),
-                          onPressed: () {},
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      child: ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                      ],
-                    ),
-                    onTap: () {
-                      playerController.playSong(index);
-                      Get.to(
-                        () => const Player(),
-                        transition: Transition.downToUp,
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
+                        tileColor: Colors.transparent,
+                        title: Text(
+                          song.title.trim(),
+                          style: styleText(fontFamily: bold, fontSize: 15),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        subtitle: Text(
+                          song.artist!.trim(),
+                          style: styleText(fontFamily: regular, fontSize: 15),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        leading: QueryArtworkWidget(
+                          id: song.id,
+                          type: ArtworkType.AUDIO,
+                          nullArtworkWidget: const Icon(
+                            Icons.music_note,
+                            color: colorWhite,
+                            size: 32,
+                          ),
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: const Icon(
+                                Icons.more_vert,
+                                color: colorWhite,
+                                size: 28,
+                              ),
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                        onTap: () {
+                          playerController.playSong(index);
+                          Get.to(
+                            () => const Player(),
+                            transition: Transition.downToUp,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const Positioned(
+                left: 12,
+                right: 12,
+                bottom: 12,
+                child: Shortcut(),
+              ),
+            ],
           );
         }
       },

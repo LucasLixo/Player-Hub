@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: colorBackgroundDark,
         appBar: AppBar(
           backgroundColor: colorBackgroundDark,
-          actions: [
+          /* actions: [
             IconButton(
               onPressed: () {},
               icon: const Icon(
@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
             Icons.sort_rounded,
             color: colorWhite,
             size: 32,
-          ),
+          ), */
           title: Text('Player Hub', style: styleText(fontFamily: bold)),
         ),
         body: permissionStorage

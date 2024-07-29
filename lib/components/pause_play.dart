@@ -26,9 +26,9 @@ class _AnimatedPausePlayState extends State<AnimatedPausePlay>
     playerController.isPlaying.listen((isPlaying) {
       if (!isDisposed) {
         if (isPlaying) {
-          _controller.reverse();
-        } else {
           _controller.forward();
+        } else {
+          _controller.reverse();
         }
       }
     });
@@ -53,7 +53,7 @@ class _AnimatedPausePlayState extends State<AnimatedPausePlay>
   Widget build(BuildContext context) {
     return IconButton(
       icon: AnimatedIcon(
-        icon: AnimatedIcons.pause_play,
+        icon: AnimatedIcons.play_pause,
         progress: _controller,
       ),
       onPressed: _togglePlayPause,
