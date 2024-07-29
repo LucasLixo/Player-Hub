@@ -4,7 +4,6 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:player/components/style_text.dart';
 import 'package:player/screens/home.dart';
 import 'package:player/utils/request_storage.dart';
-import 'package:player/utils/request_notifications.dart';
 import 'package:player/utils/const.dart';
 
 Future<void> main() async {
@@ -17,22 +16,19 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   bool permissionStorage = await requestStorage();
-  bool permissionNotifications = await requestNotifications();
 
   runApp(MyApp(
     permissionStorage: permissionStorage,
-    permissionNotifications: permissionNotifications,
   ));
 }
 
 class MyApp extends StatelessWidget {
   final bool permissionStorage;
-  final bool permissionNotifications;
 
-  const MyApp(
-      {super.key,
-      required this.permissionStorage,
-      required this.permissionNotifications});
+  const MyApp({
+    super.key,
+    required this.permissionStorage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +63,7 @@ class MyApp extends StatelessWidget {
           ),
           title: Text('Player Hub', style: styleText(fontFamily: bold)),
         ),
-        body: permissionStorage && permissionNotifications
+        body: permissionStorage
             ? const Home()
             : Center(
                 child: Text('Permissão Negada',
