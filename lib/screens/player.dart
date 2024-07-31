@@ -102,11 +102,9 @@ class _PlayerState extends State<Player> {
                     alignment: Alignment.center,
                     child: GestureDetector(
                       onPanUpdate: (details) {
-                        if (details.delta.dx > 0) {
-                          // Swipe para a direita
+                        if (details.delta.dx > 1) {
                           playerController.previousSong();
-                        } else if (details.delta.dx < 0) {
-                          // Swipe para a esquerda
+                        } else if (details.delta.dx < -1) {
                           playerController.nextSong();
                         }
                       },

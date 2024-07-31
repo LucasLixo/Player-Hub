@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:player/components/style_text.dart';
 import 'package:player/screens/home.dart';
+import 'package:player/screens/search.dart';
 import 'package:player/utils/request_storage.dart';
 import 'package:player/utils/const.dart';
 
@@ -46,22 +47,24 @@ class MyApp extends StatelessWidget {
         backgroundColor: colorBackgroundDark,
         appBar: AppBar(
           backgroundColor: colorBackgroundDark,
-          /* actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
+          actions: [
+            InkWell(
+              onTap: () {
+                Get.to(
+                  () => const Search(),
+                  transition: Transition.rightToLeft,
+                );
+              },
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              child: const Icon(
                 Icons.search,
                 color: colorWhite,
                 size: 32,
               ),
             ),
           ],
-          leading: const Icon(
-            Icons.sort_rounded,
-            color: colorWhite,
-            size: 32,
-          ), */
-          title: Text('Player Hub', style: styleText(fontFamily: bold)),
+          title: Text('Player Hub', style: styleText(fontSize: 24)),
         ),
         body: permissionStorage
             ? const Home()

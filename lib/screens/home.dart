@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
       future: playerController.audioQuery.querySongs(
         ignoreCase: true,
         orderType: OrderType.ASC_OR_SMALLER,
-        sortType: null,
+        sortType: SongSortType.DATE_ADDED,
         uriType: UriType.EXTERNAL,
       ),
       builder: (BuildContext context, AsyncSnapshot<List<SongModel>> snapshot) {
