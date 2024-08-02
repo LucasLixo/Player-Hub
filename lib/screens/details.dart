@@ -5,7 +5,6 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:player/controllers/player_export.dart';
 import 'package:player/utils/colors.dart';
 import 'package:player/utils/text_style.dart';
-import 'package:player/widgets/pause_play.dart';
 import 'package:player/widgets/repeat_shuffle.dart';
 
 class Details extends StatefulWidget {
@@ -15,17 +14,38 @@ class Details extends StatefulWidget {
   State<Details> createState() => _DetailsState();
 }
 
-class _DetailsState extends State<Details> {
+class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  final playerController = Get.find<PlayerController>();
+  final playerStateController = Get.find<PlayerStateController>();
+
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    playerController.audioPlayer.playerStateStream.listen((state) {
+      if (state.playing) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+      }
+    });
+  }
+
+  Future<void> _togglePlayPause() async {
+    if (playerStateController.isPlaying.value) {
+      await playerController.pauseSong();
+    } else {
+      await playerController.playSong(playerStateController.songIndex.value);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var playerController = Get.find<PlayerController>();
-    var playerStateController = Get.find<PlayerStateController>();
-
     return Scaffold(
       backgroundColor: colorBackground,
       appBar: null,
@@ -226,7 +246,14 @@ class _DetailsState extends State<Details> {
                               foregroundColor: Colors.transparent,
                               child: Transform.scale(
                                 scale: 2.5,
-                                child: const AnimatedPausePlay(),
+                                child: IconButton(
+                                  icon: AnimatedIcon(
+                                    icon: AnimatedIcons.play_pause,
+                                    progress: _controller,
+                                  ),
+                                  onPressed: _togglePlayPause,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                             IconButton(

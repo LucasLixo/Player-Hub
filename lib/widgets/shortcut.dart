@@ -5,7 +5,6 @@ import 'package:player/controllers/player_export.dart';
 import 'package:player/screens/details.dart';
 import 'package:player/utils/colors.dart';
 import 'package:player/utils/text_style.dart';
-import 'package:player/widgets/pause_play.dart';
 
 class Shortcut extends StatefulWidget {
   const Shortcut({super.key});
@@ -14,20 +13,43 @@ class Shortcut extends StatefulWidget {
   State<Shortcut> createState() => _ShortcutState();
 }
 
-class _ShortcutState extends State<Shortcut> {
+class _ShortcutState extends State<Shortcut>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  final playerController = Get.find<PlayerController>();
+  final playerStateController = Get.find<PlayerStateController>();
+
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    playerController.audioPlayer.playerStateStream.listen((state) {
+      if (state.playing) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+      }
+    });
+  }
+
+  Future<void> _togglePlayPause() async {
+    if (playerStateController.isPlaying.value) {
+      await playerController.pauseSong();
+    } else {
+      await playerController.playSong(playerStateController.songIndex.value);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var playerController = Get.find<PlayerController>();
-    var playerStateController = Get.find<PlayerStateController>();
-
     return Obx(
       () {
-        final song = playerStateController.songList[playerStateController.songIndex.value];
+        final song = playerStateController
+            .songList[playerStateController.songIndex.value];
         return GestureDetector(
           onPanUpdate: (details) {
             if (details.delta.dx > 0) {
@@ -65,7 +87,14 @@ class _ShortcutState extends State<Shortcut> {
               ),
               trailing: Transform.scale(
                 scale: 1.5,
-                child: const AnimatedPausePlay(),
+                child: IconButton(
+                  icon: AnimatedIcon(
+                    icon: AnimatedIcons.play_pause,
+                    progress: _controller,
+                  ),
+                  onPressed: _togglePlayPause,
+                  color: Colors.white,
+                ),
               ),
               onTap: () {
                 Get.to(

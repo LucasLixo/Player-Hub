@@ -24,7 +24,7 @@ class _AnimatedPausePlayState extends State<AnimatedPausePlay>
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-    
+
     playerStateController.isPlaying.listen((isPlaying) {
       if (!isDisposed) {
         if (isPlaying) {
