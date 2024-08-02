@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="assets/images/icon.png" width=160 height=160 align="center">
+<img src="fastlane/icon.png" width=160 height=160 align="center">
 
 # Player Hub
 
-### Filmes/Series para Android
+### Filmes/Séries para Android
 
 [![GitHub release](https://img.shields.io/github/v/release/LucasLixo/Player-Hub?color=black&label=Stable&logo=github)](https://github.com/LucasLixo/Player-Hub/releases/latest/)
 [![Changelog](https://img.shields.io/badge/Changelog-lightgray?style=flat&color=gray&logo=keep-a-changelog)](https://github.com/LucasLixo/Player-Hub/blob/main/CHANGELOG.md)
@@ -12,15 +12,14 @@
 
 </div>
 
-
 ## 📱 Screenshots
 
 <div align="center">
 <div>
-<img src="fastlane/screenshot/screenshot (1).jpg" width="24%" />
-<img src="fastlane/screenshot/screenshot (2).jpg" width="24%" />
-<img src="fastlane/screenshot/screenshot (3).jpg" width="24%" />
-<img src="fastlane/screenshot/screenshot (4).jpg" width="24%" />
+<img src="fastlane/screenshot (1).jpg" width="24%" />
+<img src="fastlane/screenshot (2).jpg" width="24%" />
+<img src="fastlane/screenshot (3).jpg" width="24%" />
+<img src="fastlane/screenshot (4).jpg" width="24%" />
 </div>
 </div>
 
@@ -30,12 +29,9 @@
 
 >[!NOTE]
 >
->foco em perfomace.
-- Player Hub é um aplicativo player de musicas do celular.
-
-- [Just Audio](https://pub.dev/packages/just_audio).
-
-- [Just Audio Background](https://pub.dev/packages/just_audio_background) serviço de audio.
+>Foco em performance.
+- Player Hub é um aplicativo player de músicas do celular.
+- Utiliza as bibliotecas [Just Audio](https://pub.dev/packages/just_audio) e [Just Audio Background](https://pub.dev/packages/just_audio_background) para serviços de áudio.
 
 ## ⬇️ Download
 
@@ -44,15 +40,15 @@
 
 ## 🧱 Créditos
 
-- [Just Audio](https://pub.dev/packages/just_audio).
-- [Just Audio Background](https://pub.dev/packages/just_audio_background).
+- Utiliza as bibliotecas [Just Audio](https://pub.dev/packages/just_audio) e [Just Audio Background](https://pub.dev/packages/just_audio_background).
 
 ## 📃 Licença
 
 >[!WARNING]
 >
->Todas as outras partes estão proibidas de usar o nome de Player hub como um aplicativo de streaming,
->Os derivados incluem, mas não estão limitados a, forks e versões não oficiais.
+>Todas as outras partes estão proibidas de usar o nome Player Hub como um aplicativo de streaming. 
+Os derivados incluem, mas não estão limitados a, forks e versões não oficiais.
+
 [![GitHub](https://img.shields.io/github/license/LucasLixo/Player-Hub?style=for-the-badge)](https://github.com/LucasLixo/Player-Hub/blob/main/LICENSE)
 
 <div align="right">
