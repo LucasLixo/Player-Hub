@@ -27,17 +27,15 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-    playerController.audioPlayer.playerStateStream.listen((state) {
-      if (state.playing) {
-        _controller.forward();
-      } else {
-        _controller.reverse();
-      }
-    });
+    if (playerController.audioPlayer.playing) {
+      _controller.forward();
+    } else {
+      _controller.reverse();
+    }
   }
 
   Future<void> _togglePlayPause() async {
-    if (playerStateController.isPlaying.value) {
+    if (playerController.audioPlayer.playing) {
       await playerController.pauseSong();
     } else {
       await playerController.playSong(playerStateController.songIndex.value);
