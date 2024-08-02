@@ -2,20 +2,20 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:player/components/pause_play.dart';
-import 'package:player/components/repeat_shuffle.dart';
-import 'package:player/components/style_text.dart';
-import 'package:player/controllers/player_controller.dart';
-import 'package:player/utils/const.dart';
+import 'package:player/controllers/player_export.dart';
+import 'package:player/utils/colors.dart';
+import 'package:player/utils/text_style.dart';
+import 'package:player/widgets/pause_play.dart';
+import 'package:player/widgets/repeat_shuffle.dart';
 
-class Player extends StatefulWidget {
-  const Player({super.key});
+class Details extends StatefulWidget {
+  const Details({super.key});
 
   @override
-  State<Player> createState() => _PlayerState();
+  State<Details> createState() => _DetailsState();
 }
 
-class _PlayerState extends State<Player> {
+class _DetailsState extends State<Details> {
   @override
   void initState() {
     super.initState();
@@ -24,13 +24,14 @@ class _PlayerState extends State<Player> {
   @override
   Widget build(BuildContext context) {
     var playerController = Get.find<PlayerController>();
+    var playerStateController = Get.find<PlayerStateController>();
 
     return Scaffold(
       backgroundColor: colorBackground,
       appBar: null,
       body: Obx(() {
-        final currentSong =
-            playerController.songs[playerController.playerIndex.value];
+        final currentSong = playerStateController
+            .songList[playerStateController.songIndex.value];
         return Stack(
           children: [
             Positioned.fill(
@@ -140,7 +141,7 @@ class _PlayerState extends State<Player> {
                               ),
                               Text(
                                 currentSong.title.trim(),
-                                style: styleText(
+                                style: textStyle(
                                   fontFamily: bold,
                                   fontSize: 18,
                                 ),
@@ -152,7 +153,7 @@ class _PlayerState extends State<Player> {
                               ),
                               Text(
                                 currentSong.artist!.trim(),
-                                style: styleText(
+                                style: textStyle(
                                   fontFamily: regular,
                                   fontSize: 16,
                                   color: colorWhiteGray,
@@ -174,14 +175,12 @@ class _PlayerState extends State<Player> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    playerController.position.value,
-                                    style: styleText(
-                                        fontFamily: bold, fontSize: 14),
+                                    playerStateController.songPosition.value,
+                                    style: textStyle(fontSize: 14),
                                   ),
                                   Text(
-                                    playerController.duration.value,
-                                    style: styleText(
-                                        fontFamily: bold, fontSize: 14),
+                                    playerStateController.songDuration.value,
+                                    style: textStyle(fontSize: 14),
                                   ),
                                 ],
                               ),
@@ -193,8 +192,10 @@ class _PlayerState extends State<Player> {
                                 inactiveColor: colorGray,
                                 activeColor: colorWhite,
                                 min: 0.0,
-                                max: playerController.max.value.toDouble(),
-                                value: playerController.value.value.toDouble(),
+                                max: playerStateController.songDurationD.value
+                                    .toDouble(),
+                                value: playerStateController.songPositionD.value
+                                    .toDouble(),
                                 onChanged: (newValue) {
                                   playerController.chargeDurationToSeconds(
                                     newValue.toInt(),
@@ -233,14 +234,6 @@ class _PlayerState extends State<Player> {
                               icon: const Icon(
                                 Icons.skip_next_rounded,
                                 size: 40,
-                                color: colorWhite,
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.share,
-                                size: 30,
                                 color: colorWhite,
                               ),
                             ),

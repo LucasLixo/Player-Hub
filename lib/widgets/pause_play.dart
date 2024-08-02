@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:player/controllers/player_controller.dart';
+import 'package:player/controllers/player_export.dart';
 
 class AnimatedPausePlay extends StatefulWidget {
   const AnimatedPausePlay({super.key});
@@ -12,7 +12,9 @@ class AnimatedPausePlay extends StatefulWidget {
 class _AnimatedPausePlayState extends State<AnimatedPausePlay>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+
   final playerController = Get.find<PlayerController>();
+  final playerStateController = Get.find<PlayerStateController>();
   bool isDisposed = false;
 
   @override
@@ -22,8 +24,8 @@ class _AnimatedPausePlayState extends State<AnimatedPausePlay>
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-
-    playerController.isPlaying.listen((isPlaying) {
+    
+    playerStateController.isPlaying.listen((isPlaying) {
       if (!isDisposed) {
         if (isPlaying) {
           _controller.forward();
@@ -42,10 +44,10 @@ class _AnimatedPausePlayState extends State<AnimatedPausePlay>
   }
 
   Future<void> _togglePlayPause() async {
-    if (playerController.isPlaying.value) {
+    if (playerStateController.isPlaying.value) {
       await playerController.pauseSong();
     } else {
-      await playerController.playSong(playerController.playerIndex.value);
+      await playerController.playSong(playerStateController.songIndex.value);
     }
   }
 

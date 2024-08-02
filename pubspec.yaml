@@ -35,12 +35,16 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
+  audio_service: ^0.18.15
   permission_handler: ^11.3.1
-  device_info_plus: ^10.1.0
-  get: ^4.6.6
   on_audio_query: ^2.9.0
+  device_info_plus: ^10.1.1
+  get: ^4.6.6
   just_audio: ^0.9.39
-  just_audio_background: ^0.0.1-beta.13
+  flutter_launcher_icons: ^0.13.1
+  rxdart: ^0.28.0
+  just_audio_platform_interface: ^4.3.0
+  shared_preferences: ^2.3.1
 
 dev_dependencies:
   flutter_test:
@@ -51,10 +55,16 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^4.0.0
+  flutter_lints: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+flutter_launcher_icons:
+  android: true
+  image_path: "assets/images/logo.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/images/logo_foreground.png"
 
 # The following section is specific to Flutter packages.
 flutter:

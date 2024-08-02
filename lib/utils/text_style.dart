@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:player/utils/const.dart';
+import 'package:player/utils/colors.dart';
 
 const String bold = 'bold';
 const String regular = 'regular';
 const String italic = 'italic';
 
-TextStyle styleText({
+TextStyle textStyle({
   String fontFamily = regular,
   double fontSize = 18,
   Color color = colorWhite,

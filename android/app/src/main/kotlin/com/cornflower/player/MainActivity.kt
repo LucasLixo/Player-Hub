@@ -1,4 +1,4 @@
-package hub.cornflower.player
+package com.cornflower.player
 
 import io.flutter.embedding.android.FlutterActivity
 

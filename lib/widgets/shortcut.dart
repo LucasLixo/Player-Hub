@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:player/components/pause_play.dart';
-import 'package:player/components/style_text.dart';
-import 'package:player/controllers/player_controller.dart';
-import 'package:player/screens/player.dart';
-import 'package:player/utils/const.dart';
+import 'package:player/controllers/player_export.dart';
+import 'package:player/screens/details.dart';
+import 'package:player/utils/colors.dart';
+import 'package:player/utils/text_style.dart';
+import 'package:player/widgets/pause_play.dart';
 
 class Shortcut extends StatefulWidget {
   const Shortcut({super.key});
@@ -23,10 +23,11 @@ class _ShortcutState extends State<Shortcut> {
   @override
   Widget build(BuildContext context) {
     var playerController = Get.find<PlayerController>();
+    var playerStateController = Get.find<PlayerStateController>();
 
     return Obx(
       () {
-        final song = playerController.songs[playerController.playerIndex.value];
+        final song = playerStateController.songList[playerStateController.songIndex.value];
         return GestureDetector(
           onPanUpdate: (details) {
             if (details.delta.dx > 0) {
@@ -43,13 +44,13 @@ class _ShortcutState extends State<Shortcut> {
             child: ListTile(
               title: Text(
                 song.title.trim(),
-                style: styleText(fontFamily: bold, fontSize: 18),
+                style: textStyle(fontFamily: bold, fontSize: 18),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
               subtitle: Text(
                 song.artist!.trim(),
-                style: styleText(fontFamily: regular, fontSize: 16),
+                style: textStyle(fontFamily: regular, fontSize: 16),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -68,7 +69,7 @@ class _ShortcutState extends State<Shortcut> {
               ),
               onTap: () {
                 Get.to(
-                  () => const Player(),
+                  () => const Details(),
                   transition: Transition.downToUp,
                 );
               },

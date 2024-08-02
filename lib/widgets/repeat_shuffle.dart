@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:player/utils/const.dart';
-import 'package:player/controllers/player_controller.dart';
+import 'package:player/controllers/player_export.dart';
+import 'package:player/utils/colors.dart';
 
 class RepeatShuffle extends StatefulWidget {
   const RepeatShuffle({super.key});
@@ -15,23 +15,24 @@ class _RepeatShuffleState extends State<RepeatShuffle> {
   int currentIndex = 0;
 
   final playerController = Get.put(PlayerController());
+  final playerStateController = Get.put(PlayerStateController());
 
   @override
   void initState() {
     super.initState();
     setCurrentIcon();
-    playerController.isLooping.listen((_) => setCurrentIcon());
-    playerController.isShuffle.listen((_) => setCurrentIcon());
+    playerStateController.isLooping.listen((_) => setCurrentIcon());
+    playerStateController.isShuffle.listen((_) => setCurrentIcon());
   }
 
   void setCurrentIcon() {
     if (!mounted) return;
-    
-    if (playerController.isShuffle.value) {
+
+    if (playerStateController.isShuffle.value) {
       setState(() {
         currentIndex = icons.indexOf(Icons.shuffle);
       });
-    } else if (playerController.isLooping.value) {
+    } else if (playerStateController.isLooping.value) {
       setState(() {
         currentIndex = icons.indexOf(Icons.repeat_one);
       });
@@ -51,7 +52,7 @@ class _RepeatShuffleState extends State<RepeatShuffle> {
 
     switch (icons[currentIndex]) {
       case Icons.repeat:
-        if(playerController.isShuffle.value) {
+        if (playerStateController.isShuffle.value) {
           await playerController.shufflePlaylistToggle();
         }
         break;

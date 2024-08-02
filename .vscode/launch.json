@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Player-Hub",
+            "name": "player",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "Player-Hub (profile mode)",
+            "name": "player (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "Player-Hub (release mode)",
+            "name": "player (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:player/components/shortcut.dart';
-import 'package:player/components/style_text.dart';
-import 'package:player/controllers/player_controller.dart';
-import 'package:player/screens/player.dart';
-import 'package:player/utils/const.dart';
+import 'package:player/screens/details.dart';
+import 'package:player/screens/search.dart';
+import 'package:player/utils/colors.dart';
+import 'package:player/utils/text_style.dart';
+import 'package:player/controllers/player_export.dart';
+import 'package:player/widgets/shortcut.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -15,6 +16,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
   @override
   void initState() {
     super.initState();
@@ -24,64 +26,88 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final playerController = Get.put(PlayerController());
 
-    return FutureBuilder<List<SongModel>>(
-      future: playerController.audioQuery.querySongs(
-        ignoreCase: true,
-        orderType: OrderType.ASC_OR_SMALLER,
-        sortType: SongSortType.DATE_ADDED,
-        uriType: UriType.EXTERNAL,
+    return Scaffold(
+      backgroundColor: colorBackgroundDark,
+      appBar: AppBar(
+        backgroundColor: colorBackgroundDark,
+        actions: [
+          InkWell(
+            onTap: () {
+              Get.to(
+                () => const Search(),
+                transition: Transition.rightToLeft,
+              );
+            },
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            child: const Icon(
+              Icons.search,
+              color: colorWhite,
+              size: 32,
+            ),
+          ),
+        ],
+        title: Text('Player Hub', style: textStyle(fontSize: 24)),
       ),
-      builder: (BuildContext context, AsyncSnapshot<List<SongModel>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(
-            child: Text('Sem Músicas', style: styleText()),
-          );
-        } else {
-          playerController.loadSongs(snapshot.data!);
+      body: FutureBuilder<List<SongModel>>(
+        future: playerController.audioQuery.querySongs(
+          ignoreCase: true,
+          orderType: OrderType.ASC_OR_SMALLER,
+          sortType: SongSortType.DATE_ADDED,
+          uriType: UriType.EXTERNAL,
+        ),
+        builder:
+            (BuildContext context, AsyncSnapshot<List<SongModel>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(
+              child: Text('Sem Músicas', style: textStyle()),
+            );
+          } else {
+            playerController.songAllLoad(snapshot.data!);
 
-          return Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    var song = snapshot.data![index];
+            return Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var song = snapshot.data![index];
 
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      child: ListTile(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        tileColor: Colors.transparent,
-                        title: Text(
-                          song.title.trim(),
-                          style: styleText(fontFamily: bold, fontSize: 15),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        subtitle: Text(
-                          song.artist!.trim(),
-                          style: styleText(fontFamily: regular, fontSize: 15),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        leading: QueryArtworkWidget(
-                          id: song.id,
-                          type: ArtworkType.AUDIO,
-                          nullArtworkWidget: const Icon(
-                            Icons.music_note,
-                            color: colorWhite,
-                            size: 32,
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        child: ListTile(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                        ),
-                        /* trailing: Row(
+                          tileColor: Colors.transparent,
+                          title: Text(
+                            song.title.trim(),
+                            style: textStyle(fontFamily: bold, fontSize: 16),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          subtitle: Text(
+                            song.artist!.trim(),
+                            style: textStyle(fontFamily: regular, fontSize: 16),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          leading: QueryArtworkWidget(
+                            id: song.id,
+                            type: ArtworkType.AUDIO,
+                            nullArtworkWidget: const Icon(
+                              Icons.music_note,
+                              color: colorWhite,
+                              size: 32,
+                            ),
+                          ),
+                          /* trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
@@ -97,25 +123,26 @@ class _HomeState extends State<Home> {
                         onTap: () {
                           playerController.playSong(index);
                           Get.to(
-                            () => const Player(),
+                            () => const Details(),
                             transition: Transition.downToUp,
                           );
                         },
-                      ),
-                    );
-                  },
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-              const Positioned(
-                left: 12,
-                right: 12,
-                bottom: 12,
-                child: Shortcut(),
-              ),
-            ],
-          );
-        }
-      },
+                const Positioned(
+                  left: 12,
+                  right: 12,
+                  bottom: 12,
+                  child: Shortcut(),
+                ),
+              ],
+            );
+          }
+        },
+      ),
     );
   }
 }
