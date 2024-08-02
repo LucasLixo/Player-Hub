@@ -27,16 +27,17 @@ class _ShortcutState extends State<Shortcut>
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-
-    if (playerController.audioPlayer.playing) {
-      _controller.forward();
-    } else {
-      _controller.reverse();
-    }
+    playerController.audioPlayer.playerStateStream.listen((state) {
+      if (state.playing) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+      }
+    });
   }
 
   Future<void> _togglePlayPause() async {
-    if (playerController.audioPlayer.playing) {
+    if (playerStateController.isPlaying.value) {
       await playerController.pauseSong();
     } else {
       await playerController.playSong(playerStateController.songIndex.value);

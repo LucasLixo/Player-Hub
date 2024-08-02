@@ -71,17 +71,17 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     );
   }
 
-  Future<void> playSong(int index) async {
+  Future<void> playSong(int? index) async {
     if (playerState.songIndex.value != index) {
-      playerState.songIndex.value = index;
+      playerState.songIndex.value = index!;
       await audioPlayer.seek(Duration.zero, index: index);
     }
     playbackState.add(playbackState.value.copyWith(
       playing: true,
       controls: [MediaControl.pause],
     ));
-    await audioPlayer.play();
     playerState.isPlaying.value = true;
+    await audioPlayer.play();
     updatePosition();
   }
 
@@ -90,8 +90,8 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       playing: false,
       controls: [MediaControl.play],
     ));
-    await audioPlayer.pause();
     playerState.isPlaying.value = false;
+    await audioPlayer.pause();
   }
 
   Future<void> nextSong() async {

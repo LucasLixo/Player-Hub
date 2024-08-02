@@ -1,4 +1,4 @@
-div align="center">
+<div align="center">
 
 <img src="android/app//src/main/res/mipmap-xxxhdpi/ic_launcher.png" width=160 height=160  align="center">
 
