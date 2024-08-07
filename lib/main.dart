@@ -1,47 +1,31 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:player/controllers/just_audio_background.dart';
-import 'package:player/screens/home.dart';
-import 'package:player/utils/request_storage.dart';
+import 'package:flutter/services.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+import 'app/app_widget.dart';
+import 'app/core/just_audio_background/just_audio_background.dart';
 
-  bool permissionStorage = await requestStorage();
+void main() async {
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
 
-  await JustAudioBackground.init(
-    androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
-    androidNotificationChannelName: 'Music playback',
-    androidShowNotificationBadge: true,
-    androidNotificationOngoing: true,
-    androidStopForegroundOnPause: true,
-  );
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
 
-  runApp(MyApp(
-    permissionStorage: permissionStorage,
-  ));
-}
+    await JustAudioBackground.init(
+      androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+      androidNotificationChannelName: 'Music playback',
+      androidShowNotificationBadge: true,
+      androidNotificationOngoing: true,
+      androidStopForegroundOnPause: true,
+    );
 
-class MyApp extends StatelessWidget {
-  final bool permissionStorage;
-
-  const MyApp({
-    super.key,
-    required this.permissionStorage,
+    runApp(const AppWidget());
+  }, (Object error, StackTrace stack) {
+    print('==============================');
+    print(error);
+    print('==============================');
   });
-
-  @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
-        title: 'Player Hub',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-          ),
-          useMaterial3: true,
-        ),
-        home: permissionStorage ? const Home() : null);
-  }
 }

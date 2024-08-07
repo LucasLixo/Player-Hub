@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -17,6 +18,8 @@ class PlayerStateController extends GetxController {
   List<SongModel> songList = [];
 
   void resetSongIndex() {
-    songIndex.value = 0;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      songIndex.value = 0;
+    });
   }
 }

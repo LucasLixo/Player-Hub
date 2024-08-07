@@ -2,7 +2,8 @@ import 'package:get/get.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:player/controllers/player_state.dart';
+
+import 'player_state.dart';
 
 class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   final audioQuery = OnAudioQuery();
@@ -25,6 +26,19 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       }
     });
     updatePosition();
+  }
+
+  Future<List<SongModel>> getSongs() async {
+    List<SongModel> songs = await audioQuery.querySongs(
+      ignoreCase: true,
+      orderType: OrderType.DESC_OR_GREATER,
+      sortType: SongSortType.DATE_ADDED,
+      uriType: UriType.EXTERNAL,
+    );
+
+    songs = songs.where((song) => song.duration! > 20000).toList();
+
+    return songs;
   }
 
   void updatePosition() {

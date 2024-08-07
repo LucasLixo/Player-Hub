@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:player/controllers/player_export.dart';
-import 'package:player/utils/colors.dart';
+
+import '../../core/player/player_export.dart';
+import '../../core/app_colors.dart';
 
 class RepeatShuffle extends StatefulWidget {
   const RepeatShuffle({super.key});

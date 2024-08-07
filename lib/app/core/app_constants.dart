@@ -1,0 +1,1 @@
+const constAppTitle = "Player Hub";

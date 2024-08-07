@@ -2,19 +2,22 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:player/controllers/player_export.dart';
-import 'package:player/utils/colors.dart';
-import 'package:player/utils/text_style.dart';
-import 'package:player/widgets/repeat_shuffle.dart';
 
-class Details extends StatefulWidget {
-  const Details({super.key});
+import '../core/player/player_export.dart';
+import '../shared/utils/dynamic_style.dart';
+import '../core/app_colors.dart';
+import '../shared/utils/title_style.dart';
+import '../shared/widgets/repeat_shuffle.dart';
+
+class DetailsView extends StatefulWidget {
+  const DetailsView({super.key});
 
   @override
-  State<Details> createState() => _DetailsState();
+  _DetailsViewState createState() => _DetailsViewState();
 }
 
-class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
+class _DetailsViewState extends State<DetailsView>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   final playerController = Get.find<PlayerController>();
@@ -97,7 +100,7 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                           size: 44,
                         ),
                       ),
-                      InkWell(
+                      /* InkWell(
                         onTap: () {},
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
@@ -106,7 +109,7 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                           color: colorWhite,
                           size: 32,
                         ),
-                      ),
+                      ), */
                     ],
                   ),
                   const SizedBox(
@@ -122,10 +125,10 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                     ),
                     alignment: Alignment.center,
                     child: GestureDetector(
-                      onPanUpdate: (details) {
-                        if (details.delta.dx > 1) {
+                      onPanEnd: (details) {
+                        if (details.velocity.pixelsPerSecond.dx > 0) {
                           playerController.previousSong();
-                        } else if (details.delta.dx < -1) {
+                        } else if (details.velocity.pixelsPerSecond.dx < 0) {
                           playerController.nextSong();
                         }
                       },
@@ -161,10 +164,7 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                               ),
                               Text(
                                 currentSong.title.trim(),
-                                style: textStyle(
-                                  fontFamily: bold,
-                                  fontSize: 18,
-                                ),
+                                style: titleStyle(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -173,11 +173,8 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                               ),
                               Text(
                                 currentSong.artist!.trim(),
-                                style: textStyle(
-                                  fontFamily: regular,
-                                  fontSize: 16,
-                                  color: colorWhiteGray,
-                                ),
+                                style: dynamicStyle(16, colorWhiteGray,
+                                    FontWeight.normal, FontStyle.normal),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -196,11 +193,21 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
                                 children: [
                                   Text(
                                     playerStateController.songPosition.value,
-                                    style: textStyle(fontSize: 14),
+                                    style: dynamicStyle(
+                                      14,
+                                      colorWhite,
+                                      FontWeight.normal,
+                                      FontStyle.normal,
+                                    ),
                                   ),
                                   Text(
                                     playerStateController.songDuration.value,
-                                    style: textStyle(fontSize: 14),
+                                    style: dynamicStyle(
+                                      14,
+                                      colorWhite,
+                                      FontWeight.normal,
+                                      FontStyle.normal,
+                                    ),
                                   ),
                                 ],
                               ),

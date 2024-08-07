@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:player/controllers/player_export.dart';
-import 'package:player/screens/details.dart';
-import 'package:player/utils/colors.dart';
-import 'package:player/utils/text_style.dart';
+
+import '../../core/app_colors.dart';
+import '../../routes/app_routes.dart';
+import '../../core/player/player_export.dart';
+import '../../shared/utils/subtitle_style.dart';
+import '../../shared/utils/title_style.dart';
 
 class Shortcut extends StatefulWidget {
   const Shortcut({super.key});
@@ -66,13 +68,13 @@ class _ShortcutState extends State<Shortcut>
             child: ListTile(
               title: Text(
                 song.title.trim(),
-                style: textStyle(fontFamily: bold, fontSize: 18),
+                style: titleStyle(),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
               subtitle: Text(
                 song.artist!.trim(),
-                style: textStyle(fontFamily: regular, fontSize: 16),
+                style: subtitleStyle(),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -97,10 +99,7 @@ class _ShortcutState extends State<Shortcut>
                 ),
               ),
               onTap: () {
-                Get.to(
-                  () => const Details(),
-                  transition: Transition.downToUp,
-                );
+                Get.toNamed(AppRoutes.details);
               },
             ),
           ),
