@@ -16,6 +16,8 @@ class PlayerStateController extends GetxController {
 
   List<SongModel> songAllList = [];
   List<SongModel> songList = [];
+  
+  List<String> folderList = [];
 
   void resetSongIndex() {
     WidgetsBinding.instance.addPostFrameCallback((_) {

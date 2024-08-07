@@ -25,7 +25,7 @@ class AppWidget extends StatelessWidget {
             theme: ThemeData(),
             themeMode: ThemeMode.dark,
             getPages: AppPages.pages,
-            initialRoute: AppRoutes.listMusic,
+            initialRoute: AppRoutes.home,
             builder: _builder,
           );
         }

@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:path/path.dart' as p;
 
 import 'player_state.dart';
 
@@ -41,6 +42,10 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     return songs;
   }
 
+  List<SongModel> getSongsFromFolder(String folderPath) {
+    return playerState.songList.where((song) => song.data.contains(folderPath)).toList();
+  }
+
   void updatePosition() {
     audioPlayer.durationStream.listen((d) {
       if (d != null) {
@@ -62,12 +67,17 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   Future<void> songAllLoad(List<SongModel> songList) async {
     playerState.songAllList = songList;
 
+    for (var song in songList) {
+      playerState.folderList.add(song.data.split('/')[song.data.split('/').length - 2]);
+    }
+    playerState.folderList = playerState.folderList.toSet().toList();
+
     await songLoad(songList);
   }
 
   Future<void> songLoad(List<SongModel> songList) async {
     playerState.songList = songList;
-
+    
     List<AudioSource> playlist = playerState.songList.map((song) {
       return AudioSource.uri(
         Uri.parse(song.uri!),
@@ -81,7 +91,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
 
     await audioPlayer.setAudioSource(
       ConcatenatingAudioSource(children: playlist),
-      initialIndex: playerState.songIndex.value,
+      initialIndex: 0,
     );
   }
 

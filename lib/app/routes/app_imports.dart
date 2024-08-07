@@ -1,3 +1,4 @@
-export '../views/list_music.dart';
+export '../views/home.dart';
 export '../views/details.dart';
 export '../views/search.dart';
+export '../views/playlist.dart';

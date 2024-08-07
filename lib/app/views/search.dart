@@ -19,10 +19,11 @@ class _SearchViewState extends State<SearchView> {
   late FocusNode _focusNode;
   late TextEditingController _textController;
   late List<SongModel> filteredSongs;
-  
+
   bool _isDisposed = false;
 
   final playerStateController = Get.find<PlayerStateController>();
+  final playerController = Get.find<PlayerController>();
 
   @override
   void initState() {
@@ -53,7 +54,7 @@ class _SearchViewState extends State<SearchView> {
     super.dispose();
   }
 
-  void _filterSongs() {
+  void _filterSongs() async {
     var query = _textController.text.toLowerCase();
 
     setState(() {
@@ -64,13 +65,13 @@ class _SearchViewState extends State<SearchView> {
           return song.title.toLowerCase().contains(query) ||
               song.artist!.toLowerCase().contains(query);
         }).toList();
-        playerStateController.songList = filteredSongs;
       }
     });
+
+    await playerController.songLoad(filteredSongs);
   }
 
   void _hideKeyboard() {
-    // Hides the keyboard
     _focusNode.unfocus();
   }
 
@@ -89,7 +90,7 @@ class _SearchViewState extends State<SearchView> {
           child: const Icon(
             Icons.arrow_back_ios,
             color: colorWhite,
-            size: 32,
+            size: 26,
           ),
         ),
         title: TextField(
