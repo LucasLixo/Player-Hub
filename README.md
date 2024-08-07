@@ -16,11 +16,11 @@
 
 <div align="center">
 <div>
-<img src="fastlane/screenshot (1).jpg" width="19%" />
-<img src="fastlane/screenshot (2).jpg" width="19%" />
-<img src="fastlane/screenshot (3).jpg" width="19%" />
-<img src="fastlane/screenshot (4).jpg" width="19%" />
-<img src="fastlane/screenshot (5).jpg" width="19%" />
+<img src="fastlane/Screenshot (1).jpg" width="19%" />
+<img src="fastlane/Screenshot (2).jpg" width="19%" />
+<img src="fastlane/Screenshot (3).jpg" width="19%" />
+<img src="fastlane/Screenshot (4).jpg" width="19%" />
+<img src="fastlane/Screenshot (5).jpg" width="19%" />
 </div>
 </div>
 
