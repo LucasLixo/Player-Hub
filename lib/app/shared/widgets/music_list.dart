@@ -26,10 +26,12 @@ class MusicList extends StatelessWidget {
         return Container(
           margin: const EdgeInsets.only(bottom: 8),
           child: ListTile(
+            tileColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            focusColor: Colors.transparent,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
-            tileColor: Colors.transparent,
             title: Text(
               song.title.trim(),
               style: titleStyle(),

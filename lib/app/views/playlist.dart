@@ -74,18 +74,16 @@ class _PlaylistViewState extends State<PlaylistView> {
           ),
         ),
       ),
-      body: Stack(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-            child: MusicList(songs: widget.playlistList),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+              child: MusicList(songs: widget.playlistList),
+            ),
           ),
-          const Positioned(
-            left: 12,
-            right: 12,
-            bottom: 12,
-            child: Shortcut(),
-          ),
+          const Shortcut(),
         ],
       ),
     );

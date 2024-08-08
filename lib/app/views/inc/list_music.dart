@@ -33,18 +33,16 @@ class _ListMusicViewState extends State<ListMusicView> {
         } else {
           playerController.songAllLoad(snapshot.data!);
 
-          return Stack(
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                child: MusicList(songs: snapshot.data!),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                  child: MusicList(songs: snapshot.data!),
+                ),
               ),
-              const Positioned(
-                left: 12,
-                right: 12,
-                bottom: 12,
-                child: Shortcut(),
-              ),
+              const Shortcut(),
             ],
           );
         }

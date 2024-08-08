@@ -52,56 +52,50 @@ class _ShortcutState extends State<Shortcut>
       () {
         final song = playerStateController
             .songList[playerStateController.songIndex.value];
-        return GestureDetector(
-          onPanUpdate: (details) {
-            if (details.delta.dx > 0) {
-              playerController.previousSong();
-            } else if (details.delta.dx < 0) {
-              playerController.nextSong();
-            }
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              color: colorBackground,
-              borderRadius: BorderRadius.circular(16),
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+          child: ListTile(
+            tileColor: colorBackground,
+            splashColor: Colors.transparent,
+            focusColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
             ),
-            child: ListTile(
-              title: Text(
-                song.title.trim(),
-                style: titleStyle(),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              subtitle: Text(
-                song.artist!.trim(),
-                style: subtitleStyle(),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              leading: QueryArtworkWidget(
-                id: song.id,
-                type: ArtworkType.AUDIO,
-                nullArtworkWidget: const Icon(
-                  Icons.music_note,
-                  color: Colors.white,
-                  size: 32,
-                ),
-              ),
-              trailing: Transform.scale(
-                scale: 1.5,
-                child: IconButton(
-                  icon: AnimatedIcon(
-                    icon: AnimatedIcons.play_pause,
-                    progress: _controller,
-                  ),
-                  onPressed: _togglePlayPause,
-                  color: Colors.white,
-                ),
-              ),
-              onTap: () {
-                Get.toNamed(AppRoutes.details);
-              },
+            title: Text(
+              song.title.trim(),
+              style: titleStyle(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
+            subtitle: Text(
+              song.artist!.trim(),
+              style: subtitleStyle(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            leading: QueryArtworkWidget(
+              id: song.id,
+              type: ArtworkType.AUDIO,
+              nullArtworkWidget: const Icon(
+                Icons.music_note,
+                color: Colors.white,
+                size: 32,
+              ),
+            ),
+            trailing: Transform.scale(
+              scale: 1.5,
+              child: IconButton(
+                icon: AnimatedIcon(
+                  icon: AnimatedIcons.play_pause,
+                  progress: _controller,
+                ),
+                onPressed: _togglePlayPause,
+                color: Colors.white,
+              ),
+            ),
+            onTap: () {
+              Get.toNamed(AppRoutes.details);
+            },
           ),
         );
       },

@@ -109,18 +109,16 @@ class _SearchViewState extends State<SearchView> {
       ),
       body: GestureDetector(
         onTap: _hideKeyboard,
-        child: Stack(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: MusicList(songs: filteredSongs),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                child: MusicList(songs: filteredSongs),
+              ),
             ),
-            const Positioned(
-              left: 12,
-              right: 12,
-              bottom: 12,
-              child: Shortcut(),
-            ),
+            const Shortcut(),
           ],
         ),
       ),

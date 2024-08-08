@@ -30,6 +30,8 @@ class _ListFolderViewState extends State<ListFolderView> {
           margin: const EdgeInsets.fromLTRB(0, 8, 0, 8),
           padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           child: ListTile(
+            splashColor: Colors.transparent,
+            focusColor: Colors.transparent,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -39,6 +41,11 @@ class _ListFolderViewState extends State<ListFolderView> {
               style: titleStyle(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
+            ),
+            leading: const Icon(
+              Icons.folder,
+              color: colorWhite,
+              size: 32,
             ),
             onTap: () {
               Get.toNamed(AppRoutes.playlist, arguments: {

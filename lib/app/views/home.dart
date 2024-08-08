@@ -41,23 +41,37 @@ class _HomeViewState extends State<HomeView> {
           title: Text(
             'Player Hub',
             style: dynamicStyle(
-              18,
+              20,
               colorWhite,
               FontWeight.normal,
               FontStyle.normal,
             ),
           ),
-          bottom: const TabBar(
+          bottom: TabBar(
+            labelStyle: dynamicStyle(
+              18,
+              colorWhite,
+              FontWeight.normal,
+              FontStyle.normal,
+            ),
+            unselectedLabelStyle: dynamicStyle(
+              18,
+              colorWhite,
+              FontWeight.normal,
+              FontStyle.normal,
+            ),
             indicatorColor: colorSlider,
             indicatorWeight: 4,
             labelColor: colorSlider,
             unselectedLabelColor: colorWhiteGray,
-            tabs: <Widget>[
+            tabs: const <Widget>[
               Tab(
-                icon: Icon(Icons.music_note),
+                text: 'Musicas',
+                // icon: Icon(Icons.music_note),
               ),
               Tab(
-                icon: Icon(Icons.folder),
+                text: 'Pastas',
+                // icon: Icon(Icons.folder),
               ),
             ],
           ),
