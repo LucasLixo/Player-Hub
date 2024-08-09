@@ -11,7 +11,7 @@ import '../../core/player/player_export.dart';
 class MusicList extends StatelessWidget {
   final List<SongModel> songs;
 
-  const MusicList({Key? key, required this.songs}) : super(key: key);
+  const MusicList({super.key, required this.songs});
 
   @override
   Widget build(BuildContext context) {

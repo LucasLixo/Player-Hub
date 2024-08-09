@@ -6,6 +6,8 @@ import './inc/list_folder.dart';
 import '../routes/app_routes.dart';
 import '../shared/utils/dynamic_style.dart';
 import '../core/app_colors.dart';
+import '../shared/widgets/shortcut.dart';
+import '../core/player/player_export.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -15,6 +17,15 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  final playerController = Get.put(PlayerController());
+  final playerStateController = Get.put(PlayerStateController());
+
+  @override
+  void initState() {
+    super.initState();
+    playerController.getAllSongs();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -24,6 +35,7 @@ class _HomeViewState extends State<HomeView> {
         backgroundColor: colorBackgroundDark,
         appBar: AppBar(
           backgroundColor: colorBackgroundDark,
+          leading: null,
           actions: [
             InkWell(
               onTap: () {
@@ -67,17 +79,53 @@ class _HomeViewState extends State<HomeView> {
             tabs: const <Widget>[
               Tab(
                 text: 'Musicas',
-                // icon: Icon(Icons.music_note),
               ),
               Tab(
                 text: 'Pastas',
-                // icon: Icon(Icons.folder),
               ),
             ],
           ),
         ),
-        body: const TabBarView(
-          children: <Widget>[ListMusicView(), ListFolderView()],
+        body: Obx(
+          () {
+            if (playerStateController.songAllList.isEmpty) {
+              return TabBarView(
+                children: <Widget>[
+                  Center(
+                    child: Text(
+                      'Sem Músicas',
+                      style: dynamicStyle(
+                        18,
+                        colorWhite,
+                        FontWeight.normal,
+                        FontStyle.normal,
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Text(
+                      'Sem Pastas',
+                      style: dynamicStyle(
+                        18,
+                        colorWhite,
+                        FontWeight.normal,
+                        FontStyle.normal,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              return const TabBarView(
+                children: <Widget>[ListMusicView(), ListFolderView()],
+              );
+            }
+          },
+        ),
+        bottomNavigationBar: Obx(
+          () => playerStateController.songAllList.isEmpty
+              ? const SizedBox.shrink()
+              : const Shortcut(),
         ),
       ),
     );

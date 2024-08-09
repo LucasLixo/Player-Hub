@@ -5,8 +5,14 @@ import 'app_imports.dart';
 abstract class AppPages {
   static final List<GetPage> pages = [
     GetPage(
+      name: AppRoutes.splash,
+      page: () => const SplashView(),
+    ),
+    GetPage(
       name: AppRoutes.home,
       page: () => const HomeView(),
+      transitionDuration: const Duration(milliseconds: 300),
+      transition: Transition.circularReveal,
     ),
     GetPage(
       name: AppRoutes.details,

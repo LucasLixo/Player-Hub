@@ -14,10 +14,10 @@ class PlayerStateController extends GetxController {
   RxDouble songDurationD = 0.0.obs;
   RxDouble songPositionD = 0.0.obs;
 
-  List<SongModel> songAllList = [];
-  List<SongModel> songList = [];
+  RxList<SongModel> songAllList = <SongModel>[].obs;
+  RxList<SongModel> songList = <SongModel>[].obs;
   
-  List<String> folderList = [];
+  RxList<String> folderList = <String>[].obs;
 
   void resetSongIndex() {
     WidgetsBinding.instance.addPostFrameCallback((_) {

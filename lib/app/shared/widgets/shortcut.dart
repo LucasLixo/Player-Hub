@@ -50,6 +50,17 @@ class _ShortcutState extends State<Shortcut>
   Widget build(BuildContext context) {
     return Obx(
       () {
+        if (playerStateController.songList.isEmpty ||
+            playerStateController.songIndex.value >=
+                playerStateController.songList.length) {
+          return Center(
+            child: Text(
+              '...',
+              style: titleStyle(),
+            ),
+          );
+        }
+
         final song = playerStateController
             .songList[playerStateController.songIndex.value];
         return Padding(

@@ -1,3 +1,4 @@
+export '../views/splash.dart';
 export '../views/home.dart';
 export '../views/details.dart';
 export '../views/search.dart';

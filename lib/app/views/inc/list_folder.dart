@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:player/app/core/app_colors.dart';
-import 'package:player/app/routes/app_routes.dart';
 
 import '../../core/player/player_export.dart';
 import '../../shared/utils/title_style.dart';
+import '../../core/app_colors.dart';
+import '../../routes/app_routes.dart';
+import '../../shared/utils/subtitle_style.dart';
 
 class ListFolderView extends StatefulWidget {
   const ListFolderView({super.key});
@@ -39,6 +40,12 @@ class _ListFolderViewState extends State<ListFolderView> {
             title: Text(
               title,
               style: titleStyle(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            subtitle: Text(
+              songs.length.toString(),
+              style: subtitleStyle(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

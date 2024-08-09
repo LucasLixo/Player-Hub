@@ -28,21 +28,21 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     updatePosition();
   }
 
-  Future<List<SongModel>> getSongs() async {
+  Future<void> getAllSongs() async {
     List<SongModel> songs = await audioQuery.querySongs(
       ignoreCase: true,
       orderType: OrderType.DESC_OR_GREATER,
       sortType: SongSortType.DATE_ADDED,
       uriType: UriType.EXTERNAL,
     );
-
     songs = songs.where((song) => song.duration! > 20000).toList();
-
-    return songs;
+    await songAllLoad(songs);
   }
 
   List<SongModel> getSongsFromFolder(String folderPath) {
-    return playerState.songList.where((song) => song.data.contains(folderPath)).toList();
+    return playerState.songList
+        .where((song) => song.data.contains(folderPath))
+        .toList();
   }
 
   void updatePosition() {
@@ -64,19 +64,20 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   }
 
   Future<void> songAllLoad(List<SongModel> songList) async {
-    playerState.songAllList = songList;
+    playerState.songAllList.value = songList;
 
     for (var song in songList) {
-      playerState.folderList.add(song.data.split('/')[song.data.split('/').length - 2]);
+      playerState.folderList
+          .add(song.data.split('/')[song.data.split('/').length - 2]);
     }
-    playerState.folderList = playerState.folderList.toSet().toList();
+    playerState.folderList.value = playerState.folderList.toSet().toList();
 
     await songLoad(songList);
   }
 
   Future<void> songLoad(List<SongModel> songList) async {
-    playerState.songList = songList;
-    
+    playerState.songList.value = songList;
+
     List<AudioSource> playlist = playerState.songList.map((song) {
       return AudioSource.uri(
         Uri.parse(song.uri!),
@@ -154,5 +155,9 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     } else {
       await audioPlayer.setLoopMode(LoopMode.off);
     }
+  }
+
+  void resetPlaylist() {
+    songLoad(playerState.songAllList);
   }
 }

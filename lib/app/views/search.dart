@@ -46,11 +46,11 @@ class _SearchViewState extends State<SearchView> {
     _isDisposed = true;
     _focusNode.dispose();
     _textController.dispose();
-    playerStateController.songList = playerStateController.songAllList;
+    // playerStateController.songList = playerStateController.songAllList;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       playerStateController.resetSongIndex();
+      playerController.resetPlaylist();
     });
-    playerStateController.resetSongIndex();
     super.dispose();
   }
 
