@@ -3,25 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import '../core/player/player_export.dart';
-import '../shared/utils/dynamic_style.dart';
-import '../core/app_colors.dart';
-import '../shared/utils/title_style.dart';
-import '../shared/widgets/repeat_shuffle.dart';
+import '../../core/player/player_export.dart';
+import '../../shared/utils/dynamic_style.dart';
+import '../../core/app_colors.dart';
+import '../../shared/utils/title_style.dart';
+import '../../shared/widgets/repeat_shuffle.dart';
 
-class DetailsView extends StatefulWidget {
-  const DetailsView({super.key});
+class DetailsPage extends StatefulWidget {
+  const DetailsPage({super.key});
 
   @override
-  _DetailsViewState createState() => _DetailsViewState();
+  State<DetailsPage> createState() => _DetailsPageState();
 }
 
-class _DetailsViewState extends State<DetailsView>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-
+class _DetailsPageState extends State<DetailsPage> with SingleTickerProviderStateMixin {
   final playerController = Get.find<PlayerController>();
   final playerStateController = Get.find<PlayerStateController>();
+
+  late AnimationController _controller;
 
   @override
   void initState() {
@@ -100,16 +99,6 @@ class _DetailsViewState extends State<DetailsView>
                           size: 44,
                         ),
                       ),
-                      /* InkWell(
-                        onTap: () {},
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        child: const Icon(
-                          Icons.more_vert,
-                          color: colorWhite,
-                          size: 32,
-                        ),
-                      ), */
                     ],
                   ),
                   const SizedBox(

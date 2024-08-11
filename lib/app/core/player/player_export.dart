@@ -1,2 +1,2 @@
 export 'player_state.dart';
-export 'player.dart';
+export 'player_controller.dart';

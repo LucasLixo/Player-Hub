@@ -2,28 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import '../shared/utils/dynamic_style.dart';
-import '../shared/widgets/music_list.dart';
-import '../core/app_colors.dart';
-import '../core/player/player_export.dart';
-import '../shared/widgets/shortcut.dart';
+import '../../shared/utils/dynamic_style.dart';
+import '../../shared/widgets/music_list.dart';
+import '../../core/app_colors.dart';
+import '../../core/player/player_export.dart';
+import '../../shared/widgets/shortcut.dart';
 
-class SearchView extends StatefulWidget {
-  const SearchView({super.key});
+class SearchPage extends StatefulWidget {
+  const SearchPage({super.key});
 
   @override
-  State<SearchView> createState() => _SearchViewState();
+  State<SearchPage> createState() => _SearchPageState();
 }
 
-class _SearchViewState extends State<SearchView> {
+class _SearchPageState extends State<SearchPage> {
+  final playerController = Get.find<PlayerController>();
+  final playerStateController = Get.find<PlayerStateController>();
+
   late FocusNode _focusNode;
   late TextEditingController _textController;
   late List<SongModel> filteredSongs;
-
-  bool _isDisposed = false;
-
-  final playerStateController = Get.find<PlayerStateController>();
-  final playerController = Get.find<PlayerController>();
 
   @override
   void initState() {
@@ -32,9 +30,7 @@ class _SearchViewState extends State<SearchView> {
     _textController = TextEditingController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!_isDisposed) {
-        _focusNode.requestFocus();
-      }
+      _focusNode.requestFocus();
     });
 
     filteredSongs = [];
@@ -43,10 +39,8 @@ class _SearchViewState extends State<SearchView> {
 
   @override
   void dispose() {
-    _isDisposed = true;
     _focusNode.dispose();
     _textController.dispose();
-    // playerStateController.songList = playerStateController.songAllList;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       playerStateController.resetSongIndex();
       playerController.resetPlaylist();

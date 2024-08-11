@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import '../shared/widgets/music_list.dart';
-import '../shared/widgets/shortcut.dart';
-import '../shared/utils/dynamic_style.dart';
-import '../core/app_colors.dart';
-import '../core/player/player_export.dart';
+import '../../shared/widgets/music_list.dart';
+import '../../shared/widgets/shortcut.dart';
+import '../../shared/utils/dynamic_style.dart';
+import '../../core/app_colors.dart';
+import '../../core/player/player_export.dart';
 
-class PlaylistView extends StatefulWidget {
+class PlaylistPage extends StatefulWidget {
   final String playlistTitle;
   final List<SongModel> playlistList;
 
-  const PlaylistView({
+  const PlaylistPage({
     super.key,
     required this.playlistTitle,
     required this.playlistList,
   });
 
   @override
-  _PlaylistViewState createState() => _PlaylistViewState();
+  State<PlaylistPage> createState() => _PlaylistPageState();
 }
 
-class _PlaylistViewState extends State<PlaylistView> {
+class _PlaylistPageState extends State<PlaylistPage> {
   final playerController = Get.find<PlayerController>();
 
   @override

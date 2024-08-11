@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import './inc/list_music.dart';
-import './inc/list_folder.dart';
-import '../routes/app_routes.dart';
-import '../shared/utils/dynamic_style.dart';
-import '../core/app_colors.dart';
-import '../shared/widgets/shortcut.dart';
-import '../core/player/player_export.dart';
+import '../../routes/app_routes.dart';
+import '../../shared/utils/dynamic_style.dart';
+import '../../core/app_colors.dart';
+import '../../shared/widgets/shortcut.dart';
+import '../../core/player/player_export.dart';
+import '../../core/app_constants.dart';
+import '../../shared/utils/subtitle_style.dart';
+import '../../shared/utils/title_style.dart';
+import '../../shared/widgets/music_list.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  _HomeViewState createState() => _HomeViewState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomeViewState extends State<HomeView> {
-  final playerController = Get.put(PlayerController());
-  final playerStateController = Get.put(PlayerStateController());
+class _HomePageState extends State<HomePage> {
+  final playerController = Get.find<PlayerController>();
+  final playerStateController = Get.find<PlayerStateController>();
 
   @override
   void initState() {
@@ -51,7 +53,7 @@ class _HomeViewState extends State<HomeView> {
             ),
           ],
           title: Text(
-            'Player Hub',
+            constAppTitle,
             style: dynamicStyle(
               20,
               colorWhite,
@@ -116,8 +118,54 @@ class _HomeViewState extends State<HomeView> {
                 ],
               );
             } else {
-              return const TabBarView(
-                children: <Widget>[ListMusicView(), ListFolderView()],
+              return TabBarView(
+                children: <Widget>[
+                  MusicList(songs: playerStateController.songAllList),
+                  ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: playerStateController.folderList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var title = playerStateController.folderList[index];
+                      var songs = playerController.getSongsFromFolder(title);
+
+                      return Container(
+                        margin: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                        child: ListTile(
+                          splashColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          tileColor: colorBackground,
+                          title: Text(
+                            title,
+                            style: titleStyle(),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          subtitle: Text(
+                            songs.length.toString(),
+                            style: subtitleStyle(),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          leading: const Icon(
+                            Icons.folder,
+                            color: colorWhite,
+                            size: 32,
+                          ),
+                          onTap: () {
+                            Get.toNamed(AppRoutes.playlist, arguments: {
+                              'title': title,
+                              'songs': songs,
+                            });
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ],
               );
             }
           },
