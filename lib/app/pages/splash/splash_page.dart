@@ -20,19 +20,13 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: Colors.black,
-      systemNavigationBarIconBrightness: Brightness.light,
-    ));
-
-    SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.leanBack,
-    );
-
+    
     _permissionsApp();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Future<void> _permissionsApp() async {
@@ -86,14 +80,9 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _initializeApp() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
 
     Get.offNamed(AppRoutes.home);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override

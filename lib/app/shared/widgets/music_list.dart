@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:player/app/routes/app_routes.dart';
 
@@ -16,6 +17,7 @@ class MusicList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final playerController = Get.put(PlayerController());
+    final playerStateController = Get.put(PlayerStateController());
 
     return ListView.builder(
       physics: const BouncingScrollPhysics(),

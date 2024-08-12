@@ -37,7 +37,18 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: colorBackgroundDark,
         appBar: AppBar(
           backgroundColor: colorBackgroundDark,
-          leading: null,
+          leading: InkWell(
+            onTap: () {
+              Get.toNamed(AppRoutes.setting);
+            },
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            child: const Icon(
+              Icons.sort_rounded,
+              color: colorWhite,
+              size: 32,
+            ),
+          ),
           actions: [
             InkWell(
               onTap: () {

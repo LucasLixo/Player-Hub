@@ -4,12 +4,18 @@ import 'package:get/get.dart';
 import 'routes/app_routes.dart';
 import 'core/app_constants.dart';
 import 'routes/app_pages.dart';
+import 'core/app_colors.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme.fromSeed(
+      seedColor: colorPrimary,
+      primary: colorPrimary,
+    );
+
     return GetMaterialApp(
       title: constAppTitle,
       debugShowCheckedModeBanner: false,

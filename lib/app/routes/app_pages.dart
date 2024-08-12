@@ -17,6 +17,13 @@ abstract class AppPages {
       binding: HomeBinding(),
     ),
     GetPage(
+      name: AppRoutes.setting,
+      page: () => const SettingPage(),
+      transitionDuration: const Duration(milliseconds: 300),
+      transition: Transition.leftToRight,
+      binding: SettingBinding(),
+    ),
+    GetPage(
       name: AppRoutes.details,
       page: () => const DetailsPage(),
       transitionDuration: const Duration(milliseconds: 300),

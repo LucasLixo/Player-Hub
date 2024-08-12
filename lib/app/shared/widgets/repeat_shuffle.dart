@@ -58,10 +58,10 @@ class _RepeatShuffleState extends State<RepeatShuffle> {
         }
         break;
       case Icons.repeat_one:
-        playerController.toggleLooping();
+        await playerController.toggleLooping();
         break;
       case Icons.shuffle:
-        playerController.toggleLooping();
+        await playerController.toggleLooping();
         await playerController.shufflePlaylistToggle();
         break;
     }
