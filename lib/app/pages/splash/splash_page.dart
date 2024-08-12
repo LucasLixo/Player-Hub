@@ -72,7 +72,7 @@ class _SplashPageState extends State<SplashPage> {
                   'Tente Novamente',
                   style: dynamicStyle(
                     16,
-                    colorSlider,
+                    colorPrimary,
                     FontWeight.w600,
                     FontStyle.normal,
                   ),

@@ -74,9 +74,9 @@ class _HomePageState extends State<HomePage> {
               FontWeight.normal,
               FontStyle.normal,
             ),
-            indicatorColor: colorSlider,
+            indicatorColor: colorPrimary,
             indicatorWeight: 4,
-            labelColor: colorSlider,
+            labelColor: colorPrimary,
             unselectedLabelColor: colorWhiteGray,
             tabs: const <Widget>[
               Tab(
