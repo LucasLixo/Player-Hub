@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 import '../../shared/utils/dynamic_style.dart';
 import '../../core/app_colors.dart';
-import '../../core/app_constants.dart';
 import '../../shared/utils/subtitle_style.dart';
 
 class SettingPage extends StatefulWidget {

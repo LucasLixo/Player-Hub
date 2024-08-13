@@ -45,7 +45,6 @@ dependencies:
   just_audio_platform_interface: ^4.3.0
   shared_preferences: ^2.3.1
   google_fonts: ^6.2.1
-  lottie: ^3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -69,9 +68,6 @@ flutter_launcher_icons:
 
 # The following section is specific to Flutter packages.
 flutter:
-  assets:
-    - assets/lottie/AnimationWave.json
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

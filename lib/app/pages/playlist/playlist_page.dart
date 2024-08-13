@@ -24,6 +24,7 @@ class PlaylistPage extends StatefulWidget {
 
 class _PlaylistPageState extends State<PlaylistPage> {
   final playerController = Get.find<PlayerController>();
+  final playerStateController = Get.find<PlayerStateController>();
 
   @override
   void initState() {
@@ -69,17 +70,14 @@ class _PlaylistPageState extends State<PlaylistPage> {
           ),
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-              child: MusicList(songs: widget.playlistList),
-            ),
-          ),
-          const Shortcut(),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: MusicList(songs: widget.playlistList),
+      ),
+      bottomNavigationBar: Obx(
+        () => playerStateController.songAllList.isEmpty
+            ? const SizedBox.shrink()
+            : const Shortcut(),
       ),
     );
   }

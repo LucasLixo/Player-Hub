@@ -103,18 +103,15 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: GestureDetector(
         onTap: _hideKeyboard,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                child: MusicList(songs: filteredSongs),
-              ),
-            ),
-            const Shortcut(),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: MusicList(songs: filteredSongs),
         ),
+      ),
+      bottomNavigationBar: Obx(
+        () => playerStateController.songAllList.isEmpty
+            ? const SizedBox.shrink()
+            : const Shortcut(),
       ),
     );
   }

@@ -4,15 +4,15 @@ import 'package:get/get.dart';
 import '../../core/player/player_export.dart';
 import '../../core/app_colors.dart';
 
-class RepeatShuffle extends StatefulWidget {
-  const RepeatShuffle({super.key});
+class Repeat extends StatefulWidget {
+  const Repeat({super.key});
 
   @override
-  State<RepeatShuffle> createState() => _RepeatShuffleState();
+  State<Repeat> createState() => _RepeatState();
 }
 
-class _RepeatShuffleState extends State<RepeatShuffle> {
-  final List<IconData> icons = [Icons.repeat, Icons.repeat_one, Icons.shuffle];
+class _RepeatState extends State<Repeat> {
+  final List<IconData> icons = [Icons.repeat, Icons.repeat_one];
   int currentIndex = 0;
 
   final playerController = Get.put(PlayerController());
@@ -23,17 +23,12 @@ class _RepeatShuffleState extends State<RepeatShuffle> {
     super.initState();
     setCurrentIcon();
     playerStateController.isLooping.listen((_) => setCurrentIcon());
-    playerStateController.isShuffle.listen((_) => setCurrentIcon());
   }
 
   void setCurrentIcon() {
     if (!mounted) return;
 
-    if (playerStateController.isShuffle.value) {
-      setState(() {
-        currentIndex = icons.indexOf(Icons.shuffle);
-      });
-    } else if (playerStateController.isLooping.value) {
+    if (playerStateController.isLooping.value) {
       setState(() {
         currentIndex = icons.indexOf(Icons.repeat_one);
       });
@@ -51,20 +46,7 @@ class _RepeatShuffleState extends State<RepeatShuffle> {
       currentIndex = (currentIndex + 1) % icons.length;
     });
 
-    switch (icons[currentIndex]) {
-      case Icons.repeat:
-        if (playerStateController.isShuffle.value) {
-          await playerController.shufflePlaylistToggle();
-        }
-        break;
-      case Icons.repeat_one:
-        await playerController.toggleLooping();
-        break;
-      case Icons.shuffle:
-        await playerController.toggleLooping();
-        await playerController.shufflePlaylistToggle();
-        break;
-    }
+    await playerController.toggleLooping();
   }
 
   @override

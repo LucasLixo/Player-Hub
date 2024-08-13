@@ -7,5 +7,6 @@ class PlaylistBinding extends Bindings {
   @override
   void dependencies() {
     Get.put<PlayerController>(PlayerController());
+    Get.put<PlayerStateController>(PlayerStateController());
   }
 }

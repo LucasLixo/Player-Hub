@@ -2,12 +2,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:player/app/shared/widgets/shuffle.dart';
 
 import '../../core/player/player_export.dart';
 import '../../shared/utils/dynamic_style.dart';
 import '../../core/app_colors.dart';
 import '../../shared/utils/title_style.dart';
-import '../../shared/widgets/repeat_shuffle.dart';
+import '../../shared/widgets/repeat.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({super.key});
@@ -16,7 +17,8 @@ class DetailsPage extends StatefulWidget {
   State<DetailsPage> createState() => _DetailsPageState();
 }
 
-class _DetailsPageState extends State<DetailsPage> with SingleTickerProviderStateMixin {
+class _DetailsPageState extends State<DetailsPage>
+    with SingleTickerProviderStateMixin {
   final playerController = Get.find<PlayerController>();
   final playerStateController = Get.find<PlayerStateController>();
 
@@ -203,20 +205,26 @@ class _DetailsPageState extends State<DetailsPage> with SingleTickerProviderStat
                               const SizedBox(
                                 height: 12,
                               ),
-                              Slider(
-                                thumbColor: colorWhite,
-                                inactiveColor: colorGray,
-                                activeColor: colorWhite,
-                                min: 0.0,
-                                max: playerStateController.songDurationD.value
-                                    .toDouble(),
-                                value: playerStateController.songPositionD.value
-                                    .toDouble(),
-                                onChanged: (newValue) {
-                                  playerController.chargeDurationToSeconds(
-                                    newValue.toInt(),
-                                  );
-                                },
+                              SliderTheme(
+                                data: const SliderThemeData(
+                                  trackShape: CustomSliderTrackShape(),
+                                ),
+                                child: Slider(
+                                  thumbColor: colorWhite,
+                                  inactiveColor: colorGray,
+                                  activeColor: colorWhite,
+                                  min: 0.0,
+                                  max: playerStateController.songDurationD.value
+                                      .toDouble(),
+                                  value: playerStateController
+                                      .songPositionD.value
+                                      .toDouble(),
+                                  onChanged: (newValue) {
+                                    playerController.chargeDurationToSeconds(
+                                      newValue.toInt(),
+                                    );
+                                  },
+                                ),
                               ),
                             ],
                           ),
@@ -227,7 +235,7 @@ class _DetailsPageState extends State<DetailsPage> with SingleTickerProviderStat
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const RepeatShuffle(),
+                            const Repeat(),
                             IconButton(
                               onPressed: playerController.previousSong,
                               icon: const Icon(
@@ -260,6 +268,7 @@ class _DetailsPageState extends State<DetailsPage> with SingleTickerProviderStat
                                 color: colorWhite,
                               ),
                             ),
+                            const Shuffle(),
                           ],
                         ),
                       ],
@@ -272,5 +281,23 @@ class _DetailsPageState extends State<DetailsPage> with SingleTickerProviderStat
         );
       }),
     );
+  }
+}
+
+class CustomSliderTrackShape extends RoundedRectSliderTrackShape {
+  const CustomSliderTrackShape();
+  @override
+  Rect getPreferredRect({
+    required RenderBox parentBox,
+    Offset offset = Offset.zero,
+    required SliderThemeData sliderTheme,
+    bool isEnabled = false,
+    bool isDiscrete = false,
+  }) {
+    final trackHeight = sliderTheme.trackHeight;
+    final trackLeft = offset.dx;
+    final trackTop = offset.dy + (parentBox.size.height - trackHeight!) / 2;
+    final trackWidth = parentBox.size.width;
+    return Rect.fromLTWH(trackLeft, trackTop, trackWidth, trackHeight);
   }
 }

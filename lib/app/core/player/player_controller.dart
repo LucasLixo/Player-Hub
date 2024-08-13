@@ -2,12 +2,14 @@ import 'package:get/get.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:player/app/core/just_audio_background/just_audio_background.dart';
 
 import 'player_state.dart';
 
 class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   final audioQuery = OnAudioQuery();
   final audioPlayer = AudioPlayer();
+  final audioBackground = JustAudioBackground();
 
   final playerState = Get.put(PlayerStateController());
 
@@ -90,7 +92,10 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     }).toList();
 
     await audioPlayer.setAudioSource(
-      ConcatenatingAudioSource(children: playlist),
+      ConcatenatingAudioSource(
+        children: playlist,
+        shuffleOrder: DefaultShuffleOrder(),
+      ),
       initialIndex: 0,
     );
   }
@@ -120,40 +125,49 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
 
   Future<void> nextSong() async {
     if (playerState.songList.isNotEmpty) {
-      int nextIndex =
-          (audioPlayer.currentIndex! + 1) % playerState.songList.length;
-      await audioPlayer.seek(Duration.zero, index: nextIndex);
-      playerState.songIndex.value = nextIndex;
+      int currentIndex = playerState.songIndex.value;
+      int lastIndex = playerState.songList.length - 1;
+
+      if (currentIndex < lastIndex) {
+        await audioBackground.nextSong();
+      } else {
+        await audioPlayer.seek(Duration.zero, index: 0);
+      }
       await audioPlayer.play();
     }
   }
 
   Future<void> previousSong() async {
     if (playerState.songList.isNotEmpty) {
-      int previousIndex = (audioPlayer.currentIndex! - 1) < 0
-          ? playerState.songList.length - 1
-          : audioPlayer.currentIndex! - 1;
-      await audioPlayer.seek(Duration.zero, index: previousIndex);
-      playerState.songIndex.value = previousIndex;
+      int currentIndex = playerState.songIndex.value;
+
+      if (currentIndex > 0) {
+        await audioBackground.previousSong();
+      } else {
+        await audioPlayer.seek(Duration.zero,
+            index: playerState.songList.length - 1);
+      }
       await audioPlayer.play();
     }
   }
 
-  Future<void> shufflePlaylistToggle() async {
-    playerState.isShuffle.value = !playerState.isShuffle.value;
+  Future<void> toggleShufflePlaylist() async {
     if (playerState.isShuffle.value) {
-      await audioPlayer.setShuffleModeEnabled(true);
-    } else {
+      playerState.isShuffle.value = false;
       await audioPlayer.setShuffleModeEnabled(false);
+    } else {
+      playerState.isShuffle.value = true;
+      await audioPlayer.setShuffleModeEnabled(true);
     }
   }
 
   Future<void> toggleLooping() async {
-    playerState.isLooping.value = !playerState.isLooping.value;
     if (playerState.isLooping.value) {
-      await audioPlayer.setLoopMode(LoopMode.one);
-    } else {
+      playerState.isLooping.value = false;
       await audioPlayer.setLoopMode(LoopMode.off);
+    } else {
+      playerState.isLooping.value = true;
+      await audioPlayer.setLoopMode(LoopMode.one);
     }
   }
 

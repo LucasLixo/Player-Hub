@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="fastlane/icon.png" width=160 height=160 align="center">
+<img src="assets/images/icon.png" width=160 height=160 align="center">
 
 # Player Hub
 

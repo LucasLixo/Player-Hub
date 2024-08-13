@@ -71,6 +71,22 @@ class JustAudioBackground {
       androidBrowsableRootExtras: androidBrowsableRootExtras,
     );
   }
+
+  Future<void> nextSong() async {
+    await _audioHandler.skipToNext();
+  }
+
+  Future<void> previousSong() async {
+    await _audioHandler.skipToPrevious();
+  }
+
+  /* Future<void> repeatDisable() async {
+    _audioHandler.setRepeatMode(AudioServiceRepeatMode.none);
+  }
+
+  Future<void> repeatEnable() async {
+    _audioHandler.setRepeatMode(AudioServiceRepeatMode.all);
+  } */
 }
 
 class _JustAudioBackgroundPlugin extends JustAudioPlatform {

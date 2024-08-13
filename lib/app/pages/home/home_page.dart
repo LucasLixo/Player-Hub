@@ -140,8 +140,8 @@ class _HomePageState extends State<HomePage> {
                       var songs = playerController.getSongsFromFolder(title);
 
                       return Container(
-                        margin: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                        margin: const EdgeInsets.symmetric(vertical: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: ListTile(
                           splashColor: Colors.transparent,
                           focusColor: Colors.transparent,
