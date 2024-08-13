@@ -8,6 +8,7 @@ abstract class AppPages {
     GetPage(
       name: AppRoutes.splash,
       page: () => const SplashPage(),
+      binding: SplashBinding(),
     ),
     GetPage(
       name: AppRoutes.home,

@@ -8,6 +8,7 @@ import '../../core/app_constants.dart';
 import '../../shared/utils/dynamic_style.dart';
 import '../../routes/app_routes.dart';
 import '../../shared/utils/subtitle_style.dart';
+import '../../core/player/player_export.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -17,6 +18,8 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  final playerStateController = Get.find<PlayerStateController>();
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +40,7 @@ class _SplashPageState extends State<SplashPage> {
     } else if (audioPermissionStatus.isDenied) {
       await _showDialogError();
     } else if (audioPermissionStatus.isPermanentlyDenied) {
+      await playerStateController.loadSliderValue();
       openAppSettings();
     }
   }

@@ -8,6 +8,7 @@ export '../pages/playlist/playlist_page.dart';
 
 // bindings
 export '../pages/home/home_binding.dart';
+export '../pages/splash/splash_binding.dart';
 export '../pages/setting/setting_binding.dart';
 export '../pages/details/details_binding.dart';
 export '../pages/search/search_binding.dart';

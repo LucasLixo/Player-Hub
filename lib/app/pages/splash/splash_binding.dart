@@ -2,7 +2,7 @@ import 'package:get/instance_manager.dart';
 
 import '../../core/player/player_export.dart';
 
-class SettingBinding extends Bindings {
+class SplashBinding extends Bindings {
   
   @override
   void dependencies() {

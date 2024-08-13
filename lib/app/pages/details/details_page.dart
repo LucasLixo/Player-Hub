@@ -2,13 +2,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:player/app/shared/widgets/shuffle.dart';
 
 import '../../core/player/player_export.dart';
 import '../../shared/utils/dynamic_style.dart';
 import '../../core/app_colors.dart';
 import '../../shared/utils/title_style.dart';
 import '../../shared/widgets/repeat.dart';
+import '../../shared/utils/slider_shape.dart';
+import '../../shared/widgets/shuffle.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({super.key});
@@ -281,23 +282,5 @@ class _DetailsPageState extends State<DetailsPage>
         );
       }),
     );
-  }
-}
-
-class CustomSliderTrackShape extends RoundedRectSliderTrackShape {
-  const CustomSliderTrackShape();
-  @override
-  Rect getPreferredRect({
-    required RenderBox parentBox,
-    Offset offset = Offset.zero,
-    required SliderThemeData sliderTheme,
-    bool isEnabled = false,
-    bool isDiscrete = false,
-  }) {
-    final trackHeight = sliderTheme.trackHeight;
-    final trackLeft = offset.dx;
-    final trackTop = offset.dy + (parentBox.size.height - trackHeight!) / 2;
-    final trackWidth = parentBox.size.width;
-    return Rect.fromLTWH(trackLeft, trackTop, trackWidth, trackHeight);
   }
 }

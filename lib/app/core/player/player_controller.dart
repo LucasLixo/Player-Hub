@@ -37,7 +37,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       sortType: SongSortType.DATE_ADDED,
       uriType: UriType.EXTERNAL,
     );
-    songs = songs.where((song) => song.duration! > 20000).toList();
+    songs = songs.where((song) => song.duration! > playerState.songIgnoreTime.value * 1000).toList();
     await songAllLoad(songs);
   }
 
