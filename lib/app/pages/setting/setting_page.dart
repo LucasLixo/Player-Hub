@@ -141,7 +141,7 @@ class _SettingPageState extends State<SettingPage> {
                         return AppColors.text;
                       },
                     ),
-                    trackColor:  WidgetStateProperty.resolveWith<Color>(
+                    trackColor: WidgetStateProperty.resolveWith<Color>(
                       (Set<WidgetState> states) {
                         return AppColors.primary;
                       },
@@ -170,6 +170,7 @@ class _SettingPageState extends State<SettingPage> {
                           await SharedPreferences.getInstance();
                       await prefs.setBool('isDarkMode', value);
                       AppColors.isDarkMode.value = value;
+
                       Get.offNamed(AppRoutes.splash);
                     },
                   ),

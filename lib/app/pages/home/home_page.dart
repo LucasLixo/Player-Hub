@@ -28,12 +28,18 @@ class _HomePageState extends State<HomePage> {
     playerController.getAllSongs();
   }
 
+  static List<Tab> homeTabs = <Tab>[
+    Tab(text: 'home_tab1'.tr),
+    Tab(text: 'home_tab2'.tr),
+    Tab(text: 'home_tab3'.tr),
+    Tab(text: 'home_tab4'.tr),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
-      length: 4,
-      animationDuration: const Duration(milliseconds: 300),
+      length: homeTabs.length,
       child: Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
@@ -91,20 +97,7 @@ class _HomePageState extends State<HomePage> {
             indicatorWeight: 4,
             labelColor: AppColors.primary,
             unselectedLabelColor: AppColors.textGray,
-            tabs: <Widget>[
-              Tab(
-                text: 'home_tab1'.tr,
-              ),
-              Tab(
-                text: 'home_tab2'.tr,
-              ),
-              Tab(
-                text: 'home_tab3'.tr,
-              ),
-              Tab(
-                text: 'home_tab4'.tr,
-              ),
-            ],
+            tabs: homeTabs,
           ),
         ),
         body: Obx(

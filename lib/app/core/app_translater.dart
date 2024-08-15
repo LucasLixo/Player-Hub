@@ -5,6 +5,8 @@ class Messages extends Translations {
   Map<String, Map<String, String>> get keys => {
     'pt_BR': {
       'app_language': 'Português',
+      'app_enable': 'Habilitado',
+      'app_desable': 'Desabilitado',
       'home_tab1': 'Músicas',
       'home_tab2': 'Pastas',
       'home_tab3': 'Playlist',
@@ -19,6 +21,8 @@ class Messages extends Translations {
     },
     'en_US': {
       'app_language': 'English',
+      'app_enable': 'Enable',
+      'app_desable': 'Desable',
       'home_tab1': 'Music',
       'home_tab2': 'Folders',
       'home_tab3': 'Playlist',
@@ -33,6 +37,8 @@ class Messages extends Translations {
     },
     'es_ES': {
       'app_language': 'Español',
+      'app_enable': 'habilitado',
+      'app_desable': 'deshabilitado',
       'home_tab1': 'Música',
       'home_tab2': 'Carpetas',
       'home_tab3': 'Lista de reproducción',
