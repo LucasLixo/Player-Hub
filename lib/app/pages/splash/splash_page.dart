@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 import '../../core/app_colors.dart';
 import '../../core/app_constants.dart';
@@ -23,7 +24,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    
+
     _permissionsApp();
   }
 
@@ -33,15 +34,28 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _permissionsApp() async {
-    PermissionStatus audioPermissionStatus = await Permission.audio.request();
+    AndroidDeviceInfo build = await DeviceInfoPlugin().androidInfo;
+
+    PermissionStatus audioPermissionStatus;
+
+    switch (build.version.sdkInt) {
+      case >= 33:
+        audioPermissionStatus = await Permission.audio.request();
+        break;
+      /* case >= 30:
+        audioPermissionStatus = await Permission.manageExternalStorage.request();
+        break; */
+      default:
+        audioPermissionStatus = await Permission.storage.request();
+        break;
+    }
 
     if (audioPermissionStatus.isGranted) {
-      _initializeApp();
+      await _initializeApp();
     } else if (audioPermissionStatus.isDenied) {
       await _showDialogError();
     } else if (audioPermissionStatus.isPermanentlyDenied) {
-      await playerStateController.loadSliderValue();
-      openAppSettings();
+      await openAppSettings();
     }
   }
 
@@ -58,7 +72,7 @@ class _SplashPageState extends State<SplashPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Text(
-                'Para continuar, precisamos de acesso aos seus arquivos de áudio.',
+                'app_permision1'.tr,
                 style: subtitleStyle(),
               ),
               const SizedBox(height: 15),
@@ -67,7 +81,7 @@ class _SplashPageState extends State<SplashPage> {
                   SystemNavigator.pop();
                 },
                 child: Text(
-                  'Tente Novamente',
+                  'app_again'.tr,
                   style: dynamicStyle(
                     16,
                     AppColors.primary,
@@ -84,6 +98,8 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _initializeApp() async {
+    await playerStateController.loadSliderValue();
+
     await Future.delayed(const Duration(seconds: 1));
 
     Get.offNamed(AppRoutes.home);

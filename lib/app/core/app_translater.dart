@@ -1,12 +1,14 @@
 import 'package:get/get.dart';
 
-class Messages extends Translations {
+class AppMessages extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
     'pt_BR': {
       'app_language': 'Português',
       'app_enable': 'Habilitado',
       'app_desable': 'Desabilitado',
+      'app_again': 'Tentar novamente',
+      'app_permision1': 'Para continuar, precisamos de acesso aos seus arquivos de áudio',
       'home_tab1': 'Músicas',
       'home_tab2': 'Pastas',
       'home_tab3': 'Playlist',
@@ -23,6 +25,8 @@ class Messages extends Translations {
       'app_language': 'English',
       'app_enable': 'Enable',
       'app_desable': 'Desable',
+      'app_again': 'Try again',
+      'app_permision1': 'To continue, we need access to your audio files',
       'home_tab1': 'Music',
       'home_tab2': 'Folders',
       'home_tab3': 'Playlist',
@@ -39,6 +43,8 @@ class Messages extends Translations {
       'app_language': 'Español',
       'app_enable': 'habilitado',
       'app_desable': 'deshabilitado',
+      'app_again': 'Intentar otra vez',
+      'app_permision1': 'Para continuar, necesitamos acceso a sus archivos de audio',
       'home_tab1': 'Música',
       'home_tab2': 'Carpetas',
       'home_tab3': 'Lista de reproducción',

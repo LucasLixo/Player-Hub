@@ -26,8 +26,7 @@ class AppWidget extends StatelessWidget {
       getPages: AppPages.pages,
       initialBinding: AppBinding(),
       initialRoute: AppRoutes.splash,
-      builder: _builder,
-      translations: Messages(),
+      translations: AppMessages(),
       locale: Get.deviceLocale,
       fallbackLocale: const Locale('en', 'US'),
       supportedLocales: const [
@@ -35,6 +34,7 @@ class AppWidget extends StatelessWidget {
         Locale('pt', 'BR'),
         Locale('es', 'ES'),
       ],
+      builder: _builder,
     );
   }
 
