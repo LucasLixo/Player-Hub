@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'app_bindings.dart';
 import 'routes/app_routes.dart';
 import 'core/app_constants.dart';
 import 'routes/app_pages.dart';
+import 'core/app_translater.dart';
 import 'core/app_colors.dart';
 
 class AppWidget extends StatelessWidget {
@@ -12,18 +14,27 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ColorScheme.fromSeed(
-      seedColor: colorPrimary,
-      primary: colorPrimary,
+      seedColor: Colors.blue,
     );
 
     return GetMaterialApp(
       title: constAppTitle,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(),
-      themeMode: ThemeMode.dark,
+      themeMode: AppColors.themeData,
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
       getPages: AppPages.pages,
+      initialBinding: AppBinding(),
       initialRoute: AppRoutes.splash,
       builder: _builder,
+      translations: Messages(),
+      locale: Get.deviceLocale,
+      fallbackLocale: const Locale('en', 'US'),
+      supportedLocales: const [
+        Locale('en', 'US'),
+        Locale('pt', 'BR'),
+        Locale('es', 'ES'),
+      ],
     );
   }
 

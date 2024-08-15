@@ -1,10 +1,42 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:audio_service/audio_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:player/app/core/just_audio_background/just_audio_background.dart';
 
-import 'player_state.dart';
+import 'just_audio_background.dart';
+
+class PlayerStateController extends GetxController {
+  RxBool isPlaying = false.obs;
+  RxBool isLooping = false.obs;
+  RxBool isShuffle = false.obs;
+
+  RxInt songIndex = 0.obs;
+
+  RxString songDuration = ''.obs;
+  RxString songPosition = ''.obs;
+  RxDouble songDurationD = 0.0.obs;
+  RxDouble songPositionD = 0.0.obs;
+
+  RxInt songIgnoreTime = 0.obs;
+
+  RxList<SongModel> songAllList = <SongModel>[].obs;
+  RxList<SongModel> songList = <SongModel>[].obs;
+
+  RxList<String> folderList = <String>[].obs;
+
+  void resetSongIndex() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      songIndex.value = 0;
+    });
+  }
+
+  Future<void> loadSliderValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    songIgnoreTime.value = (prefs.getInt('songIgnoreTime') ?? 0);
+  }
+}
 
 class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   final audioQuery = OnAudioQuery();
@@ -37,7 +69,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       sortType: SongSortType.DATE_ADDED,
       uriType: UriType.EXTERNAL,
     );
-    songs = songs.where((song) => song.duration! > playerState.songIgnoreTime.value * 1000).toList();
+    songs = songs.where((song) => song.duration != null && song.duration! > playerState.songIgnoreTime.value * 1000).toList();
     await songAllLoad(songs);
   }
 

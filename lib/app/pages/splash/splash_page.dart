@@ -8,7 +8,7 @@ import '../../core/app_constants.dart';
 import '../../shared/utils/dynamic_style.dart';
 import '../../routes/app_routes.dart';
 import '../../shared/utils/subtitle_style.dart';
-import '../../core/player/player_export.dart';
+import '../../core/controllers/player.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -50,7 +50,7 @@ class _SplashPageState extends State<SplashPage> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) => Dialog(
-        backgroundColor: colorBackgroundDark,
+        backgroundColor: AppColors.surface,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
@@ -70,7 +70,7 @@ class _SplashPageState extends State<SplashPage> {
                   'Tente Novamente',
                   style: dynamicStyle(
                     16,
-                    colorPrimary,
+                    AppColors.primary,
                     FontWeight.w600,
                     FontStyle.normal,
                   ),
@@ -92,14 +92,14 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorBackgroundDark,
+      backgroundColor: AppColors.background,
       appBar: null,
       body: Center(
         child: Text(
           constAppTitle,
           style: dynamicStyle(
             32,
-            colorWhite,
+            AppColors.text,
             FontWeight.normal,
             FontStyle.normal,
           ),

@@ -4,7 +4,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../core/app_colors.dart';
 import '../../routes/app_routes.dart';
-import '../../core/player/player_export.dart';
+import '../../core/controllers/player.dart';
 import '../../shared/utils/subtitle_style.dart';
 import '../../shared/utils/title_style.dart';
 
@@ -66,7 +66,7 @@ class _ShortcutState extends State<Shortcut>
         return Padding(
           padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
           child: ListTile(
-            tileColor: colorBackground,
+            tileColor: AppColors.surface,
             splashColor: Colors.transparent,
             focusColor: Colors.transparent,
             shape: RoundedRectangleBorder(
@@ -101,7 +101,7 @@ class _ShortcutState extends State<Shortcut>
                   progress: _controller,
                 ),
                 onPressed: _togglePlayPause,
-                color: Colors.white,
+                color: AppColors.text,
               ),
             ),
             onTap: () {

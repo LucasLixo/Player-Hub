@@ -5,7 +5,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 import '../../shared/utils/dynamic_style.dart';
 import '../../shared/widgets/music_list.dart';
 import '../../core/app_colors.dart';
-import '../../core/player/player_export.dart';
+import '../../core/controllers/player.dart';
 import '../../shared/widgets/shortcut.dart';
 
 class SearchPage extends StatefulWidget {
@@ -72,18 +72,18 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorBackgroundDark,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: colorBackgroundDark,
+        backgroundColor: AppColors.background,
         leading: InkWell(
           onTap: () {
             Get.back();
           },
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
-          child: const Icon(
+          child: Icon(
             Icons.arrow_back_ios,
-            color: colorWhite,
+            color: AppColors.text,
             size: 26,
           ),
         ),
@@ -92,7 +92,7 @@ class _SearchPageState extends State<SearchPage> {
           focusNode: _focusNode,
           style: dynamicStyle(
             18,
-            colorWhite,
+            AppColors.text,
             FontWeight.normal,
             FontStyle.normal,
           ),

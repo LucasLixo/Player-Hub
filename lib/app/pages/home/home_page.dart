@@ -5,7 +5,7 @@ import '../../routes/app_routes.dart';
 import '../../shared/utils/dynamic_style.dart';
 import '../../core/app_colors.dart';
 import '../../shared/widgets/shortcut.dart';
-import '../../core/player/player_export.dart';
+import '../../core/controllers/player.dart';
 import '../../core/app_constants.dart';
 import '../../shared/utils/subtitle_style.dart';
 import '../../shared/utils/title_style.dart';
@@ -32,20 +32,21 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
-      length: 2,
+      length: 4,
+      animationDuration: const Duration(milliseconds: 300),
       child: Scaffold(
-        backgroundColor: colorBackgroundDark,
+        backgroundColor: AppColors.background,
         appBar: AppBar(
-          backgroundColor: colorBackgroundDark,
+          backgroundColor: AppColors.background,
           leading: InkWell(
             onTap: () {
               Get.toNamed(AppRoutes.setting);
             },
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
-            child: const Icon(
+            child: Icon(
               Icons.sort_rounded,
-              color: colorWhite,
+              color: AppColors.text,
               size: 32,
             ),
           ),
@@ -56,9 +57,9 @@ class _HomePageState extends State<HomePage> {
               },
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
-              child: const Icon(
+              child: Icon(
                 Icons.search,
-                color: colorWhite,
+                color: AppColors.text,
                 size: 32,
               ),
             ),
@@ -67,34 +68,41 @@ class _HomePageState extends State<HomePage> {
             constAppTitle,
             style: dynamicStyle(
               20,
-              colorWhite,
+              AppColors.text,
               FontWeight.normal,
               FontStyle.normal,
             ),
           ),
           bottom: TabBar(
+            isScrollable: true,
             labelStyle: dynamicStyle(
               18,
-              colorWhite,
+              AppColors.text,
               FontWeight.normal,
               FontStyle.normal,
             ),
             unselectedLabelStyle: dynamicStyle(
               18,
-              colorWhite,
+              AppColors.text,
               FontWeight.normal,
               FontStyle.normal,
             ),
-            indicatorColor: colorPrimary,
+            indicatorColor: AppColors.primary,
             indicatorWeight: 4,
-            labelColor: colorPrimary,
-            unselectedLabelColor: colorWhiteGray,
-            tabs: const <Widget>[
+            labelColor: AppColors.primary,
+            unselectedLabelColor: AppColors.textGray,
+            tabs: <Widget>[
               Tab(
-                text: 'Musicas',
+                text: 'home_tab1'.tr,
               ),
               Tab(
-                text: 'Pastas',
+                text: 'home_tab2'.tr,
+              ),
+              Tab(
+                text: 'home_tab3'.tr,
+              ),
+              Tab(
+                text: 'home_tab4'.tr,
               ),
             ],
           ),
@@ -106,10 +114,10 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   Center(
                     child: Text(
-                      'Sem Músicas',
+                      'home_not_tab1'.tr,
                       style: dynamicStyle(
                         18,
-                        colorWhite,
+                        AppColors.text,
                         FontWeight.normal,
                         FontStyle.normal,
                       ),
@@ -117,10 +125,32 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Center(
                     child: Text(
-                      'Sem Pastas',
+                      'home_not_tab2'.tr,
                       style: dynamicStyle(
                         18,
-                        colorWhite,
+                        AppColors.text,
+                        FontWeight.normal,
+                        FontStyle.normal,
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Text(
+                      'home_not_tab3'.tr,
+                      style: dynamicStyle(
+                        18,
+                        AppColors.text,
+                        FontWeight.normal,
+                        FontStyle.normal,
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Text(
+                      'home_not_tab4'.tr,
+                      style: dynamicStyle(
+                        18,
+                        AppColors.text,
                         FontWeight.normal,
                         FontStyle.normal,
                       ),
@@ -148,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          tileColor: colorBackground,
+                          tileColor: AppColors.surface,
                           title: Text(
                             title,
                             style: titleStyle(),
@@ -161,9 +191,9 @@ class _HomePageState extends State<HomePage> {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          leading: const Icon(
+                          leading: Icon(
                             Icons.folder,
-                            color: colorWhite,
+                            color: AppColors.text,
                             size: 32,
                           ),
                           onTap: () {
@@ -175,6 +205,28 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     },
+                  ),
+                  Center(
+                    child: Text(
+                      'home_not_tab3'.tr,
+                      style: dynamicStyle(
+                        18,
+                        AppColors.text,
+                        FontWeight.normal,
+                        FontStyle.normal,
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Text(
+                      'home_not_tab4'.tr,
+                      style: dynamicStyle(
+                        18,
+                        AppColors.text,
+                        FontWeight.normal,
+                        FontStyle.normal,
+                      ),
+                    ),
                   ),
                 ],
               );

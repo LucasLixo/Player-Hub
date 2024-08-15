@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:player/app/routes/app_routes.dart';
 
 import '../../core/app_colors.dart';
 import '../../shared/utils/subtitle_style.dart';
 import '../../shared/utils/title_style.dart';
-import '../../core/player/player_export.dart';
+import '../../core/controllers/player.dart';
+import '../../routes/app_routes.dart';
 
 class MusicList extends StatelessWidget {
   final List<SongModel> songs;
@@ -47,9 +47,9 @@ class MusicList extends StatelessWidget {
             leading: QueryArtworkWidget(
               id: song.id,
               type: ArtworkType.AUDIO,
-              nullArtworkWidget: const Icon(
+              nullArtworkWidget: Icon(
                 Icons.music_note,
-                color: colorWhite,
+                color: AppColors.text,
                 size: 32,
               ),
             ),

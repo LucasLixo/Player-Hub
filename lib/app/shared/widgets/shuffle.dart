@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../core/player/player_export.dart';
+import '../../core/controllers/player.dart';
 import '../../core/app_colors.dart';
 
 class Shuffle extends StatefulWidget {
@@ -12,7 +12,7 @@ class Shuffle extends StatefulWidget {
 }
 
 class _ShuffleState extends State<Shuffle> {
-  final List<Color> colors = [colorWhite, colorPrimary];
+  final List<Color> colors = [Colors.white, AppColors.primary];
   int currentIndex = 0;
 
   final playerController = Get.put(PlayerController());
@@ -30,11 +30,11 @@ class _ShuffleState extends State<Shuffle> {
 
     if (playerStateController.isShuffle.value) {
       setState(() {
-        currentIndex = colors.indexOf(colorPrimary);
+        currentIndex = colors.indexOf(AppColors.primary);
       });
     } else {
       setState(() {
-        currentIndex = colors.indexOf(colorWhite);
+        currentIndex = colors.indexOf(Colors.white);
       });
     }
   }

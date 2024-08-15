@@ -1,8 +1,8 @@
 import 'package:get/instance_manager.dart';
 
-import '../../core/player/player_export.dart';
+import 'core/controllers/player.dart';
 
-class HomeBinding extends Bindings {
+class AppBinding extends Bindings {
   
   @override
   void dependencies() {

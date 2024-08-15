@@ -15,9 +15,12 @@
     <!-- <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" /> -->
     <!-- application -->
     <application
+        android:enableOnBackInvokedCallback="true"
         android:label="Player Hub"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:banner="@mipmap/ic_launcher"
+        android:resizeableActivity="true">
         <activity
             android:name="com.ryanheise.audioservice.AudioServiceActivity"
             android:exported="true"
@@ -29,10 +32,15 @@
             android:windowSoftInputMode="adjustPan"
             android:showWhenLocked="true"
             android:turnScreenOn="true"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:immersive="false">
             <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
+              />
+            <meta-data
+              android:name="io.flutter.embedding.android.SplashScreenDrawable"
+              android:resource="@drawable/launch_background"
               />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -45,9 +53,9 @@
             android:foregroundServiceType="mediaPlayback"
             android:exported="true" 
             tools:ignore="Instantiatable">
-        <intent-filter>
-            <action android:name="android.media.browse.MediaBrowserService" />
-        </intent-filter>
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
         </service>
         <!-- ADD THIS "RECEIVER" element -->
         <receiver 

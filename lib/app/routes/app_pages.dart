@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+import 'package:get/route_manager.dart';
 
 import 'app_routes.dart';
 import 'app_imports.dart';
@@ -8,35 +8,32 @@ abstract class AppPages {
     GetPage(
       name: AppRoutes.splash,
       page: () => const SplashPage(),
-      binding: SplashBinding(),
+      transitionDuration: const Duration(milliseconds: 300),
+      transition: Transition.fade,
     ),
     GetPage(
       name: AppRoutes.home,
       page: () => const HomePage(),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.fade,
-      binding: HomeBinding(),
     ),
     GetPage(
       name: AppRoutes.setting,
       page: () => const SettingPage(),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.leftToRight,
-      binding: SettingBinding(),
     ),
     GetPage(
       name: AppRoutes.details,
       page: () => const DetailsPage(),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.downToUp,
-      binding: DetailsBinding(),
     ),
     GetPage(
       name: AppRoutes.search,
       page: () => const SearchPage(),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
-      binding: SearchBinding(),
     ),
     GetPage(
       name: AppRoutes.playlist,
@@ -49,7 +46,6 @@ abstract class AppPages {
       },
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
-      binding: PlaylistBinding(),
     ),
   ];
 }

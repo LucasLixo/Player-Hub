@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import '../../core/player/player_export.dart';
+import '../../core/controllers/player.dart';
 import '../../shared/utils/dynamic_style.dart';
 import '../../core/app_colors.dart';
-import '../../shared/utils/title_style.dart';
 import '../../shared/widgets/repeat.dart';
 import '../../shared/utils/slider_shape.dart';
 import '../../shared/widgets/shuffle.dart';
@@ -52,7 +51,7 @@ class _DetailsPageState extends State<DetailsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorBackground,
+      backgroundColor: AppColors.surface,
       appBar: null,
       body: Obx(() {
         final currentSong = playerStateController
@@ -68,7 +67,7 @@ class _DetailsPageState extends State<DetailsPage>
                 artworkHeight: double.infinity,
                 artworkWidth: double.infinity,
                 nullArtworkWidget: Container(
-                  color: colorBackground,
+                  color: AppColors.surface,
                 ),
               ),
             ),
@@ -98,7 +97,7 @@ class _DetailsPageState extends State<DetailsPage>
                         highlightColor: Colors.transparent,
                         child: const Icon(
                           Icons.keyboard_arrow_down,
-                          color: colorWhite,
+                          color: Colors.white,
                           size: 44,
                         ),
                       ),
@@ -111,9 +110,9 @@ class _DetailsPageState extends State<DetailsPage>
                     height: 300,
                     width: 300,
                     clipBehavior: Clip.antiAliasWithSaveLayer,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: colorBackgroundDark,
+                      color: AppColors.background,
                     ),
                     alignment: Alignment.center,
                     child: GestureDetector(
@@ -133,7 +132,7 @@ class _DetailsPageState extends State<DetailsPage>
                         artworkWidth: 300,
                         nullArtworkWidget: const Icon(
                           Icons.music_note,
-                          color: colorWhite,
+                          color: Colors.white,
                           size: 320,
                         ),
                       ),
@@ -156,7 +155,12 @@ class _DetailsPageState extends State<DetailsPage>
                               ),
                               Text(
                                 currentSong.title.trim(),
-                                style: titleStyle(),
+                                style: dynamicStyle(
+                                  16,
+                                  Colors.white,
+                                  FontWeight.w600,
+                                  FontStyle.normal,
+                                ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -165,8 +169,12 @@ class _DetailsPageState extends State<DetailsPage>
                               ),
                               Text(
                                 currentSong.artist!.trim(),
-                                style: dynamicStyle(16, colorWhiteGray,
-                                    FontWeight.normal, FontStyle.normal),
+                                style: dynamicStyle(
+                                  16,
+                                  Colors.white54,
+                                  FontWeight.normal,
+                                  FontStyle.normal,
+                                ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -187,7 +195,7 @@ class _DetailsPageState extends State<DetailsPage>
                                     playerStateController.songPosition.value,
                                     style: dynamicStyle(
                                       14,
-                                      colorWhite,
+                                      Colors.white,
                                       FontWeight.normal,
                                       FontStyle.normal,
                                     ),
@@ -196,7 +204,7 @@ class _DetailsPageState extends State<DetailsPage>
                                     playerStateController.songDuration.value,
                                     style: dynamicStyle(
                                       14,
-                                      colorWhite,
+                                      Colors.white,
                                       FontWeight.normal,
                                       FontStyle.normal,
                                     ),
@@ -211,9 +219,9 @@ class _DetailsPageState extends State<DetailsPage>
                                   trackShape: CustomSliderTrackShape(),
                                 ),
                                 child: Slider(
-                                  thumbColor: colorWhite,
-                                  inactiveColor: colorGray,
-                                  activeColor: colorWhite,
+                                  thumbColor: Colors.white,
+                                  inactiveColor: Colors.white54,
+                                  activeColor: Colors.white,
                                   min: 0.0,
                                   max: playerStateController.songDurationD.value
                                       .toDouble(),
@@ -242,7 +250,7 @@ class _DetailsPageState extends State<DetailsPage>
                               icon: const Icon(
                                 Icons.skip_previous_rounded,
                                 size: 40,
-                                color: colorWhite,
+                                color: Colors.white,
                               ),
                             ),
                             CircleAvatar(
@@ -266,7 +274,7 @@ class _DetailsPageState extends State<DetailsPage>
                               icon: const Icon(
                                 Icons.skip_next_rounded,
                                 size: 40,
-                                color: colorWhite,
+                                color: Colors.white,
                               ),
                             ),
                             const Shuffle(),

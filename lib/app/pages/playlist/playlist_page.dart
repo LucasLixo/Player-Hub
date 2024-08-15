@@ -6,7 +6,7 @@ import '../../shared/widgets/music_list.dart';
 import '../../shared/widgets/shortcut.dart';
 import '../../shared/utils/dynamic_style.dart';
 import '../../core/app_colors.dart';
-import '../../core/player/player_export.dart';
+import '../../core/controllers/player.dart';
 
 class PlaylistPage extends StatefulWidget {
   final String playlistTitle;
@@ -45,18 +45,18 @@ class _PlaylistPageState extends State<PlaylistPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorBackgroundDark,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: colorBackgroundDark,
+        backgroundColor: AppColors.background,
         leading: InkWell(
           onTap: () {
             Get.back();
           },
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
-          child: const Icon(
+          child: Icon(
             Icons.arrow_back_ios,
-            color: colorWhite,
+            color: AppColors.text,
             size: 26,
           ),
         ),
@@ -64,7 +64,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
           widget.playlistTitle,
           style: dynamicStyle(
             18,
-            colorWhite,
+            AppColors.text,
             FontWeight.normal,
             FontStyle.normal,
           ),

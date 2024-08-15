@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../core/player/player_export.dart';
-import '../../core/app_colors.dart';
+import '../../core/controllers/player.dart';
 
 class Repeat extends StatefulWidget {
   const Repeat({super.key});
@@ -55,7 +54,7 @@ class _RepeatState extends State<Repeat> {
       icon: Icon(
         icons[currentIndex],
         size: 30,
-        color: colorWhite,
+        color: Colors.white,
       ),
       onPressed: onIconPressed,
     );

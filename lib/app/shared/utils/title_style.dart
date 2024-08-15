@@ -6,7 +6,7 @@ import '../../core/app_colors.dart';
 titleStyle() {
   return GoogleFonts.openSans(
     fontSize: 16,
-    color: colorWhite,
+    color: AppColors.text,
     fontWeight: FontWeight.w600,
     fontStyle: FontStyle.normal,
   );
