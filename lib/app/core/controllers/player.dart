@@ -19,7 +19,7 @@ class PlayerStateController extends GetxController {
   RxDouble songDurationD = 0.0.obs;
   RxDouble songPositionD = 0.0.obs;
 
-  RxInt songIgnoreTime = 0.obs;
+  RxInt songIgnoreTime = 50.obs;
 
   RxList<SongModel> songAllList = <SongModel>[].obs;
   RxList<SongModel> songList = <SongModel>[].obs;
@@ -34,7 +34,7 @@ class PlayerStateController extends GetxController {
 
   Future<void> loadSliderValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    songIgnoreTime.value = (prefs.getInt('songIgnoreTime') ?? 0);
+    songIgnoreTime.value = (prefs.getInt('songIgnoreTime') ?? 50);
   }
 }
 

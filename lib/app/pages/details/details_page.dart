@@ -171,7 +171,7 @@ class _DetailsPageState extends State<DetailsPage>
                                 currentSong.artist!.trim(),
                                 style: dynamicStyle(
                                   16,
-                                  Colors.white54,
+                                  Colors.white60,
                                   FontWeight.normal,
                                   FontStyle.normal,
                                 ),

@@ -19,8 +19,8 @@ class _SettingPageState extends State<SettingPage> {
   final playerController = Get.find<PlayerController>();
   final playerStateController = Get.find<PlayerStateController>();
 
-  int _sliderValue = 0;
-  int _initialSliderValue = 0;
+  int _sliderValue = 50;
+  int _initialSliderValue = 50;
 
   @override
   void initState() {
