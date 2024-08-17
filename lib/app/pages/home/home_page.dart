@@ -32,7 +32,6 @@ class _HomePageState extends State<HomePage> {
     Tab(text: 'home_tab1'.tr),
     Tab(text: 'home_tab2'.tr),
     Tab(text: 'home_tab3'.tr),
-    Tab(text: 'home_tab4'.tr),
   ];
 
   @override
@@ -59,6 +58,24 @@ class _HomePageState extends State<HomePage> {
           actions: [
             InkWell(
               onTap: () {
+                Get.toNamed(AppRoutes.playlist, arguments: {
+                  'title': 'playlist1'.tr,
+                  'songs': playerStateController.songAllList,
+                });
+              },
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              child: Icon(
+                Icons.schedule,
+                color: AppColors.text,
+                size: 32,
+              ),
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            InkWell(
+              onTap: () {
                 Get.toNamed(AppRoutes.search);
               },
               splashColor: Colors.transparent,
@@ -80,7 +97,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           bottom: TabBar(
-            isScrollable: true,
+            isScrollable: false,
             labelStyle: dynamicStyle(
               18,
               AppColors.text,
@@ -130,17 +147,6 @@ class _HomePageState extends State<HomePage> {
                   Center(
                     child: Text(
                       'home_not_tab3'.tr,
-                      style: dynamicStyle(
-                        18,
-                        AppColors.text,
-                        FontWeight.normal,
-                        FontStyle.normal,
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      'home_not_tab4'.tr,
                       style: dynamicStyle(
                         18,
                         AppColors.text,
@@ -202,17 +208,6 @@ class _HomePageState extends State<HomePage> {
                   Center(
                     child: Text(
                       'home_not_tab3'.tr,
-                      style: dynamicStyle(
-                        18,
-                        AppColors.text,
-                        FontWeight.normal,
-                        FontStyle.normal,
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      'home_not_tab4'.tr,
                       style: dynamicStyle(
                         18,
                         AppColors.text,

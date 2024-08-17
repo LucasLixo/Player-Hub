@@ -30,6 +30,7 @@ class _DetailsPageState extends State<DetailsPage>
   @override
   void initState() {
     super.initState();
+    apiStateController.checkConnectivity();
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
@@ -107,12 +108,15 @@ class _DetailsPageState extends State<DetailsPage>
                       apiStateController.isConect.value
                           ? InkWell(
                               onTap: () {
-                                Get.toNamed(AppRoutes.search);
+                                Get.toNamed(AppRoutes.cloud, arguments: {
+                                  'songId': currentSong.id,
+                                  'songTitle': currentSong.title,
+                                });
                               },
                               splashColor: Colors.transparent,
                               highlightColor: Colors.transparent,
                               child: const Icon(
-                                Icons.cloud_download,
+                                Icons.language,
                                 color: Colors.white,
                                 size: 44,
                               ),
@@ -171,7 +175,7 @@ class _DetailsPageState extends State<DetailsPage>
                                 height: 12,
                               ),
                               Text(
-                                currentSong.title.trim(),
+                                currentSong.title,
                                 style: dynamicStyle(
                                   16,
                                   Colors.white,
@@ -184,17 +188,19 @@ class _DetailsPageState extends State<DetailsPage>
                               const SizedBox(
                                 height: 4,
                               ),
-                              Text(
-                                currentSong.artist!.trim(),
-                                style: dynamicStyle(
-                                  16,
-                                  Colors.white60,
-                                  FontWeight.normal,
-                                  FontStyle.normal,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                              currentSong.artist != null
+                                  ? Text(
+                                      currentSong.artist!,
+                                      style: dynamicStyle(
+                                        16,
+                                        Colors.white60,
+                                        FontWeight.normal,
+                                        FontStyle.normal,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    )
+                                  : const SizedBox.shrink(),
                               const SizedBox(
                                 height: 4,
                               ),

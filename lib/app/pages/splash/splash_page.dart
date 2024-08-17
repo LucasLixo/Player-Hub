@@ -38,16 +38,10 @@ class _SplashPageState extends State<SplashPage> {
 
     PermissionStatus audioPermissionStatus;
 
-    switch (build.version.sdkInt) {
-      case >= 33:
-        audioPermissionStatus = await Permission.audio.request();
-        break;
-      /* case >= 30:
-        audioPermissionStatus = await Permission.manageExternalStorage.request();
-        break; */
-      default:
-        audioPermissionStatus = await Permission.storage.request();
-        break;
+    if (build.version.sdkInt >= 33) {
+      audioPermissionStatus = await Permission.audio.request();
+    } else {
+      audioPermissionStatus = await Permission.storage.request();
     }
 
     if (audioPermissionStatus.isGranted) {

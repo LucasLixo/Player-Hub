@@ -83,9 +83,6 @@ class _SettingPageState extends State<SettingPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Divider(
-              color: AppColors.textGray,
-            ),
             Text(
               'setting_ignore'.trParams({
                 'seconds': _sliderValue.toString(),

@@ -6,7 +6,7 @@ import androidx.core.view.WindowCompat
 import io.flutter.embedding.android.FlutterActivity
 import com.ryanheise.audioservice.AudioServiceActivity;
 
-class MainActivity: FlutterActivity() extends AudioServiceActivity {
+class MainActivity: AudioServiceActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     WindowCompat.setDecorFitsSystemWindows(getWindow(), false)
 

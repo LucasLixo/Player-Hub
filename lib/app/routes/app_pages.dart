@@ -30,6 +30,17 @@ abstract class AppPages {
       transition: Transition.downToUp,
     ),
     GetPage(
+      name: AppRoutes.cloud,
+      page: () {
+        return CloudPage(
+          songId: Get.arguments['songId'],
+          songTitle: Get.arguments['songTitle'],
+        );
+      },
+      transitionDuration: const Duration(milliseconds: 300),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
       name: AppRoutes.search,
       page: () => const SearchPage(),
       transitionDuration: const Duration(milliseconds: 300),
@@ -38,10 +49,9 @@ abstract class AppPages {
     GetPage(
       name: AppRoutes.playlist,
       page: () {
-        final args = Get.arguments as Map<String, dynamic>;
         return PlaylistPage(
-          playlistTitle: args['title'],
-          playlistList: args['songs'],
+          playlistTitle: Get.arguments['title'],
+          playlistList: Get.arguments['songs'],
         );
       },
       transitionDuration: const Duration(milliseconds: 300),
