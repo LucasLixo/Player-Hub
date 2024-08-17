@@ -96,8 +96,11 @@ class _SearchPageState extends State<SearchPage> {
             FontWeight.normal,
             FontStyle.normal,
           ),
-          decoration: const InputDecoration(
-            border: UnderlineInputBorder(),
+          cursorColor: AppColors.text,
+          decoration: InputDecoration(
+            border: UnderlineInputBorder(
+              borderSide: BorderSide(color: AppColors.text),
+            ),
           ),
         ),
       ),

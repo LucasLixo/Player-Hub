@@ -11,7 +11,7 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
 
     await JustAudioBackground.init(
-      androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+      androidNotificationChannelId: 'com.cornflower.player.channel.audio',
       androidNotificationChannelName: 'Music playback',
       androidShowNotificationBadge: true,
       androidNotificationOngoing: true,

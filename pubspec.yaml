@@ -46,6 +46,8 @@ dependencies:
   shared_preferences: ^2.3.1
   google_fonts: ^6.2.1
   device_info_plus: ^10.1.2
+  connectivity_plus: ^6.0.5
+  flutter_localization: ^0.2.1
 
 dev_dependencies:
   flutter_test:

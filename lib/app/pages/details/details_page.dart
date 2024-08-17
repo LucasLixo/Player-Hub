@@ -4,10 +4,12 @@ import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../core/controllers/player.dart';
+import '../../core/controllers/song_api.dart';
 import '../../shared/utils/dynamic_style.dart';
 import '../../core/app_colors.dart';
 import '../../shared/widgets/repeat.dart';
 import '../../shared/utils/slider_shape.dart';
+import '../../routes/app_routes.dart';
 import '../../shared/widgets/shuffle.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -21,6 +23,7 @@ class _DetailsPageState extends State<DetailsPage>
     with SingleTickerProviderStateMixin {
   final playerController = Get.find<PlayerController>();
   final playerStateController = Get.find<PlayerStateController>();
+  final apiStateController = Get.find<ApiStateController>();
 
   late AnimationController _controller;
 
@@ -101,6 +104,20 @@ class _DetailsPageState extends State<DetailsPage>
                           size: 44,
                         ),
                       ),
+                      apiStateController.isConect.value
+                          ? InkWell(
+                              onTap: () {
+                                Get.toNamed(AppRoutes.search);
+                              },
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              child: const Icon(
+                                Icons.cloud_download,
+                                color: Colors.white,
+                                size: 44,
+                              ),
+                            )
+                          : const SizedBox.shrink(),
                     ],
                   ),
                   const SizedBox(

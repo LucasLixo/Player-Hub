@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
 import 'app_bindings.dart';
@@ -28,8 +29,13 @@ class AppWidget extends StatelessWidget {
       initialRoute: AppRoutes.splash,
       translations: AppMessages(),
       locale: Get.deviceLocale,
-      fallbackLocale: const Locale('en', 'US'),
-      supportedLocales: const [
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      fallbackLocale: const Locale('pt', 'BR'),
+      supportedLocales: const <Locale>[
         Locale('en', 'US'),
         Locale('pt', 'BR'),
         Locale('es', 'ES'),
