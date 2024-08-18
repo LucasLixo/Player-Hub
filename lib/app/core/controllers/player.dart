@@ -36,6 +36,13 @@ class PlayerStateController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     songIgnoreTime.value = (prefs.getInt('songIgnoreTime') ?? 50);
   }
+  
+  RxBool equalizer = false.obs;
+
+  Future<void> loadEqualizeValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    equalizer.value = (prefs.getBool('equalizer') ?? false);
+  }
 }
 
 class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
@@ -109,7 +116,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     await songLoad(songList, 0);
   }
 
-  Future<void> songLoad(List<SongModel> songList, int Index) async {
+  Future<void> songLoad(List<SongModel> songList, int index) async {
     playerState.songList.value = songList;
 
     List<AudioSource> playlist = playerState.songList.map((song) {
@@ -128,7 +135,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
         children: playlist,
         shuffleOrder: DefaultShuffleOrder(),
       ),
-      initialIndex: Index,
+      initialIndex: index,
     );
   }
 

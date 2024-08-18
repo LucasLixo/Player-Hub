@@ -93,6 +93,7 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<void> _initializeApp() async {
     await playerStateController.loadSliderValue();
+    await playerStateController.loadEqualizeValue();
 
     await Future.delayed(const Duration(seconds: 1));
 

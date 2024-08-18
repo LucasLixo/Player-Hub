@@ -48,6 +48,7 @@ dependencies:
   device_info_plus: ^10.1.2
   connectivity_plus: ^6.0.5
   flutter_localization: ^0.2.1
+  equalizer_flutter: ^0.0.1
 
 dev_dependencies:
   flutter_test:

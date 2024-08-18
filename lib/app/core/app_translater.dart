@@ -20,6 +20,7 @@ class AppMessages extends Translations {
       'setting_title': 'Configurações',
       'setting_ignore': 'Ignorar áudio menores que: @seconds segundos',
       'setting_mode': 'Modo escuro',
+      'setting_equalizer': 'Equalizador',
     },
     'en_US': {
       'app_language': 'English',
@@ -38,6 +39,7 @@ class AppMessages extends Translations {
       'setting_title': 'Settings',
       'setting_ignore': 'Ignore audio shorter than: @seconds seconds',
       'setting_mode': 'Mode dark',
+      'setting_equalizer': 'Equalizer',
     },
     'es_ES': {
       'app_language': 'Español',
@@ -56,6 +58,7 @@ class AppMessages extends Translations {
       'setting_title': 'Configuraciones',
       'setting_ignore': 'Ignorar audio más corto de: @seconds segundos',
       'setting_mode': 'Modo oscuro',
+      'setting_equalizer': 'Igualada',
     },
   };
 }

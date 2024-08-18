@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomSliderTrackShape extends RoundedRectSliderTrackShape {
   const CustomSliderTrackShape();
+  
   @override
   Rect getPreferredRect({
     required RenderBox parentBox,

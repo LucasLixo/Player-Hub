@@ -7,6 +7,7 @@ import '../../shared/utils/dynamic_style.dart';
 import '../../core/app_colors.dart';
 import '../../routes/app_routes.dart';
 import '../../shared/utils/slider_shape.dart';
+import '../../shared/utils/switch_shape.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -22,10 +23,13 @@ class _SettingPageState extends State<SettingPage> {
   int _sliderValue = 50;
   int _initialSliderValue = 50;
 
+  // bool _equalizerValue = false;
+
   @override
   void initState() {
     super.initState();
     _loadSliderValue();
+    // _loadEqualizeValue();
   }
 
   @override
@@ -44,10 +48,22 @@ class _SettingPageState extends State<SettingPage> {
     });
   }
 
+  // void _loadEqualizeValue() async {
+  //   await playerStateController.loadEqualizeValue();
+  //   setState(() {
+  //     _equalizerValue = playerStateController.equalizer.value;
+  //   });
+  // }
+
   void _saveSliderValue(int value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt('songIgnoreTime', value);
   }
+
+  // void _saveEqualizeValue(bool value) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.setBool('equalizer', value);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -113,11 +129,11 @@ class _SettingPageState extends State<SettingPage> {
                 },
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
+            SwitchTheme(
+              data: const CustomSwitchShape().getSwitchTheme(),
+              child: SwitchListTile(
+                secondary: const Icon(Icons.dark_mode),
+                title: Text(
                   'setting_mode'.tr,
                   style: dynamicStyle(
                     16,
@@ -126,54 +142,36 @@ class _SettingPageState extends State<SettingPage> {
                     FontStyle.normal,
                   ),
                 ),
-                SwitchTheme(
-                  data: SwitchThemeData(
-                    trackOutlineColor: WidgetStateProperty.resolveWith<Color>(
-                      (Set<WidgetState> states) {
-                        return AppColors.primary;
-                      },
-                    ),
-                    thumbColor: WidgetStateProperty.resolveWith<Color>(
-                      (Set<WidgetState> states) {
-                        return AppColors.text;
-                      },
-                    ),
-                    trackColor: WidgetStateProperty.resolveWith<Color>(
-                      (Set<WidgetState> states) {
-                        return AppColors.primary;
-                      },
-                    ),
-                  ),
-                  child: Switch(
-                    thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
-                      (Set<WidgetState> states) {
-                        if (states.contains(WidgetState.selected)) {
-                          return Icon(
-                            Icons.dark_mode,
-                            color: AppColors.background,
-                          );
-                        }
-                        return Icon(
-                          Icons.light_mode,
-                          color: AppColors.background,
-                        );
-                      },
-                    ),
-                    value: AppColors.isDarkMode.value,
-                    focusColor: AppColors.textGray,
-                    hoverColor: AppColors.textGray,
-                    onChanged: (bool value) async {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      await prefs.setBool('isDarkMode', value);
-                      AppColors.isDarkMode.value = value;
+                value: AppColors.isDarkMode.value,
+                onChanged: (bool value) async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  await prefs.setBool('isDarkMode', value);
+                  AppColors.isDarkMode.value = value;
 
-                      Get.offNamed(AppRoutes.splash);
-                    },
-                  ),
-                ),
-              ],
+                  Get.offNamed(AppRoutes.splash);
+                },
+              ),
             ),
+            // SwitchTheme(
+            //   data: const CustomSwitchShape().getSwitchTheme(),
+            //   child: SwitchListTile(
+            //     secondary: const Icon(Icons.equalizer),
+            //     title: Text(
+            //       'setting_equalizer'.tr,
+            //       style: dynamicStyle(
+            //         16,
+            //         AppColors.text,
+            //         FontWeight.normal,
+            //         FontStyle.normal,
+            //       ),
+            //     ),
+            //     value: playerStateController.equalizer.value,
+            //     onChanged: (bool value) {
+            //       _saveEqualizeValue(value);
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),
