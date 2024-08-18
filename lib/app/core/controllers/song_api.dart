@@ -31,8 +31,7 @@ class ApiController extends GetConnect {
       'User-Agent': 'CompuServe Classic/1.22',
       'Accept': 'application/json',
       'Host': 'api.genius.com',
-      'Authorization':
-          'Bearer VSUm_yV_uXlIl19p8azsxNjg5IM7TaMsJJYqAaaNzSBetoPGiQ2J-tK1-YfqKwyE',
+      'Authorization': 'Bearer VSUm_yV_uXlIl19p8azsxNjg5IM7TaMsJJYqAaaNzSBetoPGiQ2J-tK1-YfqKwyE',
     });
 
     return request;
@@ -40,7 +39,7 @@ class ApiController extends GetConnect {
 
   FutureOr<dynamic> responseModifier(Request request, Response response) async {
     showLogs(request, response);
-    
+
     return response;
   }
 
