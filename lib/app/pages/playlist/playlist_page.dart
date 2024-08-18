@@ -27,22 +27,6 @@ class _PlaylistPageState extends State<PlaylistPage> {
   final playerStateController = Get.find<PlayerStateController>();
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      playerController.songLoad(widget.playlistList);
-    });
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      playerController.resetPlaylist();
-    });
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,

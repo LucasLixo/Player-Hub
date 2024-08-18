@@ -106,10 +106,10 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     }
     playerState.folderList.value = playerState.folderList.toSet().toList();
 
-    await songLoad(songList);
+    await songLoad(songList, 0);
   }
 
-  Future<void> songLoad(List<SongModel> songList) async {
+  Future<void> songLoad(List<SongModel> songList, int Index) async {
     playerState.songList.value = songList;
 
     List<AudioSource> playlist = playerState.songList.map((song) {
@@ -128,7 +128,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
         children: playlist,
         shuffleOrder: DefaultShuffleOrder(),
       ),
-      initialIndex: 0,
+      initialIndex: Index,
     );
   }
 
@@ -204,6 +204,6 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   }
 
   void resetPlaylist() {
-    songLoad(playerState.songAllList);
+    songLoad(playerState.songAllList, 0);
   }
 }

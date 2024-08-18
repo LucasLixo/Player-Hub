@@ -25,7 +25,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    playerController.getAllSongs();
+    if (playerStateController.songAllList.isEmpty) {
+      playerController.getAllSongs();
+    }
   }
 
   static List<Tab> homeTabs = <Tab>[

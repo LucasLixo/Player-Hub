@@ -41,10 +41,6 @@ class _SearchPageState extends State<SearchPage> {
   void dispose() {
     _focusNode.dispose();
     _textController.dispose();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      playerStateController.resetSongIndex();
-      playerController.resetPlaylist();
-    });
     super.dispose();
   }
 
@@ -61,8 +57,6 @@ class _SearchPageState extends State<SearchPage> {
         }).toList();
       }
     });
-
-    await playerController.songLoad(filteredSongs);
   }
 
   void _hideKeyboard() {

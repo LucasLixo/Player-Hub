@@ -16,6 +16,7 @@ class MusicList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final playerController = Get.put(PlayerController());
+    final playerStateController = Get.put(PlayerStateController());
 
     return ListView.builder(
       physics: const BouncingScrollPhysics(),
@@ -54,7 +55,11 @@ class MusicList extends StatelessWidget {
               ),
             ),
             onTap: () {
-              playerController.playSong(index);
+              if (playerStateController.songList != songs) {
+                playerController.songLoad(songs, index);
+              } else {
+                playerController.playSong(index);
+              }
               Get.toNamed(AppRoutes.details);
             },
           ),
