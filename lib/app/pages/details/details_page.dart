@@ -118,7 +118,7 @@ class _DetailsPageState extends State<DetailsPage>
                               child: const Icon(
                                 Icons.language,
                                 color: Colors.white,
-                                size: 44,
+                                size: 40,
                               ),
                             )
                           : const SizedBox.shrink(),

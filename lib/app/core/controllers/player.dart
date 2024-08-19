@@ -12,6 +12,8 @@ class PlayerStateController extends GetxController {
   RxBool isLooping = false.obs;
   RxBool isShuffle = false.obs;
 
+  bool isRecent = false;
+
   RxInt songIndex = 0.obs;
 
   RxString songDuration = ''.obs;
@@ -36,13 +38,22 @@ class PlayerStateController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     songIgnoreTime.value = (prefs.getInt('songIgnoreTime') ?? 50);
   }
-  
-  RxBool equalizer = false.obs;
 
-  Future<void> loadEqualizeValue() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    equalizer.value = (prefs.getBool('equalizer') ?? false);
+  List<SongModel> recentList = <SongModel>[];
+
+  Future<void> updateRecentList(SongModel song) async {
+    if (recentList.any((s) => s.id == song.id)) {
+      recentList.removeWhere((s) => s.id == song.id);
+    }
+    recentList.insert(0, song);
   }
+
+  // RxBool equalizer = false.obs;
+
+  // Future<void> loadEqualizeValue() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   equalizer.value = (prefs.getBool('equalizer') ?? false);
+  // }
 }
 
 class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
@@ -64,6 +75,9 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     audioPlayer.currentIndexStream.listen((index) {
       if (index != null) {
         playerState.songIndex.value = index;
+        if (!playerState.isRecent) {
+          playerState.updateRecentList(playerState.songList[index]);
+        }
       }
     });
     updatePosition();
@@ -76,7 +90,11 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       sortType: SongSortType.DATE_ADDED,
       uriType: UriType.EXTERNAL,
     );
-    songs = songs.where((song) => song.duration != null && song.duration! > playerState.songIgnoreTime.value * 1000).toList();
+    songs = songs
+        .where((song) =>
+            song.duration != null &&
+            song.duration! > playerState.songIgnoreTime.value * 1000)
+        .toList();
     await songAllLoad(songs);
   }
 

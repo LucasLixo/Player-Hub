@@ -25,6 +25,22 @@ class PlaylistPage extends StatefulWidget {
 class _PlaylistPageState extends State<PlaylistPage> {
   final playerController = Get.find<PlayerController>();
   final playerStateController = Get.find<PlayerStateController>();
+  
+  @override
+  void initState() {
+    super.initState();
+    if (widget.playlistTitle == 'playlist1'.tr) {
+      playerStateController.isRecent = true;
+    }
+  }
+
+  @override
+  void dispose() {
+    if (widget.playlistTitle == 'playlist1'.tr) {
+      playerStateController.isRecent = false;
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

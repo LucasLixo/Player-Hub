@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 Get.toNamed(AppRoutes.playlist, arguments: {
                   'title': 'playlist1'.tr,
-                  'songs': playerStateController.songAllList,
+                  'songs': playerStateController.recentList,
                 });
               },
               splashColor: Colors.transparent,

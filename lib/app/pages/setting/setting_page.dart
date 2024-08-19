@@ -99,40 +99,53 @@ class _SettingPageState extends State<SettingPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'setting_ignore'.trParams({
-                'seconds': _sliderValue.toString(),
-              }),
-              style: dynamicStyle(
-                16,
-                AppColors.text,
-                FontWeight.normal,
-                FontStyle.normal,
+            ListTile(
+              title: Text(
+                'setting_ignore'.trParams({
+                  'seconds': _sliderValue.toString(),
+                }),
+                style: dynamicStyle(
+                  16,
+                  AppColors.text,
+                  FontWeight.normal,
+                  FontStyle.normal,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-            ),
-            SliderTheme(
-              data: const SliderThemeData(
-                trackShape: CustomSliderTrackShape(),
+              leading: Icon(
+                Icons.music_note,
+                color: AppColors.text,
+                size: 32,
               ),
-              child: Slider(
-                thumbColor: AppColors.primary,
-                inactiveColor: AppColors.onBackground,
-                activeColor: AppColors.primary,
-                min: 0,
-                max: 120,
-                value: _sliderValue.toDouble(),
-                onChanged: (value) {
-                  setState(() {
-                    _sliderValue = value.toInt();
-                  });
-                  _saveSliderValue(_sliderValue);
-                },
+              subtitle: SliderTheme(
+                data: const SliderThemeData(
+                  trackShape: CustomSliderTrackShape(),
+                ),
+                child: Slider(
+                  thumbColor: AppColors.primary,
+                  inactiveColor: AppColors.onBackground,
+                  activeColor: AppColors.primary,
+                  min: 0,
+                  max: 120,
+                  value: _sliderValue.toDouble(),
+                  onChanged: (value) {
+                    setState(() {
+                      _sliderValue = value.toInt();
+                    });
+                    _saveSliderValue(_sliderValue);
+                  },
+                ),
               ),
             ),
             SwitchTheme(
               data: const CustomSwitchShape().getSwitchTheme(),
               child: SwitchListTile(
-                secondary: const Icon(Icons.dark_mode),
+                secondary: Icon(
+                  Icons.dark_mode,
+                  color: AppColors.text,
+                  size: 32,
+                ),
                 title: Text(
                   'setting_mode'.tr,
                   style: dynamicStyle(
