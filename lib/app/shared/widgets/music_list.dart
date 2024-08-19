@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:player/app/core/app_constants.dart';
+import 'dart:math';
 
 import '../../core/app_colors.dart';
 import '../../shared/utils/subtitle_style.dart';
@@ -12,6 +14,12 @@ class MusicList extends StatelessWidget {
   final List<SongModel> songs;
 
   const MusicList({super.key, required this.songs});
+
+  String getRandomImage() {
+    final random = Random();
+    final index = random.nextInt(imagePaths.length);
+    return imagePaths[index];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +53,14 @@ class MusicList extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            leading: QueryArtworkWidget(
-              id: song.id,
-              type: ArtworkType.AUDIO,
-              nullArtworkWidget: Icon(
-                Icons.music_note,
-                color: AppColors.text,
-                size: 32,
+            leading: ClipOval(
+              child: QueryArtworkWidget(
+                id: song.id,
+                type: ArtworkType.AUDIO,
+                nullArtworkWidget: Image.asset(
+                  getRandomImage(),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             onTap: () {
