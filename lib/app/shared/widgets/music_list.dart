@@ -4,7 +4,6 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:player/app/core/app_constants.dart';
 import 'dart:math';
 
-import '../../core/app_colors.dart';
 import '../../shared/utils/subtitle_style.dart';
 import '../../shared/utils/title_style.dart';
 import '../../core/controllers/player.dart';
