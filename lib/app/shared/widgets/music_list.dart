@@ -8,7 +8,7 @@ import '../../shared/utils/title_style.dart';
 import '../../core/controllers/player.dart';
 import '../../routes/app_routes.dart';
 import '../../core/controllers/inc/get_image.dart';
-import '../../core/app_colors.dart';
+import '../../core/controllers/inc/get_artist.dart';
 
 class MusicList extends StatelessWidget {
   final List<SongModel> songs;
@@ -47,13 +47,13 @@ class MusicList extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   title: Text(
-                    song.title.trim(),
+                    song.title,
                     style: titleStyle(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   subtitle: Text(
-                    song.artist!.trim(),
+                    getArtist(artist: song.artist!),
                     style: subtitleStyle(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

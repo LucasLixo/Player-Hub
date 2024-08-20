@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../core/app_colors.dart';
 import '../../routes/app_routes.dart';
@@ -9,6 +8,7 @@ import '../../core/controllers/player.dart';
 import '../../shared/utils/subtitle_style.dart';
 import '../../shared/utils/title_style.dart';
 import '../../core/controllers/inc/get_image.dart';
+import '../../core/controllers/inc/get_artist.dart';
 
 class Shortcut extends StatefulWidget {
   const Shortcut({super.key});
@@ -75,80 +75,10 @@ class _ShortcutState extends State<Shortcut>
           child: FutureBuilder<String>(
             future: getImageForSong(song.id),
             builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return ListTile(
-                  tileColor: AppColors.surface,
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  title: Text(
-                    song.title.trim(),
-                    style: titleStyle(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  subtitle: Text(
-                    song.artist!.trim(),
-                    style: subtitleStyle(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  leading: const CircularProgressIndicator(),
-                  trailing: Transform.scale(
-                    scale: 1.5,
-                    child: IconButton(
-                      icon: AnimatedIcon(
-                        icon: AnimatedIcons.play_pause,
-                        progress: _controller,
-                      ),
-                      onPressed: _togglePlayPause,
-                      color: AppColors.text,
-                    ),
-                  ),
-                  onTap: () {
-                    Get.toNamed(AppRoutes.details);
-                  },
-                );
-              } else if (snapshot.hasError) {
-                return ListTile(
-                  tileColor: AppColors.surface,
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  title: Text(
-                    song.title.trim(),
-                    style: titleStyle(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  subtitle: Text(
-                    song.artist!.trim(),
-                    style: subtitleStyle(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  leading: const Icon(Icons.error),
-                  trailing: Transform.scale(
-                    scale: 1.5,
-                    child: IconButton(
-                      icon: AnimatedIcon(
-                        icon: AnimatedIcons.play_pause,
-                        progress: _controller,
-                      ),
-                      onPressed: _togglePlayPause,
-                      color: AppColors.text,
-                    ),
-                  ),
-                  onTap: () {
-                    Get.toNamed(AppRoutes.details);
-                  },
-                );
+              if (snapshot.connectionState == ConnectionState.waiting ||
+                  snapshot.hasError) {
+                return const SizedBox.shrink();
               } else {
-                final imagePath = snapshot.data!;
                 return ListTile(
                   tileColor: AppColors.surface,
                   splashColor: Colors.transparent,
@@ -157,13 +87,13 @@ class _ShortcutState extends State<Shortcut>
                     borderRadius: BorderRadius.circular(12),
                   ),
                   title: Text(
-                    song.title.trim(),
+                    song.title,
                     style: titleStyle(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   subtitle: Text(
-                    song.artist!.trim(),
+                    getArtist(artist: song.artist!),
                     style: subtitleStyle(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -171,7 +101,7 @@ class _ShortcutState extends State<Shortcut>
                   leading: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.file(
-                      File(imagePath),
+                      File(snapshot.data!),
                       fit: BoxFit.cover,
                       width: 50.0,
                       height: 50.0,

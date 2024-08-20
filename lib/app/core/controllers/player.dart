@@ -5,7 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import 'just_audio_background.dart';
+import './just_audio_background.dart';
+import '../../core/controllers/inc/get_artist.dart';
+import '../../core/controllers/inc/get_image.dart';
 
 class PlayerStateController extends GetxController {
   RxBool isPlaying = false.obs;
@@ -137,14 +139,24 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   Future<void> songLoad(List<SongModel> songList, int index) async {
     playerState.songList.value = songList;
 
-    List<AudioSource> playlist = playerState.songList.map((song) {
+    List<Future<String>> imageFutures = playerState.songList.map((song) {
+      return getImage(id: song.id);
+    }).toList();
+    List<String> images = await Future.wait(imageFutures);
+
+    List<AudioSource> playlist =
+        playerState.songList.asMap().entries.map((entry) {
+      final song = entry.value;
+      final art = images[entry.key];
+
       return AudioSource.uri(
         Uri.parse(song.uri!),
         tag: MediaItem(
           id: song.id.toString(),
           title: song.title,
-          artist: song.artist,
-          // artUri: getImage(id: song.id),
+          artist: 
+                    getArtist(artist: song.artist!),
+          artUri: Uri.parse(art),
         ),
       );
     }).toList();

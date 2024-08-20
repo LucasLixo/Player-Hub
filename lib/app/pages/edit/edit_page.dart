@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:player/app/shared/utils/title_style.dart';
 
 import '../../shared/utils/dynamic_style.dart';
 import '../../core/app_colors.dart';
 import '../../core/controllers/song_api.dart';
 import '../../shared/widgets/card_api.dart';
+import '../../core/controllers/inc/get_artist.dart';
+import '../../shared/utils/title_style.dart';
 
 class EditPage extends StatefulWidget {
   final int songId;
@@ -124,7 +125,7 @@ class _EditPageState extends State<EditPage> {
                 final song = metadataResults[index];
                 return CardApi(
                   title: song.title,
-                  artist: song.artist,
+                  artist: getArtist(artist: song.artist),
                   art: song.art,
                 );
               },

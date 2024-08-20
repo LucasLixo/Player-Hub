@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:player/app/shared/utils/subtitle_style.dart';
-import 'package:player/app/shared/utils/title_style.dart';
 
 import '../../../app/core/app_colors.dart';
+import '../../shared/utils/subtitle_style.dart';
+import '../../shared/utils/title_style.dart';
 
 class CardApi extends StatelessWidget {
   final String title;

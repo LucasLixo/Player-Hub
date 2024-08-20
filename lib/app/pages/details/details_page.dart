@@ -10,6 +10,7 @@ import '../../core/app_colors.dart';
 import '../../shared/widgets/repeat.dart';
 import '../../shared/utils/slider_shape.dart';
 import '../../routes/app_routes.dart';
+import '../../core/controllers/inc/get_artist.dart';
 import '../../core/controllers/inc/get_image.dart';
 import '../../shared/widgets/shuffle.dart';
 
@@ -137,8 +138,8 @@ class _DetailsPageState extends State<DetailsPage>
                     height: 12,
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.width * 0.75,
-                    width: MediaQuery.of(context).size.width * 0.75,
+                    height: MediaQuery.of(context).size.width * 0.80,
+                    width: MediaQuery.of(context).size.width * 0.80,
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
@@ -166,8 +167,8 @@ class _DetailsPageState extends State<DetailsPage>
                             return Image.file(
                               File(snapshot.data!),
                               fit: BoxFit.cover,
-                              width: MediaQuery.of(context).size.width * 0.75,
-                              height: MediaQuery.of(context).size.width * 0.75,
+                              width: MediaQuery.of(context).size.width * 0.80,
+                              height: MediaQuery.of(context).size.width * 0.80,
                             );
                           }
                         },
@@ -203,19 +204,17 @@ class _DetailsPageState extends State<DetailsPage>
                               const SizedBox(
                                 height: 4,
                               ),
-                              currentSong.artist != null
-                                  ? Text(
-                                      currentSong.artist!,
-                                      style: dynamicStyle(
-                                        16,
-                                        Colors.white60,
-                                        FontWeight.normal,
-                                        FontStyle.normal,
-                                      ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    )
-                                  : const SizedBox.shrink(),
+                              Text(
+                                getArtist(artist: currentSong.artist!),
+                                style: dynamicStyle(
+                                  16,
+                                  Colors.white60,
+                                  FontWeight.normal,
+                                  FontStyle.normal,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                               const SizedBox(
                                 height: 4,
                               ),
