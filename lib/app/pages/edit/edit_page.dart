@@ -7,22 +7,22 @@ import '../../core/app_colors.dart';
 import '../../core/controllers/song_api.dart';
 import '../../shared/widgets/card_api.dart';
 
-class CloudPage extends StatefulWidget {
+class EditPage extends StatefulWidget {
   final int songId;
   final String songTitle;
 
-  const CloudPage({
+  const EditPage({
     super.key,
     required this.songId,
     required this.songTitle,
   });
 
   @override
-  State<CloudPage> createState() => _CloudPageState();
+  State<EditPage> createState() => _EditPageState();
 }
 
-class _CloudPageState extends State<CloudPage> {
-  final apiController = Get.find<ApiController>();
+class _EditPageState extends State<EditPage> {
+  final songApiController = Get.find<SongApiController>();
 
   late FocusNode _focusNode;
   late TextEditingController _textController;
@@ -48,7 +48,7 @@ class _CloudPageState extends State<CloudPage> {
 
   Future<void> fetchSongData() async {
     metadataResults.value =
-        await apiController.searchSong(_textController.text);
+        await songApiController.searchSong(_textController.text);
     _focusNode.unfocus();
   }
 

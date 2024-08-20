@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/app_colors.dart';
 
+// titleStyle() {
+//   return GoogleFonts.openSans(
+//     fontSize: 16,
+//     color: AppColors.text,
+//     fontWeight: FontWeight.w600,
+//     fontStyle: FontStyle.normal,
+//   );
+// }
 titleStyle() {
-  return GoogleFonts.openSans(
+  return TextStyle(
     fontSize: 16,
+    fontFamily: 'OpenSans',
     color: AppColors.text,
     fontWeight: FontWeight.w600,
     fontStyle: FontStyle.normal,

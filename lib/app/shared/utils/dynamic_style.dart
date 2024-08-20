@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 dynamicStyle(
   double fontSize,
@@ -7,8 +6,9 @@ dynamicStyle(
   FontWeight fontWeight,
   FontStyle fontStyle,
 ) {
-  return GoogleFonts.openSans(
+  return TextStyle(
     fontSize: fontSize,
+    fontFamily: 'OpenSans',
     color: color,
     fontWeight: fontWeight,
     fontStyle: fontStyle,

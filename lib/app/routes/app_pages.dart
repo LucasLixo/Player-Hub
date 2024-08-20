@@ -30,9 +30,9 @@ abstract class AppPages {
       transition: Transition.downToUp,
     ),
     GetPage(
-      name: AppRoutes.cloud,
+      name: AppRoutes.edit,
       page: () {
-        return CloudPage(
+        return EditPage(
           songId: Get.arguments['songId'],
           songTitle: Get.arguments['songTitle'],
         );

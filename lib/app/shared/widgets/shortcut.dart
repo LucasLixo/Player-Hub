@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -7,6 +8,7 @@ import '../../routes/app_routes.dart';
 import '../../core/controllers/player.dart';
 import '../../shared/utils/subtitle_style.dart';
 import '../../shared/utils/title_style.dart';
+import '../../core/controllers/inc/get_image.dart';
 
 class Shortcut extends StatefulWidget {
   const Shortcut({super.key});
@@ -46,6 +48,10 @@ class _ShortcutState extends State<Shortcut>
     }
   }
 
+  Future<String> getImageForSong(int songId) async {
+    return await getImage(id: songId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -63,49 +69,130 @@ class _ShortcutState extends State<Shortcut>
 
         final song = playerStateController
             .songList[playerStateController.songIndex.value];
+
         return Padding(
           padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-          child: ListTile(
-            tileColor: AppColors.surface,
-            splashColor: Colors.transparent,
-            focusColor: Colors.transparent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            title: Text(
-              song.title.trim(),
-              style: titleStyle(),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            subtitle: Text(
-              song.artist!.trim(),
-              style: subtitleStyle(),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            leading: QueryArtworkWidget(
-              id: song.id,
-              type: ArtworkType.AUDIO,
-              nullArtworkWidget: const Icon(
-                Icons.music_note,
-                color: Colors.white,
-                size: 32,
-              ),
-            ),
-            trailing: Transform.scale(
-              scale: 1.5,
-              child: IconButton(
-                icon: AnimatedIcon(
-                  icon: AnimatedIcons.play_pause,
-                  progress: _controller,
-                ),
-                onPressed: _togglePlayPause,
-                color: AppColors.text,
-              ),
-            ),
-            onTap: () {
-              Get.toNamed(AppRoutes.details);
+          child: FutureBuilder<String>(
+            future: getImageForSong(song.id),
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return ListTile(
+                  tileColor: AppColors.surface,
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  title: Text(
+                    song.title.trim(),
+                    style: titleStyle(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  subtitle: Text(
+                    song.artist!.trim(),
+                    style: subtitleStyle(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  leading: const CircularProgressIndicator(),
+                  trailing: Transform.scale(
+                    scale: 1.5,
+                    child: IconButton(
+                      icon: AnimatedIcon(
+                        icon: AnimatedIcons.play_pause,
+                        progress: _controller,
+                      ),
+                      onPressed: _togglePlayPause,
+                      color: AppColors.text,
+                    ),
+                  ),
+                  onTap: () {
+                    Get.toNamed(AppRoutes.details);
+                  },
+                );
+              } else if (snapshot.hasError) {
+                return ListTile(
+                  tileColor: AppColors.surface,
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  title: Text(
+                    song.title.trim(),
+                    style: titleStyle(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  subtitle: Text(
+                    song.artist!.trim(),
+                    style: subtitleStyle(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  leading: const Icon(Icons.error),
+                  trailing: Transform.scale(
+                    scale: 1.5,
+                    child: IconButton(
+                      icon: AnimatedIcon(
+                        icon: AnimatedIcons.play_pause,
+                        progress: _controller,
+                      ),
+                      onPressed: _togglePlayPause,
+                      color: AppColors.text,
+                    ),
+                  ),
+                  onTap: () {
+                    Get.toNamed(AppRoutes.details);
+                  },
+                );
+              } else {
+                final imagePath = snapshot.data!;
+                return ListTile(
+                  tileColor: AppColors.surface,
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  title: Text(
+                    song.title.trim(),
+                    style: titleStyle(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  subtitle: Text(
+                    song.artist!.trim(),
+                    style: subtitleStyle(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.file(
+                      File(imagePath),
+                      fit: BoxFit.cover,
+                      width: 50.0,
+                      height: 50.0,
+                    ),
+                  ),
+                  trailing: Transform.scale(
+                    scale: 1.5,
+                    child: IconButton(
+                      icon: AnimatedIcon(
+                        icon: AnimatedIcons.play_pause,
+                        progress: _controller,
+                      ),
+                      onPressed: _togglePlayPause,
+                      color: AppColors.text,
+                    ),
+                  ),
+                  onTap: () {
+                    Get.toNamed(AppRoutes.details);
+                  },
+                );
+              }
             },
           ),
         );

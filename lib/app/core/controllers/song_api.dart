@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-class ApiStateController extends GetxController {
+class SongApiStateController extends GetxController {
   RxBool isConect = false.obs;
 
   Future<void> checkConnectivity() async {
@@ -18,8 +18,8 @@ class ApiStateController extends GetxController {
   }
 }
 
-class ApiController extends GetConnect {
-  ApiController() {
+class SongApiController extends GetConnect {
+  SongApiController() {
     timeout = const Duration(seconds: 30);
     httpClient.baseUrl = 'https://api.genius.com/search?q=';
     httpClient.addRequestModifier(requestModifier);
@@ -28,7 +28,7 @@ class ApiController extends GetConnect {
 
   FutureOr<Request> requestModifier(Request request) async {
     request.headers.addAll({
-      'User-Agent': 'CompuServe Classic/1.22',
+      // 'User-Agent': 'CompuServe Classic/1.22',
       'Accept': 'application/json',
       'Host': 'api.genius.com',
       'Authorization': 'Bearer VSUm_yV_uXlIl19p8azsxNjg5IM7TaMsJJYqAaaNzSBetoPGiQ2J-tK1-YfqKwyE',

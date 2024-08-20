@@ -144,6 +144,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
           id: song.id.toString(),
           title: song.title,
           artist: song.artist,
+          // artUri: getImage(id: song.id),
         ),
       );
     }).toList();
@@ -228,7 +229,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     }
   }
 
-  void resetPlaylist() {
-    songLoad(playerState.songAllList, 0);
-  }
+  // void resetPlaylist() {
+  //   songLoad(playerState.songAllList, 0);
+  // }
 }

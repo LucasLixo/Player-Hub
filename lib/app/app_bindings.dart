@@ -10,8 +10,7 @@ class AppBinding implements Bindings {
     Get.put<PlayerStateController>(PlayerStateController());
     Get.put<PlayerController>(PlayerController());
     
-    Get.put<ApiStateController>(ApiStateController());
-    Get.put<ApiController>(ApiController());
-    // Get.lazyPut(() => ApiController());
+    Get.put<SongApiStateController>(SongApiStateController());
+    Get.put<SongApiController>(SongApiController());
   }
 }

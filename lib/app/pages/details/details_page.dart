@@ -1,7 +1,7 @@
+import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../core/controllers/player.dart';
 import '../../core/controllers/song_api.dart';
@@ -10,6 +10,7 @@ import '../../core/app_colors.dart';
 import '../../shared/widgets/repeat.dart';
 import '../../shared/utils/slider_shape.dart';
 import '../../routes/app_routes.dart';
+import '../../core/controllers/inc/get_image.dart';
 import '../../shared/widgets/shuffle.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -23,14 +24,14 @@ class _DetailsPageState extends State<DetailsPage>
     with SingleTickerProviderStateMixin {
   final playerController = Get.find<PlayerController>();
   final playerStateController = Get.find<PlayerStateController>();
-  final apiStateController = Get.find<ApiStateController>();
+  final songApiStateController = Get.find<SongApiStateController>();
 
   late AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
-    apiStateController.checkConnectivity();
+    songApiStateController.checkConnectivity();
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
@@ -52,6 +53,10 @@ class _DetailsPageState extends State<DetailsPage>
     }
   }
 
+  Future<String> getImageForSong(int songId) async {
+    return await getImage(id: songId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,16 +68,22 @@ class _DetailsPageState extends State<DetailsPage>
         return Stack(
           children: [
             Positioned.fill(
-              child: QueryArtworkWidget(
-                id: currentSong.id,
-                type: ArtworkType.AUDIO,
-                artworkFit: BoxFit.cover,
-                quality: 100,
-                artworkHeight: double.infinity,
-                artworkWidth: double.infinity,
-                nullArtworkWidget: Container(
-                  color: AppColors.surface,
-                ),
+              child: FutureBuilder<String>(
+                future: getImageForSong(currentSong.id),
+                builder:
+                    (BuildContext context, AsyncSnapshot<String> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting ||
+                      snapshot.hasError) {
+                    return const SizedBox.shrink();
+                  } else {
+                    return Image.file(
+                      File(snapshot.data!),
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    );
+                  }
+                },
               ),
             ),
             Positioned.fill(
@@ -105,34 +116,33 @@ class _DetailsPageState extends State<DetailsPage>
                           size: 44,
                         ),
                       ),
-                      apiStateController.isConect.value
-                          ? InkWell(
-                              onTap: () {
-                                Get.toNamed(AppRoutes.cloud, arguments: {
-                                  'songId': currentSong.id,
-                                  'songTitle': currentSong.title,
-                                });
-                              },
-                              splashColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              child: const Icon(
-                                Icons.language,
-                                color: Colors.white,
-                                size: 40,
-                              ),
-                            )
-                          : const SizedBox.shrink(),
+                      InkWell(
+                        onTap: () {
+                          Get.toNamed(AppRoutes.edit, arguments: {
+                            'songId': currentSong.id,
+                            'songTitle': currentSong.title,
+                          });
+                        },
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        child: const Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                          size: 40,
+                        ),
+                      )
                     ],
                   ),
                   const SizedBox(
                     height: 12,
                   ),
                   Container(
-                    height: 300,
-                    width: 300,
+                    height: MediaQuery.of(context).size.width * 0.75,
+                    width: MediaQuery.of(context).size.width * 0.75,
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(12),
                       color: AppColors.background,
                     ),
                     alignment: Alignment.center,
@@ -144,18 +154,23 @@ class _DetailsPageState extends State<DetailsPage>
                           playerController.nextSong();
                         }
                       },
-                      child: QueryArtworkWidget(
-                        id: currentSong.id,
-                        type: ArtworkType.AUDIO,
-                        artworkFit: BoxFit.cover,
-                        quality: 100,
-                        artworkHeight: 300,
-                        artworkWidth: 300,
-                        nullArtworkWidget: const Icon(
-                          Icons.music_note,
-                          color: Colors.white,
-                          size: 320,
-                        ),
+                      child: FutureBuilder<String>(
+                        future: getImageForSong(currentSong.id),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<String> snapshot) {
+                          if (snapshot.connectionState ==
+                                  ConnectionState.waiting ||
+                              snapshot.hasError) {
+                            return const SizedBox.shrink();
+                          } else {
+                            return Image.file(
+                              File(snapshot.data!),
+                              fit: BoxFit.cover,
+                              width: MediaQuery.of(context).size.width * 0.75,
+                              height: MediaQuery.of(context).size.width * 0.75,
+                            );
+                          }
+                        },
                       ),
                     ),
                   ),

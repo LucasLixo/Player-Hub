@@ -110,8 +110,6 @@ class _SettingPageState extends State<SettingPage> {
                   FontWeight.normal,
                   FontStyle.normal,
                 ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
               ),
               leading: Icon(
                 Icons.music_note,
