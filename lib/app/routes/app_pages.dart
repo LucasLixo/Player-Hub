@@ -33,8 +33,7 @@ abstract class AppPages {
       name: AppRoutes.edit,
       page: () {
         return EditPage(
-          songId: Get.arguments['songId'],
-          songTitle: Get.arguments['songTitle'],
+          song: Get.arguments['song'],
         );
       },
       transitionDuration: const Duration(milliseconds: 300),

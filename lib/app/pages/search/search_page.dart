@@ -7,7 +7,8 @@ import '../../shared/widgets/music_list.dart';
 import '../../core/app_colors.dart';
 import '../../core/controllers/player.dart';
 import '../../shared/widgets/shortcut.dart';
-import '../../core/controllers/inc/get_artist.dart';
+import '../../shared/utils/subtitle_style.dart';
+import '../../shared/utils/functions/get_artist.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -96,6 +97,8 @@ class _SearchPageState extends State<SearchPage> {
             border: UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.text),
             ),
+            labelText: 'app_search'.tr,
+            labelStyle: subtitleStyle(),
           ),
         ),
       ),

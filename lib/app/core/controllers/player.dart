@@ -6,8 +6,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import './just_audio_background.dart';
-import '../../core/controllers/inc/get_artist.dart';
-import '../../core/controllers/inc/get_image.dart';
+import '../../shared/utils/functions/get_artist.dart';
+import '../../shared/utils/functions/get_image.dart';
 
 class PlayerStateController extends GetxController {
   RxBool isPlaying = false.obs;
@@ -154,8 +154,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
         tag: MediaItem(
           id: song.id.toString(),
           title: song.title,
-          artist: 
-                    getArtist(artist: song.artist!),
+          artist: getArtist(artist: song.artist!),
           artUri: Uri.parse(art),
         ),
       );
@@ -244,4 +243,9 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   // void resetPlaylist() {
   //   songLoad(playerState.songAllList, 0);
   // }
+  SongModel findSongById(int id) {
+    return playerState.songAllList.firstWhere(
+      (song) => song.id == id,
+    );
+  }
 }

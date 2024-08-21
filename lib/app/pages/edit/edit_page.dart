@@ -1,21 +1,21 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:on_audio_query/on_audio_query.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../../shared/utils/dynamic_style.dart';
 import '../../core/app_colors.dart';
-import '../../core/controllers/song_api.dart';
-import '../../shared/widgets/card_api.dart';
-import '../../core/controllers/inc/get_artist.dart';
+import '../../shared/utils/functions/get_artist.dart';
 import '../../shared/utils/title_style.dart';
+import '../../shared/utils/functions/get_image.dart';
 
 class EditPage extends StatefulWidget {
-  final int songId;
-  final String songTitle;
+  final SongModel song;
 
   const EditPage({
     super.key,
-    required this.songId,
-    required this.songTitle,
+    required this.song,
   });
 
   @override
@@ -23,34 +23,39 @@ class EditPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<EditPage> {
-  final songApiController = Get.find<SongApiController>();
+  late TextEditingController _textControllerTitle;
+  late TextEditingController _textControllerArtist;
 
-  late FocusNode _focusNode;
-  late TextEditingController _textController;
-
-  RxList<ModelSongApi> metadataResults = <ModelSongApi>[].obs;
+  RxBool isConect = false.obs;
 
   @override
   void initState() {
     super.initState();
-    _focusNode = FocusNode();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _focusNode.requestFocus();
-    });
-    _textController = TextEditingController(text: widget.songTitle);
+    checkConnectivity();
+    _textControllerTitle = TextEditingController(text: widget.song.title);
+    _textControllerArtist =
+        TextEditingController(text: getArtist(artist: widget.song.artist!));
   }
 
   @override
   void dispose() {
-    _focusNode.dispose();
-    _textController.dispose();
+    _textControllerTitle.dispose();
+    _textControllerArtist.dispose();
     super.dispose();
   }
 
-  Future<void> fetchSongData() async {
-    metadataResults.value =
-        await songApiController.searchSong(_textController.text);
-    _focusNode.unfocus();
+  Future<String> getImageForSong(int songId) async {
+    return await getImage(id: songId);
+  }
+
+  Future<void> checkConnectivity() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    for (var result in connectivityResult) {
+      if (result == ConnectivityResult.wifi) {
+        isConect.value = true;
+        break;
+      }
+    }
   }
 
   @override
@@ -71,67 +76,110 @@ class _EditPageState extends State<EditPage> {
             size: 26,
           ),
         ),
-        actions: [
-          InkWell(
-            onTap: () async {
-              await fetchSongData();
-            },
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            child: Icon(
-              Icons.refresh,
-              color: AppColors.text,
-              size: 32,
-            ),
-          ),
-        ],
-        title: TextField(
-          controller: _textController,
-          focusNode: _focusNode,
+        title: Text(
+          widget.song.title,
           style: dynamicStyle(
             18,
             AppColors.text,
             FontWeight.normal,
             FontStyle.normal,
           ),
-          cursorColor: AppColors.text,
-          decoration: InputDecoration(
-            border: UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.text),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        actions: [
+          InkWell(
+            onTap: () {},
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            child: Icon(
+              Icons.save,
+              color: AppColors.text,
+              size: 32,
             ),
           ),
-        ),
+          const SizedBox(
+            width: 8,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
-        child: Obx(() {
-          if (metadataResults.isEmpty) {
-            return Center(
-              child: Text(
-                'cloud_error1'.tr,
+        child: Column(
+          children: [
+            ListTile(
+              title: Text(
+                'edit_title'.tr,
                 style: titleStyle(),
               ),
-            );
-          } else {
-            return GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8.0,
-                mainAxisSpacing: 8.0,
-                childAspectRatio: 1.0,
+              subtitle: TextField(
+                controller: _textControllerTitle,
+                style: dynamicStyle(
+                  18,
+                  AppColors.text,
+                  FontWeight.normal,
+                  FontStyle.normal,
+                ),
+                cursorColor: AppColors.text,
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.text),
+                  ),
+                ),
               ),
-              itemCount: metadataResults.length,
-              itemBuilder: (context, index) {
-                final song = metadataResults[index];
-                return CardApi(
-                  title: song.title,
-                  artist: getArtist(artist: song.artist),
-                  art: song.art,
-                );
-              },
-            );
-          }
-        }),
+            ),
+            ListTile(
+              title: Text(
+                'edit_artist'.tr,
+                style: titleStyle(),
+              ),
+              subtitle: TextField(
+                controller: _textControllerArtist,
+                style: dynamicStyle(
+                  18,
+                  AppColors.text,
+                  FontWeight.normal,
+                  FontStyle.normal,
+                ),
+                cursorColor: AppColors.text,
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.text),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            ListTile(
+              title: Text(
+                'edit_image'.tr,
+                style: titleStyle(),
+              ),
+              trailing: FutureBuilder<String>(
+                future: getImageForSong(widget.song.id),
+                builder:
+                    (BuildContext context, AsyncSnapshot<String> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting ||
+                      snapshot.hasError) {
+                    return const SizedBox.shrink();
+                  } else {
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.file(
+                        File(snapshot.data!),
+                        fit: BoxFit.cover,
+                        height: 50,
+                        width: 50,
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

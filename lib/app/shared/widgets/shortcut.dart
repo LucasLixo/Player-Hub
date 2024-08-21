@@ -7,8 +7,8 @@ import '../../routes/app_routes.dart';
 import '../../core/controllers/player.dart';
 import '../../shared/utils/subtitle_style.dart';
 import '../../shared/utils/title_style.dart';
-import '../../core/controllers/inc/get_image.dart';
-import '../../core/controllers/inc/get_artist.dart';
+import '../utils/functions/get_image.dart';
+import '../utils/functions/get_artist.dart';
 
 class Shortcut extends StatefulWidget {
   const Shortcut({super.key});

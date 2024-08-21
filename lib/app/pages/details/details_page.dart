@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../core/controllers/player.dart';
-import '../../core/controllers/song_api.dart';
 import '../../shared/utils/dynamic_style.dart';
 import '../../core/app_colors.dart';
 import '../../shared/widgets/repeat.dart';
 import '../../shared/utils/slider_shape.dart';
 import '../../routes/app_routes.dart';
-import '../../core/controllers/inc/get_artist.dart';
-import '../../core/controllers/inc/get_image.dart';
+import '../../shared/utils/functions/get_artist.dart';
+import '../../shared/utils/functions/get_image.dart';
 import '../../shared/widgets/shuffle.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -25,14 +24,11 @@ class _DetailsPageState extends State<DetailsPage>
     with SingleTickerProviderStateMixin {
   final playerController = Get.find<PlayerController>();
   final playerStateController = Get.find<PlayerStateController>();
-  final songApiStateController = Get.find<SongApiStateController>();
-
   late AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
-    songApiStateController.checkConnectivity();
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
@@ -120,8 +116,7 @@ class _DetailsPageState extends State<DetailsPage>
                       InkWell(
                         onTap: () {
                           Get.toNamed(AppRoutes.edit, arguments: {
-                            'songId': currentSong.id,
-                            'songTitle': currentSong.title,
+                            'song': currentSong,
                           });
                         },
                         splashColor: Colors.transparent,
@@ -143,7 +138,7 @@ class _DetailsPageState extends State<DetailsPage>
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(24),
                       color: AppColors.background,
                     ),
                     alignment: Alignment.center,

@@ -1,22 +1,6 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-
-class SongApiStateController extends GetxController {
-  RxBool isConect = false.obs;
-
-  Future<void> checkConnectivity() async {
-    final connectivityResult = await Connectivity().checkConnectivity();
-
-    for (var result in connectivityResult) {
-      if (result == ConnectivityResult.wifi) {
-        isConect.value = true;
-        break;
-      }
-    }
-  }
-}
 
 class SongApiController extends GetConnect {
   SongApiController() {
@@ -38,7 +22,7 @@ class SongApiController extends GetConnect {
   }
 
   FutureOr<dynamic> responseModifier(Request request, Response response) async {
-    showLogs(request, response);
+    // showLogs(request, response);
 
     return response;
   }
@@ -62,18 +46,18 @@ class SongApiController extends GetConnect {
     }
   }
 
-  void showLogs(Request request, Response response) {
-    print('\n\n');
-    print('========================== REQUEST ==========================');
-    print('(${request.method}) => ${request.url}');
-    print('HEADERS: ${request.headers}');
-    print('');
-    print('========================== RESPONSE ==========================');
-    print('STATUS CODE: ${response.statusCode}');
-    print('STATUS TEXT: ${response.statusText}');
-    print('BODY: ${response.body}');
-    print('\n\n');
-  }
+  // void showLogs(Request request, Response response) {
+  //   print('\n\n');
+  //   print('========================== REQUEST ==========================');
+  //   print('(${request.method}) => ${request.url}');
+  //   print('HEADERS: ${request.headers}');
+  //   print('');
+  //   print('========================== RESPONSE ==========================');
+  //   print('STATUS CODE: ${response.statusCode}');
+  //   print('STATUS TEXT: ${response.statusText}');
+  //   print('BODY: ${response.body}');
+  //   print('\n\n');
+  // }
 }
 
 class ModelSongApi {

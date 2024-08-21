@@ -1,7 +1,7 @@
 import 'package:get/instance_manager.dart';
 
 import 'core/controllers/player.dart';
-import 'core/controllers/song_api.dart';
+// import 'core/controllers/song_api.dart';
 
 class AppBinding implements Bindings {
   
@@ -10,7 +10,6 @@ class AppBinding implements Bindings {
     Get.put<PlayerStateController>(PlayerStateController());
     Get.put<PlayerController>(PlayerController());
     
-    Get.put<SongApiStateController>(SongApiStateController());
-    Get.put<SongApiController>(SongApiController());
+    // Get.put<SongApiController>(SongApiController());
   }
 }

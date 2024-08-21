@@ -15,7 +15,7 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ColorScheme.fromSeed(
-      seedColor: Colors.blue,
+      seedColor: Colors.lightBlue,
     );
 
     return GetMaterialApp(

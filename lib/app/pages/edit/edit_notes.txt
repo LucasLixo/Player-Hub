@@ -1,0 +1,78 @@
+
+  final songApiController = Get.find<SongApiController>();
+  
+  late TextEditingController _textControllerSearch;
+
+    _textControllerSearch = TextEditingController();
+
+    _textControllerSearch.dispose();
+    
+            Obx(() {
+              if (!isConect.value) {
+                return const SizedBox.shrink();
+              } else {
+                return ListTile(
+                  title: Text(
+                    'app_search'.tr,
+                    style: titleStyle(),
+                  ),
+                  subtitle: TextField(
+                    controller: _textControllerSearch,
+                    style: dynamicStyle(
+                      18,
+                      AppColors.text,
+                      FontWeight.normal,
+                      FontStyle.normal,
+                    ),
+                    cursorColor: AppColors.text,
+                    decoration: InputDecoration(
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.text),
+                      ),
+                    ),
+                  ),
+                  trailing: InkWell(
+                    onTap: () async {
+                      await fetchSongData();
+                    },
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    child: Icon(
+                      Icons.refresh,
+                      color: AppColors.text,
+                      size: 32,
+                    ),
+                  ),
+                );
+              }
+            }),
+            Obx(() {
+              if (!isConect.value) {
+                return const SizedBox.shrink();
+              } else {
+                if (metadataResults.isEmpty) {
+                  return const SizedBox.shrink();
+                } else {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: metadataResults.length,
+                          itemBuilder: (context, index) {
+                            final song = metadataResults[index];
+                            return CardApi(
+                              title: song.title,
+                              artist: getArtist(artist: song.artist),
+                              art: song.art,
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              }
+            }),

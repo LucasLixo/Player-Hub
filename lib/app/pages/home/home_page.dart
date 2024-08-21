@@ -88,6 +88,9 @@ class _HomePageState extends State<HomePage> {
                 size: 32,
               ),
             ),
+            const SizedBox(
+              width: 8,
+            ),
           ],
           title: Text(
             constAppTitle,
