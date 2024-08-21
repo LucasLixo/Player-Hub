@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../shared/widgets/music_list.dart';

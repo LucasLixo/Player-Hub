@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../shared/utils/dynamic_style.dart';
@@ -8,7 +11,7 @@ import '../../core/app_colors.dart';
 import '../../core/controllers/player.dart';
 import '../../shared/widgets/shortcut.dart';
 import '../../shared/utils/subtitle_style.dart';
-import '../../shared/utils/functions/get_artist.dart';
+import '../../shared/meta/get_artist.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -30,10 +33,6 @@ class _SearchPageState extends State<SearchPage> {
     super.initState();
     _focusNode = FocusNode();
     _textController = TextEditingController();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _focusNode.requestFocus();
-    });
 
     filteredSongs = [];
     _textController.addListener(_filterSongs);
@@ -59,10 +58,6 @@ class _SearchPageState extends State<SearchPage> {
         }).toList();
       }
     });
-  }
-
-  void _hideKeyboard() {
-    _focusNode.unfocus();
   }
 
   @override
@@ -102,12 +97,9 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
       ),
-      body: GestureDetector(
-        onTap: _hideKeyboard,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: MusicList(songs: filteredSongs),
-        ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: MusicList(songs: filteredSongs),
       ),
       bottomNavigationBar: Obx(
         () => playerStateController.songAllList.isEmpty

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 import '../../routes/app_routes.dart';
 import '../../shared/utils/dynamic_style.dart';
 import '../../core/app_colors.dart';
 import '../../shared/widgets/shortcut.dart';
 import '../../core/controllers/player.dart';
-import '../../core/app_constants.dart';
+import '../../core/app_shared.dart';
 import '../../shared/utils/subtitle_style.dart';
 import '../../shared/utils/title_style.dart';
 import '../../shared/widgets/music_list.dart';
@@ -93,7 +96,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
           title: Text(
-            constAppTitle,
+            AppShared.title,
             style: dynamicStyle(
               20,
               AppColors.text,

@@ -6,9 +6,4 @@ abstract class AppRoutes {
   static const String edit = '/edit';
   static const String search = '/search';
   static const String playlist = '/playlist';
-  /*
-  static const String listMusic = '/list-music';
-  static const String folders = '/folders';
-  static const String recents = '/recents';
-  */
 }

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:get/get.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import 'app_bindings.dart';
 import 'routes/app_routes.dart';
-import 'core/app_constants.dart';
 import 'routes/app_pages.dart';
 import 'core/app_translater.dart';
 import 'core/app_colors.dart';
+import 'core/app_shared.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
@@ -19,7 +21,7 @@ class AppWidget extends StatelessWidget {
     );
 
     return GetMaterialApp(
-      title: constAppTitle,
+      title: AppShared.title,
       debugShowCheckedModeBanner: false,
       themeMode: AppColors.themeData,
       theme: ThemeData.light(),
@@ -27,12 +29,11 @@ class AppWidget extends StatelessWidget {
       getPages: AppPages.pages,
       initialBinding: AppBinding(),
       initialRoute: AppRoutes.splash,
-      translations: AppMessages(),
+      translations: AppTranslations(),
       locale: Get.deviceLocale,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
       ],
       fallbackLocale: const Locale('pt', 'BR'),
       supportedLocales: const <Locale>[

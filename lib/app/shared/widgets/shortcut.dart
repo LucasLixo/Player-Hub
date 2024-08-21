@@ -1,13 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/instance_manager.dart';
 
 import '../../core/app_colors.dart';
 import '../../routes/app_routes.dart';
 import '../../core/controllers/player.dart';
 import '../../shared/utils/subtitle_style.dart';
 import '../../shared/utils/title_style.dart';
-import '../utils/functions/get_artist.dart';
+import '../meta/get_artist.dart';
 
 class Shortcut extends StatefulWidget {
   const Shortcut({super.key});
@@ -54,12 +56,7 @@ class _ShortcutState extends State<Shortcut>
         if (playerStateController.songList.isEmpty ||
             playerStateController.songIndex.value >=
                 playerStateController.songList.length) {
-          return Center(
-            child: Text(
-              '...',
-              style: titleStyle(),
-            ),
-          );
+          return const SizedBox.shrink();
         }
 
         final song = playerStateController
@@ -67,7 +64,7 @@ class _ShortcutState extends State<Shortcut>
         final imagePath = playerStateController.imageCache[song.id];
 
         return Padding(
-          padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           child: ListTile(
             tileColor: AppColors.surface,
             splashColor: Colors.transparent,

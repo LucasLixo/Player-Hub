@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 import '../../core/controllers/player.dart';
 import '../../shared/utils/dynamic_style.dart';
@@ -8,6 +9,7 @@ import '../../core/app_colors.dart';
 import '../../routes/app_routes.dart';
 import '../../shared/utils/slider_shape.dart';
 import '../../shared/utils/switch_shape.dart';
+import '../../core/app_shared.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -20,32 +22,23 @@ class _SettingPageState extends State<SettingPage> {
   final playerController = Get.find<PlayerController>();
   final playerStateController = Get.find<PlayerStateController>();
 
-  int _sliderValue = 50;
-  int _initialSliderValue = 50;
+  int _sliderValue = AppShared.ignoreTimeValue.value;
 
   // bool _equalizerValue = false;
 
   @override
   void initState() {
     super.initState();
-    _loadSliderValue();
     // _loadEqualizeValue();
   }
 
   @override
   void dispose() {
-    if (_sliderValue != _initialSliderValue) {
+    if (_sliderValue != AppShared.ignoreTimeValue.value) {
+      AppShared.setIgnoreTime(_sliderValue);
       playerController.getAllSongs();
     }
     super.dispose();
-  }
-
-  void _loadSliderValue() async {
-    await playerStateController.loadSliderValue();
-    setState(() {
-      _sliderValue = playerStateController.songIgnoreTime.value;
-      _initialSliderValue = _sliderValue;
-    });
   }
 
   // void _loadEqualizeValue() async {
@@ -54,11 +47,6 @@ class _SettingPageState extends State<SettingPage> {
   //     _equalizerValue = playerStateController.equalizer.value;
   //   });
   // }
-
-  void _saveSliderValue(int value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('songIgnoreTime', value);
-  }
 
   // void _saveEqualizeValue(bool value) async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -131,7 +119,6 @@ class _SettingPageState extends State<SettingPage> {
                     setState(() {
                       _sliderValue = value.toInt();
                     });
-                    _saveSliderValue(_sliderValue);
                   },
                 ),
               ),
@@ -154,12 +141,9 @@ class _SettingPageState extends State<SettingPage> {
               trailing: SwitchTheme(
                 data: const CustomSwitchShape().getSwitchTheme(),
                 child: Switch(
-                  value: AppColors.isDarkMode.value,
+                  value: AppShared.darkModeValue.value,
                   onChanged: (bool value) async {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    await prefs.setBool('isDarkMode', value);
-                    AppColors.isDarkMode.value = value;
+                    await AppShared.setDarkMode(value);
 
                     Get.offNamed(AppRoutes.splash);
                   },

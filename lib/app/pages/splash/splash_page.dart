@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/instance_manager.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:permission_handler/permission_handler.dart';
 
+import '../../shared/utils/title_style.dart';
 import '../../core/app_colors.dart';
-import '../../core/app_constants.dart';
 import '../../shared/utils/dynamic_style.dart';
 import '../../routes/app_routes.dart';
-import '../../shared/utils/subtitle_style.dart';
 import '../../core/controllers/player.dart';
+import '../../core/app_shared.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -34,9 +36,9 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _permissionsApp() async {
-    AndroidDeviceInfo build = await DeviceInfoPlugin().androidInfo;
-
     PermissionStatus audioPermissionStatus;
+
+    AndroidDeviceInfo build = await DeviceInfoPlugin().androidInfo;
 
     if (build.version.sdkInt >= 33) {
       audioPermissionStatus = await Permission.audio.request();
@@ -67,7 +69,7 @@ class _SplashPageState extends State<SplashPage> {
             children: <Widget>[
               Text(
                 'app_permision1'.tr,
-                style: subtitleStyle(),
+                style: titleStyle(),
               ),
               const SizedBox(height: 15),
               TextButton(
@@ -92,8 +94,6 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _initializeApp() async {
-    await playerStateController.loadSliderValue();
-
     await Future.delayed(const Duration(seconds: 1));
 
     Get.offNamed(AppRoutes.home);
@@ -106,7 +106,7 @@ class _SplashPageState extends State<SplashPage> {
       appBar: null,
       body: Center(
         child: Text(
-          constAppTitle,
+          AppShared.title,
           style: dynamicStyle(
             32,
             AppColors.text,

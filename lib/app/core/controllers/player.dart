@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:audio_service/audio_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/instance_manager.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 import './just_audio_background.dart';
-import '../../shared/utils/functions/get_image.dart';
+import '../../shared/meta/get_image.dart';
+import '../../core/app_shared.dart';
 
 class PlayerStateController extends GetxController {
   RxBool isPlaying = false.obs;
@@ -33,13 +35,6 @@ class PlayerStateController extends GetxController {
     });
   }
 
-  RxInt songIgnoreTime = 50.obs;
-
-  Future<void> loadSliderValue() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    songIgnoreTime.value = (prefs.getInt('songIgnoreTime') ?? 50);
-  }
-
   RxMap<int, String> imageCache = <int, String>{}.obs;
 
   List<SongModel> recentList = <SongModel>[];
@@ -50,13 +45,6 @@ class PlayerStateController extends GetxController {
     }
     recentList.insert(0, song);
   }
-
-  // RxBool equalizer = false.obs;
-
-  // Future<void> loadEqualizeValue() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   equalizer.value = (prefs.getBool('equalizer') ?? false);
-  // }
 }
 
 class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
@@ -96,7 +84,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     songs = songs
         .where((song) =>
             song.duration != null &&
-            song.duration! > playerState.songIgnoreTime.value * 1000)
+            song.duration! > AppShared.ignoreTimeValue.value * 1000)
         .toList();
     await songAllLoad(songs);
   }

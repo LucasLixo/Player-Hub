@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/instance_manager.dart';
 
 import '../../core/controllers/player.dart';
 import '../../core/app_colors.dart';

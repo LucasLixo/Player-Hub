@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:player/app/core/app_shared.dart';
 
-import 'app/app_widget.dart';
-import 'app/core/app_colors.dart';
-import 'app/core/controllers/just_audio_background.dart';
+import './app/core/controllers/just_audio_background.dart';
+import './app/app_widget.dart';
 
 void main() async {
   runZonedGuarded(() async {
@@ -18,8 +17,7 @@ void main() async {
       androidStopForegroundOnPause: true,
     );
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    AppColors.isDarkMode.value = prefs.getBool('isDarkMode') ?? true;
+    AppShared.loadShared();
 
     runApp(const AppWidget());
   

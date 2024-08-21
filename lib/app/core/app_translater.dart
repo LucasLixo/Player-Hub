@@ -1,6 +1,6 @@
-import 'package:get/get.dart';
+import 'package:get/get_navigation/src/root/internacionalization.dart';
 
-class AppMessages extends Translations {
+class AppTranslations extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
     'pt_BR': {
