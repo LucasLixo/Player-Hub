@@ -42,15 +42,6 @@ class PlayerStateController extends GetxController {
 
   RxMap<int, String> imageCache = <int, String>{}.obs;
 
-  Future<void> loadCacheImages(List<SongModel> songs) async {
-    for (var song in songs) {
-      if (!imageCache.containsKey(song.id)) {
-        final imagePath = await getImage(id: song.id);
-        imageCache[song.id] = imagePath;
-      }
-    }
-  }
-
   List<SongModel> recentList = <SongModel>[];
 
   Future<void> updateRecentList(SongModel song) async {
@@ -143,7 +134,13 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     }
     playerState.folderList.value = playerState.folderList.toSet().toList();
 
-    playerState.loadCacheImages(songList);
+    for (var song in songList) {
+      if (!playerState.imageCache.containsKey(song.id)) {
+        final imagePath = await getImage(id: song.id);
+        playerState.imageCache[song.id] = imagePath;
+      }
+    }
+
     await songLoad(songList, 0);
   }
 
