@@ -13,30 +13,28 @@ const List<String> imagePaths = [
 
 Future<String> getImage({required int id}) async {
   final audioQuery = OnAudioQuery();
+  final tempDir = await getTemporaryDirectory();
+  final File file = File('${tempDir.path}/$id.jpg');
+
+  if (await file.exists()) {
+    return file.path;
+  }
+
   final Uint8List? data = await audioQuery.queryArtwork(
     id,
     ArtworkType.AUDIO,
     format: ArtworkFormat.JPEG,
     size: 192,
-    quality: 100,
+    quality: 90,
   );
 
-  final tempDir = await getTemporaryDirectory();
-
-  final File file = File('${tempDir.path}/${id.toString()}.jpg');
-
-  if (data != null) {
-    if (!await file.exists()) {
-      await file.writeAsBytes(data);
-    }
+  if (data != null && data.isNotEmpty) {
+    await file.writeAsBytes(data);
   } else {
-    if (!await file.exists()) {
-      String fileRandom = imagePaths[Random().nextInt(imagePaths.length)];
-      final ByteData fileLoad = await rootBundle.load(fileRandom);
-      final Uint8List bytes = fileLoad.buffer.asUint8List();
-
-      await file.writeAsBytes(bytes);
-    }
+    final String randomImagePath = imagePaths[Random().nextInt(imagePaths.length)];
+    final ByteData imageData = await rootBundle.load(randomImagePath);
+    final Uint8List imageBytes = imageData.buffer.asUint8List();
+    await file.writeAsBytes(imageBytes);
   }
 
   return file.path;

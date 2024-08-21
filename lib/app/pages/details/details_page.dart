@@ -10,7 +10,6 @@ import '../../shared/widgets/repeat.dart';
 import '../../shared/utils/slider_shape.dart';
 import '../../routes/app_routes.dart';
 import '../../shared/utils/functions/get_artist.dart';
-import '../../shared/utils/functions/get_image.dart';
 import '../../shared/widgets/shuffle.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -50,10 +49,6 @@ class _DetailsPageState extends State<DetailsPage>
     }
   }
 
-  Future<String> getImageForSong(int songId) async {
-    return await getImage(id: songId);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,26 +57,19 @@ class _DetailsPageState extends State<DetailsPage>
       body: Obx(() {
         final currentSong = playerStateController
             .songList[playerStateController.songIndex.value];
+        final imagePath = playerStateController.imageCache[currentSong.id];
+        
         return Stack(
           children: [
             Positioned.fill(
-              child: FutureBuilder<String>(
-                future: getImageForSong(currentSong.id),
-                builder:
-                    (BuildContext context, AsyncSnapshot<String> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting ||
-                      snapshot.hasError) {
-                    return const SizedBox.shrink();
-                  } else {
-                    return Image.file(
-                      File(snapshot.data!),
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: double.infinity,
-                    );
-                  }
-                },
-              ),
+              child: imagePath != null
+                ? Image.file(
+                    File(imagePath),
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                  )
+                : const SizedBox.shrink(),
             ),
             Positioned.fill(
               child: BackdropFilter(
@@ -150,24 +138,14 @@ class _DetailsPageState extends State<DetailsPage>
                           playerController.nextSong();
                         }
                       },
-                      child: FutureBuilder<String>(
-                        future: getImageForSong(currentSong.id),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<String> snapshot) {
-                          if (snapshot.connectionState ==
-                                  ConnectionState.waiting ||
-                              snapshot.hasError) {
-                            return const SizedBox.shrink();
-                          } else {
-                            return Image.file(
-                              File(snapshot.data!),
-                              fit: BoxFit.cover,
-                              width: MediaQuery.of(context).size.width * 0.80,
-                              height: MediaQuery.of(context).size.width * 0.80,
-                            );
-                          }
-                        },
-                      ),
+                      child: imagePath != null
+                        ? Image.file(
+                            File(imagePath),
+                            fit: BoxFit.cover,
+                            width: MediaQuery.of(context).size.width * 0.80,
+                            height: MediaQuery.of(context).size.width * 0.80,
+                          )
+                        : const SizedBox.shrink(),
                     ),
                   ),
                   const SizedBox(

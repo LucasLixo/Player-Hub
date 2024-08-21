@@ -136,53 +136,36 @@ class _SettingPageState extends State<SettingPage> {
                 ),
               ),
             ),
-            SwitchTheme(
-              data: const CustomSwitchShape().getSwitchTheme(),
-              child: SwitchListTile(
-                secondary: Icon(
-                  Icons.dark_mode,
-                  color: AppColors.text,
-                  size: 32,
+            ListTile(
+              title: Text(
+                'setting_mode'.tr,
+                style: dynamicStyle(
+                  16,
+                  AppColors.text,
+                  FontWeight.normal,
+                  FontStyle.normal,
                 ),
-                title: Text(
-                  'setting_mode'.tr,
-                  style: dynamicStyle(
-                    16,
-                    AppColors.text,
-                    FontWeight.normal,
-                    FontStyle.normal,
-                  ),
-                ),
-                value: AppColors.isDarkMode.value,
-                onChanged: (bool value) async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  await prefs.setBool('isDarkMode', value);
-                  AppColors.isDarkMode.value = value;
+              ),
+              leading: Icon(
+                Icons.dark_mode,
+                color: AppColors.text,
+                size: 32,
+              ),
+              trailing: SwitchTheme(
+                data: const CustomSwitchShape().getSwitchTheme(),
+                child: Switch(
+                  value: AppColors.isDarkMode.value,
+                  onChanged: (bool value) async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    await prefs.setBool('isDarkMode', value);
+                    AppColors.isDarkMode.value = value;
 
-                  Get.offNamed(AppRoutes.splash);
-                },
+                    Get.offNamed(AppRoutes.splash);
+                  },
+                ),
               ),
             ),
-            // SwitchTheme(
-            //   data: const CustomSwitchShape().getSwitchTheme(),
-            //   child: SwitchListTile(
-            //     secondary: const Icon(Icons.equalizer),
-            //     title: Text(
-            //       'setting_equalizer'.tr,
-            //       style: dynamicStyle(
-            //         16,
-            //         AppColors.text,
-            //         FontWeight.normal,
-            //         FontStyle.normal,
-            //       ),
-            //     ),
-            //     value: playerStateController.equalizer.value,
-            //     onChanged: (bool value) {
-            //       _saveEqualizeValue(value);
-            //     },
-            //   ),
-            // ),
           ],
         ),
       ),

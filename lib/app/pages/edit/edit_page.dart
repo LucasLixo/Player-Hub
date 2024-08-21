@@ -8,7 +8,7 @@ import '../../shared/utils/dynamic_style.dart';
 import '../../core/app_colors.dart';
 import '../../shared/utils/functions/get_artist.dart';
 import '../../shared/utils/title_style.dart';
-import '../../shared/utils/functions/get_image.dart';
+import '../../core/controllers/player.dart';
 
 class EditPage extends StatefulWidget {
   final SongModel song;
@@ -28,6 +28,8 @@ class _EditPageState extends State<EditPage> {
 
   RxBool isConect = false.obs;
 
+  final playerStateController = Get.find<PlayerStateController>();
+
   @override
   void initState() {
     super.initState();
@@ -42,10 +44,6 @@ class _EditPageState extends State<EditPage> {
     _textControllerTitle.dispose();
     _textControllerArtist.dispose();
     super.dispose();
-  }
-
-  Future<String> getImageForSong(int songId) async {
-    return await getImage(id: songId);
   }
 
   Future<void> checkConnectivity() async {
@@ -95,7 +93,7 @@ class _EditPageState extends State<EditPage> {
             child: Icon(
               Icons.save,
               color: AppColors.text,
-              size: 32,
+              size: 26,
             ),
           ),
           const SizedBox(
@@ -157,24 +155,21 @@ class _EditPageState extends State<EditPage> {
                 'edit_image'.tr,
                 style: titleStyle(),
               ),
-              trailing: FutureBuilder<String>(
-                future: getImageForSong(widget.song.id),
-                builder:
-                    (BuildContext context, AsyncSnapshot<String> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting ||
-                      snapshot.hasError) {
-                    return const SizedBox.shrink();
-                  } else {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.file(
-                        File(snapshot.data!),
-                        fit: BoxFit.cover,
-                        height: 50,
-                        width: 50,
-                      ),
-                    );
-                  }
+              trailing: Obx(
+                () {
+                  final currentSong = playerStateController
+                      .songList[playerStateController.songIndex.value];
+                  final imagePath =
+                      playerStateController.imageCache[currentSong.id];
+
+                  return imagePath != null
+                      ? Image.file(
+                          File(imagePath),
+                          fit: BoxFit.cover,
+                          height: 50,
+                          width: 50,
+                        )
+                      : const SizedBox.shrink();
                 },
               ),
             ),

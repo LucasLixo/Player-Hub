@@ -6,7 +6,6 @@ import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import './just_audio_background.dart';
-import '../../shared/utils/functions/get_artist.dart';
 import '../../shared/utils/functions/get_image.dart';
 
 class PlayerStateController extends GetxController {
@@ -23,8 +22,6 @@ class PlayerStateController extends GetxController {
   RxDouble songDurationD = 0.0.obs;
   RxDouble songPositionD = 0.0.obs;
 
-  RxInt songIgnoreTime = 50.obs;
-
   RxList<SongModel> songAllList = <SongModel>[].obs;
   RxList<SongModel> songList = <SongModel>[].obs;
 
@@ -36,9 +33,22 @@ class PlayerStateController extends GetxController {
     });
   }
 
+  RxInt songIgnoreTime = 50.obs;
+
   Future<void> loadSliderValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     songIgnoreTime.value = (prefs.getInt('songIgnoreTime') ?? 50);
+  }
+
+  RxMap<int, String> imageCache = <int, String>{}.obs;
+
+  Future<void> loadCacheImages(List<SongModel> songs) async {
+    for (var song in songs) {
+      if (!imageCache.containsKey(song.id)) {
+        final imagePath = await getImage(id: song.id);
+        imageCache[song.id] = imagePath;
+      }
+    }
   }
 
   List<SongModel> recentList = <SongModel>[];
@@ -133,29 +143,23 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     }
     playerState.folderList.value = playerState.folderList.toSet().toList();
 
+    playerState.loadCacheImages(songList);
     await songLoad(songList, 0);
   }
 
   Future<void> songLoad(List<SongModel> songList, int index) async {
     playerState.songList.value = songList;
 
-    List<Future<String>> imageFutures = playerState.songList.map((song) {
-      return getImage(id: song.id);
-    }).toList();
-    List<String> images = await Future.wait(imageFutures);
-
-    List<AudioSource> playlist =
-        playerState.songList.asMap().entries.map((entry) {
-      final song = entry.value;
-      final art = images[entry.key];
+    List<AudioSource> playlist = playerState.songList.map((song) {
+      final imagePath = playerState.imageCache[song.id];
 
       return AudioSource.uri(
         Uri.parse(song.uri!),
         tag: MediaItem(
           id: song.id.toString(),
           title: song.title,
-          artist: getArtist(artist: song.artist!),
-          artUri: Uri.parse(art),
+          artist: song.artist,
+          artUri: imagePath != null ? Uri.file(imagePath) : null,
         ),
       );
     }).toList();

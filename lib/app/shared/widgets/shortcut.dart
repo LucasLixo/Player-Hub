@@ -7,7 +7,6 @@ import '../../routes/app_routes.dart';
 import '../../core/controllers/player.dart';
 import '../../shared/utils/subtitle_style.dart';
 import '../../shared/utils/title_style.dart';
-import '../utils/functions/get_image.dart';
 import '../utils/functions/get_artist.dart';
 
 class Shortcut extends StatefulWidget {
@@ -48,10 +47,6 @@ class _ShortcutState extends State<Shortcut>
     }
   }
 
-  Future<String> getImageForSong(int songId) async {
-    return await getImage(id: songId);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -69,60 +64,53 @@ class _ShortcutState extends State<Shortcut>
 
         final song = playerStateController
             .songList[playerStateController.songIndex.value];
+        final imagePath = playerStateController.imageCache[song.id];
 
         return Padding(
           padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-          child: FutureBuilder<String>(
-            future: getImageForSong(song.id),
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting ||
-                  snapshot.hasError) {
-                return const SizedBox.shrink();
-              } else {
-                return ListTile(
-                  tileColor: AppColors.surface,
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  title: Text(
-                    song.title,
-                    style: titleStyle(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  subtitle: Text(
-                    getArtist(artist: song.artist!),
-                    style: subtitleStyle(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.file(
-                      File(snapshot.data!),
+          child: ListTile(
+            tileColor: AppColors.surface,
+            splashColor: Colors.transparent,
+            focusColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            title: Text(
+              song.title,
+              style: titleStyle(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            subtitle: Text(
+              getArtist(artist: song.artist!),
+              style: subtitleStyle(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: imagePath != null
+                  ? Image.file(
+                      File(imagePath),
                       fit: BoxFit.cover,
                       width: 50.0,
                       height: 50.0,
-                    ),
-                  ),
-                  trailing: Transform.scale(
-                    scale: 1.5,
-                    child: IconButton(
-                      icon: AnimatedIcon(
-                        icon: AnimatedIcons.play_pause,
-                        progress: _controller,
-                      ),
-                      onPressed: _togglePlayPause,
-                      color: AppColors.text,
-                    ),
-                  ),
-                  onTap: () {
-                    Get.toNamed(AppRoutes.details);
-                  },
-                );
-              }
+                    )
+                  : const SizedBox.shrink(),
+            ),
+            trailing: Transform.scale(
+              scale: 1.5,
+              child: IconButton(
+                icon: AnimatedIcon(
+                  icon: AnimatedIcons.play_pause,
+                  progress: _controller,
+                ),
+                onPressed: _togglePlayPause,
+                color: AppColors.text,
+              ),
+            ),
+            onTap: () {
+              Get.toNamed(AppRoutes.details);
             },
           ),
         );
