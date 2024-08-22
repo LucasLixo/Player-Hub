@@ -93,7 +93,10 @@ class _ShortcutState extends State<Shortcut>
                       width: 50.0,
                       height: 50.0,
                     )
-                  : const SizedBox.shrink(),
+                  : const SizedBox(
+                      width: 50.0,
+                      height: 50.0,
+                    ),
             ),
             trailing: Transform.scale(
               scale: 1.5,

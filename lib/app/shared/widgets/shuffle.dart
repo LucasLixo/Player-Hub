@@ -51,13 +51,17 @@ class _ShuffleState extends State<Shuffle> {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(
+    return InkWell(
+      onTap: () {
+        onIconPressed();
+      },
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      child: Icon(
         Icons.shuffle,
         size: 30,
         color: colors[currentIndex],
       ),
-      onPressed: onIconPressed,
     );
   }
 }

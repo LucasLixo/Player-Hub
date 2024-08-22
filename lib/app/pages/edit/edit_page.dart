@@ -160,7 +160,17 @@ class _EditPageState extends State<EditPage> {
                 'edit_image'.tr,
                 style: titleStyle(),
               ),
-              trailing: Obx(
+              trailing: InkWell(
+                onTap: () {},
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                child: Icon(
+                  Icons.folder,
+                  color: AppColors.text,
+                  size: 26,
+                ),
+              ),
+              subtitle: Obx(
                 () {
                   final currentSong = playerStateController
                       .songList[playerStateController.songIndex.value];
@@ -171,10 +181,13 @@ class _EditPageState extends State<EditPage> {
                       ? Image.file(
                           File(imagePath),
                           fit: BoxFit.cover,
-                          height: 50,
-                          width: 50,
+                          width: 250.0,
+                          height: 250.0,
                         )
-                      : const SizedBox.shrink();
+                      : const SizedBox(
+                          width: 250.0,
+                          height: 250.0,
+                        );
                 },
               ),
             ),

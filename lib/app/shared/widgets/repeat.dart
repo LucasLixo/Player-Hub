@@ -50,13 +50,17 @@ class _RepeatState extends State<Repeat> {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(
+    return InkWell(
+      onTap: () {
+        onIconPressed();
+      },
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      child: Icon(
         icons[currentIndex],
         size: 30,
         color: Colors.white,
       ),
-      onPressed: onIconPressed,
     );
   }
 }

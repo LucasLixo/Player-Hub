@@ -57,7 +57,10 @@ class MusicList extends StatelessWidget {
                       width: 50.0,
                       height: 50.0,
                     )
-                  : const SizedBox.shrink(),
+                  : const SizedBox(
+                    width: 50.0,
+                    height: 50.0,
+                  ),
             ),
             onTap: () {
               if (playerStateController.songList != songs) {

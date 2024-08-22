@@ -61,18 +61,18 @@ class _DetailsPageState extends State<DetailsPage>
         final currentSong = playerStateController
             .songList[playerStateController.songIndex.value];
         final imagePath = playerStateController.imageCache[currentSong.id];
-        
+
         return Stack(
           children: [
             Positioned.fill(
               child: imagePath != null
-                ? Image.file(
-                    File(imagePath),
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                  )
-                : const SizedBox.shrink(),
+                  ? Image.file(
+                      File(imagePath),
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    )
+                  : const SizedBox.shrink(),
             ),
             Positioned.fill(
               child: BackdropFilter(
@@ -115,44 +115,21 @@ class _DetailsPageState extends State<DetailsPage>
                         child: const Icon(
                           Icons.edit,
                           color: Colors.white,
-                          size: 40,
+                          size: 36,
                         ),
                       )
                     ],
                   ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.width * 0.80,
-                    width: MediaQuery.of(context).size.width * 0.80,
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(24),
-                      color: AppColors.background,
-                    ),
-                    alignment: Alignment.center,
-                    child: GestureDetector(
-                      onPanEnd: (details) {
-                        if (details.velocity.pixelsPerSecond.dx > 0) {
-                          playerController.previousSong();
-                        } else if (details.velocity.pixelsPerSecond.dx < 0) {
-                          playerController.nextSong();
-                        }
-                      },
-                      child: imagePath != null
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
+                    child: imagePath != null
                         ? Image.file(
                             File(imagePath),
                             fit: BoxFit.cover,
-                            width: MediaQuery.of(context).size.width * 0.80,
-                            height: MediaQuery.of(context).size.width * 0.80,
+                            width: 350,
+                            height: 350,
                           )
                         : const SizedBox.shrink(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
@@ -224,9 +201,6 @@ class _DetailsPageState extends State<DetailsPage>
                                   ),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 12,
-                              ),
                               SliderTheme(
                                 data: const SliderThemeData(
                                   trackShape: CustomSliderTrackShape(),
@@ -251,40 +225,51 @@ class _DetailsPageState extends State<DetailsPage>
                             ],
                           ),
                         ),
-                        const SizedBox(
-                          height: 12,
-                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Repeat(),
-                            IconButton(
-                              onPressed: playerController.previousSong,
-                              icon: const Icon(
+                            InkWell(
+                              onTap: () {
+                                playerController.previousSong();
+                              },
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              child: const Icon(
                                 Icons.skip_previous_rounded,
                                 size: 40,
                                 color: Colors.white,
                               ),
                             ),
-                            CircleAvatar(
-                              radius: 35,
-                              backgroundColor: Colors.transparent,
-                              foregroundColor: Colors.transparent,
-                              child: Transform.scale(
-                                scale: 2.5,
-                                child: IconButton(
-                                  icon: AnimatedIcon(
-                                    icon: AnimatedIcons.play_pause,
-                                    progress: _controller,
+                            ClipOval(
+                              child: Material(
+                                color: Colors.white.withOpacity(0.3),
+                                child: InkWell(
+                                  onTap: () {
+                                    _togglePlayPause();
+                                  },
+                                  splashColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(26.0),
+                                    child: Transform.scale(
+                                      scale: 2.5,
+                                      child: AnimatedIcon(
+                                        icon: AnimatedIcons.play_pause,
+                                        progress: _controller,
+                                      ),
+                                    ),
                                   ),
-                                  onPressed: _togglePlayPause,
-                                  color: Colors.white,
                                 ),
                               ),
                             ),
-                            IconButton(
-                              onPressed: playerController.nextSong,
-                              icon: const Icon(
+                            InkWell(
+                              onTap: () {
+                                playerController.nextSong();
+                              },
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              child: const Icon(
                                 Icons.skip_next_rounded,
                                 size: 40,
                                 color: Colors.white,
