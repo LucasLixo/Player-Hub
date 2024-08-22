@@ -121,7 +121,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
           .add(song.data.split('/')[song.data.split('/').length - 2]);
     }
     playerState.folderList.value = playerState.folderList.toSet().toList();
-
+    
     for (var song in songList) {
       if (!playerState.imageCache.containsKey(song.id)) {
         final imagePath = await getImage(id: song.id);

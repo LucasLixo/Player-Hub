@@ -170,25 +170,30 @@ class _EditPageState extends State<EditPage> {
                   size: 26,
                 ),
               ),
-              subtitle: Obx(
-                () {
-                  final currentSong = playerStateController
-                      .songList[playerStateController.songIndex.value];
-                  final imagePath =
-                      playerStateController.imageCache[currentSong.id];
-
-                  return imagePath != null
-                      ? Image.file(
-                          File(imagePath),
-                          fit: BoxFit.cover,
-                          width: 250.0,
-                          height: 250.0,
-                        )
-                      : const SizedBox(
-                          width: 250.0,
-                          height: 250.0,
-                        );
-                },
+              subtitle: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(18),
+                  child: Obx(
+                    () {
+                      final currentSong = playerStateController
+                          .songList[playerStateController.songIndex.value];
+                      final imagePath =
+                          playerStateController.imageCache[currentSong.id];
+                
+                      return imagePath != null
+                          ? Image.file(
+                              File(imagePath),
+                              fit: BoxFit.cover,
+                              width: 150.0,
+                              height: 150.0,
+                            )
+                          : const SizedBox(
+                              width: 150.0,
+                              height: 150.0,
+                            );
+                    },
+                  ),
+                ),
               ),
             ),
           ],

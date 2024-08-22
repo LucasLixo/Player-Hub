@@ -120,6 +120,9 @@ class _DetailsPageState extends State<DetailsPage>
                       )
                     ],
                   ),
+                  const SizedBox(
+                    height: 12,
+                  ),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(24),
                     child: imagePath != null
