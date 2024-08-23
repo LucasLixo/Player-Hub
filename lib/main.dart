@@ -11,7 +11,7 @@ void main() async {
 
     await JustAudioBackground.init(
       androidNotificationChannelId: 'com.cornflower.player.channel.audio',
-      androidNotificationChannelName: 'Music playback',
+      androidNotificationChannelName: AppShared.title,
       androidShowNotificationBadge: true,
       androidNotificationOngoing: true,
       androidStopForegroundOnPause: true,
@@ -22,8 +22,8 @@ void main() async {
     runApp(const AppWidget());
   
   }, (Object error, StackTrace stack) {
-    print('==============================');
+    print('\n\n==============================');
     print(error);
-    print('==============================');
+    print('==============================\n\n');
   });
 }

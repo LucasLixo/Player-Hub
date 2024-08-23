@@ -8,6 +8,8 @@ import '../../shared/utils/subtitle_style.dart';
 import '../../shared/utils/title_style.dart';
 import '../../core/controllers/player.dart';
 import '../../routes/app_routes.dart';
+import '../../core/app_colors.dart';
+import '../utils/crud_sheet.dart';
 import '../meta/get_artist.dart';
 
 class MusicList extends StatelessWidget {
@@ -33,9 +35,6 @@ class MusicList extends StatelessWidget {
             tileColor: Colors.transparent,
             splashColor: Colors.transparent,
             focusColor: Colors.transparent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
             title: Text(
               song.title,
               style: titleStyle(),
@@ -58,9 +57,21 @@ class MusicList extends StatelessWidget {
                       height: 50.0,
                     )
                   : const SizedBox(
-                    width: 50.0,
-                    height: 50.0,
-                  ),
+                      width: 50.0,
+                      height: 50.0,
+                    ),
+            ),
+            trailing: InkWell(
+              onTap: () {
+                crudSheet(context, song);
+              },
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              child: Icon(
+                Icons.more_vert,
+                size: 30,
+                color: AppColors.text,
+              ),
             ),
             onTap: () {
               if (playerStateController.songList != songs) {

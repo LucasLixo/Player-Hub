@@ -1,3 +1,3 @@
-String getArtist({required String artist}) {
-  return artist == '<unknown>' ? '' : artist.trim();
+String getTitle({required String title}) {
+  return title == '<unknown>' ? '' : title.trim();
 }

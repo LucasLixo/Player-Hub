@@ -8,7 +8,7 @@ import '../../shared/utils/dynamic_style.dart';
 import '../../core/app_colors.dart';
 import '../../routes/app_routes.dart';
 import '../../shared/utils/slider_shape.dart';
-import '../../shared/utils/switch_shape.dart';
+import '../../shared/utils/switch_theme.dart';
 import '../../core/app_shared.dart';
 
 class SettingPage extends StatefulWidget {
@@ -24,14 +24,6 @@ class _SettingPageState extends State<SettingPage> {
 
   int _sliderValue = AppShared.ignoreTimeValue.value;
 
-  // bool _equalizerValue = false;
-
-  @override
-  void initState() {
-    super.initState();
-    // _loadEqualizeValue();
-  }
-
   @override
   void dispose() {
     if (_sliderValue != AppShared.ignoreTimeValue.value) {
@@ -40,18 +32,6 @@ class _SettingPageState extends State<SettingPage> {
     }
     super.dispose();
   }
-
-  // void _loadEqualizeValue() async {
-  //   await playerStateController.loadEqualizeValue();
-  //   setState(() {
-  //     _equalizerValue = playerStateController.equalizer.value;
-  //   });
-  // }
-
-  // void _saveEqualizeValue(bool value) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   await prefs.setBool('equalizer', value);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -81,77 +61,72 @@ class _SettingPageState extends State<SettingPage> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
-              title: Text(
-                'setting_ignore'.trParams({
-                  'seconds': _sliderValue.toString(),
-                }),
-                style: dynamicStyle(
-                  16,
-                  AppColors.text,
-                  FontWeight.normal,
-                  FontStyle.normal,
-                ),
-              ),
-              leading: Icon(
-                Icons.music_note,
-                color: AppColors.text,
-                size: 32,
-              ),
-              subtitle: SliderTheme(
-                data: const SliderThemeData(
-                  trackShape: CustomSliderTrackShape(),
-                ),
-                child: Slider(
-                  thumbColor: AppColors.primary,
-                  inactiveColor: AppColors.onBackground,
-                  activeColor: AppColors.primary,
-                  min: 0,
-                  max: 120,
-                  value: _sliderValue.toDouble(),
-                  onChanged: (value) {
-                    setState(() {
-                      _sliderValue = value.toInt();
-                    });
-                  },
-                ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ListTile(
+            title: Text(
+              'setting_ignore'.trParams({
+                'seconds': _sliderValue.toString(),
+              }),
+              style: dynamicStyle(
+                16,
+                AppColors.text,
+                FontWeight.normal,
+                FontStyle.normal,
               ),
             ),
-            ListTile(
-              title: Text(
-                'setting_mode'.tr,
-                style: dynamicStyle(
-                  16,
-                  AppColors.text,
-                  FontWeight.normal,
-                  FontStyle.normal,
-                ),
+            leading: Icon(
+              Icons.music_note,
+              color: AppColors.text,
+              size: 32,
+            ),
+            subtitle: SliderTheme(
+              data: getSliderTheme(),
+              child: Slider(
+                thumbColor: AppColors.primary,
+                inactiveColor: AppColors.onBackground,
+                activeColor: AppColors.primary,
+                min: 0,
+                max: 120,
+                value: _sliderValue.toDouble(),
+                onChanged: (value) {
+                  setState(() {
+                    _sliderValue = value.toInt();
+                  });
+                },
               ),
-              leading: Icon(
-                Icons.dark_mode,
-                color: AppColors.text,
-                size: 32,
+            ),
+          ),
+          ListTile(
+            title: Text(
+              'setting_mode'.tr,
+              style: dynamicStyle(
+                16,
+                AppColors.text,
+                FontWeight.normal,
+                FontStyle.normal,
               ),
-              trailing: SwitchTheme(
-                data: const CustomSwitchShape().getSwitchTheme(),
-                child: Switch(
-                  value: AppShared.darkModeValue.value,
-                  onChanged: (bool value) async {
-                    await AppShared.setDarkMode(value);
+            ),
+            leading: Icon(
+              Icons.dark_mode,
+              color: AppColors.text,
+              size: 32,
+            ),
+            trailing: SwitchTheme(
+              data: getSwitchTheme(),
+              child: Switch(
+                value: AppShared.darkModeValue.value,
+                onChanged: (bool value) async {
+                  await AppShared.setDarkMode(value);
 
-                    Get.offNamed(AppRoutes.splash);
-                  },
-                ),
+                  Get.offNamed(AppRoutes.splash);
+                },
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

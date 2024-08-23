@@ -25,7 +25,7 @@ Future<String> getImage({required int id}) async {
     ArtworkType.AUDIO,
     format: ArtworkFormat.JPEG,
     size: 192,
-    quality: 90,
+    quality: 100,
   );
 
   if (data != null && data.isNotEmpty) {

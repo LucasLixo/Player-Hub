@@ -10,9 +10,10 @@ import '../../core/app_colors.dart';
 import '../../shared/widgets/shortcut.dart';
 import '../../core/controllers/player.dart';
 import '../../core/app_shared.dart';
-import '../../shared/utils/subtitle_style.dart';
-import '../../shared/utils/title_style.dart';
 import '../../shared/widgets/music_list.dart';
+import '../../shared/widgets/folder_list.dart';
+import '../../shared/widgets/playlist_list.dart';
+import '../../shared/widgets/center_text.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -106,6 +107,7 @@ class _HomePageState extends State<HomePage> {
           ),
           bottom: TabBar(
             isScrollable: false,
+            dividerColor: Colors.transparent,
             labelStyle: dynamicStyle(
               18,
               AppColors.text,
@@ -130,100 +132,17 @@ class _HomePageState extends State<HomePage> {
             if (playerStateController.songAllList.isEmpty) {
               return TabBarView(
                 children: <Widget>[
-                  Center(
-                    child: Text(
-                      'home_not_tab1'.tr,
-                      style: dynamicStyle(
-                        18,
-                        AppColors.text,
-                        FontWeight.normal,
-                        FontStyle.normal,
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      'home_not_tab2'.tr,
-                      style: dynamicStyle(
-                        18,
-                        AppColors.text,
-                        FontWeight.normal,
-                        FontStyle.normal,
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      'home_not_tab3'.tr,
-                      style: dynamicStyle(
-                        18,
-                        AppColors.text,
-                        FontWeight.normal,
-                        FontStyle.normal,
-                      ),
-                    ),
-                  ),
+                  CenterText(title: 'home_not_tab1'.tr),
+                  CenterText(title: 'home_not_tab2'.tr),
+                  CenterText(title: 'home_not_tab3'.tr),
                 ],
               );
             } else {
               return TabBarView(
                 children: <Widget>[
                   MusicList(songs: playerStateController.songAllList),
-                  ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: playerStateController.folderList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      var title = playerStateController.folderList[index];
-                      var songs = playerController.getSongsFromFolder(title);
-
-                      return Container(
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: ListTile(
-                          splashColor: Colors.transparent,
-                          focusColor: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          tileColor: AppColors.surface,
-                          title: Text(
-                            title,
-                            style: titleStyle(),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          subtitle: Text(
-                            songs.length.toString(),
-                            style: subtitleStyle(),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          leading: Icon(
-                            Icons.folder,
-                            color: AppColors.text,
-                            size: 32,
-                          ),
-                          onTap: () {
-                            Get.toNamed(AppRoutes.playlist, arguments: {
-                              'title': title,
-                              'songs': songs,
-                            });
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                  Center(
-                    child: Text(
-                      'home_not_tab3'.tr,
-                      style: dynamicStyle(
-                        18,
-                        AppColors.text,
-                        FontWeight.normal,
-                        FontStyle.normal,
-                      ),
-                    ),
-                  ),
+                  const FolderList(),
+                  const PlaylistList(),
                 ],
               );
             }

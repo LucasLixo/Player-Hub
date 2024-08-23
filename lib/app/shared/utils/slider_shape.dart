@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 
-class CustomSliderTrackShape extends RoundedRectSliderTrackShape {
-  const CustomSliderTrackShape();
+SliderThemeData getSliderTheme() {
+  
+  return const SliderThemeData(
+    trackShape: _CustomSliderTrackShape(),
+    trackHeight: 3.0,
+  );
+}
+
+class _CustomSliderTrackShape extends RoundedRectSliderTrackShape {
+  const _CustomSliderTrackShape();
   
   @override
   Rect getPreferredRect({

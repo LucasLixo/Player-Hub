@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/app_colors.dart';
 
-subtitleStyle() {
+TextStyle subtitleStyle() {
   return TextStyle(
     fontSize: 14,
     fontFamily: 'OpenSans',

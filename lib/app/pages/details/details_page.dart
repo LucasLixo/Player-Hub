@@ -9,9 +9,9 @@ import 'package:get/instance_manager.dart';
 import '../../core/controllers/player.dart';
 import '../../shared/utils/dynamic_style.dart';
 import '../../core/app_colors.dart';
+import '../../shared/utils/crud_sheet.dart';
 import '../../shared/widgets/repeat.dart';
 import '../../shared/utils/slider_shape.dart';
-import '../../routes/app_routes.dart';
 import '../../shared/meta/get_artist.dart';
 import '../../shared/widgets/shuffle.dart';
 
@@ -83,7 +83,7 @@ class _DetailsPageState extends State<DetailsPage>
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
+              padding: const EdgeInsets.all(12),
               child: Column(
                 children: [
                   const SizedBox(
@@ -106,22 +106,20 @@ class _DetailsPageState extends State<DetailsPage>
                       ),
                       InkWell(
                         onTap: () {
-                          Get.toNamed(AppRoutes.edit, arguments: {
-                            'song': currentSong,
-                          });
+                          crudSheet(context, currentSong);
                         },
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                         child: const Icon(
-                          Icons.edit,
+                          Icons.more_vert,
                           color: Colors.white,
-                          size: 36,
+                          size: 32,
                         ),
                       )
                     ],
                   ),
                   const SizedBox(
-                    height: 12,
+                    height: 4,
                   ),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(24),
@@ -134,155 +132,131 @@ class _DetailsPageState extends State<DetailsPage>
                           )
                         : const SizedBox.shrink(),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
+                  SizedBox(
+                    width: double.infinity,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(
-                                height: 12,
-                              ),
-                              Text(
-                                currentSong.title,
-                                style: dynamicStyle(
-                                  16,
-                                  Colors.white,
-                                  FontWeight.w600,
-                                  FontStyle.normal,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              Text(
-                                getArtist(artist: currentSong.artist!),
-                                style: dynamicStyle(
-                                  16,
-                                  Colors.white60,
-                                  FontWeight.normal,
-                                  FontStyle.normal,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                            ],
-                          ),
+                        const SizedBox(
+                          height: 12,
                         ),
-                        Obx(
-                          () => Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    playerStateController.songPosition.value,
-                                    style: dynamicStyle(
-                                      14,
-                                      Colors.white,
-                                      FontWeight.normal,
-                                      FontStyle.normal,
-                                    ),
-                                  ),
-                                  Text(
-                                    playerStateController.songDuration.value,
-                                    style: dynamicStyle(
-                                      14,
-                                      Colors.white,
-                                      FontWeight.normal,
-                                      FontStyle.normal,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SliderTheme(
-                                data: const SliderThemeData(
-                                  trackShape: CustomSliderTrackShape(),
-                                ),
-                                child: Slider(
-                                  thumbColor: Colors.white,
-                                  inactiveColor: Colors.white54,
-                                  activeColor: Colors.white,
-                                  min: 0.0,
-                                  max: playerStateController.songDurationD.value
-                                      .toDouble(),
-                                  value: playerStateController
-                                      .songPositionD.value
-                                      .toDouble(),
-                                  onChanged: (newValue) {
-                                    playerController.chargeDurationToSeconds(
-                                      newValue.toInt(),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
+                        Text(
+                          currentSong.title,
+                          style: dynamicStyle(
+                            16,
+                            Colors.white,
+                            FontWeight.w600,
+                            FontStyle.normal,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Repeat(),
-                            InkWell(
-                              onTap: () {
-                                playerController.previousSong();
-                              },
-                              splashColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              child: const Icon(
-                                Icons.skip_previous_rounded,
-                                size: 40,
-                                color: Colors.white,
-                              ),
-                            ),
-                            ClipOval(
-                              child: Material(
-                                color: Colors.white.withOpacity(0.3),
-                                child: InkWell(
-                                  onTap: () {
-                                    _togglePlayPause();
-                                  },
-                                  splashColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(26.0),
-                                    child: Transform.scale(
-                                      scale: 2.5,
-                                      child: AnimatedIcon(
-                                        icon: AnimatedIcons.play_pause,
-                                        progress: _controller,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                playerController.nextSong();
-                              },
-                              splashColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              child: const Icon(
-                                Icons.skip_next_rounded,
-                                size: 40,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const Shuffle(),
-                          ],
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          getArtist(artist: currentSong.artist!),
+                          style: dynamicStyle(
+                            16,
+                            Colors.white60,
+                            FontWeight.normal,
+                            FontStyle.normal,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        playerStateController.songPosition.value,
+                        style: dynamicStyle(
+                          14,
+                          Colors.white,
+                          FontWeight.normal,
+                          FontStyle.normal,
+                        ),
+                      ),
+                      Text(
+                        playerStateController.songDuration.value,
+                        style: dynamicStyle(
+                          14,
+                          Colors.white,
+                          FontWeight.normal,
+                          FontStyle.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SliderTheme(
+                    data: getSliderTheme(),
+                    child: Slider(
+                      thumbColor: Colors.white,
+                      inactiveColor: Colors.white54,
+                      activeColor: Colors.white,
+                      min: 0.0,
+                      max: playerStateController.songDurationD.value.toDouble(),
+                      value:
+                          playerStateController.songPositionD.value.toDouble(),
+                      onChanged: (newValue) {
+                        playerController.chargeDurationToSeconds(
+                          newValue.toInt(),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Repeat(),
+                      InkWell(
+                        onTap: () {
+                          playerController.previousSong();
+                        },
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        child: const Icon(
+                          Icons.skip_previous_rounded,
+                          size: 40,
+                          color: Colors.white,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          _togglePlayPause();
+                        },
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        child: AnimatedIcon(
+                          icon: AnimatedIcons.play_pause,
+                          progress: _controller,
+                          size: 64,
+                          color: AppColors.text,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          playerController.nextSong();
+                        },
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        child: const Icon(
+                          Icons.skip_next_rounded,
+                          size: 40,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const Shuffle(),
+                    ],
                   ),
                 ],
               ),

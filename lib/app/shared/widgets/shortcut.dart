@@ -7,9 +7,7 @@ import 'package:get/instance_manager.dart';
 import '../../core/app_colors.dart';
 import '../../routes/app_routes.dart';
 import '../../core/controllers/player.dart';
-import '../../shared/utils/subtitle_style.dart';
 import '../../shared/utils/title_style.dart';
-import '../meta/get_artist.dart';
 
 class Shortcut extends StatefulWidget {
   const Shortcut({super.key});
@@ -63,29 +61,23 @@ class _ShortcutState extends State<Shortcut>
             .songList[playerStateController.songIndex.value];
         final imagePath = playerStateController.imageCache[song.id];
 
-        return Padding(
+        return Container(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: ListTile(
             tileColor: AppColors.surface,
             splashColor: Colors.transparent,
             focusColor: Colors.transparent,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(55),
             ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
             title: Text(
               song.title,
               style: titleStyle(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            subtitle: Text(
-              getArtist(artist: song.artist!),
-              style: subtitleStyle(),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
+            leading: ClipOval(
               child: imagePath != null
                   ? Image.file(
                       File(imagePath),
@@ -98,16 +90,56 @@ class _ShortcutState extends State<Shortcut>
                       height: 50.0,
                     ),
             ),
-            trailing: Transform.scale(
-              scale: 1.5,
-              child: IconButton(
-                icon: AnimatedIcon(
-                  icon: AnimatedIcons.play_pause,
-                  progress: _controller,
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InkWell(
+                  onTap: () {
+                    playerController.previousSong();
+                  },
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  child: const Icon(
+                    Icons.skip_previous_rounded,
+                    size: 32,
+                    color: Colors.white,
+                  ),
                 ),
-                onPressed: _togglePlayPause,
-                color: AppColors.text,
-              ),
+                const SizedBox(
+                  width: 8,
+                ),
+                InkWell(
+                  onTap: () {
+                    _togglePlayPause();
+                  },
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  child: AnimatedIcon(
+                    icon: AnimatedIcons.play_pause,
+                    progress: _controller,
+                    size: 32,
+                    color: AppColors.text,
+                  ),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                InkWell(
+                  onTap: () {
+                    playerController.nextSong();
+                  },
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  child: const Icon(
+                    Icons.skip_next_rounded,
+                    size: 32,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+              ],
             ),
             onTap: () {
               Get.toNamed(AppRoutes.details);

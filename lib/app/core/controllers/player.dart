@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/binding.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:get/instance_manager.dart';
 import 'package:just_audio/just_audio.dart';
@@ -9,6 +9,7 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import './just_audio_background.dart';
 import '../../shared/meta/get_image.dart';
 import '../../core/app_shared.dart';
+import '../../shared/meta/get_artist.dart';
 
 class PlayerStateController extends GetxController {
   RxBool isPlaying = false.obs;
@@ -44,6 +45,12 @@ class PlayerStateController extends GetxController {
       recentList.removeWhere((s) => s.id == song.id);
     }
     recentList.insert(0, song);
+  }
+
+  SongModel findSongById(int id) {
+    return songAllList.firstWhere(
+      (song) => song.id == id,
+    );
   }
 }
 
@@ -143,7 +150,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
         tag: MediaItem(
           id: song.id.toString(),
           title: song.title,
-          artist: song.artist,
+          artist: getArtist(artist: song.artist!),
           artUri: imagePath != null ? Uri.file(imagePath) : null,
         ),
       );
@@ -232,9 +239,4 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   // void resetPlaylist() {
   //   songLoad(playerState.songAllList, 0);
   // }
-  SongModel findSongById(int id) {
-    return playerState.songAllList.firstWhere(
-      (song) => song.id == id,
-    );
-  }
 }

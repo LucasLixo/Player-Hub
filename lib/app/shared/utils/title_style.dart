@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/app_colors.dart';
 
-titleStyle() {
+TextStyle titleStyle() {
   return TextStyle(
     fontSize: 16,
     fontFamily: 'OpenSans',

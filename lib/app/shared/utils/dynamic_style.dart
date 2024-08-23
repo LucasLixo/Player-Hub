@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-dynamicStyle(
+TextStyle dynamicStyle(
   double fontSize,
   Color color,
   FontWeight fontWeight,
