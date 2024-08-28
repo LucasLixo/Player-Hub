@@ -9,7 +9,7 @@ import '../../shared/utils/title_style.dart';
 import '../../core/controllers/player.dart';
 import '../../routes/app_routes.dart';
 import '../../core/app_colors.dart';
-import '../utils/crud_sheet.dart';
+import 'crud_sheet.dart';
 import '../meta/get_artist.dart';
 
 class MusicList extends StatelessWidget {

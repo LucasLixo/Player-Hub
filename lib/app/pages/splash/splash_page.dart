@@ -73,9 +73,7 @@ class _SplashPageState extends State<SplashPage> {
               ),
               const SizedBox(height: 15),
               TextButton(
-                onPressed: () {
-                  SystemNavigator.pop();
-                },
+                onPressed: () => SystemNavigator.pop(),
                 child: Text(
                   'app_again'.tr,
                   style: dynamicStyle(

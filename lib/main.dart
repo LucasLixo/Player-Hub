@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:player/app/core/app_shared.dart';
 
+import './app/core/app_shared.dart';
 import './app/core/controllers/just_audio_background.dart';
 import './app/app_widget.dart';
 
@@ -10,7 +10,7 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
 
     await JustAudioBackground.init(
-      androidNotificationChannelId: 'com.cornflower.player.channel.audio',
+      androidNotificationChannelId: 'com.cornflower.playerhub.channel.audio',
       androidNotificationChannelName: AppShared.title,
       androidShowNotificationBadge: true,
       androidNotificationOngoing: true,

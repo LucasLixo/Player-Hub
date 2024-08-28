@@ -1,4 +1,4 @@
-package com.cornflower.player
+package com.cornflower.playerhub
 
 import android.os.Build
 import android.os.Bundle

@@ -12,7 +12,7 @@ import '../../core/controllers/player.dart';
 import '../../core/app_shared.dart';
 import '../../shared/widgets/music_list.dart';
 import '../../shared/widgets/folder_list.dart';
-import '../../shared/widgets/playlist_list.dart';
+// import '../../shared/widgets/playlist_list.dart';
 import '../../shared/widgets/center_text.dart';
 
 class HomePage extends StatefulWidget {
@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   static List<Tab> homeTabs = <Tab>[
     Tab(text: 'home_tab1'.tr),
     Tab(text: 'home_tab2'.tr),
-    Tab(text: 'home_tab3'.tr),
+    // Tab(text: 'home_tab3'.tr),
   ];
 
   @override
@@ -134,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   CenterText(title: 'home_not_tab1'.tr),
                   CenterText(title: 'home_not_tab2'.tr),
-                  CenterText(title: 'home_not_tab3'.tr),
+                  // CenterText(title: 'home_not_tab3'.tr),
                 ],
               );
             } else {
@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   MusicList(songs: playerStateController.songAllList),
                   const FolderList(),
-                  const PlaylistList(),
+                  // const PlaylistList(),
                 ],
               );
             }
