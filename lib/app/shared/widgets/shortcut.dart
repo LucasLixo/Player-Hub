@@ -62,8 +62,8 @@ class _ShortcutState extends State<Shortcut>
         final imagePath = playerStateController.imageCache[song.id];
 
         return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          margin: const EdgeInsets.fromLTRB(0, 0, 8.0, 0),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          margin: const EdgeInsets.fromLTRB(0, 0, 0, 16),
           child: ListTile(
             tileColor: AppColors.surface,
             splashColor: Colors.transparent,
@@ -100,10 +100,10 @@ class _ShortcutState extends State<Shortcut>
                   },
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
-                  child: const Icon(
+                  child: Icon(
                     Icons.skip_previous_rounded,
                     size: 32,
-                    color: Colors.white,
+                    color: AppColors.text,
                   ),
                 ),
                 const SizedBox(
@@ -131,10 +131,10 @@ class _ShortcutState extends State<Shortcut>
                   },
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
-                  child: const Icon(
+                  child: Icon(
                     Icons.skip_next_rounded,
                     size: 32,
-                    color: Colors.white,
+                    color: AppColors.text,
                   ),
                 ),
                 const SizedBox(

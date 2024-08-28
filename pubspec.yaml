@@ -44,6 +44,7 @@ dependencies:
   connectivity_plus: ^6.0.5
   flutter_localization: ^0.2.1
   path_provider: ^2.1.4
+  flutter_phoenix: ^1.1.1
 
 dev_dependencies:
   flutter_test:

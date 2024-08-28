@@ -10,7 +10,7 @@ import '../../core/controllers/player.dart';
 import '../../routes/app_routes.dart';
 import '../../core/app_colors.dart';
 import 'crud_sheet.dart';
-import '../meta/get_artist.dart';
+import '../utils/meta.dart';
 
 class MusicList extends StatelessWidget {
   final List<SongModel> songs;
@@ -61,18 +61,18 @@ class MusicList extends StatelessWidget {
                       height: 50.0,
                     ),
             ),
-            trailing: InkWell(
-              onTap: () {
-                crudSheet(context, song);
-              },
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              child: Icon(
-                Icons.more_vert,
-                size: 30,
-                color: AppColors.text,
-              ),
-            ),
+            // trailing: InkWell(
+            //   onTap: () {
+            //     crudSheet(context, song);
+            //   },
+            //   splashColor: Colors.transparent,
+            //   highlightColor: Colors.transparent,
+            //   child: Icon(
+            //     Icons.more_vert,
+            //     size: 30,
+            //     color: AppColors.text,
+            //   ),
+            // ),
             onTap: () {
               if (playerStateController.songList != songs) {
                 playerController.songLoad(songs, index);

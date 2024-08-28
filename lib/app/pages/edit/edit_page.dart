@@ -1,8 +1,7 @@
-import 'dart:io';
-
+// import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+// import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
@@ -11,7 +10,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../../shared/utils/dynamic_style.dart';
 import '../../core/app_colors.dart';
-import '../../shared/meta/get_artist.dart';
+import '../../shared/utils/meta.dart';
 import '../../shared/utils/title_style.dart';
 import '../../core/controllers/player.dart';
 
@@ -152,50 +151,50 @@ class _EditPageState extends State<EditPage> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 12,
-            ),
-            ListTile(
-              title: Text(
-                'edit_image'.tr,
-                style: titleStyle(),
-              ),
-              trailing: InkWell(
-                onTap: () {},
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                child: Icon(
-                  Icons.folder,
-                  color: AppColors.text,
-                  size: 26,
-                ),
-              ),
-              subtitle: Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(18),
-                  child: Obx(
-                    () {
-                      final currentSong = playerStateController
-                          .songList[playerStateController.songIndex.value];
-                      final imagePath =
-                          playerStateController.imageCache[currentSong.id];
-                
-                      return imagePath != null
-                          ? Image.file(
-                              File(imagePath),
-                              fit: BoxFit.cover,
-                              width: 150.0,
-                              height: 150.0,
-                            )
-                          : const SizedBox(
-                              width: 150.0,
-                              height: 150.0,
-                            );
-                    },
-                  ),
-                ),
-              ),
-            ),
+            // const SizedBox(
+            //   height: 12,
+            // ),
+            // ListTile(
+            //   title: Text(
+            //     'edit_image'.tr,
+            //     style: titleStyle(),
+            //   ),
+            //   trailing: InkWell(
+            //     onTap: () {},
+            //     splashColor: Colors.transparent,
+            //     highlightColor: Colors.transparent,
+            //     child: Icon(
+            //       Icons.folder,
+            //       color: AppColors.text,
+            //       size: 26,
+            //     ),
+            //   ),
+            //   subtitle: Center(
+            //     child: ClipRRect(
+            //       borderRadius: BorderRadius.circular(18),
+            //       child: Obx(
+            //         () {
+            //           final currentSong = playerStateController
+            //               .songList[playerStateController.songIndex.value];
+            //           final imagePath =
+            //               playerStateController.imageCache[currentSong.id];
+            //
+            //           return imagePath != null
+            //               ? Image.file(
+            //                   File(imagePath),
+            //                   fit: BoxFit.cover,
+            //                   width: 150.0,
+            //                   height: 150.0,
+            //                 )
+            //               : const SizedBox(
+            //                   width: 150.0,
+            //                   height: 150.0,
+            //                 );
+            //         },
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

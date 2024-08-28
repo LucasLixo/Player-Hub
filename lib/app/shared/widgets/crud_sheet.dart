@@ -15,6 +15,7 @@ import '../utils/dynamic_style.dart';
 void crudSheet(BuildContext context, SongModel song) {
   showModalBottomSheet(
     context: context,
+    backgroundColor: AppColors.background,
     builder: (BuildContext context) {
       return SizedBox(
         height: MediaQuery.of(context).size.height * 0.4,
@@ -70,7 +71,7 @@ void crudSheet(BuildContext context, SongModel song) {
                 style: dynamicStyle(
                   18,
                   AppColors.text,
-                  FontWeight.normal,
+                  FontWeight.w600,
                   FontStyle.normal,
                 ),
               ),
@@ -119,8 +120,7 @@ void crudSheet(BuildContext context, SongModel song) {
   );
 }
 
-TextEditingController _textController = TextEditingController();
-
+// TextEditingController _textController = TextEditingController();
 // Future<String?> _showDialogPlaylist(
 //     BuildContext context, SongModel song) async {
 //   return showDialog<String>(

@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 import '../../core/controllers/player.dart';
 import '../../shared/utils/dynamic_style.dart';
 import '../../core/app_colors.dart';
-import '../../routes/app_routes.dart';
+// import '../../routes/app_routes.dart';
 import '../../shared/utils/slider_shape.dart';
 import '../../shared/utils/switch_theme.dart';
 import '../../core/app_shared.dart';
@@ -120,8 +121,9 @@ class _SettingPageState extends State<SettingPage> {
                 value: AppShared.darkModeValue.value,
                 onChanged: (bool value) async {
                   await AppShared.setDarkMode(value);
-
-                  Get.offNamed(AppRoutes.splash);
+                  if (mounted) {
+                    Phoenix.rebirth(context);
+                  } // Get.offNamed(AppRoutes.splash);
                 },
               ),
             ),

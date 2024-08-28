@@ -7,9 +7,8 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 import './just_audio_background.dart';
-import '../../shared/meta/get_image.dart';
 import '../../core/app_shared.dart';
-import '../../shared/meta/get_artist.dart';
+import '../../shared/utils/meta.dart';
 
 class PlayerStateController extends GetxController {
   RxBool isPlaying = false.obs;
@@ -128,7 +127,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
           .add(song.data.split('/')[song.data.split('/').length - 2]);
     }
     playerState.folderList.value = playerState.folderList.toSet().toList();
-    
+
     for (var song in songList) {
       if (!playerState.imageCache.containsKey(song.id)) {
         final imagePath = await getImage(id: song.id);

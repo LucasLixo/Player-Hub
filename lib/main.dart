@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 import './app/core/app_shared.dart';
 import './app/core/controllers/just_audio_background.dart';
@@ -19,7 +20,7 @@ void main() async {
 
     AppShared.loadShared();
 
-    runApp(const AppWidget());
+    runApp(Phoenix(child: const AppWidget()));
   
   }, (Object error, StackTrace stack) {
     print('\n\n==============================');

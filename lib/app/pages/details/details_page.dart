@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -12,7 +12,7 @@ import '../../core/app_colors.dart';
 import '../../shared/widgets/crud_sheet.dart';
 import '../../shared/widgets/repeat.dart';
 import '../../shared/utils/slider_shape.dart';
-import '../../shared/meta/get_artist.dart';
+import '../../shared/utils/meta.dart';
 import '../../shared/widgets/shuffle.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -104,18 +104,18 @@ class _DetailsPageState extends State<DetailsPage>
                           size: 44,
                         ),
                       ),
-                      InkWell(
-                        onTap: () {
-                          crudSheet(context, currentSong);
-                        },
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        child: const Icon(
-                          Icons.more_vert,
-                          color: Colors.white,
-                          size: 32,
-                        ),
-                      )
+                      // InkWell(
+                      //   onTap: () {
+                      //     crudSheet(context, currentSong);
+                      //   },
+                      //   splashColor: Colors.transparent,
+                      //   highlightColor: Colors.transparent,
+                      //   child: const Icon(
+                      //     Icons.more_vert,
+                      //     color: Colors.white,
+                      //     size: 32,
+                      //   ),
+                      // )
                     ],
                   ),
                   const SizedBox(
@@ -240,7 +240,7 @@ class _DetailsPageState extends State<DetailsPage>
                           icon: AnimatedIcons.play_pause,
                           progress: _controller,
                           size: 64,
-                          color: AppColors.text,
+                          color: Colors.white,
                         ),
                       ),
                       InkWell(

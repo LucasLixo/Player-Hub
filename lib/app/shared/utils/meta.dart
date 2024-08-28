@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
+// import 'package:shared_preferences/shared_preferences.dart';
 
 const List<String> imagePaths = [
   'assets/images/lowpoly_blue.jpg',
@@ -31,7 +32,8 @@ Future<String> getImage({required int id}) async {
   if (data != null && data.isNotEmpty) {
     await file.writeAsBytes(data);
   } else {
-    final String randomImagePath = imagePaths[Random().nextInt(imagePaths.length)];
+    final String randomImagePath =
+        imagePaths[Random().nextInt(imagePaths.length)];
     final ByteData imageData = await rootBundle.load(randomImagePath);
     final Uint8List imageBytes = imageData.buffer.asUint8List();
     await file.writeAsBytes(imageBytes);
@@ -39,3 +41,21 @@ Future<String> getImage({required int id}) async {
 
   return file.path;
 }
+
+String getArtist({required String artist}) {
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  // String? getArtist = prefs.getString('artist-${id.toString()}');
+  // if (getArtist != null) {
+  //   return getArtist;
+  // }
+  return artist == '<unknown>' ? '' : artist;
+}
+
+String getTitle({required String title}) {
+  return title == '<unknown>' ? '' : title;
+}
+
+  // static Future<void> setArtist(int id, String value) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.setString('artist-${id.toString()}', value);
+  // }

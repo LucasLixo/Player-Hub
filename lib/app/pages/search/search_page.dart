@@ -11,7 +11,7 @@ import '../../core/app_colors.dart';
 import '../../core/controllers/player.dart';
 import '../../shared/widgets/shortcut.dart';
 import '../../shared/utils/subtitle_style.dart';
-import '../../shared/meta/get_artist.dart';
+import '../../shared/utils/meta.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -53,8 +53,7 @@ class _SearchPageState extends State<SearchPage> {
         filteredSongs = [];
       } else {
         filteredSongs = playerStateController.songAllList.where((song) {
-          return song.title.toLowerCase().contains(query) ||
-              getArtist(artist: song.artist!).toLowerCase().contains(query);
+          return song.title.toLowerCase().contains(query) || getArtist(artist: song.artist!).toLowerCase().contains(query);
         }).toList();
       }
     });

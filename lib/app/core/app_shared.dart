@@ -53,4 +53,12 @@ mixin AppShared on GetxController {
     await _prefs?.setBool(_equalizerMode, value);
     equalizerModeValue.value = value;
   }
+
+  static String getTitle(int id) {
+    return _prefs?.getString('title-${id.toString()}') ?? '';
+  }
+
+  static String getArtist(int id) {
+    return _prefs?.getString('artist-${id.toString()}') ?? '';
+  }
 }
