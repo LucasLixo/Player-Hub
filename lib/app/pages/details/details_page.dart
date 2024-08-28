@@ -9,7 +9,7 @@ import 'package:get/instance_manager.dart';
 import '../../core/controllers/player.dart';
 import '../../shared/utils/dynamic_style.dart';
 import '../../core/app_colors.dart';
-import '../../shared/widgets/crud_sheet.dart';
+// import '../../shared/widgets/crud_sheet.dart';
 import '../../shared/widgets/repeat.dart';
 import '../../shared/utils/slider_shape.dart';
 import '../../shared/utils/meta.dart';

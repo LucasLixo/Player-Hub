@@ -8,8 +8,8 @@ import '../../shared/utils/subtitle_style.dart';
 import '../../shared/utils/title_style.dart';
 import '../../core/controllers/player.dart';
 import '../../routes/app_routes.dart';
-import '../../core/app_colors.dart';
-import 'crud_sheet.dart';
+// import '../../core/app_colors.dart';
+// import './crud_sheet.dart';
 import '../utils/meta.dart';
 
 class MusicList extends StatelessWidget {
