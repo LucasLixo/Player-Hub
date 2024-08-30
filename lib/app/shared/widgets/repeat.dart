@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
-
-import '../../core/controllers/player.dart';
+import 'package:playerhub/app/core/controllers/player.dart';
 
 class Repeat extends StatefulWidget {
   const Repeat({super.key});

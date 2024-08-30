@@ -1,8 +1,8 @@
 // pages
-export '../pages/splash/splash_page.dart';
-export '../pages/home/home_page.dart';
-export '../pages/setting/setting_page.dart';
-export '../pages/details/details_page.dart';
-export '../pages/edit/edit_page.dart';
-export '../pages/search/search_page.dart';
-export '../pages/playlist/playlist_page.dart';
+export 'package:playerhub/app/pages/splash/splash_page.dart';
+export 'package:playerhub/app/pages/home/home_page.dart';
+export 'package:playerhub/app/pages/setting/setting_page.dart';
+export 'package:playerhub/app/pages/details/details_page.dart';
+export 'package:playerhub/app/pages/edit/edit_page.dart';
+export 'package:playerhub/app/pages/search/search_page.dart';
+export 'package:playerhub/app/pages/playlist/playlist_page.dart';

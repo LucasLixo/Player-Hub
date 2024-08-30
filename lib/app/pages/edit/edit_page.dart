@@ -1,18 +1,28 @@
-// import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:flutter/src/material/scaffold.dart';
+import 'package:flutter/src/material/icons.dart';
+import 'package:flutter/src/material/text_field.dart';
+import 'package:flutter/src/material/list_tile.dart';
+import 'package:flutter/src/material/app_bar.dart';
+import 'package:flutter/src/material/input_decorator.dart';
+import 'package:flutter/src/material/input_border.dart';
+import 'package:flutter/src/material/colors.dart';
+import 'package:flutter/src/material/ink_well.dart';
+import 'package:flutter/src/widgets/basic.dart';
+import 'package:flutter/src/widgets/text.dart';
+import 'package:flutter/src/widgets/icon.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/editable_text.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-// import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-
-import '../../shared/utils/dynamic_style.dart';
-import '../../core/app_colors.dart';
-import '../../shared/utils/meta.dart';
-import '../../shared/utils/title_style.dart';
-import '../../core/controllers/player.dart';
+import 'package:playerhub/app/shared/utils/dynamic_style.dart';
+import 'package:playerhub/app/core/app_colors.dart';
+import 'package:playerhub/app/shared/utils/meta.dart';
+import 'package:playerhub/app/shared/utils/title_style.dart';
+import 'package:playerhub/app/core/controllers/player.dart';
 
 class EditPage extends StatefulWidget {
   final SongModel song;

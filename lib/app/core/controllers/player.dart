@@ -1,14 +1,13 @@
-import 'package:flutter/src/widgets/binding.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:get/instance_manager.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:flutter/src/widgets/binding.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
-
-import './just_audio_background.dart';
-import '../../core/app_shared.dart';
-import '../../shared/utils/meta.dart';
+import 'package:playerhub/app/core/controllers/just_audio_background.dart';
+import 'package:playerhub/app/core/app_shared.dart';
+import 'package:playerhub/app/shared/utils/meta.dart';
 
 class PlayerStateController extends GetxController {
   RxBool isPlaying = false.obs;

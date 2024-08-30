@@ -1,6 +1,5 @@
 import 'package:get/instance_manager.dart';
-
-import './core/controllers/player.dart';
+import 'package:playerhub/app/core/controllers/player.dart';
 
 class AppBinding implements Bindings {
   

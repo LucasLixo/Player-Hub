@@ -1,5 +1,5 @@
 name: playerhub
-description: "A new Flutter project."
+description: "The ultimate offline music player! Listen to your favorite songs without an internet connection, with high audio quality and an intuitive interface. Organize your tracks, adjust the sound with the equalizer and enjoy a limitless music experience."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -30,22 +30,22 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+    
+  get: 4.6.6
+  permission_handler: 11.3.1
+  flutter_launcher_icons: 0.13.1
+  audio_service: 0.18.15
+  on_audio_query: 2.9.0
+  just_audio: 0.9.39
+  rxdart: 0.28.0
+  just_audio_platform_interface: 4.3.0
+  shared_preferences: 2.3.1
+  device_info_plus: 10.1.2
+  connectivity_plus: 6.0.5
+  flutter_localization: 0.2.1
+  path_provider: 2.1.4
+  flutter_phoenix: 1.1.1
   
-  get: ^4.6.6
-  permission_handler: ^11.3.1
-  flutter_launcher_icons: ^0.13.1
-  audio_service: ^0.18.15
-  on_audio_query: ^2.9.0
-  just_audio: ^0.9.39
-  rxdart: ^0.28.0
-  just_audio_platform_interface: ^4.3.0
-  shared_preferences: ^2.3.1
-  device_info_plus: ^10.1.2
-  connectivity_plus: ^6.0.5
-  flutter_localization: ^0.2.1
-  path_provider: ^2.1.4
-  flutter_phoenix: ^1.1.1
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

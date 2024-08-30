@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
-// import 'package:shared_preferences/shared_preferences.dart';
 
 const List<String> imagePaths = [
   'assets/images/lowpoly_blue.jpg',

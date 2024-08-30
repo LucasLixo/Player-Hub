@@ -3,13 +3,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_core/src/get_main.dart';
-
-import 'app_bindings.dart';
-import 'routes/app_routes.dart';
-import 'routes/app_pages.dart';
-import 'core/app_translater.dart';
-import 'core/app_colors.dart';
-import 'core/app_shared.dart';
+import 'package:playerhub/app/app_bindings.dart';
+import 'package:playerhub/app/routes/app_routes.dart';
+import 'package:playerhub/app/routes/app_pages.dart';
+import 'package:playerhub/app/core/app_translater.dart';
+import 'package:playerhub/app/core/app_colors.dart';
+import 'package:playerhub/app/core/app_shared.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});

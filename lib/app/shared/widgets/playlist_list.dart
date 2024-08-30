@@ -1,17 +1,30 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:flutter/src/rendering/sliver_grid.dart';
+import 'package:flutter/src/material/text_button.dart';
+import 'package:flutter/src/material/icons.dart';
+import 'package:flutter/src/material/animated_icons.dart';
+import 'package:flutter/src/material/colors.dart';
+import 'package:flutter/src/material/ink_well.dart';
+import 'package:flutter/src/material/dialog.dart';
+import 'package:flutter/src/widgets/navigator.dart';
+import 'package:flutter/src/widgets/scroll_view.dart';
+import 'package:flutter/src/widgets/icon.dart';
+import 'package:flutter/src/widgets/basic.dart';
+import 'package:flutter/src/widgets/ticker_provider.dart';
+import 'package:flutter/src/widgets/text.dart';
+import 'package:flutter/src/widgets/image.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-
-import '../../shared/utils/dynamic_style.dart';
-import '../../core/app_playlist.dart';
-import '../../core/controllers/player.dart';
-import '../../shared/widgets/center_text.dart';
-import '../../shared/utils/title_style.dart';
-import '../../core/app_colors.dart';
-import '../../routes/app_routes.dart';
+import 'package:playerhub/app/shared/utils/dynamic_style.dart';
+import 'package:playerhub/app/core/app_playlist.dart';
+import 'package:playerhub/app/core/controllers/player.dart';
+import 'package:playerhub/app/shared/widgets/center_text.dart';
+import 'package:playerhub/app/shared/utils/title_style.dart';
+import 'package:playerhub/app/core/app_colors.dart';
+import 'package:playerhub/app/routes/app_routes.dart';
 
 class PlaylistList extends StatefulWidget {
   const PlaylistList({super.key});

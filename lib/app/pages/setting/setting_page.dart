@@ -1,16 +1,27 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/src/material/scaffold.dart';
+import 'package:flutter/src/material/icons.dart';
+import 'package:flutter/src/material/app_bar.dart';
+import 'package:flutter/src/material/colors.dart';
+import 'package:flutter/src/material/ink_well.dart';
+import 'package:flutter/src/material/switch.dart';
+import 'package:flutter/src/material/list_tile.dart';
+import 'package:flutter/src/material/slider_theme.dart';
+import 'package:flutter/src/material/switch_theme.dart';
+import 'package:flutter/src/material/slider.dart';
+import 'package:flutter/src/widgets/basic.dart';
+import 'package:flutter/src/widgets/text.dart';
+import 'package:flutter/src/widgets/icon.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-
-import '../../core/controllers/player.dart';
-import '../../shared/utils/dynamic_style.dart';
-import '../../core/app_colors.dart';
-// import '../../routes/app_routes.dart';
-import '../../shared/utils/slider_shape.dart';
-import '../../shared/utils/switch_theme.dart';
-import '../../core/app_shared.dart';
+import 'package:playerhub/app/core/controllers/player.dart';
+import 'package:playerhub/app/shared/utils/dynamic_style.dart';
+import 'package:playerhub/app/core/app_colors.dart';
+import 'package:playerhub/app/shared/utils/slider_shape.dart';
+import 'package:playerhub/app/shared/utils/switch_theme.dart';
+import 'package:playerhub/app/core/app_shared.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});

@@ -1,12 +1,20 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/scroll_physics.dart';
+import 'package:flutter/src/widgets/scroll_view.dart';
+import 'package:flutter/src/material/icons.dart';
+import 'package:flutter/src/material/list_tile.dart';
+import 'package:flutter/src/material/colors.dart';
+import 'package:flutter/src/widgets/basic.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/text.dart';
+import 'package:flutter/src/widgets/icon.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
-
-import '../../routes/app_routes.dart';
-import '../../core/app_colors.dart';
-import '../../core/controllers/player.dart';
-import '../../shared/utils/subtitle_style.dart';
-import '../../shared/utils/title_style.dart';
+import 'package:playerhub/app/routes/app_routes.dart';
+import 'package:playerhub/app/core/app_colors.dart';
+import 'package:playerhub/app/core/controllers/player.dart';
+import 'package:playerhub/app/shared/utils/subtitle_style.dart';
+import 'package:playerhub/app/shared/utils/title_style.dart';
 
 class FolderList extends StatelessWidget {
   const FolderList({super.key});

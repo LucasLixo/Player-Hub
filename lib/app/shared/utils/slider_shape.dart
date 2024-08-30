@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'dart:ui';
+import 'package:flutter/src/rendering/box.dart';
+import 'package:flutter/src/material/slider_theme.dart';
 
 SliderThemeData getSliderTheme() {
   

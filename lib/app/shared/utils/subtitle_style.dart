@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-
-import '../../core/app_colors.dart';
+import 'dart:ui';
+import 'package:flutter/src/painting/text_style.dart';
+import 'package:playerhub/app/core/app_colors.dart';
 
 TextStyle subtitleStyle() {
   return TextStyle(

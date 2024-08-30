@@ -1,17 +1,21 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/src/material/dialog.dart';
+import 'package:flutter/src/material/scaffold.dart';
+import 'package:flutter/src/material/text_button.dart';
+import 'package:flutter/src/widgets/basic.dart';
+import 'package:flutter/src/widgets/text.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-import '../../shared/utils/title_style.dart';
-import '../../core/app_colors.dart';
-import '../../shared/utils/dynamic_style.dart';
-import '../../routes/app_routes.dart';
-import '../../core/controllers/player.dart';
-import '../../core/app_shared.dart';
+import 'package:playerhub/app/shared/utils/title_style.dart';
+import 'package:playerhub/app/core/app_colors.dart';
+import 'package:playerhub/app/shared/utils/dynamic_style.dart';
+import 'package:playerhub/app/routes/app_routes.dart';
+import 'package:playerhub/app/core/controllers/player.dart';
+import 'package:playerhub/app/core/app_shared.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -92,8 +96,6 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _initializeApp() async {
-    await Future.delayed(const Duration(seconds: 1));
-
     Get.offNamed(AppRoutes.home);
   }
 

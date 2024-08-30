@@ -1,13 +1,23 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:flutter/src/material/animated_icons.dart';
+import 'package:flutter/src/material/icons.dart';
+import 'package:flutter/src/material/colors.dart';
+import 'package:flutter/src/material/ink_well.dart';
+import 'package:flutter/src/material/list_tile.dart';
+import 'package:flutter/src/widgets/basic.dart';
+import 'package:flutter/src/widgets/text.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/ticker_provider.dart';
+import 'package:flutter/src/widgets/icon.dart';
+import 'package:flutter/src/widgets/image.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
-
-import '../../core/app_colors.dart';
-import '../../routes/app_routes.dart';
-import '../../core/controllers/player.dart';
-import '../../shared/utils/title_style.dart';
+import 'package:playerhub/app/core/app_colors.dart';
+import 'package:playerhub/app/routes/app_routes.dart';
+import 'package:playerhub/app/core/controllers/player.dart';
+import 'package:playerhub/app/shared/utils/title_style.dart';
 
 class Shortcut extends StatefulWidget {
   const Shortcut({super.key});
