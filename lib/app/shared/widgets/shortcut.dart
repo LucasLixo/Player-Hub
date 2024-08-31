@@ -72,8 +72,7 @@ class _ShortcutState extends State<Shortcut>
         final imagePath = playerStateController.imageCache[song.id];
 
         return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          margin: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+          padding: const EdgeInsets.all(8),
           child: ListTile(
             tileColor: AppColors.surface,
             splashColor: Colors.transparent,

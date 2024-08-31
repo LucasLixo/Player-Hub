@@ -21,10 +21,10 @@ void main() async {
         androidStopForegroundOnPause: true,
       ),
       AppShared.loadShared(),
+      Future.delayed(const Duration(seconds: 1)),
     ]);
 
     runApp(Phoenix(child: const AppWidget()));
-    
   }, (Object error, StackTrace stack) {
     print('\n\n==============================');
     print(error);

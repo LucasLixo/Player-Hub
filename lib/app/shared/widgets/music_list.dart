@@ -1,26 +1,42 @@
 import 'dart:io';
-import 'package:flutter/src/widgets/scroll_physics.dart';
-import 'package:flutter/src/widgets/scroll_view.dart';
-import 'package:flutter/src/material/list_tile.dart';
 import 'package:flutter/src/material/colors.dart';
-import 'package:flutter/src/widgets/basic.dart';
+import 'package:flutter/src/material/list_tile.dart';
 import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/text.dart';
-import 'package:flutter/src/widgets/image.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/instance_manager.dart';
+import 'package:flutter/src/widgets/scroll_physics.dart';
+import 'package:flutter/src/widgets/basic.dart';
+import 'package:flutter/src/widgets/text.dart';
+import 'package:flutter/src/widgets/scroll_view.dart';
+import 'package:flutter/src/widgets/image.dart';
+import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/shared/utils/subtitle_style.dart';
 import 'package:playerhub/app/shared/utils/title_style.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/shared/utils/meta.dart';
 
-class MusicList extends StatelessWidget {
+class MusicList extends StatefulWidget {
   final List<SongModel> songs;
 
   const MusicList({super.key, required this.songs});
+
+  @override
+   State<MusicList> createState() => _MusicListState();
+}
+
+class _MusicListState extends State<MusicList> {
+  late List<File> _images;
+
+  @override
+  void initState() {
+    super.initState();
+    _images = widget.songs.map((song) {
+      final imagePath = Get.find<PlayerStateController>().imageCache[song.id];
+      return imagePath != null ? File(imagePath) : File('');
+    }).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +45,10 @@ class MusicList extends StatelessWidget {
 
     return ListView.builder(
       physics: const BouncingScrollPhysics(),
-      itemCount: songs.length,
+      itemCount: widget.songs.length,
       itemBuilder: (BuildContext context, int index) {
-        var song = songs[index];
-        final imagePath = playerStateController.imageCache[song.id];
+        var song = widget.songs[index];
+        final imageFile = _images[index];
 
         return Container(
           margin: const EdgeInsets.only(bottom: 8),
@@ -54,33 +70,22 @@ class MusicList extends StatelessWidget {
             ),
             leading: ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: imagePath != null
+              child: imageFile.existsSync()
                   ? Image.file(
-                      File(imagePath),
+                      imageFile,
                       fit: BoxFit.cover,
                       width: 50.0,
                       height: 50.0,
                     )
-                  : const SizedBox(
+                  : Container(
+                      color: AppColors.surface,
                       width: 50.0,
                       height: 50.0,
                     ),
             ),
-            // trailing: InkWell(
-            //   onTap: () {
-            //     crudSheet(context, song);
-            //   },
-            //   splashColor: Colors.transparent,
-            //   highlightColor: Colors.transparent,
-            //   child: Icon(
-            //     Icons.more_vert,
-            //     size: 30,
-            //     color: AppColors.text,
-            //   ),
-            // ),
             onTap: () {
-              if (playerStateController.songList != songs) {
-                playerController.songLoad(songs, index);
+              if (playerStateController.songList != widget.songs) {
+                playerController.songLoad(widget.songs, index);
               } else {
                 playerController.playSong(index);
               }

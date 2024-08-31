@@ -34,7 +34,7 @@ class AppWidget extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      fallbackLocale: const Locale('pt', 'BR'),
+      fallbackLocale: const Locale('en', 'US'),
       supportedLocales: const <Locale>[
         Locale('en', 'US'),
         Locale('pt', 'BR'),
