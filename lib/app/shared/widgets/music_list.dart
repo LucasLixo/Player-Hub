@@ -1,13 +1,5 @@
 import 'dart:io';
-import 'package:flutter/src/material/colors.dart';
-import 'package:flutter/src/material/list_tile.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/scroll_physics.dart';
-import 'package:flutter/src/widgets/basic.dart';
-import 'package:flutter/src/widgets/text.dart';
-import 'package:flutter/src/widgets/scroll_view.dart';
-import 'package:flutter/src/widgets/image.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:playerhub/app/core/app_colors.dart';

@@ -1,9 +1,4 @@
-import 'package:flutter/src/material/dialog.dart';
-import 'package:flutter/src/material/scaffold.dart';
-import 'package:flutter/src/material/text_button.dart';
-import 'package:flutter/src/widgets/basic.dart';
-import 'package:flutter/src/widgets/text.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';

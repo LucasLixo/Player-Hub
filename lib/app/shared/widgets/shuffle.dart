@@ -1,9 +1,4 @@
-import 'package:flutter/src/material/icons.dart';
-import 'package:flutter/src/material/colors.dart';
-import 'package:flutter/src/material/ink_well.dart';
-import 'package:flutter/src/widgets/basic.dart';
-import 'package:flutter/src/widgets/icon.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
 import 'package:playerhub/app/core/app_colors.dart';

@@ -1,5 +1,4 @@
-import 'dart:ui';
-import 'package:flutter/src/painting/text_style.dart';
+import 'package:flutter/material.dart';
 
 TextStyle dynamicStyle(
   double fontSize,

@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:flutter/src/widgets/binding.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:playerhub/app/app_wait.dart';
 import 'package:playerhub/app/core/app_shared.dart';
@@ -9,6 +9,8 @@ import 'package:playerhub/app/app_widget.dart';
 void main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
+      
+    await AppShared.loadShared();
 
     runApp(const AppWait());
 
@@ -20,7 +22,6 @@ void main() async {
         androidNotificationOngoing: true,
         androidStopForegroundOnPause: true,
       ),
-      AppShared.loadShared(),
       Future.delayed(const Duration(seconds: 1)),
     ]);
 

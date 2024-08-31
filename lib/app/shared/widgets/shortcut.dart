@@ -1,16 +1,5 @@
 import 'dart:io';
-import 'package:flutter/src/material/animated_icons.dart';
-import 'package:flutter/src/material/icons.dart';
-import 'package:flutter/src/material/colors.dart';
-import 'package:flutter/src/material/ink_well.dart';
-import 'package:flutter/src/material/list_tile.dart';
-import 'package:flutter/src/widgets/basic.dart';
-import 'package:flutter/src/widgets/text.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/ticker_provider.dart';
-import 'package:flutter/src/widgets/icon.dart';
-import 'package:flutter/src/widgets/image.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -72,7 +61,8 @@ class _ShortcutState extends State<Shortcut>
         final imagePath = playerStateController.imageCache[song.id];
 
         return Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          margin: const EdgeInsets.only(bottom: 8),
           child: ListTile(
             tileColor: AppColors.surface,
             splashColor: Colors.transparent,

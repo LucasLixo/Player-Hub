@@ -1,13 +1,4 @@
-import 'package:flutter/src/widgets/scroll_physics.dart';
-import 'package:flutter/src/widgets/scroll_view.dart';
-import 'package:flutter/src/material/icons.dart';
-import 'package:flutter/src/material/list_tile.dart';
-import 'package:flutter/src/material/colors.dart';
-import 'package:flutter/src/widgets/basic.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/text.dart';
-import 'package:flutter/src/widgets/icon.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:playerhub/app/routes/app_routes.dart';

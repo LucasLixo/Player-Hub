@@ -1,7 +1,6 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:playerhub/app/core/app_shared.dart';
-import 'package:flutter/src/material/app.dart';
 
 mixin AppColors on GetxController {
   static ThemeMode get themeData =>

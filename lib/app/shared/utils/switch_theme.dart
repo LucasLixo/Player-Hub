@@ -1,6 +1,4 @@
-import 'dart:ui';
-import 'package:flutter/src/material/switch_theme.dart';
-import 'package:flutter/src/widgets/widget_state.dart';
+import 'package:flutter/material.dart';
 import 'package:playerhub/app/core/app_colors.dart';
 
 SwitchThemeData getSwitchTheme() {

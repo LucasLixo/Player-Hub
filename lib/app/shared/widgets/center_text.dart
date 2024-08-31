@@ -1,6 +1,4 @@
-import 'package:flutter/src/widgets/basic.dart';
-import 'package:flutter/src/widgets/text.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 import 'package:playerhub/app/core/app_colors.dart';
 
