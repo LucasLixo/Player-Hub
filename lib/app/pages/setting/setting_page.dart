@@ -282,7 +282,7 @@ class _SettingPageState extends State<SettingPage> {
       trailing: Icon(
         trailingIcon,
         size: 44,
-        color: AppColors.primary,
+        color: AppColors.text,
       ),
       onTap: onTap,
     );
