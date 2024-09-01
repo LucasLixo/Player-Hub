@@ -149,7 +149,9 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: Obx(
           () => playerStateController.songAllList.isEmpty
               ? const SizedBox.shrink()
-              : const Shortcut(),
+              : const SafeArea(
+                  child: Shortcut(),
+                ),
         ),
       ),
     );

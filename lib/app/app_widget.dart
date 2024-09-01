@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get.dart';
 import 'package:playerhub/app/app_bindings.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/routes/app_pages.dart';
@@ -15,10 +13,7 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ColorScheme.fromSeed(
-      seedColor: Colors.lightBlue,
-    );
-
+    
     return GetMaterialApp(
       title: AppShared.title,
       debugShowCheckedModeBanner: false,
@@ -29,10 +24,11 @@ class AppWidget extends StatelessWidget {
       initialBinding: AppBinding(),
       initialRoute: AppRoutes.splash,
       translations: AppTranslations(),
-      locale: Get.deviceLocale,
+      locale: Get.locale ?? Get.deviceLocale,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
       fallbackLocale: const Locale('en', 'US'),
       supportedLocales: const <Locale>[

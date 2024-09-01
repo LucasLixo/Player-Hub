@@ -9,7 +9,7 @@ import 'package:playerhub/app/app_widget.dart';
 void main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
-      
+
     await AppShared.loadShared();
 
     runApp(const AppWait());
@@ -22,7 +22,6 @@ void main() async {
         androidNotificationOngoing: true,
         androidStopForegroundOnPause: true,
       ),
-      Future.delayed(const Duration(seconds: 1)),
     ]);
 
     runApp(Phoenix(child: const AppWidget()));

@@ -7,7 +7,6 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:playerhub/app/core/controllers/just_audio_background.dart';
 import 'package:playerhub/app/core/app_shared.dart';
-import 'package:playerhub/app/shared/utils/meta.dart';
 
 class PlayerStateController extends GetxController {
   RxBool isPlaying = false.obs;
@@ -45,6 +44,8 @@ class PlayerStateController extends GetxController {
     recentList.insert(0, song);
   }
 
+  late SongModel currentSong;
+
   SongModel findSongById(int id) {
     return songAllList.firstWhere(
       (song) => song.id == id,
@@ -80,10 +81,54 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   }
 
   Future<void> getAllSongs() async {
+    switch (AppShared.defaultGetSongsValue.value) {
+      case 0:
+        await getAllSongsAdded();
+        break;
+      case 1:
+        await getAllSongsAZ();
+        break;
+      case 2:
+        await getAllSongsDuration();
+        break;
+    }
+  }
+
+  Future<void> getAllSongsAdded() async {
     List<SongModel> songs = await audioQuery.querySongs(
       ignoreCase: true,
       orderType: OrderType.DESC_OR_GREATER,
       sortType: SongSortType.DATE_ADDED,
+      uriType: UriType.EXTERNAL,
+    );
+    songs = songs
+        .where((song) =>
+            song.duration != null &&
+            song.duration! > AppShared.ignoreTimeValue.value * 1000)
+        .toList();
+    await songAllLoad(songs);
+  }
+
+  Future<void> getAllSongsAZ() async {
+    List<SongModel> songs = await audioQuery.querySongs(
+      ignoreCase: true,
+      orderType: OrderType.ASC_OR_SMALLER,
+      // sortType: SongSortType.TITLE,
+      uriType: UriType.EXTERNAL,
+    );
+    songs = songs
+        .where((song) =>
+            song.duration != null &&
+            song.duration! > AppShared.ignoreTimeValue.value * 1000)
+        .toList();
+    await songAllLoad(songs);
+  }
+
+  Future<void> getAllSongsDuration() async {
+    List<SongModel> songs = await audioQuery.querySongs(
+      ignoreCase: true,
+      orderType: OrderType.ASC_OR_SMALLER,
+      sortType: SongSortType.DURATION,
       uriType: UriType.EXTERNAL,
     );
     songs = songs
@@ -129,7 +174,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
 
     for (var song in songList) {
       if (!playerState.imageCache.containsKey(song.id)) {
-        final imagePath = await getImage(id: song.id);
+        final imagePath = await AppShared.getImage(id: song.id);
         playerState.imageCache[song.id] = imagePath;
       }
     }
@@ -148,7 +193,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
         tag: MediaItem(
           id: song.id.toString(),
           title: song.title,
-          artist: getArtist(artist: song.artist!),
+          artist: AppShared.getArtist(song.id, song.artist!),
           artUri: imagePath != null ? Uri.file(imagePath) : null,
         ),
       );

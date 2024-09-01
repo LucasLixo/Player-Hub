@@ -27,7 +27,7 @@ class PlaylistPage extends StatefulWidget {
 class _PlaylistPageState extends State<PlaylistPage> {
   final playerController = Get.find<PlayerController>();
   final playerStateController = Get.find<PlayerStateController>();
-  
+
   @override
   void initState() {
     super.initState();
@@ -79,7 +79,9 @@ class _PlaylistPageState extends State<PlaylistPage> {
       bottomNavigationBar: Obx(
         () => playerStateController.songAllList.isEmpty
             ? const SizedBox.shrink()
-            : const Shortcut(),
+            : const SafeArea(
+                child: Shortcut(),
+              ),
       ),
     );
   }

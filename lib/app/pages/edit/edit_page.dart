@@ -4,10 +4,10 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+// import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 import 'package:playerhub/app/core/app_colors.dart';
-import 'package:playerhub/app/shared/utils/meta.dart';
 import 'package:playerhub/app/shared/utils/title_style.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
 
@@ -26,6 +26,8 @@ class EditPage extends StatefulWidget {
 class _EditPageState extends State<EditPage> {
   late TextEditingController _textControllerTitle;
   late TextEditingController _textControllerArtist;
+  final FocusNode _focusNodeTitle = FocusNode();
+  final FocusNode _focusNodeArtist = FocusNode();
 
   RxBool isConect = false.obs;
 
@@ -34,10 +36,19 @@ class _EditPageState extends State<EditPage> {
   @override
   void initState() {
     super.initState();
-    checkConnectivity();
-    _textControllerTitle = TextEditingController(text: widget.song.title);
-    _textControllerArtist =
-        TextEditingController(text: getArtist(artist: widget.song.artist!));
+    // checkConnectivity();
+    _textControllerTitle = TextEditingController(
+      text: AppShared.getTitle(
+        widget.song.id,
+        widget.song.title,
+      ),
+    );
+    _textControllerArtist = TextEditingController(
+      text: AppShared.getArtist(
+        widget.song.id,
+        widget.song.artist!,
+      ),
+    );
   }
 
   @override
@@ -47,14 +58,21 @@ class _EditPageState extends State<EditPage> {
     super.dispose();
   }
 
-  Future<void> checkConnectivity() async {
-    final connectivityResult = await Connectivity().checkConnectivity();
-    for (var result in connectivityResult) {
-      if (result == ConnectivityResult.wifi) {
-        isConect.value = true;
-        break;
-      }
-    }
+  // Future<void> checkConnectivity() async {
+  //   final connectivityResult = await Connectivity().checkConnectivity();
+  //   for (var result in connectivityResult) {
+  //     if (result == ConnectivityResult.wifi) {
+  //       isConect.value = true;
+  //       break;
+  //     }
+  //   }
+  // }
+
+  Future<void> saveInfo() async {
+    await AppShared.setTitle(widget.song.id, _textControllerTitle.text);
+    await AppShared.setArtist(widget.song.id, _textControllerArtist.text);
+    _focusNodeTitle.unfocus();
+    _focusNodeArtist.unfocus();
   }
 
   @override
@@ -88,13 +106,15 @@ class _EditPageState extends State<EditPage> {
         ),
         actions: [
           InkWell(
-            onTap: () {},
+            onTap: () {
+              saveInfo();
+            },
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
             child: Icon(
               Icons.save,
               color: AppColors.text,
-              size: 26,
+              size: 32,
             ),
           ),
           const SizedBox(
@@ -113,6 +133,7 @@ class _EditPageState extends State<EditPage> {
               ),
               subtitle: TextField(
                 controller: _textControllerTitle,
+                focusNode: _focusNodeTitle,
                 style: dynamicStyle(
                   18,
                   AppColors.text,
@@ -134,6 +155,7 @@ class _EditPageState extends State<EditPage> {
               ),
               subtitle: TextField(
                 controller: _textControllerArtist,
+                focusNode: _focusNodeArtist,
                 style: dynamicStyle(
                   18,
                   AppColors.text,

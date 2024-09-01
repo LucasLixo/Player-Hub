@@ -4,6 +4,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:playerhub/app/core/app_colors.dart';
+import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
 import 'package:playerhub/app/shared/utils/title_style.dart';
@@ -72,7 +73,10 @@ class _ShortcutState extends State<Shortcut>
             ),
             contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
             title: Text(
-              song.title,
+              AppShared.getTitle(
+                song.id,
+                song.title,
+              ),
               style: titleStyle(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

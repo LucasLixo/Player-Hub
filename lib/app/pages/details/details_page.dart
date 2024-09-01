@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
 import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 import 'package:playerhub/app/core/app_colors.dart';
+import 'package:playerhub/app/shared/widgets/crud_sheet.dart';
 import 'package:playerhub/app/shared/widgets/repeat.dart';
 import 'package:playerhub/app/shared/utils/slider_shape.dart';
-import 'package:playerhub/app/shared/utils/meta.dart';
 import 'package:playerhub/app/shared/widgets/shuffle.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -101,18 +102,18 @@ class _DetailsPageState extends State<DetailsPage>
                           size: 44,
                         ),
                       ),
-                      // InkWell(
-                      //   onTap: () {
-                      //     crudSheet(context, currentSong);
-                      //   },
-                      //   splashColor: Colors.transparent,
-                      //   highlightColor: Colors.transparent,
-                      //   child: const Icon(
-                      //     Icons.more_vert,
-                      //     color: Colors.white,
-                      //     size: 32,
-                      //   ),
-                      // )
+                      InkWell(
+                        onTap: () {
+                          crudSheet(context, currentSong);
+                        },
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        child: const Icon(
+                          Icons.more_vert,
+                          color: Colors.white,
+                          size: 32,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(
@@ -138,7 +139,10 @@ class _DetailsPageState extends State<DetailsPage>
                           height: 12,
                         ),
                         Text(
-                          currentSong.title,
+                          AppShared.getTitle(
+                            currentSong.id,
+                            currentSong.title,
+                          ),
                           style: dynamicStyle(
                             16,
                             Colors.white,
@@ -152,7 +156,10 @@ class _DetailsPageState extends State<DetailsPage>
                           height: 4,
                         ),
                         Text(
-                          getArtist(artist: currentSong.artist!),
+                          AppShared.getArtist(
+                            currentSong.id,
+                            currentSong.artist!,
+                          ),
                           style: dynamicStyle(
                             16,
                             Colors.white60,
