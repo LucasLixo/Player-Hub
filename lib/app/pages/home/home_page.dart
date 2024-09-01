@@ -32,17 +32,11 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  static List<Tab> homeTabs = <Tab>[
-    Tab(text: 'home_tab1'.tr),
-    Tab(text: 'home_tab2'.tr),
-    // Tab(text: 'home_tab3'.tr),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
-      length: homeTabs.length,
+      length: 2,
       child: Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
@@ -122,7 +116,11 @@ class _HomePageState extends State<HomePage> {
             indicatorWeight: 4,
             labelColor: AppColors.primary,
             unselectedLabelColor: AppColors.textGray,
-            tabs: homeTabs,
+            tabs: <Tab>[
+              Tab(text: 'home_tab1'.tr),
+              Tab(text: 'home_tab2'.tr),
+              // Tab(text: 'home_tab3'.tr),
+            ],
           ),
         ),
         body: Obx(

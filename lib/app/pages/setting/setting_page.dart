@@ -81,17 +81,38 @@ class _SettingPageState extends State<SettingPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildListTile(
-            title: "${'setting_reload'.tr} ${'home_tab1'.tr}",
-            leadingIcon: Icons.music_note,
-            trailingIcon: Icons.refresh_outlined,
-            onTap: playerController.getAllSongs,
-          ),
+          _buildReloadSongs(),
           _buildIgnoreTimeTile(),
           _buildDarkModeTile(),
           _buildSortOptionTile(),
           _buildLanguageSelectionTile(),
         ],
+      ),
+    );
+  }
+
+  Widget _buildReloadSongs() {
+    return ListTile(
+      title: Text(
+        "${'setting_reload'.tr} ${'home_tab1'.tr}",
+        style: dynamicStyle(
+          16,
+          AppColors.text,
+          FontWeight.normal,
+          FontStyle.normal,
+        ),
+      ),
+      trailing: InkWell(
+        onTap: () {
+          playerController.getAllSongs();
+        },
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        child: Icon(
+          Icons.refresh_outlined,
+          size: 44,
+          color: AppColors.text,
+        ),
       ),
     );
   }
@@ -108,11 +129,6 @@ class _SettingPageState extends State<SettingPage> {
           FontWeight.normal,
           FontStyle.normal,
         ),
-      ),
-      leading: Icon(
-        Icons.timeline,
-        color: AppColors.text,
-        size: 32,
       ),
       subtitle: SliderTheme(
         data: getSliderTheme(),
@@ -144,11 +160,6 @@ class _SettingPageState extends State<SettingPage> {
           FontStyle.normal,
         ),
       ),
-      leading: Icon(
-        Icons.dark_mode,
-        color: AppColors.text,
-        size: 32,
-      ),
       trailing: SwitchTheme(
         data: getSwitchTheme(),
         child: Obx(
@@ -166,11 +177,6 @@ class _SettingPageState extends State<SettingPage> {
 
   Widget _buildSortOptionTile() {
     return ListTile(
-      leading: Icon(
-        Icons.sort_by_alpha,
-        size: 36,
-        color: AppColors.text,
-      ),
       title: Text(
         'setting_sort'.tr,
         style: dynamicStyle(
@@ -188,8 +194,8 @@ class _SettingPageState extends State<SettingPage> {
       ),
       trailing: PopupMenuButton<int>(
         icon: Icon(
-          Icons.arrow_drop_down,
-          size: 44,
+          Icons.sort_by_alpha,
+          size: 36,
           color: AppColors.text,
         ),
         color: AppColors.surface,
@@ -224,20 +230,15 @@ class _SettingPageState extends State<SettingPage> {
           FontStyle.normal,
         ),
       ),
-      leading: Icon(
-        Icons.language,
-        color: AppColors.text,
-        size: 32,
-      ),
       subtitle: Text(
         getTitleForCode(_languages, AppShared.defaultLanguageValue.value),
         style: subtitleStyle(),
       ),
       trailing: PopupMenuButton<int>(
         icon: Icon(
-          Icons.arrow_drop_down,
-          size: 44,
+          Icons.language,
           color: AppColors.text,
+          size: 32,
         ),
         color: AppColors.surface,
         onSelected: (int code) {
@@ -255,36 +256,6 @@ class _SettingPageState extends State<SettingPage> {
           }).toList();
         },
       ),
-    );
-  }
-
-  Widget _buildListTile({
-    required String title,
-    required IconData leadingIcon,
-    required IconData trailingIcon,
-    required VoidCallback onTap,
-  }) {
-    return ListTile(
-      title: Text(
-        title,
-        style: dynamicStyle(
-          16,
-          AppColors.text,
-          FontWeight.normal,
-          FontStyle.normal,
-        ),
-      ),
-      leading: Icon(
-        leadingIcon,
-        color: AppColors.text,
-        size: 32,
-      ),
-      trailing: Icon(
-        trailingIcon,
-        size: 44,
-        color: AppColors.text,
-      ),
-      onTap: onTap,
     );
   }
 }

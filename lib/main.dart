@@ -10,7 +10,7 @@ void main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    await AppShared.loadShared();
+    await AppShared.loadTheme();
 
     runApp(const AppWait());
 
@@ -22,12 +22,13 @@ void main() async {
         androidNotificationOngoing: true,
         androidStopForegroundOnPause: true,
       ),
+      AppShared.loadShared(),
     ]);
 
     runApp(Phoenix(child: const AppWidget()));
   }, (Object error, StackTrace stack) {
-    print('\n\n==============================');
-    print(error);
-    print('==============================\n\n');
+    // print('\n\n==============================');
+    // print(error);
+    // print('==============================\n\n');
   });
 }

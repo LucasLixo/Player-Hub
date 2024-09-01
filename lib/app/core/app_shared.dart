@@ -26,8 +26,11 @@ mixin AppShared on GetxController {
   static const String _defaultGetSongsMode = 'defaultGetSongs';
   static RxInt defaultGetSongsValue = 0.obs;
 
-  static const String _defaultLanguageValue = 'defaultLanguage';
+  static const String _defaultLanguageMode = 'defaultLanguage';
   static RxInt defaultLanguageValue = 0.obs;
+
+  static const String _languageChangedMode = 'languageChanged';
+  static RxBool languageChangedValue = false.obs;
 
   static const String title = 'Player Hub';
 
@@ -41,23 +44,30 @@ mixin AppShared on GetxController {
     _prefs = await SharedPreferences.getInstance();
   }
 
+  static Future<void> loadTheme() async {
+    await _initializeDependencies();
+    darkModeValue.value = getDarkMode();
+  }
+
   static Future<void> loadShared() async {
     await _initializeDependencies();
     ignoreTimeValue.value = getIgnoreTime();
-    darkModeValue.value = getDarkMode();
     equalizerModeValue.value = getEqualizerMode();
     defaultGetSongsValue.value = getDefaultGetSong();
     defaultLanguageValue.value = getDefaultLanguage();
-    switch (defaultLanguageValue.value) {
-      case 0:
-        Get.updateLocale(const Locale('en', 'US'));
-        break;
-      case 1:
-        Get.updateLocale(const Locale('pt', 'BR'));
-        break;
-      case 2:
-        Get.updateLocale(const Locale('es', 'ES'));
-        break;
+    languageChangedValue.value = getLanguageChanged();
+    if (languageChangedValue.value) {
+      switch (defaultLanguageValue.value) {
+        case 0:
+          Get.updateLocale(const Locale('en', 'US'));
+          break;
+        case 1:
+          Get.updateLocale(const Locale('pt', 'BR'));
+          break;
+        case 2:
+          Get.updateLocale(const Locale('es', 'ES'));
+          break;
+      }
     }
   }
 
@@ -98,11 +108,11 @@ mixin AppShared on GetxController {
   }
 
   static int getDefaultLanguage() {
-    return _prefs?.getInt(_defaultLanguageValue) ?? defaultLanguageValue.value;
+    return _prefs?.getInt(_defaultLanguageMode) ?? defaultLanguageValue.value;
   }
 
   static Future<void> setDefaultLanguage(int value) async {
-    await _prefs?.setInt(_defaultLanguageValue, value);
+    await _prefs?.setInt(_defaultLanguageMode, value);
     defaultLanguageValue.value = value;
     switch (value) {
       case 0:
@@ -115,6 +125,17 @@ mixin AppShared on GetxController {
         Get.updateLocale(const Locale('es', 'ES'));
         break;
     }
+    if (!languageChangedValue.value) {
+      setLanguageChanged(true);
+    }
+  }
+
+  static bool getLanguageChanged() {
+    return _prefs?.getBool(_languageChangedMode) ?? languageChangedValue.value;
+  }
+
+  static Future<void> setLanguageChanged(bool value) async {
+    await _prefs?.setBool(_languageChangedMode, value);
   }
 
   static String getTitle(int id, String value) {
