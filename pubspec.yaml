@@ -2,7 +2,7 @@ name: playerhub
 description: "The ultimate offline music player! Listen to your favorite songs without an internet connection, with high audio quality and an intuitive interface. Organize your tracks, adjust the sound with the equalizer and enjoy a limitless music experience."
 publish_to: 'none'
 
-version: 1.4.2+15
+version: 1.4.3+16
 
 environment:
   sdk: '>=3.4.4 <4.0.0'
@@ -27,6 +27,7 @@ dependencies:
   flutter_localization: 0.2.1
   path_provider: 2.1.4
   flutter_phoenix: 1.1.1
+  toastification: 2.2.0
 
 dev_dependencies:
   flutter_test:

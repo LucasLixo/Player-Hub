@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:playerhub/app/shared/utils/my_toastification.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
 import 'package:playerhub/app/shared/utils/dynamic_style.dart';
@@ -105,11 +106,16 @@ class _SettingPageState extends State<SettingPage> {
       trailing: InkWell(
         onTap: () {
           playerController.getAllSongs();
+          myToastification(
+            context,
+            "${'setting_reload'.tr} ${'home_tab1'.tr}",
+            Icons.refresh,
+          );
         },
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         child: Icon(
-          Icons.refresh_outlined,
+          Icons.refresh,
           size: 44,
           color: AppColors.text,
         ),
@@ -167,7 +173,14 @@ class _SettingPageState extends State<SettingPage> {
             value: AppShared.darkModeValue.value,
             onChanged: (bool value) async {
               await AppShared.setDarkMode(value);
-              if (mounted) Phoenix.rebirth(context);
+              if (mounted) {
+                Phoenix.rebirth(context);
+                myToastification(
+                  context,
+                  value ? 'app_enable'.tr : 'app_disable'.tr,
+                  Icons.dark_mode,
+                );
+              }
             },
           ),
         ),
@@ -202,6 +215,11 @@ class _SettingPageState extends State<SettingPage> {
         onSelected: (int code) {
           setState(() {
             _sortValue = code;
+            myToastification(
+              context,
+              getTitleForCode(_sort, _sortValue),
+              Icons.sort_by_alpha,
+            );
           });
         },
         itemBuilder: (BuildContext context) {
@@ -243,6 +261,11 @@ class _SettingPageState extends State<SettingPage> {
         color: AppColors.surface,
         onSelected: (int code) {
           AppShared.setDefaultLanguage(code);
+          myToastification(
+            context,
+            getTitleForCode(_languages, AppShared.defaultLanguageValue.value),
+            Icons.language,
+          );
         },
         itemBuilder: (BuildContext context) {
           return _languages.map((languageOption) {

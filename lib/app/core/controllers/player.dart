@@ -278,8 +278,4 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       await audioPlayer.setLoopMode(LoopMode.one);
     }
   }
-
-  // void resetPlaylist() {
-  //   songLoad(playerState.songAllList, 0);
-  // }
 }

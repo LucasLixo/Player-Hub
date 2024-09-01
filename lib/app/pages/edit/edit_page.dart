@@ -8,6 +8,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 import 'package:playerhub/app/core/app_colors.dart';
+import 'package:playerhub/app/shared/utils/my_toastification.dart';
 import 'package:playerhub/app/shared/utils/title_style.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
 
@@ -94,7 +95,7 @@ class _EditPageState extends State<EditPage> {
           ),
         ),
         title: Text(
-          widget.song.title,
+          AppShared.getTitle(widget.song.id, widget.song.title),
           style: dynamicStyle(
             18,
             AppColors.text,
@@ -108,6 +109,11 @@ class _EditPageState extends State<EditPage> {
           InkWell(
             onTap: () {
               saveInfo();
+              myToastification(
+                context,
+                "${'edit_save'.tr}: ${AppShared.getTitle(widget.song.id, widget.song.title)}",
+                Icons.save,
+              );
             },
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,

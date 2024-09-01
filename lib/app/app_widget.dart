@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:toastification/toastification.dart';
 import 'package:playerhub/app/app_bindings.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/routes/app_pages.dart';
@@ -36,19 +37,29 @@ class AppWidget extends StatelessWidget {
         Locale('pt', 'BR'),
         Locale('es', 'ES'),
       ],
-      builder: _builder,
+      // builder: _builder,
+      builder: (context, child) {
+        return ToastificationConfigProvider(
+          config: const ToastificationConfig(
+            alignment: Alignment.bottomCenter,
+            itemWidth: 440,
+            animationDuration: Duration(milliseconds: 400),
+          ),
+          child: child!,
+        );
+      },
     );
   }
 
-  Widget _builder(context, widget) {
-    Widget error = const Text('...');
-
-    if (widget is Scaffold || widget is Navigator) {
-      error = Scaffold(body: Center(child: error));
-    }
-
-    ErrorWidget.builder = (FlutterErrorDetails errorDetails) => error;
-
-    return widget;
-  }
+  // Widget _builder(context, widget) {
+  //   Widget error = const Text('...');
+  // 
+  //   if (widget is Scaffold || widget is Navigator) {
+  //     error = Scaffold(body: Center(child: error));
+  //   }
+  // 
+  //   ErrorWidget.builder = (FlutterErrorDetails errorDetails) => error;
+  // 
+  //   return widget;
+  // }
 }
