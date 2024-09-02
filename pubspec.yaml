@@ -47,6 +47,8 @@ flutter:
     - assets/images/lowpoly_blue.jpg
     - assets/images/lowpoly_green.jpg
     - assets/images/lowpoly_red.jpg
+    
+    - assets/fonts/OpenSans-OFL.txt
 
   fonts:
     - family: OpenSans
