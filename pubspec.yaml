@@ -2,7 +2,7 @@ name: playerhub
 description: "The ultimate offline music player! Listen to your favorite songs without an internet connection, with high audio quality and an intuitive interface. Organize your tracks, adjust the sound with the equalizer and enjoy a limitless music experience."
 publish_to: 'none'
 
-version: 1.4.4+18
+version: 1.4.5+19
 
 environment:
   sdk: '>=3.4.4 <4.0.0'
