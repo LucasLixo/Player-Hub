@@ -2,7 +2,6 @@ import 'package:audio_service/audio_service.dart';
 import 'package:get/instance_manager.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:playerhub/app/core/controllers/just_audio_background.dart';
@@ -26,12 +25,6 @@ class PlayerStateController extends GetxController {
   RxList<SongModel> songList = <SongModel>[].obs;
 
   RxList<String> folderList = <String>[].obs;
-
-  void resetSongIndex() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      songIndex.value = 0;
-    });
-  }
 
   RxMap<int, String> imageCache = <int, String>{}.obs;
 
@@ -81,6 +74,8 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   }
 
   Future<void> getAllSongs() async {
+    await pauseSong();
+    playerState.songIndex.value = 0;
     switch (AppShared.defaultGetSongsValue.value) {
       case 0:
         await getAllSongsAdded();

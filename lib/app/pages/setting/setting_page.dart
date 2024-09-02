@@ -9,6 +9,7 @@ import 'package:playerhub/app/shared/utils/slider_shape.dart';
 import 'package:playerhub/app/shared/utils/subtitle_style.dart';
 import 'package:playerhub/app/shared/utils/switch_theme.dart';
 import 'package:playerhub/app/core/app_shared.dart';
+import 'package:playerhub/app/shared/utils/title_style.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -96,12 +97,7 @@ class _SettingPageState extends State<SettingPage> {
     return ListTile(
       title: Text(
         "${'setting_reload'.tr} ${'home_tab1'.tr}",
-        style: dynamicStyle(
-          16,
-          AppColors.text,
-          FontWeight.normal,
-          FontStyle.normal,
-        ),
+        style: titleStyle(),
       ),
       trailing: InkWell(
         onTap: () {
@@ -116,8 +112,8 @@ class _SettingPageState extends State<SettingPage> {
         highlightColor: Colors.transparent,
         child: Icon(
           Icons.refresh,
-          size: 44,
           color: AppColors.text,
+          size: 36,
         ),
       ),
     );
@@ -129,12 +125,7 @@ class _SettingPageState extends State<SettingPage> {
         'setting_ignore'.trParams({
           'seconds': _sliderValue.toString(),
         }),
-        style: dynamicStyle(
-          16,
-          AppColors.text,
-          FontWeight.normal,
-          FontStyle.normal,
-        ),
+        style: titleStyle(),
       ),
       subtitle: SliderTheme(
         data: getSliderTheme(),
@@ -159,12 +150,11 @@ class _SettingPageState extends State<SettingPage> {
     return ListTile(
       title: Text(
         'setting_mode'.tr,
-        style: dynamicStyle(
-          16,
-          AppColors.text,
-          FontWeight.normal,
-          FontStyle.normal,
-        ),
+        style: titleStyle(),
+      ),
+      subtitle: Text(
+        AppShared.darkModeValue.value ? 'app_enable'.tr : 'app_disable'.tr,
+        style: subtitleStyle(),
       ),
       trailing: SwitchTheme(
         data: getSwitchTheme(),
@@ -192,12 +182,7 @@ class _SettingPageState extends State<SettingPage> {
     return ListTile(
       title: Text(
         'setting_sort'.tr,
-        style: dynamicStyle(
-          16,
-          AppColors.text,
-          FontWeight.normal,
-          FontStyle.normal,
-        ),
+        style: titleStyle(),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
@@ -208,8 +193,8 @@ class _SettingPageState extends State<SettingPage> {
       trailing: PopupMenuButton<int>(
         icon: Icon(
           Icons.sort_by_alpha,
-          size: 36,
           color: AppColors.text,
+          size: 32,
         ),
         color: AppColors.surface,
         onSelected: (int code) {
@@ -241,16 +226,19 @@ class _SettingPageState extends State<SettingPage> {
     return ListTile(
       title: Text(
         'setting_language'.tr,
-        style: dynamicStyle(
-          16,
-          AppColors.text,
-          FontWeight.normal,
-          FontStyle.normal,
-        ),
+        style: titleStyle(),
       ),
-      subtitle: Text(
-        getTitleForCode(_languages, AppShared.defaultLanguageValue.value),
-        style: subtitleStyle(),
+      subtitle: Obx(
+        () {
+          if (AppShared.languageChangedValue.value) {
+            return Text(
+              getTitleForCode(_languages, AppShared.defaultLanguageValue.value),
+              style: subtitleStyle(),
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
       ),
       trailing: PopupMenuButton<int>(
         icon: Icon(
@@ -263,7 +251,7 @@ class _SettingPageState extends State<SettingPage> {
           AppShared.setDefaultLanguage(code);
           myToastification(
             context,
-            getTitleForCode(_languages, AppShared.defaultLanguageValue.value),
+            getTitleForCode(_languages, code),
             Icons.language,
           );
         },

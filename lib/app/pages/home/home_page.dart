@@ -116,6 +116,7 @@ class _HomePageState extends State<HomePage> {
             indicatorWeight: 4,
             labelColor: AppColors.primary,
             unselectedLabelColor: AppColors.textGray,
+            overlayColor: WidgetStateProperty.all<Color>(Colors.transparent),
             tabs: <Tab>[
               Tab(text: 'home_tab1'.tr),
               Tab(text: 'home_tab2'.tr),
