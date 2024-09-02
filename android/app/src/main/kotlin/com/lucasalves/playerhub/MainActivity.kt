@@ -1,4 +1,4 @@
-package com.playerhub
+package com.lucasalves.playerhub
 
 import android.os.Build
 import android.os.Bundle

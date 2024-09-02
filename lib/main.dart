@@ -25,7 +25,7 @@ void main() async {
 
     await Future.wait([
       JustAudioBackground.init(
-        androidNotificationChannelId: 'com.playerhub.channel.audio',
+        androidNotificationChannelId: 'com.lucasalves.playerhub.channel.audio',
         androidNotificationChannelName: AppShared.title,
         androidShowNotificationBadge: true,
         androidNotificationOngoing: true,
