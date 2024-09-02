@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:playerhub/app/app_wait.dart';
@@ -11,6 +12,7 @@ import 'package:playerhub/app/app_widget.dart';
 void main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
+    SemanticsBinding.instance.ensureSemantics();
 
     LicenseRegistry.addLicense(() async* {
       yield LicenseEntryWithLineBreaks(
@@ -21,7 +23,7 @@ void main() async {
 
     await AppShared.loadTheme();
 
-    runApp(const AppWait());
+    runApp(const AppWait(error: false));
 
     await Future.wait([
       JustAudioBackground.init(
@@ -36,9 +38,6 @@ void main() async {
 
     runApp(Phoenix(child: const AppWidget()));
   }, (Object error, StackTrace stack) {
-    // print('\n\n==============================');
-    // print(error);
-    // print('==============================\n\n');
-    runApp(const AppWait());
+    runApp(const AppWait(error: true));
   });
 }

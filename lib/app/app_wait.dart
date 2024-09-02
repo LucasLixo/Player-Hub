@@ -4,7 +4,9 @@ import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 import 'package:playerhub/app/core/app_shared.dart';
 
 class AppWait extends StatelessWidget {
-  const AppWait({super.key});
+  final bool error;
+
+  const AppWait({super.key, required this.error});
 
   @override
   Widget build(BuildContext context) {
@@ -13,15 +15,20 @@ class AppWait extends StatelessWidget {
         backgroundColor: AppColors.background,
         appBar: null,
         body: Center(
-          child: Text(
-            AppShared.title,
-            style: dynamicStyle(
-              32,
-              AppColors.text,
-              FontWeight.normal,
-              FontStyle.normal,
-            ),
-            textAlign: TextAlign.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                AppShared.title,
+                style: dynamicStyle(
+                  32,
+                  error ? Colors.red : AppColors.text,
+                  FontWeight.normal,
+                  FontStyle.normal,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       ),
