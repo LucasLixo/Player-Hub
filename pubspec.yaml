@@ -24,10 +24,11 @@ dependencies:
   shared_preferences: 2.3.1
   device_info_plus: 10.1.2
   # connectivity_plus: 6.0.5
-  flutter_localization: 0.2.1
+  # flutter_localization: 0.2.1
   path_provider: 2.1.4
   flutter_phoenix: 1.1.1
   toastification: 2.2.0
+  # lottie: 3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -36,9 +37,9 @@ dev_dependencies:
 
 flutter_launcher_icons:
   android: true
-  image_path: "assets/icons/icon.png"
+  image_path: "fastlane/icon.png"
   adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/icons/icon_foreground.png"
+  adaptive_icon_foreground: "fastlane/icon_foreground.png"
 
 flutter:
   uses-material-design: true
@@ -49,6 +50,9 @@ flutter:
     - assets/images/lowpoly_red.jpg
     
     - assets/fonts/OpenSans-OFL.txt
+
+    # - assets/lottie/splash_black.json
+    # - assets/lottie/splash_white.json
 
   fonts:
     - family: OpenSans
