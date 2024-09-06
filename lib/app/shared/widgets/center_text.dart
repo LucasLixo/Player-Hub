@@ -13,10 +13,10 @@ class CenterText extends StatelessWidget {
       child: Text(
         title,
         style: dynamicStyle(
-          18,
-          AppColors.text,
-          FontWeight.normal,
-          FontStyle.normal,
+          fontSize: 18,
+          fontColor: AppColors.text,
+          fontWeight: FontWeight.normal,
+          fontStyle: FontStyle.normal,
         ),
       ),
     );

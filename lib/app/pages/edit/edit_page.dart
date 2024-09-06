@@ -97,10 +97,10 @@ class _EditPageState extends State<EditPage> {
         title: Text(
           AppShared.getTitle(widget.song.id, widget.song.title),
           style: dynamicStyle(
-            18,
-            AppColors.text,
-            FontWeight.normal,
-            FontStyle.normal,
+            fontSize: 18,
+            fontColor: AppColors.text,
+            fontWeight: FontWeight.normal,
+            fontStyle: FontStyle.normal,
           ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
@@ -110,9 +110,9 @@ class _EditPageState extends State<EditPage> {
             onTap: () {
               saveInfo();
               myToastification(
-                context,
-                "${'edit_save'.tr}: ${AppShared.getTitle(widget.song.id, widget.song.title)}",
-                Icons.save,
+                context: context,
+                title: "${'edit_save'.tr}: ${AppShared.getTitle(widget.song.id, widget.song.title)}",
+                icon: Icons.save,
               );
             },
             splashColor: Colors.transparent,
@@ -141,10 +141,10 @@ class _EditPageState extends State<EditPage> {
                 controller: _textControllerTitle,
                 focusNode: _focusNodeTitle,
                 style: dynamicStyle(
-                  18,
-                  AppColors.text,
-                  FontWeight.normal,
-                  FontStyle.normal,
+                  fontSize: 18,
+                  fontColor: AppColors.text,
+                  fontWeight: FontWeight.normal,
+                  fontStyle: FontStyle.normal,
                 ),
                 cursorColor: AppColors.text,
                 decoration: InputDecoration(
@@ -163,10 +163,10 @@ class _EditPageState extends State<EditPage> {
                 controller: _textControllerArtist,
                 focusNode: _focusNodeArtist,
                 style: dynamicStyle(
-                  18,
-                  AppColors.text,
-                  FontWeight.normal,
-                  FontStyle.normal,
+                  fontSize: 18,
+                  fontColor: AppColors.text,
+                  fontWeight: FontWeight.normal,
+                  fontStyle: FontStyle.normal,
                 ),
                 cursorColor: AppColors.text,
                 decoration: InputDecoration(

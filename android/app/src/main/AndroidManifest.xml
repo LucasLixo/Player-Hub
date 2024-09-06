@@ -36,6 +36,7 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:banner="@mipmap/ic_launcher"
+        android:appCategory="audio"
         android:requestLegacyExternalStorage="true">
         <activity
             android:name=".MainActivity"
@@ -50,7 +51,6 @@
             android:turnScreenOn="true"
             android:screenOrientation="portrait"
             android:immersive="false"
-            android:appCategory="audio"
             android:isGame="false">
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"

@@ -2,7 +2,7 @@ name: playerhub
 description: "The ultimate offline music player! Listen to your favorite songs without an internet connection, with high audio quality and an intuitive interface. Organize your tracks, adjust the sound with the equalizer and enjoy a limitless music experience."
 publish_to: 'none'
 
-version: 1.4.5+19
+version: 1.4.6+21
 
 environment:
   sdk: '>=3.4.4 <4.0.0'
@@ -28,7 +28,7 @@ dependencies:
   path_provider: 2.1.4
   flutter_phoenix: 1.1.1
   toastification: 2.2.0
-  # lottie: 3.1.2
+  lottie: 3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -51,8 +51,8 @@ flutter:
     
     - assets/fonts/OpenSans-OFL.txt
 
-    # - assets/lottie/splash_black.json
-    # - assets/lottie/splash_white.json
+    - assets/lottie/splash_black.json
+    - assets/lottie/splash_white.json
 
   fonts:
     - family: OpenSans

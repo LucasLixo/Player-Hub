@@ -32,14 +32,14 @@ class _PlaylistPageState extends State<PlaylistPage> {
   void initState() {
     super.initState();
     if (widget.playlistTitle == 'playlist1'.tr) {
-      playerStateController.isRecent = true;
+      playerStateController.isListRecent.value = true;
     }
   }
 
   @override
   void dispose() {
     if (widget.playlistTitle == 'playlist1'.tr) {
-      playerStateController.isRecent = false;
+      playerStateController.isListRecent.value = false;
     }
     super.dispose();
   }
@@ -65,10 +65,10 @@ class _PlaylistPageState extends State<PlaylistPage> {
         title: Text(
           widget.playlistTitle,
           style: dynamicStyle(
-            18,
-            AppColors.text,
-            FontWeight.normal,
-            FontStyle.normal,
+            fontSize: 18,
+            fontColor: AppColors.text,
+            fontWeight: FontWeight.normal,
+            fontStyle: FontStyle.normal,
           ),
         ),
       ),

@@ -83,10 +83,10 @@ class _SearchPageState extends State<SearchPage> {
           controller: _textController,
           focusNode: _focusNode,
           style: dynamicStyle(
-            18,
-            AppColors.text,
-            FontWeight.normal,
-            FontStyle.normal,
+            fontSize: 18,
+            fontColor: AppColors.text,
+            fontWeight: FontWeight.normal,
+            fontStyle: FontStyle.normal,
           ),
           cursorColor: AppColors.text,
           decoration: InputDecoration(

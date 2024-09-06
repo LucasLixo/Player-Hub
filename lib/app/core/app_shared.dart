@@ -2,53 +2,57 @@ import 'dart:ui';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
-import 'package:get/get.dart';
-// import 'package:get/instance_manager.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
-// import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-// import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Mixin to manage preferences and images in the application using GetX.
 mixin AppShared on GetxController {
   static SharedPreferences? _prefs;
 
-  static const String _ignoreTimeKey = 'ignoreTime';
+  // Preference Keys
+  static const String _ignoreTimeValue = 'ignoreTime';
+  static const String _darkModeValue = 'darkMode';
+  static const String _equalizerModeValue = 'equalizerMode';
+  static const String _defaultGetSongsValue = 'defaultGetSongs';
+  static const String _defaultLanguageValue = 'defaultLanguage';
+  static const String _languageChangedValue = 'languageChanged';
+  static const String _playlistModeValue = 'playlistMode';
+
+  // Observable Values
   static RxInt ignoreTimeValue = 50.obs;
-
-  static const String _darkModeKey = 'darkMode';
   static RxBool darkModeValue = true.obs;
-
-  static const String _equalizerMode = 'equalizerMode';
   static RxBool equalizerModeValue = false.obs;
-
-  static const String _defaultGetSongsMode = 'defaultGetSongs';
   static RxInt defaultGetSongsValue = 0.obs;
-
-  static const String _defaultLanguageMode = 'defaultLanguage';
   static RxInt defaultLanguageValue = 0.obs;
-
-  static const String _languageChangedMode = 'languageChanged';
   static RxBool languageChangedValue = false.obs;
+  static RxInt playlistModeValue = 0.obs;
 
+  // Random background image title and paths
   static const String title = 'Player Hub';
-
   static const List<String> _imagePaths = [
     'assets/images/lowpoly_blue.jpg',
     'assets/images/lowpoly_green.jpg',
     'assets/images/lowpoly_red.jpg',
   ];
 
+  // Initialize dependencies
   static Future<void> _initializeDependencies() async {
     _prefs = await SharedPreferences.getInstance();
   }
 
+  // Loads the current theme
   static Future<void> loadTheme() async {
     await _initializeDependencies();
     darkModeValue.value = getDarkMode();
   }
 
+  // Load shared preferences
   static Future<void> loadShared() async {
     await _initializeDependencies();
     ignoreTimeValue.value = getIgnoreTime();
@@ -56,121 +60,123 @@ mixin AppShared on GetxController {
     defaultGetSongsValue.value = getDefaultGetSong();
     defaultLanguageValue.value = getDefaultLanguage();
     languageChangedValue.value = getLanguageChanged();
+    playlistModeValue.value = getPlaylistMode();
+
     if (languageChangedValue.value) {
-      switch (defaultLanguageValue.value) {
-        case 0:
-          Get.updateLocale(const Locale('en', 'US'));
-          break;
-        case 1:
-          Get.updateLocale(const Locale('pt', 'BR'));
-          break;
-        case 2:
-          Get.updateLocale(const Locale('es', 'ES'));
-          break;
-      }
+      _updateLocale(defaultLanguageValue.value);
     }
   }
 
-  static int getIgnoreTime() {
-    return _prefs?.getInt(_ignoreTimeKey) ?? ignoreTimeValue.value;
+  // Function to update the language
+  static void _updateLocale(int value) {
+    Map<int, Locale> localeMap = {
+      0: const Locale('en', 'US'),
+      1: const Locale('pt', 'BR'),
+      2: const Locale('es', 'ES'),
+    };
+    Get.updateLocale(localeMap[value] ?? const Locale('en', 'US'));
   }
 
+  // Get the ignored time value from preferences
+  static int getIgnoreTime() => _prefs?.getInt(_ignoreTimeValue) ?? ignoreTimeValue.value;
+
+  // Set skipped time in preferences
   static Future<void> setIgnoreTime(int value) async {
-    await _prefs?.setInt(_ignoreTimeKey, value);
     ignoreTimeValue.value = value;
+    await _prefs?.setInt(_ignoreTimeValue, value);
   }
 
-  static bool getDarkMode() {
-    return _prefs?.getBool(_darkModeKey) ?? darkModeValue.value;
-  }
+  // Gets the dark mode value from preferences
+  static bool getDarkMode() => _prefs?.getBool(_darkModeValue) ?? darkModeValue.value;
 
+  // Sets the dark mode in preferences
   static Future<void> setDarkMode(bool value) async {
-    await _prefs?.setBool(_darkModeKey, value);
     darkModeValue.value = value;
+    await _prefs?.setBool(_darkModeValue, value);
   }
 
-  static bool getEqualizerMode() {
-    return _prefs?.getBool(_equalizerMode) ?? equalizerModeValue.value;
-  }
+  // Gets the equalizer value from preferences
+  static bool getEqualizerMode() => _prefs?.getBool(_equalizerModeValue) ?? equalizerModeValue.value;
 
+  // Sets the equalizer in preferences
   static Future<void> setEqualizerMode(bool value) async {
-    await _prefs?.setBool(_equalizerMode, value);
     equalizerModeValue.value = value;
+    await _prefs?.setBool(_equalizerModeValue, value);
   }
 
-  static int getDefaultGetSong() {
-    return _prefs?.getInt(_defaultGetSongsMode) ?? defaultGetSongsValue.value;
-  }
+  // Gets the default value for music from preferences
+  static int getDefaultGetSong() => _prefs?.getInt(_defaultGetSongsValue) ?? defaultGetSongsValue.value;
 
+  // Sets the default value for getting songs in preferences
   static Future<void> setDefaultGetSong(int value) async {
-    await _prefs?.setInt(_defaultGetSongsMode, value);
     defaultGetSongsValue.value = value;
+    await _prefs?.setInt(_defaultGetSongsValue, value);
   }
 
-  static int getDefaultLanguage() {
-    return _prefs?.getInt(_defaultLanguageMode) ?? defaultLanguageValue.value;
-  }
+  // Gets the default language from preferences
+  static int getDefaultLanguage() => _prefs?.getInt(_defaultLanguageValue) ?? defaultLanguageValue.value;
 
+  // Sets the default language in preferences and updates the locale
   static Future<void> setDefaultLanguage(int value) async {
-    await _prefs?.setInt(_defaultLanguageMode, value);
     defaultLanguageValue.value = value;
-    switch (value) {
-      case 0:
-        Get.updateLocale(const Locale('en', 'US'));
-        break;
-      case 1:
-        Get.updateLocale(const Locale('pt', 'BR'));
-        break;
-      case 2:
-        Get.updateLocale(const Locale('es', 'ES'));
-        break;
-    }
+    await _prefs?.setInt(_defaultLanguageValue, value);
+    _updateLocale(value);
     if (!languageChangedValue.value) {
       setLanguageChanged(true);
     }
   }
 
-  static bool getLanguageChanged() {
-    return _prefs?.getBool(_languageChangedMode) ?? languageChangedValue.value;
-  }
+  // Gets the language switching state from preferences
+  static bool getLanguageChanged() => _prefs?.getBool(_languageChangedValue) ?? languageChangedValue.value;
 
+  // Sets the language switching state in preferences
   static Future<void> setLanguageChanged(bool value) async {
-    await _prefs?.setBool(_languageChangedMode, value);
+    languageChangedValue.value = value;
+    await _prefs?.setBool(_languageChangedValue, value);
   }
 
-  static String getTitle(int id, String value) {
-    String? title2 = _prefs?.getString('title-${id.toString()}');
-    if (title2 != null) {
-      return title2;
-    }
-    return value;
+  // Gets the language switching state from preferences
+  static int getPlaylistMode() => _prefs?.getInt(_playlistModeValue) ?? playlistModeValue.value;
+
+  // Sets the language switching state in preferences
+  static Future<void> setPlaylistMode(int value) async {
+    playlistModeValue.value = value;
+    await _prefs?.setInt(_playlistModeValue, value);
   }
 
+  // ==================================================
+  // Gets the song title based on ID
+  static String getTitle(int id, String value) => _prefs?.getString('title-$id') ?? value;
+
+  // Sets the song title in preferences
   static Future<void> setTitle(int id, String value) async {
-    await _prefs?.setString('title-${id.toString()}', value);
+    await _prefs?.setString('title-$id', value);
   }
 
+  // ==================================================
+  // Gets the song's artist based on the ID
   static String getArtist(int id, String value) {
-    String? artist2 = _prefs?.getString('artist-${id.toString()}');
-    if (artist2 != null) {
-      return artist2;
-    }
-    return value == '<unknown>' ? '' : value;
+    String? artist = _prefs?.getString('artist-$id');
+    return artist ?? (value == '<unknown>' ? '' : value);
   }
 
+  // Sets the song's artist in preferences
   static Future<void> setArtist(int id, String value) async {
-    await _prefs?.setString('artist-${id.toString()}', value);
+    await _prefs?.setString('artist-$id', value);
   }
 
+  // ==================================================
+  // Gets the song's image based on the ID, or a random image if not available
+  // ==================================================
   static Future<String> getImage({required int id}) async {
     final audioQuery = OnAudioQuery();
     final tempDir = await getTemporaryDirectory();
     final File file = File('${tempDir.path}/$id.jpg');
 
-    if (await file.exists()) {
-      return file.path;
-    }
+    // Returns the path if the image already exists
+    if (await file.exists()) return file.path;
 
+    // Tries to get the album art
     final Uint8List? data = await audioQuery.queryArtwork(
       id,
       ArtworkType.AUDIO,
@@ -179,11 +185,12 @@ mixin AppShared on GetxController {
       quality: 100,
     );
 
+    // If the artwork is found, save it to the temporary directory
     if (data != null && data.isNotEmpty) {
       await file.writeAsBytes(data);
     } else {
-      final String randomImagePath =
-          _imagePaths[Random().nextInt(_imagePaths.length)];
+      // If not, save a random image from the assets
+      final String randomImagePath = _imagePaths[Random().nextInt(_imagePaths.length)];
       final ByteData imageData = await rootBundle.load(randomImagePath);
       final Uint8List imageBytes = imageData.buffer.asUint8List();
       await file.writeAsBytes(imageBytes);

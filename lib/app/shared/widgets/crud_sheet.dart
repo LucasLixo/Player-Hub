@@ -24,10 +24,10 @@ void crudSheet(BuildContext context, SongModel song) {
               child: Text(
                 song.title,
                 style: dynamicStyle(
-                  22,
-                  AppColors.text,
-                  FontWeight.w600,
-                  FontStyle.normal,
+                  fontSize: 22,
+                  fontColor: AppColors.text,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -64,10 +64,10 @@ void crudSheet(BuildContext context, SongModel song) {
               title: Text(
                 'crud_sheet3'.tr,
                 style: dynamicStyle(
-                  18,
-                  AppColors.text,
-                  FontWeight.w600,
-                  FontStyle.normal,
+                  fontSize: 18,
+                  fontColor: AppColors.text,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
                 ),
               ),
               trailing: Icon(

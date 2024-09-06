@@ -12,15 +12,14 @@ class FolderList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final playerController = Get.find<PlayerController>();
     final playerStateController = Get.find<PlayerStateController>();
 
     return ListView.builder(
       physics: const BouncingScrollPhysics(),
       itemCount: playerStateController.folderList.length,
       itemBuilder: (BuildContext context, int index) {
-        var title = playerStateController.folderList[index];
-        var songs = playerController.getSongsFromFolder(title);
+        final title = playerStateController.folderList[index];
+        final songs = playerStateController.folderListSongs[title];
 
         return Container(
           margin: const EdgeInsets.only(bottom: 8),
@@ -35,7 +34,7 @@ class FolderList extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             subtitle: Text(
-              songs.length.toString(),
+              songs!.length.toString(),
               style: subtitleStyle(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

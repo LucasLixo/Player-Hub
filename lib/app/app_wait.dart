@@ -21,10 +21,10 @@ class AppWait extends StatelessWidget {
               Text(
                 AppShared.title,
                 style: dynamicStyle(
-                  32,
-                  error ? Colors.red : AppColors.text,
-                  FontWeight.normal,
-                  FontStyle.normal,
+                  fontSize: 32,
+                  fontColor: error ? Colors.red : AppColors.text,
+                  fontWeight: FontWeight.normal,
+                  fontStyle: FontStyle.normal,
                 ),
                 textAlign: TextAlign.center,
               ),

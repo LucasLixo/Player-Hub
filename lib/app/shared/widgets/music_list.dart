@@ -30,7 +30,7 @@ class _MusicListState extends State<MusicList> {
       physics: const BouncingScrollPhysics(),
       itemCount: widget.songs.length,
       itemBuilder: (BuildContext context, int index) {
-        var song = widget.songs[index];
+        final song = widget.songs[index];
         final imageFile = playerStateController.imageCache[song.id];
 
         return ListTile(

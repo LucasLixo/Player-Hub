@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-TextStyle dynamicStyle(
-  double fontSize,
-  Color color,
-  FontWeight fontWeight,
-  FontStyle fontStyle,
-) {
+TextStyle dynamicStyle({
+  required double fontSize,
+  required Color fontColor,
+  required FontWeight fontWeight,
+  required FontStyle fontStyle,
+}) {
   return TextStyle(
     fontSize: fontSize,
     fontFamily: 'OpenSans',
-    color: color,
+    color: fontColor,
     fontWeight: fontWeight,
     fontStyle: fontStyle,
   );

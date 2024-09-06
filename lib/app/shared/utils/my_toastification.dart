@@ -3,11 +3,15 @@ import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/shared/utils/title_style.dart';
 import 'package:toastification/toastification.dart';
 
-void myToastification(BuildContext context, String text, IconData icon) {
+void myToastification({
+  required BuildContext context,
+  required String title,
+  required IconData icon,
+}) {
   toastification.show(
     context: context,
     title: Text(
-      text,
+      title,
       style: titleStyle(),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,

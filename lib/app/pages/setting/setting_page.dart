@@ -73,10 +73,10 @@ class _SettingPageState extends State<SettingPage> {
         title: Text(
           'setting_title'.tr,
           style: dynamicStyle(
-            20,
-            AppColors.text,
-            FontWeight.normal,
-            FontStyle.normal,
+            fontSize: 20,
+            fontColor: AppColors.text,
+            fontWeight: FontWeight.normal,
+            fontStyle: FontStyle.normal,
           ),
         ),
       ),
@@ -103,9 +103,9 @@ class _SettingPageState extends State<SettingPage> {
         onTap: () {
           playerController.getAllSongs();
           myToastification(
-            context,
-            "${'setting_reload'.tr} ${'home_tab1'.tr}",
-            Icons.refresh,
+            context: context,
+            title: "${'setting_reload'.tr} ${'home_tab1'.tr}",
+            icon: Icons.refresh,
           );
         },
         splashColor: Colors.transparent,
@@ -166,9 +166,9 @@ class _SettingPageState extends State<SettingPage> {
               if (mounted) {
                 Phoenix.rebirth(context);
                 myToastification(
-                  context,
-                  value ? 'app_enable'.tr : 'app_disable'.tr,
-                  Icons.dark_mode,
+                  context: context,
+                  title: value ? 'app_enable'.tr : 'app_disable'.tr,
+                  icon: Icons.dark_mode,
                 );
               }
             },
@@ -201,9 +201,9 @@ class _SettingPageState extends State<SettingPage> {
           setState(() {
             _sortValue = code;
             myToastification(
-              context,
-              getTitleForCode(_sort, _sortValue),
-              Icons.sort_by_alpha,
+              context: context,
+              title: getTitleForCode(_sort, _sortValue),
+              icon: Icons.sort_by_alpha,
             );
           });
         },
@@ -250,9 +250,9 @@ class _SettingPageState extends State<SettingPage> {
         onSelected: (int code) {
           AppShared.setDefaultLanguage(code);
           myToastification(
-            context,
-            getTitleForCode(_languages, code),
-            Icons.language,
+            context: context,
+            title: getTitleForCode(_languages, code),
+            icon: Icons.language,
           );
         },
         itemBuilder: (BuildContext context) {
