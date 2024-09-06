@@ -38,6 +38,6 @@ void main() async {
 
     runApp(Phoenix(child: const AppWidget()));
   }, (Object error, StackTrace stack) {
-    runApp(const AppWait(error: true));
+    runApp(AppWait(error: true));
   });
 }

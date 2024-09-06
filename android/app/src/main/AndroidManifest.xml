@@ -14,6 +14,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" /> -->
 	<uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <!-- <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/> -->
+    <!-- <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/> -->
     <!-- <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE" /> -->
 	<!-- <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" /> -->
     <!-- background -->
@@ -25,8 +27,8 @@
 	<uses-permission android:name="android.permission.READ_BASIC_PHONE_STATE" />
     <!-- <uses-permission android:name="android.permission.INTERNET" /> -->
     <!-- 
+        android:requireContentUriPermissionFromCaller="readAndWrite"
         android:resizeableActivity="true"
-        android:requireContentUriPermissionFromCaller="read"
     -->
 	<supports-screens android:largeScreens="true" android:normalScreens="true" android:smallScreens="false" android:xlargeScreens="true" />
     <!-- application -->
@@ -59,12 +61,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-            <!-- APP_MUSIC -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.APP_MUSIC" />
             </intent-filter>
         </activity>
         <!-- ADD THIS "SERVICE" element -->

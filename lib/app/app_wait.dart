@@ -15,20 +15,15 @@ class AppWait extends StatelessWidget {
         backgroundColor: AppColors.background,
         appBar: null,
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                AppShared.title,
-                style: dynamicStyle(
-                  fontSize: 32,
-                  fontColor: error ? Colors.red : AppColors.text,
-                  fontWeight: FontWeight.normal,
-                  fontStyle: FontStyle.normal,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+          child: Text(
+            AppShared.title,
+            style: dynamicStyle(
+              fontSize: 32,
+              fontColor: error ? Colors.red : AppColors.text,
+              fontWeight: FontWeight.normal,
+              fontStyle: FontStyle.normal,
+            ),
+            textAlign: TextAlign.center,
           ),
         ),
       ),

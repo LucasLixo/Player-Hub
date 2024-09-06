@@ -746,7 +746,6 @@ class _PlayerAudioHandler extends BaseAudioHandler
     _updatePosition();
     _playing = false;
     _broadcastState();
-    // TODO: We should really stop listening to events here to mimic
     // just_audio's behaviour. E.g. if stop() was called, we actually want to
     // keep the state around even though the platform may be disposing its own
     // state.
@@ -933,7 +932,6 @@ extension AudioSourceExtension on AudioSourceMessage {
       }
       return indices;
     } else if (self is LoopingAudioSourceMessage) {
-      // TODO: This should combine indices of the children, like ConcatenatingAudioSource.
       // Also should be fixed in the plugin frontend.
       return List.generate(self.count, (i) => i);
     } else {

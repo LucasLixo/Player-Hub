@@ -28,7 +28,7 @@ dependencies:
   path_provider: 2.1.4
   flutter_phoenix: 1.1.1
   toastification: 2.2.0
-  lottie: 3.1.2
+  # lottie: 3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -51,8 +51,8 @@ flutter:
     
     - assets/fonts/OpenSans-OFL.txt
 
-    - assets/lottie/splash_black.json
-    - assets/lottie/splash_white.json
+    # - assets/lottie/splash_black.json
+    # - assets/lottie/splash_white.json
 
   fonts:
     - family: OpenSans

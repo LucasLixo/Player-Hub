@@ -72,26 +72,28 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     _audioPlayer.currentIndexStream.listen((index) {
       if (index != null) {
         _playerState.songIndex.value = index;
-        // define current song
         if (_playerState.songList.isNotEmpty) {
+          // define current song
           _playerState.currentSong.value = _playerState.songList[index];
+          // define current image
+          if (_playerState.imageCache
+              .containsKey(_playerState.currentSong.value!.id)) {
+            _playerState.currentImage.value =
+                _playerState.imageCache[_playerState.currentSong.value!.id];
+          } else {
+            _playerState.currentImage.value = null;
+          }
+          // refresh recent list
+          if (!_playerState.isListRecent.value) {
+            if (_playerState.recentList
+                .any((s) => s.id == _playerState.songList[index].id)) {
+              _playerState.recentList
+                  .removeWhere((s) => s.id == _playerState.songList[index].id);
+            }
+            _playerState.recentList.insert(0, _playerState.songList[index]);
+          }
         } else {
           _playerState.currentSong.value = null;
-        }
-        // define current image
-        if (_playerState.imageCache.containsKey(_playerState.currentSong.value!.id)) {
-          _playerState.currentImage.value = _playerState.imageCache[_playerState.currentSong.value!.id];
-        } else {
-          _playerState.currentImage.value = null;
-        }
-        // refresh recent list
-        if (!_playerState.isListRecent.value) {
-          if (_playerState.recentList
-              .any((s) => s.id == _playerState.songList[index].id)) {
-            _playerState.recentList
-                .removeWhere((s) => s.id == _playerState.songList[index].id);
-          }
-          _playerState.recentList.insert(0, _playerState.songList[index]);
         }
       }
     });

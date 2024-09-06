@@ -35,8 +35,10 @@ class _PlaylistSheetState extends State<PlaylistSheet> {
                   return SizedBox.shrink();
                 }
 
-                return SizedBox(
+                return Container(
                   height: MediaQuery.of(context).size.height * 0.4,
+                  width: double.infinity,
+                  padding: EdgeInsets.all(8.0),
                   child: ListView.builder(
                     physics: const BouncingScrollPhysics(),
                     itemCount: songList.length,

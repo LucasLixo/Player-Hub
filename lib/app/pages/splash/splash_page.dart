@@ -4,7 +4,6 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:playerhub/app/shared/utils/title_style.dart';
 import 'package:playerhub/app/core/app_colors.dart';
@@ -20,25 +19,17 @@ class SplashPage extends StatefulWidget {
   State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
+class _SplashPageState extends State<SplashPage> {
   final playerStateController = Get.find<PlayerStateController>();
-
-  late final AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this)
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          _permissionsApp();
-        }
-      });
+    _permissionsApp();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 
@@ -108,26 +99,15 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       backgroundColor: AppColors.background,
       appBar: null,
       body: Center(
-        child: /* Text(
+        child: Text(
           AppShared.title,
           style: dynamicStyle(
-            32,
-            AppColors.text,
-            FontWeight.normal,
-            FontStyle.normal,
+            fontSize: 32,
+            fontColor: AppColors.text,
+            fontWeight: FontWeight.normal,
+            fontStyle: FontStyle.normal,
           ),
           textAlign: TextAlign.center,
-        ), */
-            Lottie.asset(
-          AppShared.darkModeValue.value
-              ? 'assets/lottie/splash_black.json'
-              : 'assets/lottie/splash_white.json',
-          controller: _controller,
-          onLoaded: (composition) {
-            _controller
-              ..duration = Duration(seconds: 1)
-              ..forward();
-          },
         ),
       ),
     );
