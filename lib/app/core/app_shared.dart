@@ -23,6 +23,7 @@ mixin AppShared on GetxController {
   static const String _defaultLanguageValue = 'defaultLanguage';
   static const String _languageChangedValue = 'languageChanged';
   static const String _playlistModeValue = 'playlistMode';
+  static const String _frequencyValue = 'frequency';
 
   // Observable Values
   static RxInt ignoreTimeValue = 50.obs;
@@ -32,6 +33,13 @@ mixin AppShared on GetxController {
   static RxInt defaultLanguageValue = 0.obs;
   static RxBool languageChangedValue = false.obs;
   static RxInt playlistModeValue = 0.obs;
+  static RxList<double> frequencyValue = [
+    3.0,
+    0.0,
+    0.0,
+    0.0,
+    3.0,
+  ].obs;
 
   // Random background image title and paths
   static const String title = 'Player Hub';
@@ -61,6 +69,7 @@ mixin AppShared on GetxController {
     defaultLanguageValue.value = getDefaultLanguage();
     languageChangedValue.value = getLanguageChanged();
     playlistModeValue.value = getPlaylistMode();
+    frequencyValue.value = getAllFrequency();
 
     if (languageChangedValue.value) {
       _updateLocale(defaultLanguageValue.value);
@@ -78,7 +87,8 @@ mixin AppShared on GetxController {
   }
 
   // Get the ignored time value from preferences
-  static int getIgnoreTime() => _prefs?.getInt(_ignoreTimeValue) ?? ignoreTimeValue.value;
+  static int getIgnoreTime() =>
+      _prefs?.getInt(_ignoreTimeValue) ?? ignoreTimeValue.value;
 
   // Set skipped time in preferences
   static Future<void> setIgnoreTime(int value) async {
@@ -87,7 +97,8 @@ mixin AppShared on GetxController {
   }
 
   // Gets the dark mode value from preferences
-  static bool getDarkMode() => _prefs?.getBool(_darkModeValue) ?? darkModeValue.value;
+  static bool getDarkMode() =>
+      _prefs?.getBool(_darkModeValue) ?? darkModeValue.value;
 
   // Sets the dark mode in preferences
   static Future<void> setDarkMode(bool value) async {
@@ -96,7 +107,8 @@ mixin AppShared on GetxController {
   }
 
   // Gets the equalizer value from preferences
-  static bool getEqualizerMode() => _prefs?.getBool(_equalizerModeValue) ?? equalizerModeValue.value;
+  static bool getEqualizerMode() =>
+      _prefs?.getBool(_equalizerModeValue) ?? equalizerModeValue.value;
 
   // Sets the equalizer in preferences
   static Future<void> setEqualizerMode(bool value) async {
@@ -105,7 +117,8 @@ mixin AppShared on GetxController {
   }
 
   // Gets the default value for music from preferences
-  static int getDefaultGetSong() => _prefs?.getInt(_defaultGetSongsValue) ?? defaultGetSongsValue.value;
+  static int getDefaultGetSong() =>
+      _prefs?.getInt(_defaultGetSongsValue) ?? defaultGetSongsValue.value;
 
   // Sets the default value for getting songs in preferences
   static Future<void> setDefaultGetSong(int value) async {
@@ -114,7 +127,8 @@ mixin AppShared on GetxController {
   }
 
   // Gets the default language from preferences
-  static int getDefaultLanguage() => _prefs?.getInt(_defaultLanguageValue) ?? defaultLanguageValue.value;
+  static int getDefaultLanguage() =>
+      _prefs?.getInt(_defaultLanguageValue) ?? defaultLanguageValue.value;
 
   // Sets the default language in preferences and updates the locale
   static Future<void> setDefaultLanguage(int value) async {
@@ -127,7 +141,8 @@ mixin AppShared on GetxController {
   }
 
   // Gets the language switching state from preferences
-  static bool getLanguageChanged() => _prefs?.getBool(_languageChangedValue) ?? languageChangedValue.value;
+  static bool getLanguageChanged() =>
+      _prefs?.getBool(_languageChangedValue) ?? languageChangedValue.value;
 
   // Sets the language switching state in preferences
   static Future<void> setLanguageChanged(bool value) async {
@@ -136,7 +151,8 @@ mixin AppShared on GetxController {
   }
 
   // Gets the language switching state from preferences
-  static int getPlaylistMode() => _prefs?.getInt(_playlistModeValue) ?? playlistModeValue.value;
+  static int getPlaylistMode() =>
+      _prefs?.getInt(_playlistModeValue) ?? playlistModeValue.value;
 
   // Sets the language switching state in preferences
   static Future<void> setPlaylistMode(int value) async {
@@ -144,9 +160,25 @@ mixin AppShared on GetxController {
     await _prefs?.setInt(_playlistModeValue, value);
   }
 
+  static List<double> getAllFrequency() {
+    List<double> frequencies = [];
+    for (int i = 0; i < 5; i++) {
+      double frequency = _prefs?.getDouble("$_frequencyValue$i") ?? frequencyValue[i];
+      frequencies.add(frequency);
+    }
+    return frequencies;
+  }
+
+  static Future<void> setAllFrequency(List<double> values) async {
+    for (int i = 0; i < 5; i++) {
+      await _prefs?.setDouble("$_frequencyValue$i", values[i]);
+    }
+  }
+
   // ==================================================
   // Gets the song title based on ID
-  static String getTitle(int id, String value) => _prefs?.getString('title-$id') ?? value;
+  static String getTitle(int id, String value) =>
+      _prefs?.getString('title-$id') ?? value;
 
   // Sets the song title in preferences
   static Future<void> setTitle(int id, String value) async {
@@ -190,7 +222,8 @@ mixin AppShared on GetxController {
       await file.writeAsBytes(data);
     } else {
       // If not, save a random image from the assets
-      final String randomImagePath = _imagePaths[Random().nextInt(_imagePaths.length)];
+      final String randomImagePath =
+          _imagePaths[Random().nextInt(_imagePaths.length)];
       final ByteData imageData = await rootBundle.load(randomImagePath);
       final Uint8List imageBytes = imageData.buffer.asUint8List();
       await file.writeAsBytes(imageBytes);

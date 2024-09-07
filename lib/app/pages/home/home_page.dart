@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:equalizer_flutter/equalizer_flutter.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -29,6 +30,24 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     if (playerStateController.songAllList.isEmpty) {
       playerController.getAllSongs();
+    }
+
+    // Initialize Equalizer
+    _initializeEqualizer();
+  }
+
+  Future<void> _initializeEqualizer() async {
+    final sessionId = playerStateController.songSesion?.value;
+    if (sessionId != null) {
+      await EqualizerFlutter.init(sessionId);
+      await EqualizerFlutter.open(sessionId);
+      await EqualizerFlutter.setAudioSessionId(sessionId);
+      for (int i = 0; i < 5; i++) {
+        EqualizerFlutter.setBandLevel(
+          i,
+          AppShared.frequencyValue[i].toInt(),
+        );
+      }
     }
   }
 

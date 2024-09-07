@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:equalizer_flutter/equalizer_flutter.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/shared/utils/dynamic_style.dart';
+import 'package:playerhub/app/shared/utils/subtitle_style.dart';
 import 'package:playerhub/app/shared/utils/title_style.dart';
 import 'package:playerhub/app/shared/utils/my_toastification.dart';
 import 'package:playerhub/app/shared/utils/slider_shape.dart';
@@ -11,7 +14,6 @@ import 'package:playerhub/app/shared/utils/switch_theme.dart';
 import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
 import 'package:playerhub/app/shared/widgets/center_text.dart';
-import 'package:equalizer_flutter/equalizer_flutter.dart';
 
 class EqualizerPage extends StatefulWidget {
   const EqualizerPage({super.key});
@@ -29,18 +31,6 @@ class _EqualizerPageState extends State<EqualizerPage> {
   @override
   void initState() {
     super.initState();
-
-    // Initialize Equalizer
-    _initializeEqualizer();
-  }
-
-  Future<void> _initializeEqualizer() async {
-    final sessionId = playerStateController.songSesion?.value;
-    if (sessionId != null) {
-      await EqualizerFlutter.init(sessionId);
-      await EqualizerFlutter.open(sessionId);
-      await EqualizerFlutter.setAudioSessionId(sessionId);
-    }
   }
 
   @override
@@ -95,8 +85,36 @@ class _EqualizerPageState extends State<EqualizerPage> {
       ),
       body: Column(
         children: [
+          ListTile(
+            title: Text(
+              'setting_reset'.tr,
+              style: titleStyle(),
+            ),
+            trailing: InkWell(
+              onTap: () {
+                AppShared.frequencyValue[0] = 3.0;
+                AppShared.frequencyValue[1] = 0.0;
+                AppShared.frequencyValue[2] = 0.0;
+                AppShared.frequencyValue[3] = 0.0;
+                AppShared.frequencyValue[4] = 3.0;
+                AppShared.setAllFrequency(AppShared.frequencyValue);
+                myToastification(
+                  context: context,
+                  title: 'setting_reset'.tr,
+                  icon: Icons.refresh,
+                );
+              },
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              child: Icon(
+                Icons.refresh,
+                color: AppColors.text,
+                size: 36,
+              ),
+            ),
+          ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -198,46 +216,49 @@ class _CustomEQState extends State<CustomEQ> {
           ),
           SizedBox(
             height: 250,
-            child: FutureBuilder<int>(
-              future: EqualizerFlutter.getBandLevel(bandId),
-              builder: (context, snapshot) {
-                double value = snapshot.data?.toDouble() ?? 0.0;
-                return RotatedBox(
-                  quarterTurns: -1,
-                  child: SliderTheme(
-                    data: getSliderTheme(),
-                    child: Center(
-                      child: Slider(
-                        thumbColor: AppColors.primary,
-                        inactiveColor: AppColors.onBackground,
-                        activeColor: AppColors.primary,
-                        min: min,
-                        max: max,
-                        value: value,
-                        onChanged: widget.enabled
-                            ? (lowerValue) {
-                                EqualizerFlutter.setBandLevel(
-                                  bandId,
-                                  lowerValue.toInt(),
-                                );
-                                setState(() {
-                                  value = lowerValue;
-                                });
-                              }
-                            : null,
-                      ),
+            child: Obx(() {
+              double value = AppShared.frequencyValue[bandId];
+
+              return RotatedBox(
+                quarterTurns: -1,
+                child: SliderTheme(
+                  data: getSliderTheme(),
+                  child: Center(
+                    child: Slider(
+                      thumbColor: AppColors.primary,
+                      inactiveColor: AppColors.onBackground,
+                      activeColor: AppColors.primary,
+                      min: min,
+                      max: max,
+                      value: value,
+                      onChanged: widget.enabled
+                          ? (lowerValue) {
+                              AppShared.frequencyValue[bandId] = lowerValue;
+                              EqualizerFlutter.setBandLevel(
+                                bandId,
+                                lowerValue.toInt(),
+                              );
+                              setState(() {
+                                value = lowerValue;
+                              });
+                              AppShared.setAllFrequency(
+                                  AppShared.frequencyValue);
+                            }
+                          : null,
                     ),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            }),
           ),
           const SizedBox(
             height: 8,
           ),
           Text(
             '${freq ~/ 1000} Hz',
-            style: titleStyle(),
+            style: subtitleStyle(),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
