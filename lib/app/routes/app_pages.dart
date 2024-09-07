@@ -45,6 +45,12 @@ abstract class AppPages {
       transition: Transition.rightToLeft,
     ),
     GetPage(
+      name: AppRoutes.equalizer,
+      page: () => const EqualizerPage(),
+      transitionDuration: const Duration(milliseconds: 300),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
       name: AppRoutes.playlist,
       page: () {
         return PlaylistPage(

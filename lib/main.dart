@@ -11,6 +11,7 @@ import 'package:playerhub/app/app_widget.dart';
 
 void main() async {
   runZonedGuarded(() async {
+    // BindingBase.debugZoneErrorsAreFatal = true;
     WidgetsFlutterBinding.ensureInitialized();
     SemanticsBinding.instance.ensureSemantics();
 

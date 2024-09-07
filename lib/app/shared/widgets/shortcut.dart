@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:playerhub/app/core/app_colors.dart';
@@ -31,8 +30,9 @@ class _ShortcutState extends State<Shortcut>
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-    ever(playerStateController.isPlaying, (isPlaying) {
-      if (isPlaying) {
+
+    playerController.audioPlayer.playerStateStream.listen((state) {
+      if (state.playing) {
         _controller.forward();
       } else {
         _controller.reverse();
@@ -107,19 +107,12 @@ class _ShortcutState extends State<Shortcut>
                     },
                     splashColor: Colors.transparent,
                     highlightColor: Colors.transparent,
-                    child: Obx(() {
-                      if (playerStateController.isPlaying.value) {
-                        _controller.forward();
-                      } else {
-                        _controller.reverse();
-                      }
-                      return AnimatedIcon(
-                        icon: AnimatedIcons.play_pause,
-                        progress: _controller,
-                        size: 32,
-                        color: Colors.white,
-                      );
-                    }),
+                    child: AnimatedIcon(
+                      icon: AnimatedIcons.play_pause,
+                      progress: _controller,
+                      size: 32,
+                      color: Colors.white,
+                    ),
                   ),
                   const SizedBox(
                     width: 8,

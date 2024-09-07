@@ -2,12 +2,12 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
+import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/shared/widgets/center_text.dart';
@@ -25,9 +25,10 @@ class DetailsPage extends StatefulWidget {
 
 class _DetailsPageState extends State<DetailsPage>
     with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
   final playerController = Get.find<PlayerController>();
   final playerStateController = Get.find<PlayerStateController>();
-  late AnimationController _controller;
 
   @override
   void initState() {
@@ -36,8 +37,8 @@ class _DetailsPageState extends State<DetailsPage>
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-    ever(playerStateController.isPlaying, (isPlaying) {
-      if (isPlaying) {
+    playerController.audioPlayer.playerStateStream.listen((state) {
+      if (state.playing) {
         _controller.forward();
       } else {
         _controller.reverse();
@@ -52,6 +53,7 @@ class _DetailsPageState extends State<DetailsPage>
       appBar: null,
       body: Obx(() {
         final currentSong = playerStateController.currentSong.value;
+
         if (currentSong == null) {
           return CenterText(title: 'cloud_error1'.tr);
         } else {
@@ -80,105 +82,108 @@ class _DetailsPageState extends State<DetailsPage>
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 18,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  AppBar(
+                    backgroundColor: Colors.transparent,
+                    leading: InkWell(
+                      onTap: () => Get.back(),
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      child: const Icon(
+                        Icons.keyboard_arrow_down,
+                        color: Colors.white,
+                        size: 44,
+                      ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Get.back();
-                          },
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          child: const Icon(
-                            Icons.keyboard_arrow_down,
-                            color: Colors.white,
-                            size: 44,
-                          ),
+                    actions: [
+                      InkWell(
+                        onTap: () => Get.toNamed(AppRoutes.equalizer),
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        child: const Icon(
+                          Icons.graphic_eq,
+                          color: Colors.white,
+                          size: 36,
                         ),
-                        InkWell(
-                          onTap: () {
-                            crudSheet(context, currentSong);
-                          },
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          child: const Icon(
-                            Icons.more_vert,
-                            color: Colors.white,
-                            size: 32,
+                      ),
+                      const SizedBox(width: 8),
+                      InkWell(
+                        onTap: () => crudSheet(context, currentSong),
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        child: const Icon(
+                          Icons.more_vert,
+                          color: Colors.white,
+                          size: 32,
+                        ),
+                      ),
+                    ],
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
+                    child: currentImage != null
+                        ? Image.file(
+                            File(currentImage),
+                            fit: BoxFit.cover,
+                            width: 350.0,
+                            height: 350.0,
+                          )
+                        : const SizedBox(
+                            width: 350.0,
+                            height: 350.0,
                           ),
+                  ),
+                  FractionallySizedBox(
+                    widthFactor: 0.9,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          AppShared.getTitle(
+                            currentSong.id,
+                            currentSong.title,
+                          ),
+                          style: dynamicStyle(
+                            fontSize: 16,
+                            fontColor: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontStyle: FontStyle.normal,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          AppShared.getArtist(
+                            currentSong.id,
+                            currentSong.artist!,
+                          ),
+                          style: dynamicStyle(
+                            fontSize: 16,
+                            fontColor: Colors.white60,
+                            fontWeight: FontWeight.normal,
+                            fontStyle: FontStyle.normal,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(24),
-                      child: currentImage != null
-                          ? Image.file(
-                              File(currentImage),
-                              fit: BoxFit.cover,
-                              width: 350.0,
-                              height: 350.0,
-                            )
-                          : const SizedBox(
-                              width: 350.0,
-                              height: 350.0,
-                            ),
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            height: 12,
-                          ),
-                          Text(
-                            AppShared.getTitle(
-                              currentSong.id,
-                              currentSong.title,
-                            ),
-                            style: dynamicStyle(
-                              fontSize: 16,
-                              fontColor: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontStyle: FontStyle.normal,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(
-                            height: 4,
-                          ),
-                          Text(
-                            AppShared.getArtist(
-                              currentSong.id,
-                              currentSong.artist!,
-                            ),
-                            style: dynamicStyle(
-                              fontSize: 16,
-                              fontColor: Colors.white60,
-                              fontWeight: FontWeight.normal,
-                              fontStyle: FontStyle.normal,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Row(
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  FractionallySizedBox(
+                    widthFactor: 0.9,
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
@@ -201,7 +206,10 @@ class _DetailsPageState extends State<DetailsPage>
                         ),
                       ],
                     ),
-                    SliderTheme(
+                  ),
+                  FractionallySizedBox(
+                    widthFactor: 0.9,
+                    child: SliderTheme(
                       data: getSliderTheme(),
                       child: Slider(
                         thumbColor: Colors.white,
@@ -219,10 +227,13 @@ class _DetailsPageState extends State<DetailsPage>
                         },
                       ),
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Row(
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  FractionallySizedBox(
+                    widthFactor: 0.9,
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const PlaylistMode(),
@@ -244,19 +255,12 @@ class _DetailsPageState extends State<DetailsPage>
                           },
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
-                          child: Obx(() {
-                            if (playerStateController.isPlaying.value) {
-                              _controller.forward();
-                            } else {
-                              _controller.reverse();
-                            }
-                            return AnimatedIcon(
-                              icon: AnimatedIcons.play_pause,
-                              progress: _controller,
-                              size: 64,
-                              color: Colors.white,
-                            );
-                          }),
+                          child: AnimatedIcon(
+                            icon: AnimatedIcons.play_pause,
+                            progress: _controller,
+                            size: 64,
+                            color: Colors.white,
+                          ),
                         ),
                         InkWell(
                           onTap: () {
@@ -273,8 +277,8 @@ class _DetailsPageState extends State<DetailsPage>
                         PlaylistSheet(context: context),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           );

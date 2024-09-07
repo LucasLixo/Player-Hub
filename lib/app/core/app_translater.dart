@@ -40,6 +40,8 @@ class AppTranslations extends Translations {
       'setting_sort2': 'Ordenar ultimos adicionados',
       'setting_sort3': 'Ordenar maior duração',
       'setting_reload': 'Recarregar',
+      'equalizer_frequency1': 'Grave',
+      'equalizer_frequency2': 'Agudo',
     },
     'en_US': {
       'app_language': 'English',
@@ -77,6 +79,8 @@ class AppTranslations extends Translations {
       'setting_sort2': 'Sort by most recently added',
       'setting_sort3': 'Sort by longest duration',
       'setting_reload': 'Reload',
+      'equalizer_frequency1': 'Low',
+      'equalizer_frequency2': 'High',
     },
     'es_ES': {
       'app_language': 'Español',
@@ -114,6 +118,8 @@ class AppTranslations extends Translations {
       'setting_sort2': 'Ordenar por los más recientemente añadidos',
       'setting_sort3': 'Ordenar por la duración más larga',
       'setting_reload': 'Recargar',
+      'equalizer_frequency1': 'Bajo',
+      'equalizer_frequency2': 'Agudo',
     },
   };
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/instance_manager.dart';
 import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
@@ -11,7 +12,7 @@ class PlaylistSheet extends StatefulWidget {
   const PlaylistSheet({super.key, required BuildContext context});
 
   @override
-   State<PlaylistSheet> createState() => _PlaylistSheetState();
+  State<PlaylistSheet> createState() => _PlaylistSheetState();
 }
 
 class _PlaylistSheetState extends State<PlaylistSheet> {
@@ -102,7 +103,7 @@ class _PlaylistSheetState extends State<PlaylistSheet> {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       child: const Icon(
-        Icons.list,
+        Icons.queue_music,
         size: 30,
         color: Colors.white,
       ),

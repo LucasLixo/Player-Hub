@@ -11,6 +11,7 @@ import 'package:playerhub/app/core/app_shared.dart';
 class PlayerStateController extends GetxController {
   // address of sound in list
   RxInt songIndex = 0.obs;
+  RxInt? songSesion = RxInt(0);
 
   // state play
   RxBool isPlaying = false.obs;
@@ -51,25 +52,26 @@ class PlayerStateController extends GetxController {
 
 class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   final _audioQuery = OnAudioQuery();
-  final _audioPlayer = AudioPlayer();
   final _audioBackground = JustAudioBackground();
 
+  final audioPlayer = AudioPlayer();
+
   // PlayerStateController
-  final _playerState = Get.put(PlayerStateController());
+  final _playerState = Get.find<PlayerStateController>();
 
   PlayerController() {
     // nextSong
-    _audioPlayer.processingStateStream.listen((state) {
+    audioPlayer.processingStateStream.listen((state) {
       if (state == ProcessingState.completed) {
         nextSong();
       }
     });
     // pause or play
-    _audioPlayer.playerStateStream.listen((state) {
+    audioPlayer.playerStateStream.listen((state) {
       _playerState.isPlaying.value = state.playing;
     });
     // update index by list songs
-    _audioPlayer.currentIndexStream.listen((index) {
+    audioPlayer.currentIndexStream.listen((index) {
       if (index != null) {
         _playerState.songIndex.value = index;
         if (_playerState.songList.isNotEmpty) {
@@ -102,13 +104,13 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
 
   // update position
   void updatePosition() {
-    _audioPlayer.durationStream.listen((d) {
+    audioPlayer.durationStream.listen((d) {
       if (d != null) {
         _playerState.songDuration.value = d.toString().split(".")[0];
         _playerState.songDurationD.value = d.inSeconds.toDouble();
       }
     });
-    _audioPlayer.positionStream.listen((p) {
+    audioPlayer.positionStream.listen((p) {
       _playerState.songPosition.value = p.toString().split(".")[0];
       _playerState.songPositionD.value = p.inSeconds.toDouble();
     });
@@ -117,7 +119,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   // charge duration in seconds
   void chargeDurationInSeconds(int seconds) {
     var duration = Duration(seconds: seconds);
-    _audioPlayer.seek(duration);
+    audioPlayer.seek(duration);
   }
 
   // Get Songs
@@ -207,33 +209,30 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       );
     }).toList();
 
-    await _audioPlayer.setAudioSource(
+    await audioPlayer.setAudioSource(
       ConcatenatingAudioSource(
         children: playlist,
         shuffleOrder: DefaultShuffleOrder(),
       ),
       initialIndex: index,
     );
+    if (audioPlayer.androidAudioSessionId != null) {
+      _playerState.songSesion!.value = audioPlayer.androidAudioSessionId!;
+    }
   }
-
-  // List<SongModel> getSongsFromFolder(String folderPath) {
-  //   return _playerState.songList
-  //       .where((song) => song.data.contains(folderPath))
-  //       .toList();
-  // }
 
   // define play in current song
   Future<void> playSong(int? index) async {
     if (_playerState.songIndex.value != index) {
       _playerState.songIndex.value = index!;
-      await _audioPlayer.seek(Duration.zero, index: index);
+      await audioPlayer.seek(Duration.zero, index: index);
     }
     playbackState.add(playbackState.value.copyWith(
       playing: true,
       controls: [MediaControl.pause],
     ));
     _playerState.isPlaying.value = true;
-    await _audioPlayer.play();
+    await audioPlayer.play();
     updatePosition();
   }
 
@@ -244,7 +243,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       controls: [MediaControl.play],
     ));
     _playerState.isPlaying.value = false;
-    await _audioPlayer.pause();
+    await audioPlayer.pause();
   }
 
   // define next song in current song
@@ -256,9 +255,9 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       if (currentIndex < lastIndex) {
         await _audioBackground.nextSong();
       } else {
-        await _audioPlayer.seek(Duration.zero, index: 0);
+        await audioPlayer.seek(Duration.zero, index: 0);
       }
-      await _audioPlayer.play();
+      await audioPlayer.play();
     }
   }
 
@@ -270,10 +269,10 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       if (currentIndex > 0) {
         await _audioBackground.previousSong();
       } else {
-        await _audioPlayer.seek(Duration.zero,
+        await audioPlayer.seek(Duration.zero,
             index: _playerState.songList.length - 1);
       }
-      await _audioPlayer.play();
+      await audioPlayer.play();
     }
   }
 
@@ -292,24 +291,24 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       case 0:
         _playerState.isLooping.value = false;
         _playerState.isShuffle.value = false;
-        await _audioPlayer.setShuffleModeEnabled(false);
-        await _audioPlayer.setLoopMode(LoopMode.off);
+        await audioPlayer.setShuffleModeEnabled(false);
+        await audioPlayer.setLoopMode(LoopMode.off);
         AppShared.setPlaylistMode(1);
         break;
       // mode loop song
       case 1:
         _playerState.isLooping.value = true;
         _playerState.isShuffle.value = false;
-        await _audioPlayer.setShuffleModeEnabled(false);
-        await _audioPlayer.setLoopMode(LoopMode.one);
+        await audioPlayer.setShuffleModeEnabled(false);
+        await audioPlayer.setLoopMode(LoopMode.one);
         AppShared.setPlaylistMode(2);
         break;
       // mode shuffle
       case 2:
         _playerState.isLooping.value = false;
         _playerState.isShuffle.value = true;
-        await _audioPlayer.setShuffleModeEnabled(true);
-        await _audioPlayer.setLoopMode(LoopMode.off);
+        await audioPlayer.setShuffleModeEnabled(true);
+        await audioPlayer.setLoopMode(LoopMode.off);
         AppShared.setPlaylistMode(0);
         break;
     }

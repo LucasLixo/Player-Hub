@@ -5,7 +5,7 @@ class AppBinding implements Bindings {
   
   @override
   void dependencies() {
-    Get.put<PlayerStateController>(PlayerStateController());
-    Get.put<PlayerController>(PlayerController());
+    Get.put<PlayerStateController>(PlayerStateController(), permanent: true);
+    Get.put<PlayerController>(PlayerController(), permanent: true);
   }
 }

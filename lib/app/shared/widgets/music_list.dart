@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/route_manager.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:get/instance_manager.dart';
 import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/shared/utils/subtitle_style.dart';
@@ -20,10 +21,9 @@ class MusicList extends StatefulWidget {
 }
 
 class _MusicListState extends State<MusicList> {
-  
   @override
   Widget build(BuildContext context) {
-    final playerController = Get.put(PlayerController());
+    final playerController = Get.find<PlayerController>();
     final playerStateController = Get.find<PlayerStateController>();
 
     return ListView.builder(

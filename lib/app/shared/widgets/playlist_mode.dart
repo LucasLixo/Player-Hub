@@ -12,7 +12,7 @@ class PlaylistMode extends StatefulWidget {
 }
 
 class _PlaylistModeState extends State<PlaylistMode> {
-  final playerController = Get.put(PlayerController());
+  final playerController = Get.find<PlayerController>();
 
   @override
   Widget build(BuildContext context) {

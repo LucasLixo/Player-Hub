@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/shared/utils/my_toastification.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
@@ -85,6 +89,7 @@ class _SettingPageState extends State<SettingPage> {
         children: [
           _buildReloadSongs(),
           _buildIgnoreTimeTile(),
+          _buildEqualizer(),
           _buildDarkModeTile(),
           _buildSortOptionTile(),
           _buildLanguageSelectionTile(),
@@ -141,6 +146,25 @@ class _SettingPageState extends State<SettingPage> {
               _sliderValue = value.toInt();
             });
           },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEqualizer() {
+    return ListTile(
+      title: Text(
+        'setting_equalizer'.tr,
+        style: titleStyle(),
+      ),
+      trailing: InkWell(
+        onTap: () => Get.toNamed(AppRoutes.equalizer),
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        child: Icon(
+          Icons.graphic_eq,
+          color: AppColors.text,
+          size: 36,
         ),
       ),
     );
