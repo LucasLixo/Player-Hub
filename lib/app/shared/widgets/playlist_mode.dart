@@ -8,7 +8,7 @@ class PlaylistMode extends StatefulWidget {
   const PlaylistMode({super.key});
 
   @override
-  _PlaylistModeState createState() => _PlaylistModeState();
+  State<PlaylistMode> createState() => _PlaylistModeState();
 }
 
 class _PlaylistModeState extends State<PlaylistMode> {

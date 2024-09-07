@@ -11,7 +11,7 @@ class PlaylistSheet extends StatefulWidget {
   const PlaylistSheet({super.key, required BuildContext context});
 
   @override
-  _PlaylistSheetState createState() => _PlaylistSheetState();
+   State<PlaylistSheet> createState() => _PlaylistSheetState();
 }
 
 class _PlaylistSheetState extends State<PlaylistSheet> {
@@ -32,13 +32,13 @@ class _PlaylistSheetState extends State<PlaylistSheet> {
                 final songIndex = playerStateController.songIndex.value;
 
                 if (songList.isEmpty) {
-                  return SizedBox.shrink();
+                  return const SizedBox.shrink();
                 }
 
                 return Container(
                   height: MediaQuery.of(context).size.height * 0.4,
                   width: double.infinity,
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: ListView.builder(
                     physics: const BouncingScrollPhysics(),
                     itemCount: songList.length,
@@ -71,7 +71,7 @@ class _PlaylistSheetState extends State<PlaylistSheet> {
                                 color: AppColors.text,
                                 size: 32,
                               )
-                            : SizedBox.shrink(),
+                            : const SizedBox.shrink(),
                         leading: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: imageFile != null
@@ -101,7 +101,7 @@ class _PlaylistSheetState extends State<PlaylistSheet> {
       },
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
-      child: Icon(
+      child: const Icon(
         Icons.list,
         size: 30,
         color: Colors.white,

@@ -148,7 +148,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       case 2:
         songs = await _audioQuery.querySongs(
           ignoreCase: true,
-          orderType: OrderType.ASC_OR_SMALLER,
+          orderType: OrderType.DESC_OR_GREATER,
           sortType: SongSortType.DURATION,
           uriType: UriType.EXTERNAL,
         );

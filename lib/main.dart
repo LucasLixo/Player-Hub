@@ -20,7 +20,6 @@ void main() async {
         await rootBundle.loadString('assets/fonts/OpenSans-OFL.txt'),
       );
     });
-
     await AppShared.loadTheme();
 
     runApp(const AppWait(error: false));
@@ -38,6 +37,8 @@ void main() async {
 
     runApp(Phoenix(child: const AppWidget()));
   }, (Object error, StackTrace stack) {
-    runApp(AppWait(error: true));
+    debugPrint("$error");
+    debugPrintStack(stackTrace: stack);
+    runApp(const AppWait(error: false));
   });
 }
