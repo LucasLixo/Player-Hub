@@ -9,7 +9,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
+
 import com.ryanheise.audioservice.AudioServiceActivity
+
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
