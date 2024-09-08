@@ -9,7 +9,7 @@ if exist "%output_zip%" (
 )
 
 echo %source_dir% - %output_zip%
-powershell -command "Compress-Archive -Path '%source_dir%\*' -DestinationPath '%output_zip%'"
+powershell -command "Compress-Archive -Path '%source_dir%\*' -DestinationPath '%output_zip%' -CompressionLevel NoCompression"
 
 if exist "%output_zip%" (
     echo %output_zip%
