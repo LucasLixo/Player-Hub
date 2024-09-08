@@ -11,7 +11,7 @@ import 'package:playerhub/app/core/app_shared.dart';
 class PlayerStateController extends GetxController {
   // address of sound in list
   RxInt songIndex = 0.obs;
-  RxInt? songSesion = RxInt(0);
+  RxInt songSession = 0.obs;
 
   // state play
   RxBool isPlaying = false.obs;
@@ -69,6 +69,9 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     // pause or play
     audioPlayer.playerStateStream.listen((state) {
       _playerState.isPlaying.value = state.playing;
+      if (_playerState.songSession.value == 0) {
+        _playerState.songSession.value = audioPlayer.androidAudioSessionId ?? 0;
+      }
     });
     // update index by list songs
     audioPlayer.currentIndexStream.listen((index) {
@@ -156,6 +159,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
         );
         break;
     }
+
     // remove songs by duration
     songs = songs
         .where((song) =>
@@ -183,12 +187,14 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       _playerState.folderListSongs[folder] = songsInFolder;
     }
 
+    // image cache
     for (var song in songList) {
       if (!_playerState.imageCache.containsKey(song.id)) {
         final imagePath = await AppShared.getImage(id: song.id);
         _playerState.imageCache[song.id] = imagePath;
       }
     }
+
     await songLoad(songList, 0);
   }
 
@@ -216,8 +222,21 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       ),
       initialIndex: index,
     );
-    if (audioPlayer.androidAudioSessionId != null) {
-      _playerState.songSesion!.value = audioPlayer.androidAudioSessionId!;
+
+    // mode playlist
+    switch (AppShared.playlistModeValue.value) {
+      // mode loop playlist
+      case 0:
+        await modeShfflePlaylist();
+        break;
+      // mode loop song
+      case 1:
+        await modeLoopPlaylist();
+        break;
+      // mode shuffle
+      case 2:
+        await modeLoopSong();
+        break;
     }
   }
 
@@ -276,6 +295,27 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     }
   }
 
+  Future<void> modeLoopPlaylist() async {
+    _playerState.isLooping.value = false;
+    _playerState.isShuffle.value = false;
+    await audioPlayer.setShuffleModeEnabled(false);
+    await audioPlayer.setLoopMode(LoopMode.off);
+  }
+
+  Future<void> modeLoopSong() async {
+    _playerState.isLooping.value = true;
+    _playerState.isShuffle.value = false;
+    await audioPlayer.setShuffleModeEnabled(false);
+    await audioPlayer.setLoopMode(LoopMode.one);
+  }
+
+  Future<void> modeShfflePlaylist() async {
+    _playerState.isLooping.value = false;
+    _playerState.isShuffle.value = true;
+    await audioPlayer.setShuffleModeEnabled(true);
+    await audioPlayer.setLoopMode(LoopMode.off);
+  }
+
   // toggle play and pause
   Future<void> togglePlayPause() async {
     if (_playerState.isPlaying.value) {
@@ -289,26 +329,17 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     switch (AppShared.playlistModeValue.value) {
       // mode loop playlist
       case 0:
-        _playerState.isLooping.value = false;
-        _playerState.isShuffle.value = false;
-        await audioPlayer.setShuffleModeEnabled(false);
-        await audioPlayer.setLoopMode(LoopMode.off);
+        await modeLoopPlaylist();
         AppShared.setPlaylistMode(1);
         break;
       // mode loop song
       case 1:
-        _playerState.isLooping.value = true;
-        _playerState.isShuffle.value = false;
-        await audioPlayer.setShuffleModeEnabled(false);
-        await audioPlayer.setLoopMode(LoopMode.one);
+        await modeLoopSong();
         AppShared.setPlaylistMode(2);
         break;
       // mode shuffle
       case 2:
-        _playerState.isLooping.value = false;
-        _playerState.isShuffle.value = true;
-        await audioPlayer.setShuffleModeEnabled(true);
-        await audioPlayer.setLoopMode(LoopMode.off);
+        await modeShfflePlaylist();
         AppShared.setPlaylistMode(0);
         break;
     }

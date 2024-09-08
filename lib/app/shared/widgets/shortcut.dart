@@ -53,6 +53,7 @@ class _ShortcutState extends State<Shortcut>
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             margin: const EdgeInsets.only(bottom: 8),
+            color: Colors.transparent,
             child: ListTile(
               tileColor: AppColors.surface,
               splashColor: Colors.transparent,

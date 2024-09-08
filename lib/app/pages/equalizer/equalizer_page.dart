@@ -3,7 +3,9 @@ import 'package:equalizer_flutter/equalizer_flutter.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 import 'package:playerhub/app/shared/utils/subtitle_style.dart';
@@ -24,13 +26,30 @@ class EqualizerPage extends StatefulWidget {
 
 class _EqualizerPageState extends State<EqualizerPage> {
   final playerController = Get.find<PlayerController>();
-  final playerStateController = Get.find<PlayerStateController>();
+  // final playerStateController = Get.find<PlayerStateController>();
 
-  bool _equalizerMode = AppShared.equalizerModeValue.value;
+  final RxBool _equalizerMode = AppShared.equalizerModeValue.value.obs;
 
   @override
   void initState() {
     super.initState();
+    final sessionId = playerController.audioPlayer.androidAudioSessionId;
+    if (sessionId != null) {
+      _initializeEqualizer(sessionId);
+    }
+  }
+
+  Future<void> _initializeEqualizer(int id) async {
+    await EqualizerFlutter.init(id);
+    await EqualizerFlutter.open(id);
+    await EqualizerFlutter.setAudioSessionId(id);
+    for (int i = 0; i < 5; i++) {
+      await EqualizerFlutter.setBandLevel(
+        i,
+        AppShared.frequencyValue[i].toInt(),
+      );
+    }
+    await EqualizerFlutter.setEnabled(_equalizerMode.value);
   }
 
   @override
@@ -38,6 +57,7 @@ class _EqualizerPageState extends State<EqualizerPage> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
+        elevation: 0.0,
         backgroundColor: AppColors.background,
         leading: InkWell(
           onTap: () => Get.back(),
@@ -59,26 +79,27 @@ class _EqualizerPageState extends State<EqualizerPage> {
           ),
         ),
         actions: [
-          SwitchTheme(
-            data: getSwitchTheme(),
-            child: Switch(
-              value: _equalizerMode,
-              onChanged: (bool value) async {
-                await AppShared.setEqualizerMode(value);
-                EqualizerFlutter.setEnabled(value);
-                setState(() {
-                  _equalizerMode = value;
-                });
-                if (mounted) {
-                  myToastification(
-                    context: context,
-                    title: value
-                        ? "${'setting_equalizer'.tr} ${'app_enable'.tr}"
-                        : "${'setting_equalizer'.tr} ${'app_disable'.tr}",
-                    icon: Icons.graphic_eq,
-                  );
-                }
-              },
+          Obx(
+            () => SwitchTheme(
+              data: getSwitchTheme(),
+              child: Switch(
+                value: _equalizerMode.value,
+                onChanged: (bool value) async {
+                  await AppShared.setEqualizerMode(value);
+                  EqualizerFlutter.setEnabled(value);
+                  _equalizerMode.value = value;
+
+                  if (mounted) {
+                    myToastification(
+                      context: context,
+                      title: value
+                          ? "${'setting_equalizer'.tr} ${'app_enable'.tr}"
+                          : "${'setting_equalizer'.tr} ${'app_disable'.tr}",
+                      icon: Icons.graphic_eq,
+                    );
+                  }
+                },
+              ),
             ),
           ),
         ],
@@ -132,17 +153,27 @@ class _EqualizerPageState extends State<EqualizerPage> {
           FutureBuilder<List<int>>(
             future: EqualizerFlutter.getBandLevelRange(),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const SizedBox.shrink();
+                // return const CenterText(title: 'Loading...');
+              } else if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData) {
-                  return CustomEQ(
-                    enabled: _equalizerMode,
-                    bandLevelRange: snapshot.data!,
+                  return Obx(
+                    () => CustomEQ(
+                      enabled: _equalizerMode.value,
+                      bandLevelRange: snapshot.data!,
+                    ),
                   );
                 } else if (snapshot.hasError) {
-                  return CenterText(title: 'Error: ${snapshot.error}');
+                  return const SizedBox.shrink();
+                  // return CenterText(title: 'Error: ${snapshot.error}');
+                } else {
+                  return const SizedBox.shrink();
+                  // return const CenterText(title: 'No data available');
                 }
+              } else {
+                return const CenterText(title: 'Unexpected state');
               }
-              return CenterText(title: 'Error: ${snapshot.error}');
             },
           ),
         ],
@@ -216,40 +247,38 @@ class _CustomEQState extends State<CustomEQ> {
           ),
           SizedBox(
             height: 250,
-            child: Obx(() {
-              double value = AppShared.frequencyValue[bandId];
+            child: RotatedBox(
+              quarterTurns: -1,
+              child: SliderTheme(
+                data: getSliderTheme(),
+                child: Center(
+                  child: Obx(() {
+                    final RxDouble value = AppShared.frequencyValue[bandId].obs;
 
-              return RotatedBox(
-                quarterTurns: -1,
-                child: SliderTheme(
-                  data: getSliderTheme(),
-                  child: Center(
-                    child: Slider(
+                    return Slider(
                       thumbColor: AppColors.primary,
                       inactiveColor: AppColors.onBackground,
                       activeColor: AppColors.primary,
                       min: min,
                       max: max,
-                      value: value,
+                      value: value.value,
                       onChanged: widget.enabled
                           ? (lowerValue) {
+                              value.value = lowerValue;
                               AppShared.frequencyValue[bandId] = lowerValue;
                               EqualizerFlutter.setBandLevel(
                                 bandId,
                                 lowerValue.toInt(),
                               );
-                              setState(() {
-                                value = lowerValue;
-                              });
                               AppShared.setAllFrequency(
                                   AppShared.frequencyValue);
                             }
                           : null,
-                    ),
-                  ),
+                    );
+                  }),
                 ),
-              );
-            }),
+              ),
+            ),
           ),
           const SizedBox(
             height: 8,

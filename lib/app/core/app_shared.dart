@@ -18,7 +18,7 @@ mixin AppShared on GetxController {
   // Preference Keys
   static const String _ignoreTimeValue = 'ignoreTime';
   static const String _darkModeValue = 'darkMode';
-  static const String _equalizerModeValue = 'equalizerMode';
+  // static const String _equalizerModeValue = 'equalizerMode';
   static const String _defaultGetSongsValue = 'defaultGetSongs';
   static const String _defaultLanguageValue = 'defaultLanguage';
   static const String _languageChangedValue = 'languageChanged';
@@ -108,12 +108,13 @@ mixin AppShared on GetxController {
 
   // Gets the equalizer value from preferences
   static bool getEqualizerMode() =>
-      _prefs?.getBool(_equalizerModeValue) ?? equalizerModeValue.value;
-
+      equalizerModeValue.value;
+      // _prefs?.getBool(_equalizerModeValue) ??
+      
   // Sets the equalizer in preferences
   static Future<void> setEqualizerMode(bool value) async {
     equalizerModeValue.value = value;
-    await _prefs?.setBool(_equalizerModeValue, value);
+    // await _prefs?.setBool(_equalizerModeValue, value);
   }
 
   // Gets the default value for music from preferences

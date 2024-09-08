@@ -49,6 +49,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
+        elevation: 0.0,
         backgroundColor: AppColors.background,
         leading: InkWell(
           onTap: () {

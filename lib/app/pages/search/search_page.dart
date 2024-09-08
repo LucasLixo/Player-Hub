@@ -3,6 +3,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/shared/utils/dynamic_style.dart';
@@ -25,7 +26,8 @@ class _SearchPageState extends State<SearchPage> {
 
   late FocusNode _focusNode;
   late TextEditingController _textController;
-  late List<SongModel> filteredSongs;
+
+  final RxList<SongModel> filteredSongs = <SongModel>[].obs;
 
   @override
   void initState() {
@@ -33,7 +35,6 @@ class _SearchPageState extends State<SearchPage> {
     _focusNode = FocusNode();
     _textController = TextEditingController();
 
-    filteredSongs = [];
     _textController.addListener(_filterSongs);
   }
 
@@ -44,21 +45,19 @@ class _SearchPageState extends State<SearchPage> {
     super.dispose();
   }
 
-  void _filterSongs() async {
+  void _filterSongs() {
     var query = _textController.text.toLowerCase();
 
-    setState(() {
-      if (query.isEmpty) {
-        filteredSongs = [];
-      } else {
-        filteredSongs = playerStateController.songAllList.where((song) {
-          return song.title.toLowerCase().contains(query) ||
-              AppShared.getArtist(song.id, song.artist!)
-                  .toLowerCase()
-                  .contains(query);
-        }).toList();
-      }
-    });
+    if (query.isEmpty) {
+      filteredSongs.clear();
+    } else {
+      filteredSongs.value = playerStateController.songAllList.where((song) {
+        return song.title.toLowerCase().contains(query) ||
+            AppShared.getArtist(song.id, song.artist!)
+                .toLowerCase()
+                .contains(query);
+      }).toList();
+    }
   }
 
   @override
@@ -66,11 +65,10 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
+        elevation: 0.0,
         backgroundColor: AppColors.background,
         leading: InkWell(
-          onTap: () {
-            Get.back();
-          },
+          onTap: () => Get.back(),
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
           child: Icon(
@@ -100,7 +98,13 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: MusicList(songs: filteredSongs),
+        child: Obx(
+          () => filteredSongs.isEmpty
+              ? const SizedBox.shrink()
+              : MusicList(
+                  songs: filteredSongs,
+                ),
+        ),
       ),
       bottomNavigationBar: Obx(
         () => playerStateController.songAllList.isEmpty

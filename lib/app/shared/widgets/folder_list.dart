@@ -15,7 +15,7 @@ class FolderList extends StatelessWidget {
     final playerStateController = Get.find<PlayerStateController>();
 
     return ListView.builder(
-      physics: const BouncingScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       itemCount: playerStateController.folderList.length,
       itemBuilder: (BuildContext context, int index) {
         final title = playerStateController.folderList[index];

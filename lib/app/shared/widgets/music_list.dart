@@ -27,7 +27,7 @@ class _MusicListState extends State<MusicList> {
     final playerStateController = Get.find<PlayerStateController>();
 
     return ListView.builder(
-      physics: const BouncingScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       itemCount: widget.songs.length,
       itemBuilder: (BuildContext context, int index) {
         final song = widget.songs[index];

@@ -41,7 +41,7 @@ class _PlaylistSheetState extends State<PlaylistSheet> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(8.0),
                   child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
+                    physics: const ClampingScrollPhysics(),
                     itemCount: songList.length,
                     itemBuilder: (BuildContext context, int index) {
                       final song = songList[index];

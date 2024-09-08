@@ -81,6 +81,7 @@ class _EditPageState extends State<EditPage> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
+        elevation: 0.0,
         backgroundColor: AppColors.background,
         leading: InkWell(
           onTap: () {
@@ -111,7 +112,8 @@ class _EditPageState extends State<EditPage> {
               saveInfo();
               myToastification(
                 context: context,
-                title: "${'edit_save'.tr}: ${AppShared.getTitle(widget.song.id, widget.song.title)}",
+                title:
+                    "${'edit_save'.tr}: ${AppShared.getTitle(widget.song.id, widget.song.title)}",
                 icon: Icons.save,
               );
             },
