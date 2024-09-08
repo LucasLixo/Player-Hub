@@ -4,11 +4,11 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
-import 'package:playerhub/app/shared/utils/my_toastification.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
 import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 import 'package:playerhub/app/core/app_colors.dart';
+import 'package:playerhub/app/shared/utils/show_toast.dart';
 import 'package:playerhub/app/shared/utils/slider_shape.dart';
 import 'package:playerhub/app/shared/utils/subtitle_style.dart';
 import 'package:playerhub/app/shared/utils/switch_theme.dart';
@@ -107,11 +107,7 @@ class _SettingPageState extends State<SettingPage> {
       trailing: InkWell(
         onTap: () {
           playerController.getAllSongs();
-          myToastification(
-            context: context,
-            title: "${'setting_reload'.tr} ${'home_tab1'.tr}",
-            icon: Icons.refresh,
-          );
+          showToast("${'setting_reload'.tr} ${'home_tab1'.tr}");
         },
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
@@ -189,11 +185,6 @@ class _SettingPageState extends State<SettingPage> {
               await AppShared.setDarkMode(value);
               if (mounted) {
                 Phoenix.rebirth(context);
-                myToastification(
-                  context: context,
-                  title: value ? 'app_enable'.tr : 'app_disable'.tr,
-                  icon: Icons.dark_mode,
-                );
               }
             },
           ),
@@ -224,11 +215,6 @@ class _SettingPageState extends State<SettingPage> {
         onSelected: (int code) {
           setState(() {
             _sortValue = code;
-            myToastification(
-              context: context,
-              title: getTitleForCode(_sort, _sortValue),
-              icon: Icons.sort_by_alpha,
-            );
           });
         },
         itemBuilder: (BuildContext context) {
@@ -273,11 +259,6 @@ class _SettingPageState extends State<SettingPage> {
         color: AppColors.surface,
         onSelected: (int code) {
           AppShared.setDefaultLanguage(code);
-          myToastification(
-            context: context,
-            title: getTitleForCode(_languages, code),
-            icon: Icons.language,
-          );
         },
         itemBuilder: (BuildContext context) {
           return _languages.map((languageOption) {

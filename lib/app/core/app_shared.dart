@@ -43,6 +43,7 @@ mixin AppShared on GetxController {
 
   // Random background image title and paths
   static const String title = 'Player Hub';
+  static const String package = 'com.lucasalves.playerhub';
   static const List<String> _imagePaths = [
     'assets/images/lowpoly_blue.jpg',
     'assets/images/lowpoly_green.jpg',

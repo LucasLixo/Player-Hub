@@ -4,7 +4,6 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/state_manager.dart';
 import 'package:get/instance_manager.dart';
-import 'package:toastification/toastification.dart';
 import 'package:playerhub/app/app_bindings.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/routes/app_pages.dart';
@@ -40,16 +39,6 @@ class AppWidget extends StatelessWidget {
         Locale('pt', 'BR'),
         Locale('es', 'ES'),
       ],
-      builder: (context, child) {
-        return ToastificationConfigProvider(
-          config: const ToastificationConfig(
-            alignment: Alignment.bottomCenter,
-            itemWidth: 440,
-            animationDuration: Duration(milliseconds: 400),
-          ),
-          child: child!,
-        );
-      },
     );
   }
 }

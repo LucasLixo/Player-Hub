@@ -112,7 +112,7 @@ class _ShortcutState extends State<Shortcut>
                       icon: AnimatedIcons.play_pause,
                       progress: _controller,
                       size: 32,
-                      color: Colors.white,
+                      color: AppColors.text,
                     ),
                   ),
                   const SizedBox(

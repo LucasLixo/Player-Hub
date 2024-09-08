@@ -5,6 +5,7 @@
     android:installLocation="auto">
     <!-- uses-feature -->
 	<uses-feature android:name="android.hardware.audio.output" android:required="true" />
+	<!-- <uses-feature android:name="android.hardware.screen.landscape" android:required="true" /> -->
 	<uses-feature android:name="android.hardware.screen.portrait" android:required="true" />
 	<uses-feature android:name="android.hardware.touchscreen" android:required="true" />
 	<uses-feature android:name="android.hardware.touchscreen.multitouch" android:required="false" />

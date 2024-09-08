@@ -10,7 +10,7 @@ import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 import 'package:playerhub/app/shared/utils/subtitle_style.dart';
 import 'package:playerhub/app/shared/utils/title_style.dart';
-import 'package:playerhub/app/shared/utils/my_toastification.dart';
+import 'package:playerhub/app/shared/utils/show_toast.dart';
 import 'package:playerhub/app/shared/utils/slider_shape.dart';
 import 'package:playerhub/app/shared/utils/switch_theme.dart';
 import 'package:playerhub/app/core/app_colors.dart';
@@ -90,13 +90,9 @@ class _EqualizerPageState extends State<EqualizerPage> {
                   _equalizerMode.value = value;
 
                   if (mounted) {
-                    myToastification(
-                      context: context,
-                      title: value
-                          ? "${'setting_equalizer'.tr} ${'app_enable'.tr}"
-                          : "${'setting_equalizer'.tr} ${'app_disable'.tr}",
-                      icon: Icons.graphic_eq,
-                    );
+                    showToast(value
+                        ? "${'setting_equalizer'.tr} ${'app_enable'.tr}"
+                        : "${'setting_equalizer'.tr} ${'app_disable'.tr}");
                   }
                 },
               ),
@@ -119,11 +115,6 @@ class _EqualizerPageState extends State<EqualizerPage> {
                 AppShared.frequencyValue[3] = 0.0;
                 AppShared.frequencyValue[4] = 3.0;
                 AppShared.setAllFrequency(AppShared.frequencyValue);
-                myToastification(
-                  context: context,
-                  title: 'setting_reset'.tr,
-                  icon: Icons.refresh,
-                );
               },
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
