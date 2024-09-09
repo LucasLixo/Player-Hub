@@ -9,14 +9,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
-
 import com.ryanheise.audioservice.AudioServiceActivity
-
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : AudioServiceActivity() {
-    private val CHANNEL = "com.lucasalves.playerhub/toast"
+    private val BASE_CHANNEL = "com.lucasalves.playerhub"
+    private val ChannelToast = "$BASE_CHANNEL/toast"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -31,7 +30,7 @@ class MainActivity : AudioServiceActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, ChannelToast).setMethodCallHandler { call, result ->
             if (call.method == "showToast") {
                 val message = call.argument<String>("message")
                 val darkMode = call.argument<Boolean>("darkMode") ?: false
