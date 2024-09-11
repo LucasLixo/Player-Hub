@@ -51,16 +51,15 @@ class _ShortcutState extends State<Shortcut>
           final currentImage = playerStateController.currentImage.value;
 
           return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            margin: const EdgeInsets.only(bottom: 8),
-            color: Colors.transparent,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+            color: AppColors.surface,
             child: ListTile(
-              tileColor: AppColors.surface,
+              tileColor: Colors.transparent,
               splashColor: Colors.transparent,
               focusColor: Colors.transparent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(55),
-              ),
+              // shape: RoundedRectangleBorder(
+              //   borderRadius: BorderRadius.circular(55),
+              // ),
               contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
               title: Text(
                 AppShared.getTitle(

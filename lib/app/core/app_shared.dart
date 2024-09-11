@@ -108,10 +108,9 @@ mixin AppShared on GetxController {
   }
 
   // Gets the equalizer value from preferences
-  static bool getEqualizerMode() =>
-      equalizerModeValue.value;
-      // _prefs?.getBool(_equalizerModeValue) ??
-      
+  static bool getEqualizerMode() => equalizerModeValue.value;
+  // _prefs?.getBool(_equalizerModeValue) ??
+
   // Sets the equalizer in preferences
   static Future<void> setEqualizerMode(bool value) async {
     equalizerModeValue.value = value;
@@ -165,7 +164,8 @@ mixin AppShared on GetxController {
   static List<double> getAllFrequency() {
     List<double> frequencies = [];
     for (int i = 0; i < 5; i++) {
-      double frequency = _prefs?.getDouble("$_frequencyValue$i") ?? frequencyValue[i];
+      double frequency =
+          _prefs?.getDouble("$_frequencyValue$i") ?? frequencyValue[i];
       frequencies.add(frequency);
     }
     return frequencies;
@@ -202,7 +202,30 @@ mixin AppShared on GetxController {
   // ==================================================
   // Gets the song's image based on the ID, or a random image if not available
   // ==================================================
-  static Future<String> getImage({required int id}) async {
+  static Future<Uint8List> getImageArray(
+      {required int id}) async {
+    final audioQuery = OnAudioQuery();
+
+    // Tries to get the album art
+    final Uint8List? data = await audioQuery.queryArtwork(
+      id,
+      ArtworkType.AUDIO,
+      format: ArtworkFormat.JPEG,
+      size: 32,
+      quality: 100,
+    );
+
+    if (data != null && data.isNotEmpty) {
+      return data;
+    } else {
+      final String randomImagePath =
+          _imagePaths[Random().nextInt(_imagePaths.length)];
+      final ByteData imageData = await rootBundle.load(randomImagePath);
+      return imageData.buffer.asUint8List();
+    }
+  }
+
+  static Future<String> getImageFile({required int id}) async {
     final audioQuery = OnAudioQuery();
     final tempDir = await getTemporaryDirectory();
     final File file = File('${tempDir.path}/$id.jpg');
@@ -215,7 +238,7 @@ mixin AppShared on GetxController {
       id,
       ArtworkType.AUDIO,
       format: ArtworkFormat.JPEG,
-      size: 192,
+      size: 256,
       quality: 100,
     );
 

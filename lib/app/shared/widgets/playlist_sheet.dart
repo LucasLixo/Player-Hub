@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
@@ -45,8 +45,6 @@ class _PlaylistSheetState extends State<PlaylistSheet> {
                     itemCount: songList.length,
                     itemBuilder: (BuildContext context, int index) {
                       final song = songList[index];
-                      final imageFile =
-                          playerStateController.imageCache[song.id];
 
                       return ListTile(
                         tileColor: Colors.transparent,
@@ -73,20 +71,34 @@ class _PlaylistSheetState extends State<PlaylistSheet> {
                                 size: 32,
                               )
                             : const SizedBox.shrink(),
-                        leading: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: imageFile != null
-                              ? Image.file(
-                                  File(imageFile),
+                        leading: FutureBuilder<Uint8List>(
+                          future: AppShared.getImageArray(
+                            id: song.id,
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const SizedBox(
+                                width: 50.0,
+                                height: 50.0,
+                              );
+                            } else if (snapshot.hasError || !snapshot.hasData) {
+                              return const SizedBox(
+                                width: 50.0,
+                                height: 50.0,
+                              );
+                            } else {
+                              return ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.memory(
+                                  snapshot.data!,
                                   fit: BoxFit.cover,
                                   width: 50.0,
                                   height: 50.0,
-                                )
-                              : Container(
-                                  color: AppColors.surface,
-                                  width: 50.0,
-                                  height: 50.0,
                                 ),
+                              );
+                            }
+                          },
                         ),
                         onTap: () {
                           playerController.playSong(index);

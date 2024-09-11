@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:playerhub/app/app_wait.dart';
+import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/core/controllers/just_audio_background.dart';
 import 'package:playerhub/app/app_widget.dart';
@@ -21,6 +22,11 @@ void main() async {
       );
     });
     await AppShared.loadTheme();
+    
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: AppColors.surface,
+      systemNavigationBarIconBrightness: AppColors.brightnessData,
+    ));
 
     runApp(const AppWait(error: false));
 
@@ -33,6 +39,7 @@ void main() async {
         androidStopForegroundOnPause: true,
       ),
       AppShared.loadShared(),
+      
     ]);
 
     runApp(Phoenix(child: const AppWidget()));

@@ -5,6 +5,8 @@ import 'package:playerhub/app/core/app_shared.dart';
 mixin AppColors on GetxController {
   static ThemeMode get themeData =>
       AppShared.darkModeValue.value ? ThemeMode.dark : ThemeMode.light;
+  static Brightness get brightnessData =>
+      AppShared.darkModeValue.value ? Brightness.light : Brightness.dark;
 
   static Color get background =>
       AppShared.darkModeValue.value ? const Color(0xFF000000) : const Color(0xFFFFFFFF);
@@ -17,5 +19,5 @@ mixin AppColors on GetxController {
   static Color get textGray =>
       AppShared.darkModeValue.value ? const Color(0xFFDDDDDD) : const Color(0xFF222222);
   static Color get primary =>
-      AppShared.darkModeValue.value ? const Color(0xFF3fa7fe) : const Color(0xFF007AFF);
+      AppShared.darkModeValue.value ? const Color(0xFF007AFF) : const Color(0xFF3FA7FE);
 }

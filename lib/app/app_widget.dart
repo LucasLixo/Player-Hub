@@ -16,7 +16,7 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
+
     return GetMaterialApp(
       title: AppShared.title,
       debugShowCheckedModeBanner: false,

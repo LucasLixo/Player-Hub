@@ -190,7 +190,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     // image cache
     for (var song in songList) {
       if (!_playerState.imageCache.containsKey(song.id)) {
-        final imagePath = await AppShared.getImage(id: song.id);
+        final imagePath = await AppShared.getImageFile(id: song.id);
         _playerState.imageCache[song.id] = imagePath;
       }
     }
