@@ -53,8 +53,6 @@ class _AlbumListState extends State<AlbumList> {
               final songs = await playerController.queryAudiosFromAlbum(
                 albumId: album.id,
               );
-              print(album);
-              print(songs);
               Get.toNamed(AppRoutes.playlist, arguments: {
                 'title': album.album,
                 'songs': songs,
