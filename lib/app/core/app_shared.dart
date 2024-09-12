@@ -211,7 +211,7 @@ mixin AppShared on GetxController {
       id,
       ArtworkType.AUDIO,
       format: ArtworkFormat.JPEG,
-      size: 32,
+      size: 64,
       quality: 100,
     );
 

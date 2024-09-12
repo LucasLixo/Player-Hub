@@ -28,6 +28,7 @@ class PlayerStateController extends GetxController {
 
   // playlists
   RxList<SongModel> songAllList = <SongModel>[].obs;
+  RxList<AlbumModel> albumList = <AlbumModel>[].obs;
   RxList<SongModel> songList = <SongModel>[].obs;
 
   // folder list
@@ -130,6 +131,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     await pauseSong();
     _playerState.songIndex.value = 0;
     List<SongModel> songs = [];
+
     switch (AppShared.defaultGetSongsValue.value) {
       // by date added
       case 0:
@@ -159,6 +161,13 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
         );
         break;
     }
+
+    _playerState.albumList.value = await _audioQuery.queryAlbums(
+      ignoreCase: true,
+      orderType: OrderType.DESC_OR_GREATER,
+      sortType: AlbumSortType.ALBUM,
+      uriType: UriType.EXTERNAL,
+    );
 
     // remove songs by duration
     songs = songs
@@ -238,6 +247,16 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
         await modeLoopSong();
         break;
     }
+  }
+
+  Future<List<SongModel>> queryAudiosFromAlbum({required int albumId}) async {
+    return await _audioQuery.queryAudiosFrom(
+      AudiosFromType.ALBUM_ID,
+      albumId,
+      ignoreCase: true,
+      orderType: OrderType.ASC_OR_SMALLER,
+      sortType: SongSortType.TITLE,
+    );
   }
 
   // define play in current song

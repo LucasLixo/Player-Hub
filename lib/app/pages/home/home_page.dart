@@ -6,6 +6,7 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 import 'package:playerhub/app/core/app_colors.dart';
+import 'package:playerhub/app/shared/widgets/album_list.dart';
 import 'package:playerhub/app/shared/widgets/shortcut.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
 import 'package:playerhub/app/core/app_shared.dart';
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
-      length: 2,
+      length: 3,
       child: Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
@@ -121,7 +122,7 @@ class _HomePageState extends State<HomePage> {
             tabs: <Tab>[
               Tab(text: 'home_tab1'.tr),
               Tab(text: 'home_tab2'.tr),
-              // Tab(text: 'home_tab3'.tr),
+              Tab(text: 'home_tab3'.tr),
             ],
           ),
         ),
@@ -132,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   CenterText(title: 'home_not_tab1'.tr),
                   CenterText(title: 'home_not_tab2'.tr),
-                  // CenterText(title: 'home_not_tab3'.tr),
+                  CenterText(title: 'home_not_tab3'.tr),
                 ],
               );
             } else {
@@ -140,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   MusicList(songs: playerStateController.songAllList),
                   const FolderList(),
-                  // const PlaylistList(),
+                  const AlbumList(),
                 ],
               );
             }
