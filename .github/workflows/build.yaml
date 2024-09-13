@@ -45,10 +45,10 @@ jobs:
           echo "storeFile=keystore.jks" >> android/key.properties
 
       - name: Build APK
-        run: flutter build apk --release --obfuscate
+        run: flutter build apk --release --obfuscate --split-debug-info=/fastlane
 
       - name: Build AppBundle
-        run: flutter build appbundle --release --obfuscate
+        run: flutter build appbundle --release --obfuscate --split-debug-info=/fastlane
 
       - name: Upload APK
         uses: actions/upload-artifact@v3
