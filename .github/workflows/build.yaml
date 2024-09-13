@@ -18,6 +18,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set Up Java
+        uses: actions/setup-java@v3.12.0
+        with:
+          distribution: 'oracle'
+          java-version: '17'
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -39,10 +45,10 @@ jobs:
           echo "storeFile=keystore.jks" >> android/key.properties
 
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --release --obfuscate
 
       - name: Build AppBundle
-        run: flutter build appbundle --release
+        run: flutter build appbundle --release --obfuscate
 
       - name: Upload APK
         uses: actions/upload-artifact@v3
