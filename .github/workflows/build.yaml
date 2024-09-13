@@ -45,22 +45,33 @@ jobs:
           echo "storeFile=keystore.jks" >> android/key.properties
 
       - name: Create debug info directory
-        run: mkdir -p ./build/fastlane
+        run: |
+          mkdir -p ./build/symbols/apk
+          mkdir -p ./build/symbols/appbundle
 
       - name: Build APK
-        run: flutter build apk --release --obfuscate --split-debug-info=./build/fastlane
+        run: flutter build apk --release --obfuscate --split-debug-info=./build/symbols/apk
 
       - name: Build AppBundle
-        run: flutter build appbundle --release --obfuscate --split-debug-info=./build/fastlane
+        run: flutter build appbundle --release --obfuscate --split-debug-info=./build/symbols/appbundle
+
+      - name: Run Test
+        run: flutter test
 
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: apk-release
           path: build/app/outputs/flutter-apk/app-release.apk
 
       - name: Upload AppBundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: appbundle-release
           path: build/app/outputs/bundle/release/app-release.aab
+
+      - name: Upload Symbols
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-symbols
+          path: ./build/symbols
