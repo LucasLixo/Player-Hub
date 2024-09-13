@@ -20,6 +20,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  final playerController = Get.find<PlayerController>();
   final playerStateController = Get.find<PlayerStateController>();
 
   @override
@@ -90,6 +91,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _initializeApp() async {
+    await playerController.getAllSongs();
     Get.offNamed(AppRoutes.home);
   }
 

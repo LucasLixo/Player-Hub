@@ -22,15 +22,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final playerController = Get.find<PlayerController>();
   final playerStateController = Get.find<PlayerStateController>();
 
   @override
   void initState() {
     super.initState();
-    if (playerStateController.songAllList.isEmpty) {
-      playerController.getAllSongs();
-    }
   }
 
   @override

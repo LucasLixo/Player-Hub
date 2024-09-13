@@ -44,11 +44,14 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
           echo "storeFile=keystore.jks" >> android/key.properties
 
+      - name: Create debug info directory
+        run: mkdir -p ./build/fastlane
+
       - name: Build APK
-        run: flutter build apk --release --obfuscate --split-debug-info=/fastlane
+        run: flutter build apk --release --obfuscate --split-debug-info=./build/fastlane
 
       - name: Build AppBundle
-        run: flutter build appbundle --release --obfuscate --split-debug-info=/fastlane
+        run: flutter build appbundle --release --obfuscate --split-debug-info=./build/fastlane
 
       - name: Upload APK
         uses: actions/upload-artifact@v3

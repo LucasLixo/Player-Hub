@@ -22,7 +22,6 @@ void main() async {
       );
     });
     await AppShared.loadTheme();
-    
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: AppColors.surface,
       systemNavigationBarIconBrightness: AppColors.brightnessData,
@@ -32,14 +31,13 @@ void main() async {
 
     await Future.wait([
       JustAudioBackground.init(
-        androidNotificationChannelId: 'com.lucasalves.playerhub.channel.audio',
+        androidNotificationChannelId: "${AppShared.package}.channel.audio",
         androidNotificationChannelName: AppShared.title,
         androidShowNotificationBadge: true,
         androidNotificationOngoing: true,
         androidStopForegroundOnPause: true,
       ),
       AppShared.loadShared(),
-      
     ]);
 
     runApp(Phoenix(child: const AppWidget()));
