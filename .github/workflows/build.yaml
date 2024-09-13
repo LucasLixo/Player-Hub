@@ -1,0 +1,45 @@
+name: Build Flutter APK and AppBundle
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        flutter-version: ['stable']
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ matrix.flutter-version }}
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Build AppBundle
+        run: flutter build appbundle --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: apk-release
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Upload AppBundle
+        uses: actions/upload-artifact@v2
+        with:
+          name: appbundle-release
+          path: build/app/outputs/bundle/release/app-release.aab
