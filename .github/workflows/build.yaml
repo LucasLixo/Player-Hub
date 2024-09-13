@@ -26,6 +26,12 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Run Flutter Analyze
+        run: flutter analyze
+
+      - name: Run Flutter Tests
+        run: flutter test
+
       - name: Build APK
         run: flutter build apk --release
 
@@ -33,13 +39,13 @@ jobs:
         run: flutter build appbundle --release
 
       - name: Upload APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: apk-release
           path: build/app/outputs/flutter-apk/app-release.apk
 
       - name: Upload AppBundle
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: appbundle-release
           path: build/app/outputs/bundle/release/app-release.aab
