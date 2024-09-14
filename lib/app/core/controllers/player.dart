@@ -7,6 +7,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:playerhub/app/core/controllers/just_audio_background.dart';
 import 'package:playerhub/app/core/app_shared.dart';
+import 'package:playerhub/app/core/controllers/visualizer_music.dart';
 
 class PlayerStateController extends GetxController {
   // address of sound in list
@@ -81,11 +82,21 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
         if (_playerState.songList.isNotEmpty) {
           // define current song
           _playerState.currentSong.value = _playerState.songList[index];
+          updateHeadline(
+            VisualizerMusic(
+                headlineTitle: _playerState.currentSong.value!.title),
+          );
           // define current image
           if (_playerState.imageCache
               .containsKey(_playerState.currentSong.value!.id)) {
             _playerState.currentImage.value =
                 _playerState.imageCache[_playerState.currentSong.value!.id];
+            updateHeadline(
+              VisualizerMusic(
+                headlineTitle: _playerState.currentSong.value!.title,
+                headlineImage: _playerState.currentImage.value,
+              ),
+            );
           } else {
             _playerState.currentImage.value = null;
           }

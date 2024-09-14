@@ -40,6 +40,7 @@ mixin AppShared on GetxController {
     0.0,
     3.0,
   ].obs;
+  static RxBool isLoading = false.obs;
 
   // Random background image title and paths
   static const String title = 'Player Hub';
@@ -59,6 +60,10 @@ mixin AppShared on GetxController {
   static Future<void> loadTheme() async {
     await _initializeDependencies();
     darkModeValue.value = getDarkMode();
+  }
+  
+  static void toggleIsLoading() {
+    isLoading.value = !isLoading.value;
   }
 
   // Load shared preferences

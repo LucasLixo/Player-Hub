@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/instance_manager.dart';
+import 'package:get/get.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:playerhub/app/shared/utils/title_style.dart';
 import 'package:playerhub/app/core/app_colors.dart';
@@ -91,7 +89,9 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _initializeApp() async {
+    AppShared.toggleIsLoading;
     await playerController.getAllSongs();
+    AppShared.toggleIsLoading;
     Get.offNamed(AppRoutes.home);
   }
 
@@ -99,7 +99,20 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: null,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(4.0),
+        child: Obx(() {
+          if (AppShared.isLoading.value) {
+            return LinearProgressIndicator(
+              minHeight: 4.0,
+              color: AppColors.text,
+              backgroundColor: AppColors.background,
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        }),
+      ),
       body: Center(
         child: Text(
           AppShared.title,

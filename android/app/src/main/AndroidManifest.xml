@@ -1,70 +1,101 @@
-<manifest 
-    xmlns:android="http://schemas.android.com/apk/res/android" 
-    xmlns:tools="http://schemas.android.com/tools" 
-    tools:ignore="Instantiatable"
-    android:installLocation="auto">
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:installLocation="auto"
+    tools:ignore="Instantiatable">
+
     <!-- uses-feature -->
-	<uses-feature android:name="android.hardware.audio.output" android:required="true" />
-	<!-- <uses-feature android:name="android.hardware.screen.landscape" android:required="true" /> -->
-	<uses-feature android:name="android.hardware.screen.portrait" android:required="true" />
-	<uses-feature android:name="android.hardware.touchscreen" android:required="true" />
-	<uses-feature android:name="android.hardware.touchscreen.multitouch" android:required="false" />
-	<uses-feature android:name="android.hardware.touchscreen.multitouch.distinct" android:required="false" />
-    <!-- storage -->
-	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-feature
+        android:name="android.hardware.audio.output"
+        android:required="true" />
+    <!-- <uses-feature android:name="android.hardware.screen.landscape" android:required="true" /> -->
+    <uses-feature
+        android:name="android.hardware.screen.portrait"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.touchscreen.multitouch"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.touchscreen.multitouch.distinct"
+        android:required="false" /> <!-- storage -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />
     <!-- <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" /> -->
     <!-- <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/> -->
     <!-- <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/> -->
-	<uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
-    <!-- <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE" /> -->
-	<!-- <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" /> -->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" /> <!-- <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE" /> -->
+    <!-- <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" /> -->
     <!-- background -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <!-- others -->
-	<uses-permission android:name="android.permission.READ_BASIC_PHONE_STATE" />
-    <!-- <uses-permission android:name="android.permission.INTERNET" /> -->
-    <!-- 
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" /> <!-- others -->
+    <uses-permission android:name="android.permission.READ_BASIC_PHONE_STATE" /> <!-- <uses-permission android:name="android.permission.INTERNET" /> -->
+    <!--
         android:requireContentUriPermissionFromCaller="readAndWrite"
         android:resizeableActivity="true"
     -->
-	<supports-screens android:largeScreens="true" android:normalScreens="true" android:smallScreens="false" android:xlargeScreens="true" />
-    <!-- application -->
+    <supports-screens
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="false"
+        android:xlargeScreens="true" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT" />
+
+            <data android:mimeType="text/plain" />
+        </intent>
+    </queries>
+
     <application
-        android:enableOnBackInvokedCallback="true"
-        android:label="Player Hub"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
-        android:banner="@mipmap/ic_launcher"
         android:appCategory="audio"
+        android:banner="@mipmap/ic_launcher"
+        android:enableOnBackInvokedCallback="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Player Hub"
         android:requestLegacyExternalStorage="true">
+        <receiver
+            android:name=".VisualizerMusic"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/visualizer_music_info" />
+        </receiver>
+
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:exported="true"
+            android:hardwareAccelerated="true"
+            android:immersive="false"
+            android:isGame="false"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:showWhenLocked="true"
             android:taskAffinity=""
             android:theme="@style/LaunchTheme"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-            android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            android:showWhenLocked="true"
             android:turnScreenOn="true"
-            android:screenOrientation="portrait"
-            android:immersive="false"
-            android:isGame="false">
+            android:windowSoftInputMode="adjustPan|stateHidden">
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
             <!-- LAUNCHER -->
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- uses-library -->
+        </activity> <!-- uses-library -->
         <uses-library
             android:name="androidx.window.sidecar"
             android:required="false" />
@@ -76,34 +107,28 @@
             android:required="false" />
         <uses-library
             android:name="org.apache.http.legacy"
-            android:required="false" />
-        <!-- ADD THIS "SERVICE" element -->
-        <service 
+            android:required="false" /> <!-- ADD THIS "SERVICE" element -->
+        <service
             android:name="com.ryanheise.audioservice.AudioService"
+            android:exported="true"
             android:foregroundServiceType="mediaPlayback"
-            android:exported="true" 
             tools:ignore="Instantiatable">
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
-        </service>
-        <!-- ADD THIS "RECEIVER" element -->
-        <receiver 
+        </service> <!-- ADD THIS "RECEIVER" element -->
+        <receiver
             android:name="com.ryanheise.audioservice.MediaButtonReceiver"
-            android:exported="true" 
+            android:exported="true"
             tools:ignore="Instantiatable">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
-        </receiver> 
+        </receiver>
+
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.PROCESS_TEXT"/>
-            <data android:mimeType="text/plain"/>
-        </intent>
-    </queries>
+
 </manifest>

@@ -31,7 +31,9 @@ jobs:
           channel: 'stable'
 
       - name: Install dependencies
-        run: flutter pub get
+        run: |
+          flutter pub get
+          flutter pub run flutter_launcher_icons
 
       - name: Decode Keystore
         run: |
@@ -70,8 +72,20 @@ jobs:
           name: appbundle-release
           path: build/app/outputs/bundle/release/app-release.aab
 
-      - name: Upload Symbols
+      - name: Upload Symbols APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-symbols
-          path: ./build/symbols
+          name: apk-symbols
+          path: ./build/symbols/apk
+
+      - name: Upload Symbols AppBundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: appbundle-symbols
+          path: ./build/symbols/appbundle
+
+      - name: Upload Native Symbols
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-symbols
+          path: .\build\app\intermediates\merged_native_libs\release\out\lib
