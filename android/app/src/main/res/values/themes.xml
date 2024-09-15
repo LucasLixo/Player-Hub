@@ -7,7 +7,7 @@
         Radius of the inner view's bound of widgets to make the rounded corners.
         It needs to be 8dp or less than the value of appWidgetRadius
         -->
-        <item name="appWidgetInnerRadius">8dp</item>
+        <item name="appWidgetInnerRadius">20dp</item>
     </style>
 
     <style name="Theme.Android.AppWidgetContainer" parent="Theme.Android.AppWidgetContainerParent">

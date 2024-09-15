@@ -91,10 +91,8 @@ class _SplashPageState extends State<SplashPage> {
   Future<void> _initializeApp() async {
     if (playerStateController.songAllList.isEmpty) {
       AppShared.toggleIsLoading();
-      print(AppShared.isLoading.value);
       await playerController.getAllSongs();
       AppShared.toggleIsLoading();
-      print(AppShared.isLoading.value);
     }
 
     Get.offNamed(AppRoutes.home);
@@ -118,17 +116,18 @@ class _SplashPageState extends State<SplashPage> {
         ),
       ),
       bottomNavigationBar: SafeArea(
-        child: LinearProgressIndicator(
-          minHeight: 4.0,
-          color: AppColors.text,
-          backgroundColor: AppColors.background,
+        child: Obx(
+          () => AppShared.isLoading.value
+              ? LinearProgressIndicator(
+                  minHeight: 4.0,
+                  color: AppColors.primary,
+                  backgroundColor: AppColors.background,
+                )
+              : const SizedBox(
+                  height: 4.0,
+                ),
         ),
       ),
-      // Obx(
-      //   () => AppShared.isLoading.value
-      //       ? SafeArea(
-      //       : const SizedBox.shrink(),
-      //  ),
     );
   }
 }

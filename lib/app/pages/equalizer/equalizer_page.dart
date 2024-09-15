@@ -89,6 +89,13 @@ class _EqualizerPageState extends State<EqualizerPage> {
                   EqualizerFlutter.setEnabled(value);
                   _equalizerMode.value = value;
 
+                  for (int i = 0; i < 5; i++) {
+                    EqualizerFlutter.setBandLevel(
+                      i,
+                      AppShared.frequencyValue[i].toInt(),
+                    );
+                  }
+
                   if (mounted) {
                     showToast(value
                         ? "${'setting_equalizer'.tr} ${'app_enable'.tr}"
@@ -244,6 +251,11 @@ class _CustomEQState extends State<CustomEQ> {
                 child: Center(
                   child: Obx(() {
                     final RxDouble value = AppShared.frequencyValue[bandId].obs;
+
+                    EqualizerFlutter.setBandLevel(
+                      bandId,
+                      value.toInt(),
+                    );
 
                     return Slider(
                       thumbColor: AppColors.primary,
