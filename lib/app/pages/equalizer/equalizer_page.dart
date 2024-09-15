@@ -146,7 +146,6 @@ class _EqualizerPageState extends State<EqualizerPage> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const SizedBox.shrink();
-                // return const CenterText(title: 'Loading...');
               } else if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData) {
                   return Obx(

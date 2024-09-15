@@ -1,14 +1,14 @@
 import 'dart:ui';
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart';
+import 'package:playerhub/app/core/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Mixin to manage preferences and images in the application using GetX.
@@ -60,6 +60,10 @@ mixin AppShared on GetxController {
   static Future<void> loadTheme() async {
     await _initializeDependencies();
     darkModeValue.value = getDarkMode();
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: AppColors.surface,
+      systemNavigationBarIconBrightness: AppColors.brightnessData,
+    ));
   }
 
   static void toggleIsLoading() {
@@ -110,6 +114,10 @@ mixin AppShared on GetxController {
   static Future<void> setDarkMode(bool value) async {
     darkModeValue.value = value;
     await _prefs?.setBool(_darkModeValue, value);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: AppColors.surface,
+      systemNavigationBarIconBrightness: AppColors.brightnessData,
+    ));
   }
 
   // Gets the equalizer value from preferences
