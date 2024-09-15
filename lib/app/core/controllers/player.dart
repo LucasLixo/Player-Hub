@@ -84,7 +84,9 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
           _playerState.currentSong.value = _playerState.songList[index];
           updateHeadline(
             VisualizerMusic(
-                headlineTitle: _playerState.currentSong.value!.title),
+              headlineTitle: _playerState.currentSong.value!.title,
+              headlineSubtitle: _playerState.currentSong.value!.artist ?? '',
+            ),
           );
           // define current image
           if (_playerState.imageCache
@@ -94,6 +96,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
             updateHeadline(
               VisualizerMusic(
                 headlineTitle: _playerState.currentSong.value!.title,
+                headlineSubtitle: _playerState.currentSong.value!.artist ?? '',
                 headlineImage: _playerState.currentImage.value,
               ),
             );

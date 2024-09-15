@@ -20,20 +20,29 @@
         android:required="false" />
     <uses-feature
         android:name="android.hardware.touchscreen.multitouch.distinct"
-        android:required="false" /> <!-- storage -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />
+        android:required="false" />
+    <!-- storage -->
+    <uses-permission 
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission 
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <!--     android:maxSdkVersion="18" /> -->
     <!-- <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" /> -->
     <!-- <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/> -->
     <!-- <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/> -->
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" /> <!-- <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE" /> -->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" /> 
+    <!-- <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE" /> -->
     <!-- <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" /> -->
     <!-- background -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" /> <!-- others -->
-    <uses-permission android:name="android.permission.READ_BASIC_PHONE_STATE" /> <!-- <uses-permission android:name="android.permission.INTERNET" /> -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" /> 
+    <!-- others -->
+    <uses-permission android:name="android.permission.READ_BASIC_PHONE_STATE" /> 
+    <!-- <uses-permission android:name="android.permission.INTERNET" /> -->
     <!--
         android:requireContentUriPermissionFromCaller="readAndWrite"
         android:resizeableActivity="true"
@@ -92,7 +101,7 @@
             <!-- LAUNCHER -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- uses-library -->

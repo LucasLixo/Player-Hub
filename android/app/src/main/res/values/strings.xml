@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="headline_title">Player Hub</string>
+    <string name="headline_title">Music</string>
+    <string name="headline_subtitle">Artist</string>
     <string name="add_widget">Player Info</string>
     <string name="app_widget_description">Player Visualizer</string>
 </resources>

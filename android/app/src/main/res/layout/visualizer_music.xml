@@ -6,35 +6,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:theme="@style/Theme.Android.AppWidgetContainer">
+    android:theme="@style/Theme.Android.AppWidgetContainer"
+    tools:ignore="ContentDescription,HardcodedText">
 
-    <ImageView
-        android:id="@+id/headline_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+    <FrameLayout
+        android:id="@+id/image_container"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:adjustViewBounds="true"
-        android:background="@android:color/white"
-        android:scaleType="fitCenter"
-        android:clipToOutline="true"
-        android:src="@mipmap/ic_launcher"
-        android:visibility="visible"
-        tools:visibility="visible" />
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:id="@+id/headline_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true"
+            android:src="@mipmap/ic_launcher"
+            android:visibility="visible"
+            tools:visibility="visible" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/headline_title"
-        style="@style/Widget.Android.AppWidget.InnerView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@id/headline_image"
-        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/image_container"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
         android:ellipsize="end"
-        android:maxLines="2"
-        android:contentDescription="@string/app_widget_description"
-        android:background="@android:color/white"
+        android:maxLines="1"
+        android:textColor="@android:color/black"
         android:text="@string/headline_title"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/headline_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@id/image_container"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="12dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@android:color/black"
+        android:text="@string/headline_subtitle"
+        android:textSize="16sp"
+        android:textStyle="italic" />
+
 </RelativeLayout>

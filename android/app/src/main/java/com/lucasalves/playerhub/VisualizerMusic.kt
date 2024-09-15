@@ -44,7 +44,10 @@ internal fun updateAppWidget(
     val views = RemoteViews(context.packageName, R.layout.visualizer_music).apply {
 
         var title = widgetData.getString("headline_title", null)
-        setTextViewText(R.id.headline_title, title ?: "No title set")
+        setTextViewText(R.id.headline_title, title ?: "Music")
+
+        var subtitle = widgetData.getString("headline_subtitle", null)
+        setTextViewText(R.id.headline_subtitle, subtitle ?: "Artist")
 
         var image = widgetData.getString("headline_image", null)
         val imageFile = File(image)

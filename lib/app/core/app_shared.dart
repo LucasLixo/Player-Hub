@@ -32,7 +32,7 @@ mixin AppShared on GetxController {
   static RxInt defaultGetSongsValue = 0.obs;
   static RxInt defaultLanguageValue = 0.obs;
   static RxBool languageChangedValue = false.obs;
-  static RxInt playlistModeValue = 0.obs;
+  static RxInt playlistModeValue = 1.obs;
   static RxList<double> frequencyValue = [
     3.0,
     0.0,
@@ -61,7 +61,7 @@ mixin AppShared on GetxController {
     await _initializeDependencies();
     darkModeValue.value = getDarkMode();
   }
-  
+
   static void toggleIsLoading() {
     isLoading.value = !isLoading.value;
   }
@@ -207,8 +207,7 @@ mixin AppShared on GetxController {
   // ==================================================
   // Gets the song's image based on the ID, or a random image if not available
   // ==================================================
-  static Future<Uint8List> getImageArray(
-      {required int id}) async {
+  static Future<Uint8List> getImageArray({required int id}) async {
     final audioQuery = OnAudioQuery();
 
     // Tries to get the album art

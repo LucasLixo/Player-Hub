@@ -89,9 +89,14 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _initializeApp() async {
-    AppShared.toggleIsLoading;
-    await playerController.getAllSongs();
-    AppShared.toggleIsLoading;
+    if (playerStateController.songAllList.isEmpty) {
+      AppShared.toggleIsLoading;
+      print(AppShared.isLoading.value);
+      await playerController.getAllSongs();
+      AppShared.toggleIsLoading;
+      print(AppShared.isLoading.value);
+    }
+
     Get.offNamed(AppRoutes.home);
   }
 
@@ -99,20 +104,7 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(4.0),
-        child: Obx(() {
-          if (AppShared.isLoading.value) {
-            return LinearProgressIndicator(
-              minHeight: 4.0,
-              color: AppColors.text,
-              backgroundColor: AppColors.background,
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        }),
-      ),
+      appBar: null,
       body: Center(
         child: Text(
           AppShared.title,
@@ -125,6 +117,17 @@ class _SplashPageState extends State<SplashPage> {
           textAlign: TextAlign.center,
         ),
       ),
+      // bottomNavigationBar: Obx(
+      //   () => AppShared.isLoading.value
+      //       ? SafeArea(
+      //           child: LinearProgressIndicator(
+      //             minHeight: 4.0,
+      //             color: AppColors.text,
+      //             backgroundColor: AppColors.background,
+      //           ),
+      //         )
+      //       : const SizedBox.shrink(),
+      // ),
     );
   }
 }

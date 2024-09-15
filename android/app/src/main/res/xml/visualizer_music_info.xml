@@ -5,10 +5,17 @@
     android:initialLayout="@layout/visualizer_music"
     android:minWidth="180dp"
     android:minHeight="40dp"
-    android:previewImage="@drawable/example_appwidget_preview"
-    android:previewLayout="@layout/visualizer_music"
-    android:resizeMode="horizontal|vertical"
     android:targetCellWidth="3"
     android:targetCellHeight="1"
+    android:previewImage="@drawable/visualizer_music_preview"
+    android:previewLayout="@layout/visualizer_music"
+    android:resizeMode="horizontal"
     android:updatePeriodMillis="86400000"
     android:widgetCategory="home_screen" />
+<!-- 
+    android:resizeMode="horizontal|vertical"
+    android:minWidth="180dp"
+    android:minHeight="40dp"
+    android:targetCellWidth="3"
+    android:targetCellHeight="1"
+-->
