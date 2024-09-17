@@ -5,7 +5,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:playerhub/app/core/controllers/just_audio_background.dart';
+// import 'package:playerhub/app/core/controllers/just_audio_background.dart';
 import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/core/controllers/visualizer_music.dart';
 
@@ -29,8 +29,10 @@ class PlayerStateController extends GetxController {
 
   // playlists
   RxList<SongModel> songAllList = <SongModel>[].obs;
-  RxList<AlbumModel> albumList = <AlbumModel>[].obs;
   RxList<SongModel> songList = <SongModel>[].obs;
+
+  RxList<AlbumModel> albumList = <AlbumModel>[].obs;
+  RxList<AlbumModel> artistList = <AlbumModel>[].obs;
 
   // folder list
   RxList<String> folderList = <String>[].obs;
@@ -54,7 +56,7 @@ class PlayerStateController extends GetxController {
 
 class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   final _audioQuery = OnAudioQuery();
-  final _audioBackground = JustAudioBackground();
+  // final _audioBackground = JustAudioBackground();
 
   final audioPlayer = AudioPlayer();
 
@@ -195,6 +197,13 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       uriType: UriType.EXTERNAL,
     );
 
+    _playerState.artistList.value = await _audioQuery.queryAlbums(
+      ignoreCase: true,
+      orderType: OrderType.DESC_OR_GREATER,
+      sortType: AlbumSortType.ARTIST,
+      uriType: UriType.EXTERNAL,
+    );
+
     // remove songs by duration
     songs = songs
         .where((song) =>
@@ -275,14 +284,30 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     }
   }
 
-  Future<List<SongModel>> queryAudiosFromAlbum({required int albumId}) async {
-    return await _audioQuery.queryAudiosFrom(
-      AudiosFromType.ALBUM_ID,
-      albumId,
-      ignoreCase: true,
-      orderType: OrderType.ASC_OR_SMALLER,
-      sortType: SongSortType.TITLE,
-    );
+  Future<List<SongModel>> queryAudiosFromAlbum({
+    required int type,
+    required int albumId,
+  }) async {
+    switch (type) {
+      case 0:
+        return await _audioQuery.queryAudiosFrom(
+          AudiosFromType.ALBUM_ID,
+          albumId,
+          ignoreCase: true,
+          orderType: OrderType.ASC_OR_SMALLER,
+          sortType: SongSortType.TITLE,
+        );
+      case 1:
+        return await _audioQuery.queryAudiosFrom(
+          AudiosFromType.ARTIST_ID,
+          albumId,
+          ignoreCase: true,
+          orderType: OrderType.ASC_OR_SMALLER,
+          sortType: SongSortType.TITLE,
+        );
+      default:
+        return _playerState.songAllList;
+    }
   }
 
   // define play in current song
@@ -317,7 +342,8 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       int lastIndex = _playerState.songList.length - 1;
 
       if (currentIndex < lastIndex) {
-        await _audioBackground.nextSong();
+        // await _audioBackground.nextSong();
+        await audioPlayer.seekToNext();
       } else {
         await audioPlayer.seek(Duration.zero, index: 0);
       }
@@ -331,7 +357,8 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       int currentIndex = _playerState.songIndex.value;
 
       if (currentIndex > 0) {
-        await _audioBackground.previousSong();
+        // await _audioBackground.previousSong();
+        await audioPlayer.seekToPrevious();
       } else {
         await audioPlayer.seek(Duration.zero,
             index: _playerState.songList.length - 1);

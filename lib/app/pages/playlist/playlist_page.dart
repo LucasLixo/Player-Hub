@@ -31,14 +31,14 @@ class _PlaylistPageState extends State<PlaylistPage> {
   @override
   void initState() {
     super.initState();
-    if (widget.playlistTitle == 'playlist1'.tr) {
+    if (widget.playlistTitle == 'playlist3'.tr) {
       playerStateController.isListRecent.value = true;
     }
   }
 
   @override
   void dispose() {
-    if (widget.playlistTitle == 'playlist1'.tr) {
+    if (widget.playlistTitle == 'playlist3'.tr) {
       playerStateController.isListRecent.value = false;
     }
     super.dispose();

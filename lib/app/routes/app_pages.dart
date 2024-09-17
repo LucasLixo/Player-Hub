@@ -61,5 +61,18 @@ abstract class AppPages {
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
     ),
+    GetPage(
+      name: AppRoutes.album,
+      page: () {
+        return AlbumPage(
+          albumTitle: Get.arguments['title'],
+          albumList: Get.arguments['album'],
+          albumNotTitle: Get.arguments['noTitle'],
+          albumType: Get.arguments['type'],
+        );
+      },
+      transitionDuration: const Duration(milliseconds: 300),
+      transition: Transition.rightToLeft,
+    ),
   ];
 }
