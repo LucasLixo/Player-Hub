@@ -1,27 +1,28 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:on_audio_query/on_audio_query.dart';
 import 'package:get/instance_manager.dart';
+import 'package:on_audio_query/on_audio_query.dart';
+import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/shared/utils/subtitle_style.dart';
 import 'package:playerhub/app/shared/utils/title_style.dart';
-import 'package:playerhub/app/shared/widgets/center_text.dart';
 
 class AlbumPage extends StatefulWidget {
-  final int albumType;
   final String albumTitle;
   final List<AlbumModel> albumList;
+  final Map<String, List<SongModel>> albumSongs;
   final String albumNotTitle;
 
   const AlbumPage({
     super.key,
-    required this.albumType,
     required this.albumTitle,
     required this.albumList,
+    required this.albumSongs,
     required this.albumNotTitle,
   });
 
@@ -59,53 +60,67 @@ class _AlbumPageState extends State<AlbumPage> {
           ),
         ),
       ),
-      body: Obx(() {
-        if (widget.albumList.isEmpty) {
-          return CenterText(title: widget.albumNotTitle);
-        } else {
-          return ListView.builder(
-            physics: const ClampingScrollPhysics(),
-            itemCount: widget.albumList.length,
-            itemBuilder: (BuildContext context, int index) {
-              final album = widget.albumList[index];
+      body: ListView.builder(
+        physics: const ClampingScrollPhysics(),
+        itemCount: widget.albumSongs.length,
+        itemBuilder: (BuildContext context, int index) {
+          final title = widget.albumList[index].album;
+          final songs = widget.albumSongs[title];
 
-              return ListTile(
-                tileColor: Colors.transparent,
-                splashColor: Colors.transparent,
-                focusColor: Colors.transparent,
-                minVerticalPadding: 4.0,
-                title: Text(
-                  album.album,
-                  style: titleStyle(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                subtitle: Text(
-                  "${album.numOfSongs.toString()} - ${album.artist}",
-                  style: subtitleStyle(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                leading: Icon(
-                  Icons.playlist_play,
-                  color: AppColors.text,
-                  size: 36,
-                ),
-                onTap: () async {
-                  final songs = await playerController.queryAudiosFromAlbum(
-                    type: widget.albumType,
-                    albumId: album.id,
+          return ListTile(
+            tileColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            focusColor: Colors.transparent,
+            minVerticalPadding: 4.0,
+            title: Text(
+              title,
+              style: titleStyle(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            subtitle: Text(
+              songs!.length.toString(),
+              style: subtitleStyle(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            leading: FutureBuilder<Uint8List>(
+              future: AppShared.getImageArray(
+                id: songs[0].id,
+              ),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SizedBox(
+                    width: 50.0,
+                    height: 50.0,
                   );
-                  Get.toNamed(AppRoutes.playlist, arguments: {
-                    'title': album.album,
-                    'songs': songs,
-                  });
-                },
-              );
+                } else if (snapshot.hasError || !snapshot.hasData) {
+                  return const SizedBox(
+                    width: 50.0,
+                    height: 50.0,
+                  );
+                } else {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.memory(
+                      snapshot.data!,
+                      fit: BoxFit.cover,
+                      width: 50.0,
+                      height: 50.0,
+                    ),
+                  );
+                }
+              },
+            ),
+            onTap: () async {
+              Get.toNamed(AppRoutes.playlist, arguments: {
+                'title': title,
+                'songs': songs,
+              });
             },
           );
-        }
-      }),
+        },
+      ),
     );
   }
 }

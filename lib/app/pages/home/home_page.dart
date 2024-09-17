@@ -18,10 +18,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final playerStateController = Get.find<PlayerStateController>();
-
   @override
   Widget build(BuildContext context) {
+    final playerStateController = Get.find<PlayerStateController>();
+    final tabSize = MediaQuery.of(context).size.width / 3.7;
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -33,6 +34,7 @@ class _HomePageState extends State<HomePage> {
                 pinned: true,
                 floating: true,
                 elevation: 0.0,
+                surfaceTintColor: AppColors.surface,
                 backgroundColor: AppColors.background,
                 leading: InkWell(
                   onTap: () {
@@ -61,49 +63,50 @@ class _HomePageState extends State<HomePage> {
                           size: 32,
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(width: 8),
                     ],
                   ),
                 ],
-                expandedHeight: 180,
+                expandedHeight: tabSize / 1.5 + 90,
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
+                  expandedTitleScale: 1.0,
                   title: Padding(
-                    padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 20.0),
+                    padding: EdgeInsets.fromLTRB(42.0, 0.0, 42.0, tabSize / 3),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         TopButtonBar(
-                          image: '',
-                          color: Colors.orange,
+                          size: tabSize - 10,
+                          image: 'assets/images/lowpoly_red.jpg',
                           text: 'playlist1'.tr,
                           icon: Icons.bookmark_sharp,
                           onTap: () {
                             Get.toNamed(AppRoutes.album, arguments: {
-                              'type': 0,
                               'title': 'playlist1'.tr,
                               'album': playerStateController.albumList,
+                              'songs': playerStateController.albumListSongs,
                               'noTitle': 'playlist_not1'.tr,
                             });
                           },
                         ),
                         TopButtonBar(
-                          image: '',
-                          color: Colors.blue,
+                          size: tabSize - 10,
+                          image: 'assets/images/lowpoly_blue.jpg',
                           text: 'playlist2'.tr,
                           icon: Icons.person_sharp,
                           onTap: () {
                             Get.toNamed(AppRoutes.album, arguments: {
-                              'type': 1,
                               'title': 'playlist2'.tr,
                               'album': playerStateController.artistList,
+                              'songs': playerStateController.artistListSongs,
                               'noTitle': 'playlist_not2'.tr,
                             });
                           },
                         ),
                         TopButtonBar(
-                          image: '',
-                          color: Colors.green,
+                          size: tabSize - 10,
+                          image: 'assets/images/lowpoly_green.jpg',
                           text: 'playlist3'.tr,
                           icon: Icons.schedule,
                           onTap: () {
@@ -134,7 +137,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                   indicatorColor: AppColors.primary,
                   indicatorWeight: 4,
-                  labelColor: AppColors.primary,
                   unselectedLabelColor: AppColors.textGray,
                   overlayColor:
                       const WidgetStatePropertyAll(Colors.transparent),

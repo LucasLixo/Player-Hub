@@ -67,8 +67,8 @@ abstract class AppPages {
         return AlbumPage(
           albumTitle: Get.arguments['title'],
           albumList: Get.arguments['album'],
+          albumSongs: Get.arguments['songs'],
           albumNotTitle: Get.arguments['noTitle'],
-          albumType: Get.arguments['type'],
         );
       },
       transitionDuration: const Duration(milliseconds: 300),

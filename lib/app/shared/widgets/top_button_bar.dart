@@ -3,16 +3,16 @@ import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 
 class TopButtonBar extends StatelessWidget {
+  final double size;
   final String image;
-  final Color color;
   final String text;
   final IconData icon;
   final VoidCallback onTap;
 
   const TopButtonBar({
     super.key,
+    required this.size,
     required this.image,
-    required this.color,
     required this.text,
     required this.icon,
     required this.onTap,
@@ -23,20 +23,20 @@ class TopButtonBar extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 70,
-        height: 50,
+        width: size,
+        height: size / 1.5,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          // image: DecorationImage(
-          //   image: NetworkImage(image),
-          //   fit: BoxFit.cover,
-          // ),
+          image: DecorationImage(
+            image: AssetImage(image),
+            fit: BoxFit.cover,
+          ),
         ),
         child: Stack(
           children: [
             Container(
               decoration: BoxDecoration(
-                color: color.withOpacity(0.4),
+                color: Colors.black.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
@@ -46,7 +46,7 @@ class TopButtonBar extends StatelessWidget {
               child: Icon(
                 icon,
                 color: AppColors.text,
-                size: 18,
+                size: 24,
               ),
             ),
             Positioned(
@@ -55,7 +55,7 @@ class TopButtonBar extends StatelessWidget {
               child: Text(
                 text,
                 style: dynamicStyle(
-                  fontSize: 12,
+                  fontSize: 18,
                   fontColor: AppColors.text,
                   fontWeight: FontWeight.bold,
                   fontStyle: FontStyle.normal,

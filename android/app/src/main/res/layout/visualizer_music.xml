@@ -5,9 +5,10 @@
     style="@style/Widget.Android.AppWidget.Container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
+    android:background="@drawable/rounded_background"
     android:theme="@style/Theme.Android.AppWidgetContainer"
     tools:ignore="ContentDescription,HardcodedText">
+    <!-- android:background="@android:color/transparent" -->
 
     <RelativeLayout 
         android:layout_width="match_parent"
