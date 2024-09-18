@@ -118,10 +118,20 @@ class _SplashPageState extends State<SplashPage> {
       bottomNavigationBar: SafeArea(
         child: Obx(
           () => AppShared.isLoading.value
-              ? LinearProgressIndicator(
-                  minHeight: 4.0,
-                  color: AppColors.primary,
-                  backgroundColor: AppColors.background,
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'data,',
+                      style: titleStyle(),
+                    ),
+                    LinearProgressIndicator(
+                      minHeight: 4.0,
+                      color: AppColors.primary,
+                      backgroundColor: AppColors.background,
+                    ),
+                  ],
                 )
               : const SizedBox(
                   height: 4.0,

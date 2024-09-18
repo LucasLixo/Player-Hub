@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/rounded_background"
     android:theme="@style/Theme.Android.AppWidgetContainer"
-    tools:ignore="ContentDescription,HardcodedText">
-    <!-- android:background="@android:color/transparent" -->
+    tools:ignore="ContentDescription,HardcodedText"
+    android:padding="8dp">
 
     <RelativeLayout 
         android:layout_width="match_parent"
@@ -35,7 +35,6 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/headline_image"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@android:color/black"
@@ -50,7 +49,6 @@
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@id/headline_image"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@android:color/black"

@@ -318,6 +318,8 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       initialIndex: index,
     );
 
+    _handleCurrentIndex(index);
+
     // Modo de playlist (Loop, Shuffle, etc)
     switch (AppShared.playlistModeValue.value) {
       // Modo loop playlist

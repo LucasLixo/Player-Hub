@@ -7,4 +7,3 @@ export 'package:playerhub/app/pages/edit/edit_page.dart';
 export 'package:playerhub/app/pages/search/search_page.dart';
 export 'package:playerhub/app/pages/playlist/playlist_page.dart';
 export 'package:playerhub/app/pages/equalizer/equalizer_page.dart';
-export 'package:playerhub/app/pages/album/album_page.dart';
