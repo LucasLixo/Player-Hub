@@ -51,13 +51,6 @@ class _SettingPageState extends State<SettingPage> {
     super.dispose();
   }
 
-  String getTitleForCode(List<Map<String, dynamic>> list, int code) {
-    final item = list.firstWhere(
-      (element) => element['code'] == code,
-    );
-    return item['title'];
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -186,10 +179,12 @@ class _SettingPageState extends State<SettingPage> {
           () => Switch(
             value: AppShared.darkModeValue.value,
             onChanged: (bool value) async {
-              await AppShared.setDarkMode(value);
-              if (mounted) {
-                Phoenix.rebirth(context);
-              }
+              Future.microtask(() async {
+                await AppShared.setDarkMode(value);
+                if (mounted) {
+                  await Phoenix.rebirth(context);
+                }
+              });
             },
           ),
         ),
@@ -263,6 +258,7 @@ class _SettingPageState extends State<SettingPage> {
         color: AppColors.surface,
         onSelected: (int code) {
           AppShared.setDefaultLanguage(code);
+          Get.back();
         },
         itemBuilder: (BuildContext context) {
           return _languages.map((languageOption) {
@@ -277,5 +273,12 @@ class _SettingPageState extends State<SettingPage> {
         },
       ),
     );
+  }
+
+  String getTitleForCode(List<Map<String, dynamic>> list, int code) {
+    final item = list.firstWhere(
+      (element) => element['code'] == code,
+    );
+    return item['title'];
   }
 }

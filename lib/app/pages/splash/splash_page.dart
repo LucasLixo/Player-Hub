@@ -123,12 +123,15 @@ class _SplashPageState extends State<SplashPage> {
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
                   contentPadding: const EdgeInsets.all(0.0),
-                  title: Text(
-                    playerStateController.songLog.value,
-                    style: titleStyle(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
+                  title: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
+                      playerStateController.songLog.value,
+                      style: titleStyle(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                   subtitle: LinearProgressIndicator(
                     minHeight: 4.0,

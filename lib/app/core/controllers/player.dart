@@ -77,7 +77,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     audioPlayer.playerStateStream.listen(_handlePlayerState);
 
     // Ouve o índice atual do player para definir a música atual e atualizar a imagem/cabeçalho
-    audioPlayer.currentIndexStream.listen(_handleCurrentIndex);
+    audioPlayer.currentIndexStream.listen(handleCurrentIndex);
 
     // Atualiza a posição de reprodução da música
     updatePosition();
@@ -86,20 +86,6 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   void _handlePlayerState(PlayerState state) {
     _playerState.isPlaying.value = state.playing;
     _playerState.songSession.value = audioPlayer.androidAudioSessionId ?? 0;
-  }
-
-  void _handleCurrentIndex(int? index) {
-    if (index == null || _playerState.songList.isEmpty) {
-      _playerState.currentSong.value = null;
-      return;
-    }
-
-    _playerState.songIndex.value = index;
-    final currentSong = _playerState.songList[index];
-    _playerState.currentSong.value = currentSong;
-
-    _updateVisualizerMusic(currentSong);
-    _updateRecentList(currentSong);
   }
 
   void _updateVisualizerMusic(SongModel song) {
@@ -145,6 +131,25 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   void chargeDurationInSeconds(int seconds) {
     var duration = Duration(seconds: seconds);
     audioPlayer.seek(duration);
+  }
+
+  void handleCurrentIndex(int? index) {
+    if (_playerState.songList.isEmpty) {
+      _playerState.currentSong.value = null;
+      return;
+    }
+    if (index == null) {
+      _playerState.currentSong.value =
+          _playerState.songList[_playerState.songIndex.value];
+      return;
+    }
+
+    _playerState.songIndex.value = index;
+    final currentSong = _playerState.songList[index];
+    _playerState.currentSong.value = currentSong;
+
+    _updateVisualizerMusic(currentSong);
+    _updateRecentList(currentSong);
   }
 
   // Get Songs
@@ -322,7 +327,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       initialIndex: index,
     );
 
-    _handleCurrentIndex(index);
+    handleCurrentIndex(index);
 
     // Modo de playlist (Loop, Shuffle, etc)
     switch (AppShared.playlistModeValue.value) {

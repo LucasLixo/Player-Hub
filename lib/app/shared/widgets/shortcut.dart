@@ -42,22 +42,25 @@ class _ShortcutState extends State<Shortcut>
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
     return Obx(
       () {
         final currentSong = playerStateController.currentSong.value;
-        if (playerStateController.songList.isEmpty || currentSong == null) {
+        if (playerStateController.songList.isEmpty) {
           return const SizedBox.shrink();
-        } else {
+        }
+        if (currentSong == null) {
+          playerController
+              .handleCurrentIndex(playerStateController.songIndex.value);
+        }
+        if (currentSong != null) {
           final currentImage = playerStateController.currentImage.value;
 
           return ListTile(
             tileColor: AppColors.surface,
             splashColor: Colors.transparent,
             focusColor: Colors.transparent,
-            // shape: RoundedRectangleBorder(
-            //   borderRadius: BorderRadius.circular(55),
-            // ),
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 10 + 4.0, vertical: 2),
             title: Text(
@@ -144,6 +147,8 @@ class _ShortcutState extends State<Shortcut>
             },
           );
         }
+
+        return const SizedBox.shrink();
       },
     );
   }
