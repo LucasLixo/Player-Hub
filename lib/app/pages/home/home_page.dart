@@ -53,8 +53,8 @@ class _HomePageState extends State<HomePage> {
             InkWell(
               onTap: () {
                 Get.toNamed(AppRoutes.playlist, arguments: {
-                  'title': 'playlist3'.tr,
-                  'songs': playerStateController.recentList,
+                  'playlistTitle': 'playlist1'.tr,
+                  'playlistList': playerStateController.recentList,
                 });
               },
               splashColor: Colors.transparent,
@@ -97,13 +97,13 @@ class _HomePageState extends State<HomePage> {
             isScrollable: true,
             dividerColor: Colors.transparent,
             labelStyle: dynamicStyle(
-              fontSize: 18,
+              fontSize: 16,
               fontColor: AppColors.text,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
             ),
             unselectedLabelStyle: dynamicStyle(
-              fontSize: 18,
+              fontSize: 16,
               fontColor: AppColors.text,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
@@ -116,8 +116,8 @@ class _HomePageState extends State<HomePage> {
             tabs: <Tab>[
               Tab(text: 'home_tab1'.tr),
               Tab(text: 'home_tab2'.tr),
-              Tab(text: 'playlist1'.tr),
-              Tab(text: 'playlist2'.tr),
+              Tab(text: 'home_tab3'.tr),
+              Tab(text: 'home_tab4'.tr),
             ],
           ),
         ),
@@ -128,8 +128,8 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   CenterText(title: 'home_not_tab1'.tr),
                   CenterText(title: 'home_not_tab2'.tr),
-                  CenterText(title: 'playlist_not1'.tr),
-                  CenterText(title: 'playlist_not2'.tr),
+                  CenterText(title: 'home_not_tab3'.tr),
+                  CenterText(title: 'home_not_tab4'.tr),
                 ],
               );
             } else {

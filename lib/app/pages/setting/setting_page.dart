@@ -63,7 +63,11 @@ class _SettingPageState extends State<SettingPage> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        foregroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
         leading: InkWell(
           onTap: () => Get.back(),
           splashColor: Colors.transparent,

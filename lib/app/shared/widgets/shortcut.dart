@@ -7,6 +7,7 @@ import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
+import 'package:playerhub/app/shared/utils/subtitle_style.dart';
 import 'package:playerhub/app/shared/utils/title_style.dart';
 
 class Shortcut extends StatefulWidget {
@@ -50,94 +51,97 @@ class _ShortcutState extends State<Shortcut>
         } else {
           final currentImage = playerStateController.currentImage.value;
 
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-            color: AppColors.surface,
-            child: ListTile(
-              tileColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              focusColor: Colors.transparent,
-              // shape: RoundedRectangleBorder(
-              //   borderRadius: BorderRadius.circular(55),
-              // ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-              title: Text(
-                AppShared.getTitle(
-                  currentSong.id,
-                  currentSong.title,
-                ),
-                style: titleStyle(),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+          return ListTile(
+            tileColor: AppColors.surface,
+            splashColor: Colors.transparent,
+            focusColor: Colors.transparent,
+            // shape: RoundedRectangleBorder(
+            //   borderRadius: BorderRadius.circular(55),
+            // ),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 10 + 4.0, vertical: 2),
+            title: Text(
+              AppShared.getTitle(
+                currentSong.id,
+                currentSong.title,
               ),
-              leading: ClipOval(
-                child: currentImage != null
-                    ? Image.file(
-                        File(currentImage),
-                        fit: BoxFit.cover,
-                        width: 50.0,
-                        height: 50.0,
-                      )
-                    : const SizedBox(
-                        width: 50.0,
-                        height: 50.0,
-                      ),
-              ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      playerController.previousSong();
-                    },
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    child: Icon(
-                      Icons.skip_previous_rounded,
-                      size: 32,
-                      color: AppColors.text,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      playerController.togglePlayPause();
-                    },
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    child: AnimatedIcon(
-                      icon: AnimatedIcons.play_pause,
-                      progress: _controller,
-                      size: 32,
-                      color: AppColors.text,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      playerController.nextSong();
-                    },
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    child: Icon(
-                      Icons.skip_next_rounded,
-                      size: 32,
-                      color: AppColors.text,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                ],
-              ),
-              onTap: () {
-                Get.toNamed(AppRoutes.details);
-              },
+              style: titleStyle(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
+            subtitle: Text(
+              playerStateController.songPosition.value,
+              style: subtitleStyle(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            leading: ClipOval(
+              child: currentImage != null
+                  ? Image.file(
+                      File(currentImage),
+                      fit: BoxFit.cover,
+                      width: 50.0,
+                      height: 50.0,
+                    )
+                  : const SizedBox(
+                      width: 50.0,
+                      height: 50.0,
+                    ),
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InkWell(
+                  onTap: () {
+                    playerController.previousSong();
+                  },
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  child: Icon(
+                    Icons.skip_previous_rounded,
+                    size: 32,
+                    color: AppColors.text,
+                  ),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                InkWell(
+                  onTap: () {
+                    playerController.togglePlayPause();
+                  },
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  child: AnimatedIcon(
+                    icon: AnimatedIcons.play_pause,
+                    progress: _controller,
+                    size: 32,
+                    color: AppColors.text,
+                  ),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                InkWell(
+                  onTap: () {
+                    playerController.nextSong();
+                  },
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  child: Icon(
+                    Icons.skip_next_rounded,
+                    size: 32,
+                    color: AppColors.text,
+                  ),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+              ],
+            ),
+            onTap: () {
+              Get.toNamed(AppRoutes.details);
+            },
           );
         }
       },

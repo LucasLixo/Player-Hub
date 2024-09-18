@@ -31,14 +31,14 @@ class _PlaylistPageState extends State<PlaylistPage> {
   @override
   void initState() {
     super.initState();
-    if (widget.playlistTitle == 'playlist3'.tr) {
+    if (widget.playlistTitle == 'playlist1'.tr) {
       playerStateController.isListRecent.value = true;
     }
   }
 
   @override
   void dispose() {
-    if (widget.playlistTitle == 'playlist3'.tr) {
+    if (widget.playlistTitle == 'playlist1'.tr) {
       playerStateController.isListRecent.value = false;
     }
     super.dispose();
@@ -50,7 +50,10 @@ class _PlaylistPageState extends State<PlaylistPage> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: AppColors.background,
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        foregroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
         leading: InkWell(
           onTap: () {
             Get.back();

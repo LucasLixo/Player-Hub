@@ -66,7 +66,10 @@ class _SearchPageState extends State<SearchPage> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: AppColors.background,
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        foregroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
         leading: InkWell(
           onTap: () => Get.back(),
           splashColor: Colors.transparent,

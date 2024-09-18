@@ -118,20 +118,23 @@ class _SplashPageState extends State<SplashPage> {
       bottomNavigationBar: SafeArea(
         child: Obx(
           () => AppShared.isLoading.value
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'data,',
-                      style: titleStyle(),
-                    ),
-                    LinearProgressIndicator(
-                      minHeight: 4.0,
-                      color: AppColors.primary,
-                      backgroundColor: AppColors.background,
-                    ),
-                  ],
+              ? ListTile(
+                  tileColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  contentPadding: const EdgeInsets.all(0.0),
+                  title: Text(
+                    playerStateController.songLog.value,
+                    style: titleStyle(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                  subtitle: LinearProgressIndicator(
+                    minHeight: 4.0,
+                    color: AppColors.primary,
+                    backgroundColor: AppColors.background,
+                  ),
                 )
               : const SizedBox(
                   height: 4.0,

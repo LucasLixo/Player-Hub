@@ -10,6 +10,9 @@ import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/core/controllers/visualizer_music.dart';
 
 class PlayerStateController extends GetxController {
+  // log
+  RxString songLog = ''.obs;
+
   // address of sound in list
   RxInt songIndex = 0.obs;
   RxInt songSession = 0.obs;
@@ -82,7 +85,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
 
   void _handlePlayerState(PlayerState state) {
     _playerState.isPlaying.value = state.playing;
-    _playerState.songSession.value ??= audioPlayer.androidAudioSessionId ?? 0;
+    _playerState.songSession.value = audioPlayer.androidAudioSessionId ?? 0;
   }
 
   void _handleCurrentIndex(int? index) {
@@ -243,6 +246,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
             final imagePath = await AppShared.getImageFile(id: song.id);
             _playerState.imageCache[song.id] = imagePath;
           }
+          _playerState.songLog.value = AppShared.getTitle(song.id, song.title);
         }
       }),
       // Processa as músicas para pastas
@@ -302,7 +306,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
         Uri.parse(song.uri!),
         tag: MediaItem(
           id: song.id.toString(),
-          title: song.title,
+          title: AppShared.getTitle(song.id, song.title),
           artist: AppShared.getArtist(song.id, song.artist!),
           artUri: imagePath != null ? Uri.file(imagePath) : null,
         ),

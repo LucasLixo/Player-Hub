@@ -73,7 +73,7 @@ class _PlaylistListState extends State<PlaylistList>
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Text(
-                'playlist2'.tr,
+                'home_tab4'.tr,
                 style: titleStyle(),
               ),
               Row(
@@ -142,8 +142,8 @@ class _PlaylistListState extends State<PlaylistList>
                   return InkWell(
                     onTap: () {
                       Get.toNamed(AppRoutes.playlist, arguments: {
-                        'title': playlist.title,
-                        'songs': playlist.songs,
+                        'playlistTitle': playlist.title,
+                        'playlistList': playlist.songs,
                       });
                     },
                     child: Stack(

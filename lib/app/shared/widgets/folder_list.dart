@@ -77,8 +77,8 @@ class FolderList extends StatelessWidget {
             ),
             onTap: () {
               Get.toNamed(AppRoutes.playlist, arguments: {
-                'title': title,
-                'songs': songs,
+                'playlistTitle': title,
+                'playlistList': songs,
               });
             },
           ),

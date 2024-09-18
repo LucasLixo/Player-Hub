@@ -83,8 +83,8 @@ class _AlbumListState extends State<AlbumList> {
           ),
           onTap: () async {
             Get.toNamed(AppRoutes.playlist, arguments: {
-              'title': title,
-              'songs': songs,
+              'playlistTitle': title,
+              'playlistList': songs,
             });
           },
         );

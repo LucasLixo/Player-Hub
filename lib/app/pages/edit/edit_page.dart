@@ -82,7 +82,10 @@ class _EditPageState extends State<EditPage> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: AppColors.background,
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        foregroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
         leading: InkWell(
           onTap: () {
             Get.back();
@@ -110,7 +113,8 @@ class _EditPageState extends State<EditPage> {
           InkWell(
             onTap: () {
               saveInfo();
-              showToast("${'edit_save'.tr}: ${AppShared.getTitle(widget.song.id, widget.song.title)}");
+              showToast(
+                  "${'edit_save'.tr}: ${AppShared.getTitle(widget.song.id, widget.song.title)}");
             },
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,

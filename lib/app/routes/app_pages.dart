@@ -54,8 +54,8 @@ abstract class AppPages {
       name: AppRoutes.playlist,
       page: () {
         return PlaylistPage(
-          playlistTitle: Get.arguments['title'],
-          playlistList: Get.arguments['songs'],
+          playlistTitle: Get.arguments['playlistTitle'],
+          playlistList: Get.arguments['playlistList'],
         );
       },
       transitionDuration: const Duration(milliseconds: 300),

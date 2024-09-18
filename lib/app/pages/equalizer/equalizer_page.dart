@@ -58,7 +58,10 @@ class _EqualizerPageState extends State<EqualizerPage> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: AppColors.background,
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        foregroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
         leading: InkWell(
           onTap: () => Get.back(),
           splashColor: Colors.transparent,
@@ -139,11 +142,11 @@ class _EqualizerPageState extends State<EqualizerPage> {
               children: [
                 Text(
                   'equalizer_frequency1'.tr,
-                  style: titleStyle(),
+                  style: subtitleStyle(),
                 ),
                 Text(
                   'equalizer_frequency2'.tr,
-                  style: titleStyle(),
+                  style: subtitleStyle(),
                 ),
               ],
             ),
