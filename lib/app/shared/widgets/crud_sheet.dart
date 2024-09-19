@@ -5,7 +5,7 @@ import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/core/app_colors.dart';
-import 'package:playerhub/app/shared/utils/subtitle_style.dart';
+import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 import 'package:playerhub/app/shared/utils/title_style.dart';
 
 void crudSheet(BuildContext context, SongModel song) {
@@ -24,7 +24,12 @@ void crudSheet(BuildContext context, SongModel song) {
               widthFactor: 0.7,
               child: Text(
                 song.title,
-                style: titleStyle(),
+                style: dynamicStyle(
+                  fontSize: 20,
+                  fontColor: AppColors.text,
+                  fontWeight: FontWeight.normal,
+                  fontStyle: FontStyle.normal,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -59,7 +64,7 @@ void crudSheet(BuildContext context, SongModel song) {
               focusColor: Colors.transparent,
               title: Text(
                 'crud_sheet3'.tr,
-                style: subtitleStyle(),
+                style: titleStyle(),
               ),
               trailing: Icon(
                 Icons.edit,

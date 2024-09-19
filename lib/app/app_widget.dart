@@ -16,13 +16,20 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return GetMaterialApp(
       title: AppShared.title,
       debugShowCheckedModeBanner: false,
       themeMode: AppColors.themeData,
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
+      theme: ThemeData(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+      ),
+      darkTheme: ThemeData(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+      ),
       getPages: AppPages.pages,
       initialBinding: AppBinding(),
       initialRoute: AppRoutes.splash,
