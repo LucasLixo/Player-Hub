@@ -17,7 +17,7 @@ dependencies:
   flutter_launcher_icons: 0.13.1
   audio_service: 0.18.15
   on_audio_query: 2.9.0
-  just_audio: 0.9.39
+  just_audio: 0.9.40
   rxdart: 0.28.0
   just_audio_platform_interface: 4.3.0
   shared_preferences: 2.3.1
