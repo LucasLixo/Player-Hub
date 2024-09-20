@@ -25,7 +25,7 @@ dependencies:
   path_provider: 2.1.4
   flutter_phoenix: 1.1.1
   equalizer_flutter: 0.0.1
-  home_widget: 0.6.0
+  home_widget: 0.7.0
 
 dev_dependencies:
   flutter_test:
