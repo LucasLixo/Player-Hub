@@ -6,7 +6,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:playerhub/app/core/app_shared.dart';
-import 'package:playerhub/app/core/controllers/visualizer_music.dart';
+import 'package:playerhub/app/shared/utils/visualizer_music.dart';
 
 class PlayerStateController extends GetxController {
   // log
@@ -30,6 +30,7 @@ class PlayerStateController extends GetxController {
   RxDouble songPositionD = 0.0.obs;
 
   // playlists
+  RxList<SongModel> filteredSongs = <SongModel>[].obs;
   RxList<SongModel> songAllList = <SongModel>[].obs;
   RxList<SongModel> songList = <SongModel>[].obs;
 
@@ -270,8 +271,10 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
         _playerState.albumListSongs.clear();
         for (var album in _playerState.albumList) {
           int albumId = album.id;
-          List<SongModel> albumSongs =
-              await queryAudiosFromAlbum(albumId: albumId);
+          List<SongModel> albumSongs = await queryAudiosFromAlbum(
+            albumId: albumId,
+            type: 0,
+          );
           albumSongsMap.update(
               album.album, (songs) => [...songs, ...albumSongs],
               ifAbsent: () => albumSongs);
@@ -284,7 +287,9 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
         for (var artist in _playerState.artistList) {
           int artistId = artist.id;
           List<SongModel> artistSongs = await queryAudiosFromAlbum(
-              albumId: artistId); // Corrija se necessário
+            albumId: artistId,
+            type: 1,
+          );
           artistSongsMap.update(
               artist.album, (songs) => [...songs, ...artistSongs],
               ifAbsent: () => artistSongs);
@@ -293,6 +298,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       }),
     ]);
 
+    _playerState.songLog.value = '';
     // Carrega as músicas
     await songLoad(songList, 0);
   }
@@ -347,14 +353,38 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
 
   Future<List<SongModel>> queryAudiosFromAlbum({
     required int albumId,
+    required int type,
   }) async {
-    return await _audioQuery.queryAudiosFrom(
-      AudiosFromType.ALBUM_ID,
-      albumId,
-      ignoreCase: true,
-      orderType: OrderType.ASC_OR_SMALLER,
-      sortType: SongSortType.TITLE,
-    );
+    switch (type) {
+      case 0:
+        return await _audioQuery.queryAudiosFrom(
+          AudiosFromType.ALBUM_ID,
+          albumId,
+          ignoreCase: true,
+          orderType: OrderType.ASC_OR_SMALLER,
+          sortType: SongSortType.ALBUM,
+        );
+      case 1:
+        return await _audioQuery.queryAudiosFrom(
+          AudiosFromType.ALBUM_ID,
+          albumId,
+          ignoreCase: true,
+          orderType: OrderType.ASC_OR_SMALLER,
+          sortType: SongSortType.ARTIST,
+        );
+      // case 2:
+      //   break;
+      // case 3:
+      //   break;
+      // case 4:
+      //   break;
+      // case 5:
+      //   break;
+      // case 6:
+      //   break;
+      default:
+        return <SongModel>[];
+    }
   }
 
   // Controle de play e pause (para reutilização)

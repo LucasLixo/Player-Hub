@@ -7,8 +7,6 @@ import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
-import 'package:playerhub/app/shared/utils/subtitle_style.dart';
-import 'package:playerhub/app/shared/utils/title_style.dart';
 
 class Shortcut extends StatefulWidget {
   const Shortcut({super.key});
@@ -68,13 +66,13 @@ class _ShortcutState extends State<Shortcut>
                 currentSong.id,
                 currentSong.title,
               ),
-              style: titleStyle(),
+              style: Theme.of(context).textTheme.bodyLarge,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             subtitle: Text(
               playerStateController.songPosition.value,
-              style: subtitleStyle(),
+              style: Theme.of(context).textTheme.labelMedium,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

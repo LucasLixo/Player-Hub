@@ -12,7 +12,6 @@ import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 import 'package:playerhub/app/shared/widgets/center_text.dart';
 import 'package:playerhub/app/shared/widgets/crud_sheet.dart';
 import 'package:playerhub/app/shared/widgets/playlist_mode.dart';
-import 'package:playerhub/app/shared/utils/slider_shape.dart';
 import 'package:playerhub/app/shared/widgets/playlist_sheet.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -148,8 +147,8 @@ class _DetailsPageState extends State<DetailsPage>
                           currentSong.title,
                         ),
                         style: dynamicStyle(
+                          color: Colors.white,
                           fontSize: 16,
-                          fontColor: Colors.white,
                           fontWeight: FontWeight.w600,
                           fontStyle: FontStyle.normal,
                         ),
@@ -163,8 +162,8 @@ class _DetailsPageState extends State<DetailsPage>
                           currentSong.artist!,
                         ),
                         style: dynamicStyle(
+                          color: Colors.white60,
                           fontSize: 16,
-                          fontColor: Colors.white60,
                           fontWeight: FontWeight.normal,
                           fontStyle: FontStyle.normal,
                         ),
@@ -178,8 +177,8 @@ class _DetailsPageState extends State<DetailsPage>
                           Text(
                             playerStateController.songPosition.value,
                             style: dynamicStyle(
+                              color: Colors.white,
                               fontSize: 14,
-                              fontColor: Colors.white,
                               fontWeight: FontWeight.normal,
                               fontStyle: FontStyle.normal,
                             ),
@@ -187,8 +186,8 @@ class _DetailsPageState extends State<DetailsPage>
                           Text(
                             playerStateController.songDuration.value,
                             style: dynamicStyle(
+                              color: Colors.white,
                               fontSize: 14,
-                              fontColor: Colors.white,
                               fontWeight: FontWeight.normal,
                               fontStyle: FontStyle.normal,
                             ),
@@ -196,23 +195,20 @@ class _DetailsPageState extends State<DetailsPage>
                         ],
                       ),
                       const SizedBox(height: 4),
-                      SliderTheme(
-                        data: getSliderTheme(),
-                        child: Slider(
-                          thumbColor: Colors.white,
-                          inactiveColor: Colors.white54,
-                          activeColor: Colors.white,
-                          min: 0.0,
-                          max: playerStateController.songDurationD.value
-                              .toDouble(),
-                          value: playerStateController.songPositionD.value
-                              .toDouble(),
-                          onChanged: (newValue) {
-                            playerController.chargeDurationInSeconds(
-                              newValue.toInt(),
-                            );
-                          },
-                        ),
+                      Slider(
+                        thumbColor: Colors.white,
+                        inactiveColor: Colors.white54,
+                        activeColor: Colors.white,
+                        min: 0.0,
+                        max: playerStateController.songDurationD.value
+                            .toDouble(),
+                        value: playerStateController.songPositionD.value
+                            .toDouble(),
+                        onChanged: (newValue) {
+                          playerController.chargeDurationInSeconds(
+                            newValue.toInt(),
+                          );
+                        },
                       ),
                       const SizedBox(height: 4),
                       Row(
@@ -256,7 +252,7 @@ class _DetailsPageState extends State<DetailsPage>
                               color: Colors.white,
                             ),
                           ),
-                          PlaylistSheet(context: context),
+                          const PlaylistSheet(),
                         ],
                       ),
                       const SizedBox(

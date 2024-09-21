@@ -5,8 +5,20 @@ import 'package:playerhub/app/routes/app_imports.dart';
 abstract class AppPages {
   static final List<GetPage> pages = [
     GetPage(
+      name: AppRoutes.wait,
+      page: () => const WaitPage(error: false),
+      transitionDuration: const Duration(milliseconds: 300),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: AppRoutes.error,
+      page: () => const WaitPage(error: true),
+      transitionDuration: const Duration(milliseconds: 300),
+      transition: Transition.fade,
+    ),
+    GetPage(
       name: AppRoutes.splash,
-      page: () => const SplashPage(),
+      page: () => SplashPage(),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.fade,
     ),
@@ -18,7 +30,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: AppRoutes.setting,
-      page: () => const SettingPage(),
+      page: () => SettingPage(),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.leftToRight,
     ),
@@ -30,34 +42,30 @@ abstract class AppPages {
     ),
     GetPage(
       name: AppRoutes.edit,
-      page: () {
-        return EditPage(
-          song: Get.arguments['song'],
-        );
-      },
+      page: () => EditPage(
+        song: Get.arguments['song'],
+      ),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
     ),
     GetPage(
       name: AppRoutes.search,
-      page: () => const SearchPage(),
+      page: () => SearchPage(),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
     ),
     GetPage(
       name: AppRoutes.equalizer,
-      page: () => const EqualizerPage(),
+      page: () => EqualizerPage(),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
     ),
     GetPage(
       name: AppRoutes.playlist,
-      page: () {
-        return PlaylistPage(
-          playlistTitle: Get.arguments['playlistTitle'],
-          playlistList: Get.arguments['playlistList'],
-        );
-      },
+      page: () => PlaylistPage(
+        playlistTitle: Get.arguments['playlistTitle'],
+        playlistList: Get.arguments['playlistList'],
+      ),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
     ),

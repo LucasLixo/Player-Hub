@@ -5,8 +5,6 @@ import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/core/app_colors.dart';
-import 'package:playerhub/app/shared/utils/dynamic_style.dart';
-import 'package:playerhub/app/shared/utils/title_style.dart';
 
 void crudSheet(BuildContext context, SongModel song) {
   showModalBottomSheet(
@@ -24,12 +22,7 @@ void crudSheet(BuildContext context, SongModel song) {
               widthFactor: 0.7,
               child: Text(
                 song.title,
-                style: dynamicStyle(
-                  fontSize: 20,
-                  fontColor: AppColors.text,
-                  fontWeight: FontWeight.normal,
-                  fontStyle: FontStyle.normal,
-                ),
+                style: Theme.of(context).textTheme.headlineMedium,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -64,7 +57,7 @@ void crudSheet(BuildContext context, SongModel song) {
               focusColor: Colors.transparent,
               title: Text(
                 'crud_sheet3'.tr,
-                style: titleStyle(),
+                style: Theme.of(context).textTheme.titleMedium,
               ),
               trailing: Icon(
                 Icons.edit,
@@ -140,7 +133,7 @@ void crudSheet(BuildContext context, SongModel song) {
 //                   borderSide: BorderSide(color: AppColors.text),
 //                 ),
 //                 labelText: 'crud_sheet_dialog_3'.tr,
-//                 labelStyle: subtitleStyle(),
+//                 labelStyle: Theme.of(context).textTheme.labelMedium,
 //               ),
 //             ),
 //             const SizedBox(height: 8),
@@ -159,7 +152,7 @@ void crudSheet(BuildContext context, SongModel song) {
 //                         focusColor: Colors.transparent,
 //                         title: Text(
 //                           playlist.title,
-//                           style: titleStyle(),
+//                           style: Theme.of(context).textTheme.bodyLarge,
 //                           maxLines: 1,
 //                           overflow: TextOverflow.ellipsis,
 //                         ),

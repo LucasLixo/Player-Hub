@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:playerhub/app/app_wait.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/instance_manager.dart';
 import 'package:playerhub/app/core/app_shared.dart';
-import 'package:playerhub/app/core/controllers/just_audio_background.dart';
+import 'package:playerhub/app/core/packages/just_audio_background.dart';
 import 'package:playerhub/app/app_widget.dart';
+import 'package:playerhub/app/routes/app_routes.dart';
 
 void main() async {
   runZonedGuarded(() async {
@@ -22,7 +24,7 @@ void main() async {
     });
     await AppShared.loadTheme();
 
-    runApp(const AppWait(error: false));
+    runApp(Phoenix(child: const AppWidget()));
 
     await Future.wait([
       JustAudioBackground.init(
@@ -35,10 +37,11 @@ void main() async {
       AppShared.loadShared(),
     ]);
 
-    runApp(Phoenix(child: const AppWidget()));
+    Get.toNamed(AppRoutes.splash);
   }, (Object error, StackTrace stack) {
     debugPrint("$error");
     debugPrintStack(stackTrace: stack);
-    runApp(const AppWait(error: false));
+
+    Get.toNamed(AppRoutes.error);
   });
 }

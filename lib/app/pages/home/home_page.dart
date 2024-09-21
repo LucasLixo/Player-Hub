@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
-import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/shared/widgets/album_list.dart';
 import 'package:playerhub/app/shared/widgets/shortcut.dart';
@@ -14,18 +14,11 @@ import 'package:playerhub/app/shared/widgets/music_list.dart';
 import 'package:playerhub/app/shared/widgets/folder_list.dart';
 import 'package:playerhub/app/shared/widgets/center_text.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends GetView<PlayerStateController> {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
   Widget build(BuildContext context) {
-    final playerStateController = Get.find<PlayerStateController>();
-
     return DefaultTabController(
       initialIndex: 0,
       length: 4,
@@ -54,7 +47,7 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 Get.toNamed(AppRoutes.playlist, arguments: {
                   'playlistTitle': 'playlist1'.tr,
-                  'playlistList': playerStateController.recentList,
+                  'playlistList': controller.recentList,
                 });
               },
               splashColor: Colors.transparent,
@@ -65,9 +58,7 @@ class _HomePageState extends State<HomePage> {
                 size: 32,
               ),
             ),
-            const SizedBox(
-              width: 8,
-            ),
+            const SizedBox(width: 8),
             InkWell(
               onTap: () {
                 Get.toNamed(AppRoutes.search);
@@ -80,34 +71,17 @@ class _HomePageState extends State<HomePage> {
                 size: 32,
               ),
             ),
-            const SizedBox(
-              width: 8,
-            ),
+            const SizedBox(width: 8),
           ],
           title: Text(
             AppShared.title,
-            style: dynamicStyle(
-              fontSize: 20,
-              fontColor: AppColors.text,
-              fontWeight: FontWeight.normal,
-              fontStyle: FontStyle.normal,
-            ),
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
           bottom: TabBar(
             isScrollable: true,
             dividerColor: Colors.transparent,
-            labelStyle: dynamicStyle(
-              fontSize: 16,
-              fontColor: AppColors.text,
-              fontWeight: FontWeight.normal,
-              fontStyle: FontStyle.normal,
-            ),
-            unselectedLabelStyle: dynamicStyle(
-              fontSize: 16,
-              fontColor: AppColors.text,
-              fontWeight: FontWeight.normal,
-              fontStyle: FontStyle.normal,
-            ),
+            labelStyle: Theme.of(context).textTheme.bodyMedium,
+            unselectedLabelStyle: Theme.of(context).textTheme.bodyMedium,
             indicatorColor: AppColors.primary,
             indicatorWeight: 4,
             labelColor: AppColors.primary,
@@ -123,7 +97,7 @@ class _HomePageState extends State<HomePage> {
         ),
         body: Obx(
           () {
-            if (playerStateController.songAllList.isEmpty) {
+            if (controller.songAllList.isEmpty) {
               return TabBarView(
                 children: <Widget>[
                   CenterText(title: 'home_not_tab1'.tr),
@@ -135,15 +109,17 @@ class _HomePageState extends State<HomePage> {
             } else {
               return TabBarView(
                 children: <Widget>[
-                  MusicList(songs: playerStateController.songAllList),
+                  MusicList(songs: controller.songAllList),
                   const FolderList(),
                   AlbumList(
-                    albumList: playerStateController.albumList,
-                    albumSongs: playerStateController.albumListSongs,
+                    albumList: controller.albumList,
+                    albumSongs: controller.albumListSongs,
+                    isAlbumArtist: false,
                   ),
                   AlbumList(
-                    albumList: playerStateController.artistList,
-                    albumSongs: playerStateController.artistListSongs,
+                    albumList: controller.artistList,
+                    albumSongs: controller.artistListSongs,
+                    isAlbumArtist: true,
                   ),
                 ],
               );
@@ -151,7 +127,7 @@ class _HomePageState extends State<HomePage> {
           },
         ),
         bottomNavigationBar: Obx(
-          () => playerStateController.songAllList.isEmpty
+          () => controller.songAllList.isEmpty
               ? const SizedBox.shrink()
               : const SafeArea(
                   child: Shortcut(),

@@ -5,22 +5,14 @@ import 'package:get/instance_manager.dart';
 import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
-import 'package:playerhub/app/shared/utils/subtitle_style.dart';
-import 'package:playerhub/app/shared/utils/title_style.dart';
 
-class PlaylistSheet extends StatefulWidget {
-  const PlaylistSheet({super.key, required BuildContext context});
-
-  @override
-  State<PlaylistSheet> createState() => _PlaylistSheetState();
-}
-
-class _PlaylistSheetState extends State<PlaylistSheet> {
-  final playerStateController = Get.find<PlayerStateController>();
-  final playerController = Get.find<PlayerController>();
+class PlaylistSheet extends GetView<PlayerStateController> {
+  const PlaylistSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final playerController = Get.find<PlayerController>();
+
     return InkWell(
       onTap: () {
         showModalBottomSheet(
@@ -29,8 +21,8 @@ class _PlaylistSheetState extends State<PlaylistSheet> {
           builder: (BuildContext context) {
             return Obx(
               () {
-                final songList = playerStateController.songList;
-                final songIndex = playerStateController.songIndex.value;
+                final songList = controller.songList;
+                final songIndex = controller.songIndex.value;
 
                 if (songList.isEmpty) {
                   return const SizedBox.shrink();
@@ -54,13 +46,13 @@ class _PlaylistSheetState extends State<PlaylistSheet> {
                             const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 2.0),
                         title: Text(
                           AppShared.getTitle(song.id, song.title),
-                          style: titleStyle(),
+                          style: Theme.of(context).textTheme.bodyLarge,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         subtitle: Text(
                           AppShared.getArtist(song.id, song.artist!),
-                          style: subtitleStyle(),
+                          style: Theme.of(context).textTheme.labelMedium,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),

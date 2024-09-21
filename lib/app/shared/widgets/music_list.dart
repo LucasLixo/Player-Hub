@@ -1,36 +1,29 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/instance_manager.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/core/app_shared.dart';
-import 'package:playerhub/app/shared/utils/subtitle_style.dart';
-import 'package:playerhub/app/shared/utils/title_style.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/shared/widgets/crud_sheet.dart';
 
-class MusicList extends StatefulWidget {
+class MusicList extends GetView<PlayerController> {
   final List<SongModel> songs;
 
   const MusicList({super.key, required this.songs});
 
   @override
-  State<MusicList> createState() => _MusicListState();
-}
-
-class _MusicListState extends State<MusicList> {
-  @override
   Widget build(BuildContext context) {
-    final playerController = Get.find<PlayerController>();
     final playerStateController = Get.find<PlayerStateController>();
 
     return ListView.builder(
       physics: const ClampingScrollPhysics(),
-      itemCount: widget.songs.length,
+      itemCount: songs.length,
       itemBuilder: (BuildContext context, int index) {
-        final song = widget.songs[index];
+        final song = songs[index];
 
         return ListTile(
           tileColor: Colors.transparent,
@@ -42,13 +35,13 @@ class _MusicListState extends State<MusicList> {
               song.id,
               song.title,
             ),
-            style: titleStyle(),
+            style: Theme.of(context).textTheme.bodyLarge,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           subtitle: Text(
             AppShared.getArtist(song.id, song.artist!),
-            style: subtitleStyle(),
+            style: Theme.of(context).textTheme.labelMedium,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -93,10 +86,10 @@ class _MusicListState extends State<MusicList> {
             ),
           ),
           onTap: () {
-            if (playerStateController.songList != widget.songs) {
-              playerController.songLoad(widget.songs, index);
+            if (playerStateController.songList != songs) {
+              controller.songLoad(songs, index);
             } else {
-              playerController.playSong(index);
+              controller.playSong(index);
             }
             Get.toNamed(AppRoutes.details);
           },

@@ -1,40 +1,35 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:playerhub/app/core/app_shared.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
-import 'package:playerhub/app/shared/utils/subtitle_style.dart';
-import 'package:playerhub/app/shared/utils/title_style.dart';
 
-class AlbumList extends StatefulWidget {
+class AlbumList extends GetView<PlayerStateController> {
   final List<AlbumModel> albumList;
   final Map<String, List<SongModel>> albumSongs;
+  final bool isAlbumArtist;
 
   const AlbumList({
     super.key,
     required this.albumList,
     required this.albumSongs,
+    required this.isAlbumArtist,
   });
-
-  @override
-  State<AlbumList> createState() => _AlbumListState();
-}
-
-class _AlbumListState extends State<AlbumList> {
-  final playerStateController = Get.find<PlayerStateController>();
-  final playerController = Get.find<PlayerController>();
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       physics: const ClampingScrollPhysics(),
-      itemCount: widget.albumSongs.length,
+      itemCount: albumSongs.length,
       itemBuilder: (BuildContext context, int index) {
-        final title = widget.albumList[index].album;
-        final songs = widget.albumSongs[title];
+        final title = isAlbumArtist
+            ? albumList[index].artist ?? albumList[index].album
+            : albumList[index].album;
+        final songs = albumSongs[albumList[index].album];
 
         return ListTile(
           tileColor: Colors.transparent,
@@ -43,13 +38,13 @@ class _AlbumListState extends State<AlbumList> {
           minVerticalPadding: 4.0,
           title: Text(
             title,
-            style: titleStyle(),
+            style: Theme.of(context).textTheme.bodyLarge,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           subtitle: Text(
             songs!.length.toString(),
-            style: subtitleStyle(),
+            style: Theme.of(context).textTheme.labelMedium,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -81,7 +76,7 @@ class _AlbumListState extends State<AlbumList> {
               }
             },
           ),
-          onTap: () async {
+          onTap: () {
             Get.toNamed(AppRoutes.playlist, arguments: {
               'playlistTitle': title,
               'playlistList': songs,

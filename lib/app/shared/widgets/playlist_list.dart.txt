@@ -8,7 +8,6 @@ import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 import 'package:playerhub/app/core/app_playlist.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
 import 'package:playerhub/app/shared/widgets/center_text.dart';
-import 'package:playerhub/app/shared/utils/title_style.dart';
 import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 
@@ -74,7 +73,7 @@ class _PlaylistListState extends State<PlaylistList>
             children: <Widget>[
               Text(
                 'home_tab4'.tr,
-                style: titleStyle(),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

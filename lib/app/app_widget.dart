@@ -7,7 +7,7 @@ import 'package:get/instance_manager.dart';
 import 'package:playerhub/app/app_bindings.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/routes/app_pages.dart';
-import 'package:playerhub/app/core/app_translater.dart';
+import 'package:playerhub/app/core/app_translations.dart';
 import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/core/app_shared.dart';
 
@@ -17,22 +17,15 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      enableLog: true,
       title: AppShared.title,
       debugShowCheckedModeBanner: false,
-      themeMode: AppColors.themeData,
-      theme: ThemeData(
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        hoverColor: Colors.transparent,
-      ),
-      darkTheme: ThemeData(
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        hoverColor: Colors.transparent,
-      ),
+      themeMode: AppColors.themeMode,
+      theme: AppColors.themeData,
+      darkTheme: AppColors.themeData,
       getPages: AppPages.pages,
       initialBinding: AppBinding(),
-      initialRoute: AppRoutes.splash,
+      initialRoute: AppRoutes.wait,
       translations: AppTranslations(),
       locale: Get.locale ?? Get.deviceLocale,
       localizationsDelegates: const [
@@ -46,6 +39,7 @@ class AppWidget extends StatelessWidget {
         Locale('pt', 'BR'),
         Locale('es', 'ES'),
       ],
+      transitionDuration: const Duration(milliseconds: 300),
     );
   }
 }

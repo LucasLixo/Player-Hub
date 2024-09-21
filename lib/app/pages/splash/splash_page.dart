@@ -1,36 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:playerhub/app/shared/utils/title_style.dart';
 import 'package:playerhub/app/core/app_colors.dart';
-import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
 import 'package:playerhub/app/core/app_shared.dart';
 
-class SplashPage extends StatefulWidget {
-  const SplashPage({super.key});
+class SplashPage extends GetView<PlayerController> {
+  SplashPage({super.key});
 
-  @override
-  State<SplashPage> createState() => _SplashPageState();
-}
-
-class _SplashPageState extends State<SplashPage> {
-  final playerController = Get.find<PlayerController>();
   final playerStateController = Get.find<PlayerStateController>();
-
-  @override
-  void initState() {
-    super.initState();
-    _permissionsApp();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   Future<void> _permissionsApp() async {
     PermissionStatus audioPermissionStatus;
@@ -54,7 +39,7 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<String?> _showDialogError() async {
     return showDialog<String>(
-      context: context,
+      context: Get.context!,
       barrierDismissible: false,
       builder: (BuildContext context) => Dialog(
         backgroundColor: AppColors.surface,
@@ -66,19 +51,14 @@ class _SplashPageState extends State<SplashPage> {
             children: <Widget>[
               Text(
                 'app_permision1'.tr,
-                style: titleStyle(),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               const SizedBox(height: 15),
               TextButton(
                 onPressed: () => SystemNavigator.pop(),
                 child: Text(
                   'app_again'.tr,
-                  style: dynamicStyle(
-                    fontSize: 16,
-                    fontColor: AppColors.primary,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.normal,
-                  ),
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
             ],
@@ -91,7 +71,7 @@ class _SplashPageState extends State<SplashPage> {
   Future<void> _initializeApp() async {
     if (playerStateController.songAllList.isEmpty) {
       AppShared.toggleIsLoading();
-      await playerController.getAllSongs();
+      await controller.getAllSongs();
       AppShared.toggleIsLoading();
     }
 
@@ -100,18 +80,15 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+    _permissionsApp();
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: null,
       body: Center(
         child: Text(
           AppShared.title,
-          style: dynamicStyle(
-            fontSize: 32,
-            fontColor: AppColors.text,
-            fontWeight: FontWeight.normal,
-            fontStyle: FontStyle.normal,
-          ),
+          style: Theme.of(context).textTheme.displayMedium,
           textAlign: TextAlign.center,
         ),
       ),
@@ -127,7 +104,7 @@ class _SplashPageState extends State<SplashPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text(
                       playerStateController.songLog.value,
-                      style: titleStyle(),
+                      style: Theme.of(context).textTheme.bodyLarge,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,

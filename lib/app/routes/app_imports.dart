@@ -1,4 +1,5 @@
 // pages
+export 'package:playerhub/app/pages/wait/wait_page.dart';
 export 'package:playerhub/app/pages/splash/splash_page.dart';
 export 'package:playerhub/app/pages/home/home_page.dart';
 export 'package:playerhub/app/pages/setting/setting_page.dart';

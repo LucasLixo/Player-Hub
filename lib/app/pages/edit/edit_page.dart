@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-// import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:playerhub/app/core/app_shared.dart';
-import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/shared/utils/show_toast.dart';
-import 'package:playerhub/app/shared/utils/title_style.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
 
-class EditPage extends StatefulWidget {
+class EditPage extends GetView<PlayerStateController> {
   final SongModel song;
 
   const EditPage({
@@ -21,63 +18,26 @@ class EditPage extends StatefulWidget {
   });
 
   @override
-  State<EditPage> createState() => _EditPageState();
-}
-
-class _EditPageState extends State<EditPage> {
-  late TextEditingController _textControllerTitle;
-  late TextEditingController _textControllerArtist;
-  final FocusNode _focusNodeTitle = FocusNode();
-  final FocusNode _focusNodeArtist = FocusNode();
-
-  RxBool isConect = false.obs;
-
-  final playerStateController = Get.find<PlayerStateController>();
-
-  @override
-  void initState() {
-    super.initState();
-    // checkConnectivity();
-    _textControllerTitle = TextEditingController(
-      text: AppShared.getTitle(
-        widget.song.id,
-        widget.song.title,
-      ),
-    );
-    _textControllerArtist = TextEditingController(
-      text: AppShared.getArtist(
-        widget.song.id,
-        widget.song.artist!,
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _textControllerTitle.dispose();
-    _textControllerArtist.dispose();
-    super.dispose();
-  }
-
-  // Future<void> checkConnectivity() async {
-  //   final connectivityResult = await Connectivity().checkConnectivity();
-  //   for (var result in connectivityResult) {
-  //     if (result == ConnectivityResult.wifi) {
-  //       isConect.value = true;
-  //       break;
-  //     }
-  //   }
-  // }
-
-  Future<void> saveInfo() async {
-    await AppShared.setTitle(widget.song.id, _textControllerTitle.text);
-    await AppShared.setArtist(widget.song.id, _textControllerArtist.text);
-    _focusNodeTitle.unfocus();
-    _focusNodeArtist.unfocus();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final TextEditingController textControllerTitle = TextEditingController(
+      text: AppShared.getTitle(
+        song.id,
+        song.title,
+      ),
+    );
+
+    final TextEditingController textControllerArtist = TextEditingController(
+      text: AppShared.getArtist(
+        song.id,
+        song.artist!,
+      ),
+    );
+
+    Future<void> saveInfo() async {
+      await AppShared.setTitle(song.id, textControllerTitle.text);
+      await AppShared.setArtist(song.id, textControllerArtist.text);
+    }
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -87,9 +47,7 @@ class _EditPageState extends State<EditPage> {
         foregroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         leading: InkWell(
-          onTap: () {
-            Get.back();
-          },
+          onTap: () => Get.back(),
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
           child: Icon(
@@ -99,13 +57,8 @@ class _EditPageState extends State<EditPage> {
           ),
         ),
         title: Text(
-          AppShared.getTitle(widget.song.id, widget.song.title),
-          style: dynamicStyle(
-            fontSize: 18,
-            fontColor: AppColors.text,
-            fontWeight: FontWeight.normal,
-            fontStyle: FontStyle.normal,
-          ),
+          AppShared.getTitle(song.id, song.title),
+          style: Theme.of(context).textTheme.titleMedium,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -114,7 +67,7 @@ class _EditPageState extends State<EditPage> {
             onTap: () {
               saveInfo();
               showToast(
-                  "${'edit_save'.tr}: ${AppShared.getTitle(widget.song.id, widget.song.title)}");
+                  "${'edit_save'.tr}: ${AppShared.getTitle(song.id, song.title)}");
             },
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
@@ -124,9 +77,7 @@ class _EditPageState extends State<EditPage> {
               size: 32,
             ),
           ),
-          const SizedBox(
-            width: 8,
-          ),
+          const SizedBox(width: 8),
         ],
       ),
       body: Padding(
@@ -136,17 +87,11 @@ class _EditPageState extends State<EditPage> {
             ListTile(
               title: Text(
                 'edit_title'.tr,
-                style: titleStyle(),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               subtitle: TextField(
-                controller: _textControllerTitle,
-                focusNode: _focusNodeTitle,
-                style: dynamicStyle(
-                  fontSize: 18,
-                  fontColor: AppColors.text,
-                  fontWeight: FontWeight.normal,
-                  fontStyle: FontStyle.normal,
-                ),
+                controller: textControllerTitle,
+                style: Theme.of(context).textTheme.titleMedium,
                 cursorColor: AppColors.text,
                 decoration: InputDecoration(
                   border: UnderlineInputBorder(
@@ -158,17 +103,11 @@ class _EditPageState extends State<EditPage> {
             ListTile(
               title: Text(
                 'edit_artist'.tr,
-                style: titleStyle(),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               subtitle: TextField(
-                controller: _textControllerArtist,
-                focusNode: _focusNodeArtist,
-                style: dynamicStyle(
-                  fontSize: 18,
-                  fontColor: AppColors.text,
-                  fontWeight: FontWeight.normal,
-                  fontStyle: FontStyle.normal,
-                ),
+                controller: textControllerArtist,
+                style: Theme.of(context).textTheme.titleMedium,
                 cursorColor: AppColors.text,
                 decoration: InputDecoration(
                   border: UnderlineInputBorder(
@@ -177,50 +116,6 @@ class _EditPageState extends State<EditPage> {
                 ),
               ),
             ),
-            // const SizedBox(
-            //   height: 12,
-            // ),
-            // ListTile(
-            //   title: Text(
-            //     'edit_image'.tr,
-            //     style: titleStyle(),
-            //   ),
-            //   trailing: InkWell(
-            //     onTap: () {},
-            //     splashColor: Colors.transparent,
-            //     highlightColor: Colors.transparent,
-            //     child: Icon(
-            //       Icons.folder,
-            //       color: AppColors.text,
-            //       size: 26,
-            //     ),
-            //   ),
-            //   subtitle: Center(
-            //     child: ClipRRect(
-            //       borderRadius: BorderRadius.circular(18),
-            //       child: Obx(
-            //         () {
-            //           final currentSong = playerStateController
-            //               .songList[playerStateController.songIndex.value];
-            //           final imagePath =
-            //               playerStateController.imageCache[currentSong.id];
-            //
-            //           return imagePath != null
-            //               ? Image.file(
-            //                   File(imagePath),
-            //                   fit: BoxFit.cover,
-            //                   width: 150.0,
-            //                   height: 150.0,
-            //                 )
-            //               : const SizedBox(
-            //                   width: 150.0,
-            //                   height: 150.0,
-            //                 );
-            //         },
-            //       ),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),

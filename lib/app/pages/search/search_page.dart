@@ -2,66 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:on_audio_query/on_audio_query.dart';
 import 'package:playerhub/app/core/app_shared.dart';
-import 'package:playerhub/app/shared/utils/dynamic_style.dart';
 import 'package:playerhub/app/shared/widgets/music_list.dart';
 import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
 import 'package:playerhub/app/shared/widgets/shortcut.dart';
-import 'package:playerhub/app/shared/utils/subtitle_style.dart';
 
-class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+class SearchPage extends GetView<PlayerStateController> {
+  SearchPage({super.key});
 
-  @override
-  State<SearchPage> createState() => _SearchPageState();
-}
-
-class _SearchPageState extends State<SearchPage> {
-  final playerController = Get.find<PlayerController>();
-  final playerStateController = Get.find<PlayerStateController>();
-
-  late FocusNode _focusNode;
-  late TextEditingController _textController;
-
-  final RxList<SongModel> filteredSongs = <SongModel>[].obs;
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode = FocusNode();
-    _textController = TextEditingController();
-
-    _textController.addListener(_filterSongs);
-  }
-
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    _textController.dispose();
-    super.dispose();
-  }
-
-  void _filterSongs() {
-    var query = _textController.text.toLowerCase();
-
-    if (query.isEmpty) {
-      filteredSongs.clear();
-    } else {
-      filteredSongs.value = playerStateController.songAllList.where((song) {
-        return song.title.toLowerCase().contains(query) ||
-            AppShared.getArtist(song.id, song.artist!)
-                .toLowerCase()
-                .contains(query);
-      }).toList();
-    }
-  }
+  final TextEditingController _textController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
+    void filterSongs() {
+      var query = _textController.text.toLowerCase();
+
+      if (query.isEmpty) {
+        controller.filteredSongs.clear();
+      } else {
+        controller.filteredSongs.value = controller.songAllList.where((song) {
+          return song.title.toLowerCase().contains(query) ||
+              AppShared.getArtist(song.id, song.artist!)
+                  .toLowerCase()
+                  .contains(query);
+        }).toList();
+      }
+    }
+
+    _textController.addListener(filterSongs);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -83,34 +56,29 @@ class _SearchPageState extends State<SearchPage> {
         title: TextField(
           controller: _textController,
           focusNode: _focusNode,
-          style: dynamicStyle(
-            fontSize: 18,
-            fontColor: AppColors.text,
-            fontWeight: FontWeight.normal,
-            fontStyle: FontStyle.normal,
-          ),
+          style: Theme.of(context).textTheme.titleMedium,
           cursorColor: AppColors.text,
           decoration: InputDecoration(
             border: UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.text),
             ),
             labelText: 'app_search'.tr,
-            labelStyle: subtitleStyle(),
+            labelStyle: Theme.of(context).textTheme.labelMedium,
           ),
         ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Obx(
-          () => filteredSongs.isEmpty
+          () => controller.filteredSongs.isEmpty
               ? const SizedBox.shrink()
               : MusicList(
-                  songs: filteredSongs,
+                  songs: controller.filteredSongs,
                 ),
         ),
       ),
       bottomNavigationBar: Obx(
-        () => playerStateController.songAllList.isEmpty
+        () => controller.songAllList.isEmpty
             ? const SizedBox.shrink()
             : const SafeArea(
                 child: Shortcut(),

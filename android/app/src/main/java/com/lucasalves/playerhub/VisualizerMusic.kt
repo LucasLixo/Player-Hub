@@ -1,8 +1,10 @@
 package com.lucasalves.playerhub
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.widget.RemoteViews
@@ -55,7 +57,20 @@ internal fun updateAppWidget(
             val imageBitmap: Bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
             setImageViewBitmap(R.id.headline_image, imageBitmap)
         }
+
+        // Intent para abrir o aplicativo ao clicar no widget
+        val intent = Intent(context, MainActivity::class.java) // Substitua com a sua MainActivity
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        // Associa o PendingIntent ao widget_container
+        setOnClickPendingIntent(R.id.widget_container, pendingIntent)
     }
 
+    // Atualiza o widget
     appWidgetManager.updateAppWidget(appWidgetId, views)
 }

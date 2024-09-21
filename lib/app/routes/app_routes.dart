@@ -1,4 +1,6 @@
 abstract class AppRoutes {
+  static const String wait = '/wait';
+  static const String error = '/error';
   static const String splash = '/splash';
   static const String home = '/home';
   static const String setting = '/setting';
