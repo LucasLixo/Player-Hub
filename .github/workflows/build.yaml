@@ -14,7 +14,6 @@ jobs:
       matrix:
         flutter-version: ['stable']
 
-    permissions: read-all
     permissions: write-all
 
     steps:
