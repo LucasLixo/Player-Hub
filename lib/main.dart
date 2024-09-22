@@ -26,18 +26,20 @@ void main() async {
 
     runApp(Phoenix(child: const AppWidget()));
 
-    await Future.wait([
-      JustAudioBackground.init(
-        androidNotificationChannelId: "${AppShared.package}.channel.audio",
-        androidNotificationChannelName: AppShared.title,
-        androidShowNotificationBadge: true,
-        androidNotificationOngoing: true,
-        androidStopForegroundOnPause: true,
-      ),
-      AppShared.loadShared(),
-    ]);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.wait([
+        JustAudioBackground.init(
+          androidNotificationChannelId: "${AppShared.package}.channel.audio",
+          androidNotificationChannelName: AppShared.title,
+          androidShowNotificationBadge: true,
+          androidNotificationOngoing: true,
+          androidStopForegroundOnPause: true,
+        ),
+        AppShared.loadShared(),
+      ]);
 
-    Get.toNamed(AppRoutes.splash);
+      Get.toNamed(AppRoutes.splash);
+    });
   }, (Object error, StackTrace stack) {
     debugPrint("$error");
     debugPrintStack(stackTrace: stack);

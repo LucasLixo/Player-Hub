@@ -5,14 +5,49 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:playerhub/app/app_bindings.dart';
+import 'package:playerhub/app/core/app_theme.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/routes/app_pages.dart';
 import 'package:playerhub/app/core/app_translations.dart';
 import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/core/app_shared.dart';
 
-class AppWidget extends StatelessWidget {
+class AppWidget extends StatefulWidget {
   const AppWidget({super.key});
+
+  @override
+  State<AppWidget> createState() => _AppWidgetState();
+}
+
+class _AppWidgetState extends State<AppWidget> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.resumed) {
+      _onEnterApp();
+    } else if (state == AppLifecycleState.paused) {
+      _onExitApp();
+    }
+  }
+
+  void _onEnterApp() {
+    AppShared.loadNavigationBar();
+  }
+
+  void _onExitApp() {}
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +56,8 @@ class AppWidget extends StatelessWidget {
       title: AppShared.title,
       debugShowCheckedModeBanner: false,
       themeMode: AppColors.themeMode,
-      theme: AppColors.themeData,
-      darkTheme: AppColors.themeData,
+      theme: darkTheme,
+      darkTheme: lightTheme,
       getPages: AppPages.pages,
       initialBinding: AppBinding(),
       initialRoute: AppRoutes.wait,

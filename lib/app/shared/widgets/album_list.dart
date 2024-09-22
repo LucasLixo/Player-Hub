@@ -26,8 +26,9 @@ class AlbumList extends GetView<PlayerStateController> {
       physics: const ClampingScrollPhysics(),
       itemCount: albumSongs.length,
       itemBuilder: (BuildContext context, int index) {
+        final artist = albumList[index].artist! == '<unknown>' ? '' : '';
         final title = isAlbumArtist
-            ? albumList[index].artist ?? albumList[index].album
+            ? (artist.isNotEmpty ? artist : albumList[index].album)
             : albumList[index].album;
         final songs = albumSongs[albumList[index].album];
 
