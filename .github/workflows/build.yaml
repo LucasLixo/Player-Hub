@@ -100,15 +100,16 @@ jobs:
 
       - name: Create GitHub Release
         id: create_release
-        uses: softprops/action-gh-release@v1
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # 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
         with:
           tag_name: v${{ env.VERSION }}
           name: Release v${{ env.VERSION }}
           body: |
             **New Flutter Release**
             - Version: v${{ env.VERSION }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
 
       - name: Upload APK to Release
         uses: actions/upload-release-asset@v1
