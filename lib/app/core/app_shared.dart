@@ -9,7 +9,6 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart';
 import 'package:playerhub/app/core/app_colors.dart';
-import 'package:playerhub/app/core/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Mixin to manage preferences and images in the application using GetX.

@@ -133,9 +133,9 @@ class SettingPage extends GetView<PlayerController> {
                 value: AppShared.darkModeValue.value,
                 onChanged: (bool value) async {
                   await AppShared.setDarkMode(value);
-                  if (Get.isSnackbarOpen) Get.back();
+                  // if (Get.isSnackbarOpen) Get.back();
                   await Phoenix.rebirth(Get.context!);
-                  Get.toNamed(AppRoutes.splash);
+                  // Get.toNamed(AppRoutes.splash);
                 },
               ),
             ),
@@ -204,8 +204,9 @@ class SettingPage extends GetView<PlayerController> {
               ),
               color: AppColors.surface,
               onSelected: (int code) {
-                AppShared.setDefaultLanguage(code);
+                // if (Get.isSnackbarOpen) Get.back();
                 Get.toNamed(AppRoutes.splash);
+                AppShared.setDefaultLanguage(code);
               },
               itemBuilder: (BuildContext context) {
                 return _languages.map((languageOption) {
