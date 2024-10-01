@@ -1,4 +1,4 @@
-package com.lucasalves.playerhub
+package hub.player.listen
 
 import android.os.Build
 import android.os.Bundle
@@ -14,7 +14,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : AudioServiceActivity() {
-    private val BASE_CHANNEL = "com.lucasalves.playerhub"
+    private val BASE_CHANNEL = "hub.player.listen"
     private val ChannelToast = "$BASE_CHANNEL/toast"
 
     override fun onCreate(savedInstanceState: Bundle?) {

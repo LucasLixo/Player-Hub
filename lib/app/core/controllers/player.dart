@@ -6,7 +6,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:playerhub/app/core/app_shared.dart';
-import 'package:playerhub/app/shared/utils/visualizer_music.dart';
+import 'package:playerhub/app/core/interface/visualizer_music.dart';
 
 class PlayerStateController extends GetxController {
   // log

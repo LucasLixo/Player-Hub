@@ -11,6 +11,7 @@ import 'package:playerhub/app/core/app_colors.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/core/controllers/player.dart';
 import 'package:playerhub/app/core/app_shared.dart';
+import 'package:playerhub/app/shared/widgets/window_confirm.dart';
 
 class SplashPage extends GetView<PlayerController> {
   SplashPage({super.key});
@@ -31,41 +32,15 @@ class SplashPage extends GetView<PlayerController> {
     if (audioPermissionStatus.isGranted) {
       await _initializeApp();
     } else if (audioPermissionStatus.isDenied) {
-      await _showDialogError();
+      await showWindowConfirm(
+        title: 'app_again'.tr,
+        subtitle: 'app_permision1'.tr,
+        confirm: () => SystemNavigator.pop(),
+        cancel: null,
+      );
     } else if (audioPermissionStatus.isPermanentlyDenied) {
       await openAppSettings();
     }
-  }
-
-  Future<String?> _showDialogError() async {
-    return showDialog<String>(
-      context: Get.context!,
-      barrierDismissible: false,
-      builder: (BuildContext context) => Dialog(
-        backgroundColor: AppColors.surface,
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Text(
-                'app_permision1'.tr,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(height: 15),
-              TextButton(
-                onPressed: () => SystemNavigator.pop(),
-                child: Text(
-                  'app_again'.tr,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 
   Future<void> _initializeApp() async {

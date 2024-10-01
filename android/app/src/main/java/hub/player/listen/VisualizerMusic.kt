@@ -1,4 +1,4 @@
-package com.lucasalves.playerhub
+package hub.player.listen
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager

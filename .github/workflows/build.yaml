@@ -103,7 +103,7 @@ jobs:
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # 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
+
         with:
           tag_name: v${{ env.VERSION }}
           name: Release v${{ env.VERSION }}
