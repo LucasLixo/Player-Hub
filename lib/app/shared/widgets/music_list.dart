@@ -82,7 +82,7 @@ class MusicList extends GetView<PlayerController> {
             child: Icon(
               Icons.more_vert,
               size: 30,
-              color: AppColors.text,
+              color: AppColors.current().text,
             ),
           ),
           onTap: () {

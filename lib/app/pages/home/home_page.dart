@@ -23,7 +23,7 @@ class HomePage extends GetView<PlayerStateController> {
       initialIndex: 0,
       length: 4,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.current().background,
         appBar: AppBar(
           elevation: 0.0,
           backgroundColor: Colors.transparent,
@@ -38,7 +38,7 @@ class HomePage extends GetView<PlayerStateController> {
             highlightColor: Colors.transparent,
             child: Icon(
               Icons.sort_rounded,
-              color: AppColors.text,
+              color: AppColors.current().text,
               size: 32,
             ),
           ),
@@ -54,7 +54,7 @@ class HomePage extends GetView<PlayerStateController> {
               highlightColor: Colors.transparent,
               child: Icon(
                 Icons.schedule,
-                color: AppColors.text,
+                color: AppColors.current().text,
                 size: 32,
               ),
             ),
@@ -67,7 +67,7 @@ class HomePage extends GetView<PlayerStateController> {
               highlightColor: Colors.transparent,
               child: Icon(
                 Icons.search,
-                color: AppColors.text,
+                color: AppColors.current().text,
                 size: 32,
               ),
             ),
@@ -82,11 +82,11 @@ class HomePage extends GetView<PlayerStateController> {
             dividerColor: Colors.transparent,
             labelStyle: Theme.of(context).textTheme.bodyMedium,
             unselectedLabelStyle: Theme.of(context).textTheme.bodyMedium,
-            indicatorColor: AppColors.primary,
+            indicatorColor: AppColors.current().primary,
             indicatorWeight: 4,
-            labelColor: AppColors.primary,
+            labelColor: AppColors.current().primary,
             overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-            unselectedLabelColor: AppColors.textGray,
+            unselectedLabelColor: AppColors.current().textGray,
             tabs: <Tab>[
               Tab(text: 'home_tab1'.tr),
               Tab(text: 'home_tab2'.tr),

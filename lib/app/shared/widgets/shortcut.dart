@@ -56,7 +56,7 @@ class _ShortcutState extends State<Shortcut>
           final currentImage = playerStateController.currentImage.value;
 
           return ListTile(
-            tileColor: AppColors.surface,
+            tileColor: AppColors.current().surface,
             splashColor: Colors.transparent,
             focusColor: Colors.transparent,
             contentPadding:
@@ -101,7 +101,7 @@ class _ShortcutState extends State<Shortcut>
                   child: Icon(
                     Icons.skip_previous_rounded,
                     size: 32,
-                    color: AppColors.text,
+                    color: AppColors.current().text,
                   ),
                 ),
                 const SizedBox(
@@ -117,7 +117,7 @@ class _ShortcutState extends State<Shortcut>
                     icon: AnimatedIcons.play_pause,
                     progress: _controller,
                     size: 32,
-                    color: AppColors.text,
+                    color: AppColors.current().text,
                   ),
                 ),
                 const SizedBox(
@@ -132,7 +132,7 @@ class _ShortcutState extends State<Shortcut>
                   child: Icon(
                     Icons.skip_next_rounded,
                     size: 32,
-                    color: AppColors.text,
+                    color: AppColors.current().text,
                   ),
                 ),
                 const SizedBox(

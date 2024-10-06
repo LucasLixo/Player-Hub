@@ -38,7 +38,7 @@ class EqualizerPage extends GetView<PlayerController> {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.current().background,
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
@@ -49,7 +49,7 @@ class EqualizerPage extends GetView<PlayerController> {
           highlightColor: Colors.transparent,
           child: Icon(
             Icons.arrow_back_ios,
-            color: AppColors.text,
+            color: AppColors.current().text,
             size: 26,
           ),
         ),
@@ -101,7 +101,7 @@ class EqualizerPage extends GetView<PlayerController> {
               highlightColor: Colors.transparent,
               child: Icon(
                 Icons.refresh,
-                color: AppColors.text,
+                color: AppColors.current().text,
                 size: 36,
               ),
             ),
@@ -223,8 +223,8 @@ class _CustomEQState extends State<CustomEQ> {
                   );
 
                   return Slider(
-                    thumbColor: AppColors.primary,
-                    activeColor: AppColors.primary,
+                    thumbColor: AppColors.current().primary,
+                    activeColor: AppColors.current().primary,
                     min: min,
                     max: max,
                     value: value.value,

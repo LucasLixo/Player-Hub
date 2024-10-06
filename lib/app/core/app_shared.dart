@@ -64,10 +64,9 @@ mixin AppShared on GetxController {
   }
 
   static void loadNavigationBar() {
-    // Get.changeTheme(darkModeValue.value ? lightTheme : darkTheme);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: AppColors.surface,
-      systemNavigationBarIconBrightness: AppColors.brightnessData,
+      systemNavigationBarColor: AppColors.current().surface,
+      systemNavigationBarIconBrightness: AppColors.current().brightness,
     ));
   }
 

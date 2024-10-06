@@ -33,7 +33,7 @@ class SettingPage extends GetView<PlayerController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.current().background,
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
@@ -46,7 +46,7 @@ class SettingPage extends GetView<PlayerController> {
           highlightColor: Colors.transparent,
           child: Icon(
             Icons.arrow_back_ios,
-            color: AppColors.text,
+            color: AppColors.current().text,
             size: 26,
           ),
         ),
@@ -73,7 +73,7 @@ class SettingPage extends GetView<PlayerController> {
               highlightColor: Colors.transparent,
               child: Icon(
                 Icons.refresh,
-                color: AppColors.text,
+                color: AppColors.current().text,
                 size: 36,
               ),
             ),
@@ -88,8 +88,8 @@ class SettingPage extends GetView<PlayerController> {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               subtitle: Slider(
-                thumbColor: AppColors.primary,
-                activeColor: AppColors.primary,
+                thumbColor: AppColors.current().primary,
+                activeColor: AppColors.current().primary,
                 min: 0,
                 max: 120,
                 value: _sliderValue.toDouble(),
@@ -111,7 +111,7 @@ class SettingPage extends GetView<PlayerController> {
               highlightColor: Colors.transparent,
               child: Icon(
                 Icons.graphic_eq,
-                color: AppColors.text,
+                color: AppColors.current().text,
                 size: 36,
               ),
             ),
@@ -156,10 +156,10 @@ class SettingPage extends GetView<PlayerController> {
               trailing: PopupMenuButton<int>(
                 icon: Icon(
                   Icons.sort_by_alpha,
-                  color: AppColors.text,
+                  color: AppColors.current().text,
                   size: 32,
                 ),
-                color: AppColors.surface,
+                color: AppColors.current().surface,
                 onSelected: (int code) {
                   _sortValue.value = code;
                 },
@@ -199,10 +199,10 @@ class SettingPage extends GetView<PlayerController> {
             trailing: PopupMenuButton<int>(
               icon: Icon(
                 Icons.language,
-                color: AppColors.text,
+                color: AppColors.current().text,
                 size: 32,
               ),
-              color: AppColors.surface,
+              color: AppColors.current().surface,
               onSelected: (int code) {
                 // if (Get.isSnackbarOpen) Get.back();
                 Get.toNamed(AppRoutes.splash);

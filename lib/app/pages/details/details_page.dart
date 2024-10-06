@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -56,6 +57,8 @@ class _DetailsPageState extends State<DetailsPage>
           return CenterText(title: 'cloud_error1'.tr);
         } else {
           final currentImage = playerStateController.currentImage.value;
+
+          RxBool isSwipeExecuted = false.obs;
 
           return Stack(
             children: <Widget>[
@@ -128,17 +131,49 @@ class _DetailsPageState extends State<DetailsPage>
                       ),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(24),
-                        child: currentImage != null
-                            ? Image.file(
-                                File(currentImage),
-                                fit: BoxFit.cover,
-                                width: MediaQuery.of(context).size.width,
-                                height: MediaQuery.of(context).size.width,
-                              )
-                            : SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                height: MediaQuery.of(context).size.width,
-                              ),
+                        child: GestureDetector(
+                          onHorizontalDragEnd: (details) {
+                            if (!isSwipeExecuted.value) {
+                              if (details.primaryVelocity! > 0) {
+                                // Deslize para a direita
+                                playerController.previousSong();
+                              } else if (details.primaryVelocity! < 0) {
+                                // Deslize para a esquerda
+                                playerController.nextSong();
+                              }
+                              isSwipeExecuted.value = true;
+                            }
+                          },
+                          onVerticalDragEnd: (details) {
+                            if (!isSwipeExecuted.value) {
+                              if (details.primaryVelocity! < 0) {
+                                // Deslize para cima
+                                crudSheet(context, currentSong);
+                              } else if (details.primaryVelocity! > 0) {
+                                // Deslize para baixo
+                                Get.back();
+                              }
+                              isSwipeExecuted.value = true;
+                            }
+                          },
+                          onHorizontalDragStart: (details) {
+                            isSwipeExecuted.value = false;
+                          },
+                          onVerticalDragStart: (details) {
+                            isSwipeExecuted.value = false;
+                          },
+                          child: currentImage != null
+                              ? Image.file(
+                                  File(currentImage),
+                                  fit: BoxFit.cover,
+                                  width: MediaQuery.of(context).size.width,
+                                  height: MediaQuery.of(context).size.width,
+                                )
+                              : SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: MediaQuery.of(context).size.width,
+                                ),
+                        ),
                       ),
                       const SizedBox(height: 12),
                       Text(

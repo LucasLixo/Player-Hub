@@ -36,7 +36,7 @@ class SearchPage extends GetView<PlayerStateController> {
     _textController.addListener(filterSongs);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.current().background,
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
@@ -49,7 +49,7 @@ class SearchPage extends GetView<PlayerStateController> {
           highlightColor: Colors.transparent,
           child: Icon(
             Icons.arrow_back_ios,
-            color: AppColors.text,
+            color: AppColors.current().text,
             size: 26,
           ),
         ),
@@ -57,10 +57,10 @@ class SearchPage extends GetView<PlayerStateController> {
           controller: _textController,
           focusNode: _focusNode,
           style: Theme.of(context).textTheme.titleMedium,
-          cursorColor: AppColors.text,
+          cursorColor: AppColors.current().text,
           decoration: InputDecoration(
             border: UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.text),
+              borderSide: BorderSide(color: AppColors.current().text),
             ),
             labelText: 'app_search'.tr,
             labelStyle: Theme.of(context).textTheme.labelMedium,

@@ -13,7 +13,7 @@ Future<String?> showWindowConfirm({
     context: Get.context!,
     barrierDismissible: dismissible,
     builder: (BuildContext context) => Dialog(
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.current().surface,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -48,7 +48,7 @@ Future<String?> showWindowConfirm({
                       width: MediaQuery.of(context).size.width * 0.3,
                       height: MediaQuery.of(context).size.width * 0.1,
                       decoration: BoxDecoration(
-                        color: AppColors.background,
+                        color: AppColors.current().background,
                         borderRadius: BorderRadius.circular(18),
                       ),
                       alignment: Alignment.center,
@@ -65,7 +65,7 @@ Future<String?> showWindowConfirm({
                     width: MediaQuery.of(context).size.width * 0.3,
                     height: MediaQuery.of(context).size.width * 0.1,
                     decoration: BoxDecoration(
-                      color: AppColors.background,
+                      color: AppColors.current().background,
                       borderRadius: BorderRadius.circular(18),
                     ),
                     alignment: Alignment.center,

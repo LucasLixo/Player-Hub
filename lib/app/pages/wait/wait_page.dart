@@ -12,14 +12,15 @@ class WaitPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.current().background,
         appBar: null,
         body: Center(
           child: Text(
             AppShared.title,
             style: dynamicStyle(
               fontSize: 32,
-              color: error ? AppColors.error : AppColors.text,
+              color:
+                  error ? AppColors.current().error : AppColors.current().text,
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.normal,
             ),

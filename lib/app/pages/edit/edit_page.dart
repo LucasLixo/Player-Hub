@@ -39,7 +39,7 @@ class EditPage extends GetView<PlayerStateController> {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.current().background,
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
@@ -52,7 +52,7 @@ class EditPage extends GetView<PlayerStateController> {
           highlightColor: Colors.transparent,
           child: Icon(
             Icons.arrow_back_ios,
-            color: AppColors.text,
+            color: AppColors.current().text,
             size: 26,
           ),
         ),
@@ -73,7 +73,7 @@ class EditPage extends GetView<PlayerStateController> {
             highlightColor: Colors.transparent,
             child: Icon(
               Icons.save,
-              color: AppColors.text,
+              color: AppColors.current().text,
               size: 32,
             ),
           ),
@@ -92,10 +92,10 @@ class EditPage extends GetView<PlayerStateController> {
               subtitle: TextField(
                 controller: textControllerTitle,
                 style: Theme.of(context).textTheme.titleMedium,
-                cursorColor: AppColors.text,
+                cursorColor: AppColors.current().text,
                 decoration: InputDecoration(
                   border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.text),
+                    borderSide: BorderSide(color: AppColors.current().text),
                   ),
                 ),
               ),
@@ -108,10 +108,10 @@ class EditPage extends GetView<PlayerStateController> {
               subtitle: TextField(
                 controller: textControllerArtist,
                 style: Theme.of(context).textTheme.titleMedium,
-                cursorColor: AppColors.text,
+                cursorColor: AppColors.current().text,
                 decoration: InputDecoration(
                   border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.text),
+                    borderSide: BorderSide(color: AppColors.current().text),
                   ),
                 ),
               ),

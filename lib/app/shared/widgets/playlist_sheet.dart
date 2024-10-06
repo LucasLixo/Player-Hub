@@ -17,7 +17,7 @@ class PlaylistSheet extends GetView<PlayerStateController> {
       onTap: () {
         showModalBottomSheet(
           context: context,
-          backgroundColor: AppColors.background,
+          backgroundColor: AppColors.current().background,
           builder: (BuildContext context) {
             return Obx(
               () {
@@ -59,7 +59,7 @@ class PlaylistSheet extends GetView<PlayerStateController> {
                         trailing: songIndex == index
                             ? Icon(
                                 Icons.music_note,
-                                color: AppColors.text,
+                                color: AppColors.current().text,
                                 size: 32,
                               )
                             : const SizedBox.shrink(),

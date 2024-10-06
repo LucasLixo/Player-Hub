@@ -9,7 +9,7 @@ import 'package:playerhub/app/core/app_colors.dart';
 void crudSheet(BuildContext context, SongModel song) {
   showModalBottomSheet(
     context: context,
-    backgroundColor: AppColors.background,
+    backgroundColor: AppColors.current().background,
     builder: (BuildContext context) {
       return SizedBox(
         height: MediaQuery.of(context).size.height * 0.4,
@@ -36,14 +36,14 @@ void crudSheet(BuildContext context, SongModel song) {
             //     'crud_sheet1'.tr,
             //     style: dynamicStyle(
             //       18,
-            //       AppColors.text,
+            //       AppColors.current().text,
             //       FontWeight.normal,
             //       FontStyle.normal,
             //     ),
             //   ),
             //   trailing: Icon(
             //     Icons.playlist_add,
-            //     color: AppColors.text,
+            //     color: AppColors.current().text,
             //     size: 28,
             //   ),
             //   onTap: () {
@@ -61,7 +61,7 @@ void crudSheet(BuildContext context, SongModel song) {
               ),
               trailing: Icon(
                 Icons.edit,
-                color: AppColors.text,
+                color: AppColors.current().text,
                 size: 28,
               ),
               onTap: () {
@@ -79,14 +79,14 @@ void crudSheet(BuildContext context, SongModel song) {
             //     'crud_sheet2'.tr,
             //     style: dynamicStyle(
             //       18,
-            //       AppColors.text,
+            //       AppColors.current().text,
             //       FontWeight.normal,
             //       FontStyle.normal,
             //     ),
             //   ),
             //   trailing: Icon(
             //     Icons.delete,
-            //     color: AppColors.text,
+            //     color: AppColors.current().text,
             //     size: 28,
             //   ),
             //   onTap: () async {
@@ -111,7 +111,7 @@ void crudSheet(BuildContext context, SongModel song) {
 //     context: context,
 //     barrierDismissible: false,
 //     builder: (BuildContext context) => Dialog(
-//       backgroundColor: AppColors.surface,
+//       backgroundColor: AppColors.current().surface,
 //       child: Padding(
 //         padding: const EdgeInsets.all(10.0),
 //         child: Column(
@@ -123,14 +123,14 @@ void crudSheet(BuildContext context, SongModel song) {
 //               focusNode: FocusNode(),
 //               style: dynamicStyle(
 //                 18,
-//                 AppColors.text,
+//                 AppColors.current().text,
 //                 FontWeight.normal,
 //                 FontStyle.normal,
 //               ),
-//               cursorColor: AppColors.text,
+//               cursorColor: AppColors.current().text,
 //               decoration: InputDecoration(
 //                 border: UnderlineInputBorder(
-//                   borderSide: BorderSide(color: AppColors.text),
+//                   borderSide: BorderSide(color: AppColors.current().text),
 //                 ),
 //                 labelText: 'crud_sheet_dialog_3'.tr,
 //                 labelStyle: Theme.of(context).textTheme.labelMedium,
@@ -175,7 +175,7 @@ void crudSheet(BuildContext context, SongModel song) {
 //                     'crud_sheet_dialog_1'.tr,
 //                     style: dynamicStyle(
 //                       16,
-//                       AppColors.primary,
+//                       AppColors.current().primary,
 //                       FontWeight.w600,
 //                       FontStyle.normal,
 //                     ),
@@ -196,7 +196,7 @@ void crudSheet(BuildContext context, SongModel song) {
 //                     'crud_sheet_dialog_2'.tr,
 //                     style: dynamicStyle(
 //                       16,
-//                       AppColors.primary,
+//                       AppColors.current().primary,
 //                       FontWeight.w600,
 //                       FontStyle.normal,
 //                     ),

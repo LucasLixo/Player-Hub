@@ -58,7 +58,7 @@ class SplashPage extends GetView<PlayerController> {
     _permissionsApp();
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.current().background,
       appBar: null,
       body: Center(
         child: Text(
@@ -87,8 +87,8 @@ class SplashPage extends GetView<PlayerController> {
                   ),
                   subtitle: LinearProgressIndicator(
                     minHeight: 4.0,
-                    color: AppColors.primary,
-                    backgroundColor: AppColors.background,
+                    color: AppColors.current().primary,
+                    backgroundColor: AppColors.current().background,
                   ),
                 )
               : const SizedBox(

@@ -46,7 +46,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.current().background,
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
@@ -61,7 +61,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
           highlightColor: Colors.transparent,
           child: Icon(
             Icons.arrow_back_ios,
-            color: AppColors.text,
+            color: AppColors.current().text,
             size: 26,
           ),
         ),
