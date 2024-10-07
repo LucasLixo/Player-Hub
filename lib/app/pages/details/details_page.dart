@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
@@ -89,6 +90,10 @@ class _DetailsPageState extends State<DetailsPage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       AppBar(
+                        systemOverlayStyle: const SystemUiOverlayStyle(
+                          statusBarColor: Colors.transparent,
+                          statusBarIconBrightness: Brightness.light,
+                        ),
                         elevation: 0.0,
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
@@ -132,6 +137,9 @@ class _DetailsPageState extends State<DetailsPage>
                       ClipRRect(
                         borderRadius: BorderRadius.circular(24),
                         child: GestureDetector(
+                          onTap: () {
+                            playerController.togglePlayPause();
+                          },
                           onHorizontalDragEnd: (details) {
                             if (!isSwipeExecuted.value) {
                               if (details.primaryVelocity! > 0) {

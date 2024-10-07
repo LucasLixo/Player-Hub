@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:playerhub/app/core/app_colors.dart';
 
-Future<String?> showWindowConfirm({
+Future<void> showWindowConfirm({
   required String title,
   required String? subtitle,
   required VoidCallback confirm,
   required VoidCallback? cancel,
   bool dismissible = false,
 }) async {
-  return showDialog<String>(
+  return showDialog(
     context: Get.context!,
     barrierDismissible: dismissible,
     builder: (BuildContext context) => Dialog(

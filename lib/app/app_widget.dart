@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:helper_hub/src/theme_material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:playerhub/app/app_bindings.dart';
-import 'package:playerhub/app/core/app_theme.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 import 'package:playerhub/app/routes/app_pages.dart';
 import 'package:playerhub/app/core/app_translations.dart';
