@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:playerhub/app/core/app_colors.dart';
 
 abstract class ThemeMaterial {
-  // Retorna o tema claro
+  // Return theme light
   static ThemeData light() {
     return ThemeData(
       brightness: AppColors.light().brightness,
@@ -19,10 +20,16 @@ abstract class ThemeMaterial {
       switchTheme: _getSwitchTheme(isDark: false),
       textTheme: _getTextTheme(isDark: false),
       inputDecorationTheme: _getInputDecorationTheme(isDark: false),
+      appBarTheme: AppBarTheme(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: AppColors.light().brightness,
+        ),
+      ),
     );
   }
 
-  // Retorna o tema escuro
+  // Return theme dark
   static ThemeData dark() {
     return ThemeData(
       brightness: AppColors.dark().brightness,
@@ -39,10 +46,16 @@ abstract class ThemeMaterial {
       switchTheme: _getSwitchTheme(isDark: true),
       textTheme: _getTextTheme(isDark: true),
       inputDecorationTheme: _getInputDecorationTheme(isDark: true),
+      appBarTheme: AppBarTheme(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: AppColors.dark().brightness,
+        ),
+      ),
     );
   }
 
-  // Tema compartilhado para Slider
+  // Theme shared Slider
   static SliderThemeData _getSliderTheme({required bool isDark}) {
     return SliderThemeData(
       trackShape: const _CustomSliderTrackShape(),
@@ -56,7 +69,7 @@ abstract class ThemeMaterial {
     );
   }
 
-  // Tema compartilhado para Switch
+  // Theme shared Switch
   static SwitchThemeData _getSwitchTheme({required bool isDark}) {
     return SwitchThemeData(
       trackColor: WidgetStateProperty.resolveWith<Color>(
@@ -75,7 +88,7 @@ abstract class ThemeMaterial {
     );
   }
 
-  // Tema compartilhado para Textos
+  // Theme shared Text
   static TextTheme _getTextTheme({required bool isDark}) {
     return TextTheme(
       displayLarge: TextStyle(

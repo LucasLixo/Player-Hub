@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:math';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:just_audio_platform_interface/just_audio_platform_interface.dart';
 import 'package:rxdart/rxdart.dart';
+
 export 'package:audio_service/audio_service.dart' show MediaItem;
 
 late SwitchAudioHandler _audioHandler;
@@ -69,22 +71,6 @@ class JustAudioBackground {
       androidBrowsableRootExtras: androidBrowsableRootExtras,
     );
   }
-
-  Future<void> nextSong() async {
-    await _audioHandler.skipToNext();
-  }
-
-  Future<void> previousSong() async {
-    await _audioHandler.skipToPrevious();
-  }
-
-  /* Future<void> repeatDisable() async {
-    _audioHandler.setRepeatMode(AudioServiceRepeatMode.none);
-  }
-
-  Future<void> repeatEnable() async {
-    _audioHandler.setRepeatMode(AudioServiceRepeatMode.all);
-  } */
 }
 
 class _JustAudioBackgroundPlugin extends JustAudioPlatform {
@@ -746,6 +732,7 @@ class _PlayerAudioHandler extends BaseAudioHandler
     _updatePosition();
     _playing = false;
     _broadcastState();
+    // TODO: We should really stop listening to events here to mimic
     // just_audio's behaviour. E.g. if stop() was called, we actually want to
     // keep the state around even though the platform may be disposing its own
     // state.
@@ -804,7 +791,7 @@ class _PlayerAudioHandler extends BaseAudioHandler
     final controls = [
       if (hasPrevious) MediaControl.skipToPrevious,
       if (_playing) MediaControl.pause else MediaControl.play,
-      // MediaControl.stop,
+      MediaControl.stop,
       if (hasNext) MediaControl.skipToNext,
     ];
     playbackState.add(playbackState.nvalue!.copyWith(
@@ -932,6 +919,7 @@ extension AudioSourceExtension on AudioSourceMessage {
       }
       return indices;
     } else if (self is LoopingAudioSourceMessage) {
+      // TODO: This should combine indices of the children, like ConcatenatingAudioSource.
       // Also should be fixed in the plugin frontend.
       return List.generate(self.count, (i) => i);
     } else {

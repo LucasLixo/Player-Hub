@@ -3,11 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:playerhub/app/core/app_shared.dart';
-import 'package:playerhub/app/core/packages/just_audio_background.dart';
 import 'package:playerhub/app/app_widget.dart';
 import 'package:playerhub/app/routes/app_routes.dart';
 

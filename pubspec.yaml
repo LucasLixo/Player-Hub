@@ -5,7 +5,7 @@ description: >-
   with high audio quality and an intuitive interface.
   Organize your tracks, adjust the sound with the equalizer and enjoy a limitless music experience.
 publish_to: 'none'
-version: 1.7.34+46
+version: 1.7.35+47
 
 environment:
   sdk: '>=3.4.4 <4.0.0' # current is: 3.5.3
@@ -23,7 +23,9 @@ dependencies:
   audio_service: 0.18.15
   on_audio_query: 2.9.0
   just_audio: 0.9.41
-  rxdart: 0.28.0
+  just_audio_background:
+    path: packages/just_audio_background
+    version: any
   just_audio_platform_interface: 4.3.0
   shared_preferences: 2.3.2
   device_info_plus: 10.1.2
