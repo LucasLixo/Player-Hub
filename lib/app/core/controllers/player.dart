@@ -1,132 +1,125 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:get/get_rx/get_rx.dart';
-import 'package:get/instance_manager.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:playerhub/app/core/app_shared.dart';
-import 'package:playerhub/app/core/interface/visualizer_music.dart';
+import 'package:player_hub/app/core/enums/shared_attibutes.dart';
+import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/core/interfaces/visualizer.dart';
+import 'package:player_hub/app/core/types/app_manifest.dart';
 
-class PlayerStateController extends GetxController {
-  // log
-  RxString songLog = ''.obs;
-
+class PlayerController extends BaseAudioHandler
+    with QueueHandler, SeekHandler, AppManifest {
+  // ==================================================
+  final RxString songLog = ''.obs;
   // address of sound in list
-  RxInt songIndex = 0.obs;
-  RxInt songSession = 0.obs;
-
+  final RxInt songIndex = 0.obs;
+  final RxInt songSession = 0.obs;
   // state play
-  RxBool isPlaying = false.obs;
-
+  final RxBool isPlaying = false.obs;
   // playback options
-  RxBool isLooping = false.obs;
-  RxBool isShuffle = false.obs;
+  final RxBool isLooping = false.obs;
+  final RxBool isShuffle = false.obs;
 
+  // ==================================================
   // position of sound
-  RxString songDuration = ''.obs;
-  RxString songPosition = ''.obs;
-  RxDouble songDurationD = 0.0.obs;
-  RxDouble songPositionD = 0.0.obs;
+  final RxString songDuration = ''.obs;
+  final RxString songPosition = ''.obs;
+  final RxDouble songDurationD = 0.0.obs;
+  final RxDouble songPositionD = 0.0.obs;
 
+  // ==================================================
   // playlists
-  RxList<SongModel> filteredSongs = <SongModel>[].obs;
-  RxList<SongModel> songAllList = <SongModel>[].obs;
-  RxList<SongModel> songList = <SongModel>[].obs;
+  final RxList<SongModel> filteredSongs = <SongModel>[].obs;
+  final RxList<SongModel> songAllList = <SongModel>[].obs;
+  final RxList<SongModel> songList = <SongModel>[].obs;
 
+  // ==================================================
   // folder list
-  RxList<String> folderList = <String>[].obs;
-  RxList<AlbumModel> albumList = <AlbumModel>[].obs;
-  RxList<AlbumModel> artistList = <AlbumModel>[].obs;
+  final RxList<String> folderList = <String>[].obs;
+  final RxList<AlbumModel> albumList = <AlbumModel>[].obs;
+  final RxList<AlbumModel> artistList = <AlbumModel>[].obs;
 
-  //
-  RxMap<String, List<SongModel>> folderListSongs =
+  // ==================================================
+  final RxMap<String, List<SongModel>> folderListSongs =
       <String, List<SongModel>>{}.obs;
-  RxMap<String, List<SongModel>> albumListSongs =
+  final RxMap<String, List<SongModel>> albumListSongs =
       <String, List<SongModel>>{}.obs;
-  RxMap<String, List<SongModel>> artistListSongs =
+  final RxMap<String, List<SongModel>> artistListSongs =
       <String, List<SongModel>>{}.obs;
 
-  // image cache
-  RxMap<int, String> imageCache = <int, String>{}.obs;
-
+  // ==================================================
+  final RxMap<int, String> imageCache = <int, String>{}.obs;
   // if in recent list
-  RxBool isListRecent = false.obs;
-
+  final RxBool isListRecent = false.obs;
   // recent list
-  List<SongModel> recentList = <SongModel>[];
-
+  final List<SongModel> recentList = <SongModel>[];
   // current song
-  Rx<SongModel?> currentSong = Rx<SongModel?>(null);
+  final Rx<SongModel?> currentSong = Rx<SongModel?>(null);
   // current image
-  Rx<String?> currentImage = Rx<String?>(null);
-}
+  final Rx<String?> currentImage = Rx<String?>(null);
 
-class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
-  final _audioQuery = OnAudioQuery();
-  final audioPlayer = AudioPlayer();
-  final _playerState = Get.find<PlayerStateController>();
+  // ==================================================
+  final OnAudioQuery _audioQuery = OnAudioQuery();
+  final AudioPlayer audioPlayer = AudioPlayer();
 
+  // ==================================================
   PlayerController() {
-    // Ouve o estado de processamento do áudio para avançar para a próxima música
     audioPlayer.processingStateStream.listen((state) {
       if (state == ProcessingState.completed) nextSong();
     });
-
-    // Ouve o estado do player para atualizar a variável de reprodução e sessão de áudio
     audioPlayer.playerStateStream.listen(_handlePlayerState);
-
-    // Ouve o índice atual do player para definir a música atual e atualizar a imagem/cabeçalho
     audioPlayer.currentIndexStream.listen(handleCurrentIndex);
-
-    // Atualiza a posição de reprodução da música
     updatePosition();
   }
 
+  // ==================================================
   void _handlePlayerState(PlayerState state) {
-    _playerState.isPlaying.value = state.playing;
-    _playerState.songSession.value = audioPlayer.androidAudioSessionId ?? 0;
+    isPlaying.value = state.playing;
+    songSession.value = audioPlayer.androidAudioSessionId ?? 0;
   }
 
-  void _updateVisualizerMusic(SongModel song) {
+  // ==================================================
+  void _updateInterfaceVisualizer(SongModel song) {
     final songId = song.id;
     final songTitle = AppShared.getTitle(songId, song.title);
     final songArtist = AppShared.getArtist(songId, song.artist!);
-    String? image = _playerState.imageCache[songId];
+    String? image = imageCache[songId];
 
-    updateHeadline(
-      VisualizerMusic(
-        headlineTitle: songTitle,
-        headlineSubtitle: songArtist,
-        headlineImage: image,
-      ),
+    InterfaceVisualizer visualizerMusic = InterfaceVisualizer(
+      headlineTitle: songTitle,
+      headlineSubtitle: songArtist,
+      headlineImage: image,
     );
+    visualizerMusic.updateHeadline();
 
-    _playerState.currentImage.value = image;
+    currentImage.value = image;
   }
 
+  // ==================================================
   void _updateRecentList(SongModel song) {
-    if (_playerState.isListRecent.value) return;
+    if (isListRecent.value) return;
 
-    final recentList = _playerState.recentList;
     recentList.removeWhere((s) => s.id == song.id);
     recentList.insert(0, song);
   }
 
+  // ==================================================
   // update position
   void updatePosition() {
     audioPlayer.durationStream.listen((d) {
       if (d != null) {
-        _playerState.songDuration.value = d.toString().split(".")[0];
-        _playerState.songDurationD.value = d.inSeconds.toDouble();
+        songDuration.value = d.toString().split(".")[0];
+        songDurationD.value = d.inSeconds.toDouble();
       }
     });
     audioPlayer.positionStream.listen((p) {
-      _playerState.songPosition.value = p.toString().split(".")[0];
-      _playerState.songPositionD.value = p.inSeconds.toDouble();
+      songPosition.value = p.toString().split(".")[0];
+      songPositionD.value = p.inSeconds.toDouble();
     });
   }
 
+  // ==================================================
   // charge duration in seconds
   void chargeDurationInSeconds(int seconds) {
     var duration = Duration(seconds: seconds);
@@ -134,35 +127,37 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   }
 
   void handleCurrentIndex(int? index) {
-    if (_playerState.songList.isEmpty) {
-      _playerState.currentSong.value = null;
+    if (songList.isEmpty) {
+      currentSong.value = null;
       return;
     }
     if (index == null) {
-      _playerState.currentSong.value =
-          _playerState.songList[_playerState.songIndex.value];
+      currentSong.value = songList[songIndex.value];
       return;
     }
 
-    _playerState.songIndex.value = index;
-    final currentSong = _playerState.songList[index];
-    _playerState.currentSong.value = currentSong;
+    songIndex.value = index;
+    currentSong.value = songList[index];
 
-    _updateVisualizerMusic(currentSong);
-    _updateRecentList(currentSong);
+    final factor = currentSong.value;
+
+    if (factor != null) {
+      _updateInterfaceVisualizer(factor);
+      _updateRecentList(factor);
+    }
   }
 
+  // ==================================================
   // Get Songs
   Future<void> getAllSongs() async {
-    _playerState.songIndex.value = 0;
-    List<SongModel> songs = [];
+    songIndex.value = 0;
 
-    // Paralelizando as consultas que não dependem entre si
-    List<Future> futures = [];
+    List<SongModel> songs = [];
+    final List<Future> futures = [];
 
     // Adiciona a busca de músicas baseado no tipo de ordenação selecionado
     Future<List<SongModel>> songQuery;
-    switch (AppShared.defaultGetSongsValue.value) {
+    switch (AppShared.getShared(SharedAttributes.getSongs)) {
       // Por data adicionada
       case 0:
         songQuery = _audioQuery.querySongs(
@@ -219,22 +214,24 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
 
     // Extraindo os resultados
     songs = results[0] as List<SongModel>;
-    _playerState.albumList.value = results[1] as List<AlbumModel>;
-    _playerState.artistList.value = results[2] as List<AlbumModel>;
+    albumList.value = results[1] as List<AlbumModel>;
+    artistList.value = results[2] as List<AlbumModel>;
 
     // Remove músicas por duração
     songs = songs
         .where((song) =>
             song.duration != null &&
-            song.duration! > AppShared.ignoreTimeValue.value * 1000)
+            song.duration! >
+                AppShared.getShared(SharedAttributes.ignoreTime) * 1000)
         .toList();
 
     await songAllLoad(songs); // Carrega todas as músicas filtradas
   }
 
+  // ==================================================
   Future<void> songAllLoad(List<SongModel> songList) async {
     // Atualiza a lista de todas as músicas no estado
-    _playerState.songAllList.value = songList;
+    songAllList.value = songList;
 
     // Otimiza a criação de 'folderList', 'folderListSongs', 'albumListSongs' e 'artistListSongs' paralelamente
     Set<String> folderSet = {};
@@ -247,29 +244,29 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       // Processamento de cache de imagens em paralelo para reduzir o tempo de execução
       Future(() async {
         for (var song in songList) {
-          if (!_playerState.imageCache.containsKey(song.id)) {
-            final imagePath = await AppShared.getImageFile(id: song.id);
-            _playerState.imageCache[song.id] = imagePath;
+          if (!imageCache.containsKey(song.id)) {
+            final imagePath = await getImageFile(id: song.id);
+            imageCache[song.id] = imagePath;
           }
-          _playerState.songLog.value = AppShared.getTitle(song.id, song.title);
+          songLog.value = AppShared.getTitle(song.id, song.title);
         }
       }),
       // Processa as músicas para pastas
       Future(() async {
-        _playerState.folderListSongs.clear();
+        folderListSongs.clear();
         for (var song in songList) {
           String folderName = song.data.split('/').reversed.skip(1).first;
           folderSet.add(folderName);
           folderSongsMap.update(folderName, (songs) => [...songs, song],
               ifAbsent: () => [song]);
         }
-        _playerState.folderList.value = folderSet.toList();
-        _playerState.folderListSongs.addAll(folderSongsMap);
+        folderList.value = folderSet.toList();
+        folderListSongs.addAll(folderSongsMap);
       }),
       // Processamento de álbuns
       Future(() async {
-        _playerState.albumListSongs.clear();
-        for (var album in _playerState.albumList) {
+        albumListSongs.clear();
+        for (var album in albumList) {
           int albumId = album.id;
           List<SongModel> albumSongs = await queryAudiosFromAlbum(
             albumId: albumId,
@@ -279,12 +276,12 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
               album.album, (songs) => [...songs, ...albumSongs],
               ifAbsent: () => albumSongs);
         }
-        _playerState.albumListSongs.addAll(albumSongsMap);
+        albumListSongs.addAll(albumSongsMap);
       }),
       // Processamento de artistas
       Future(() async {
-        _playerState.artistListSongs.clear();
-        for (var artist in _playerState.artistList) {
+        artistListSongs.clear();
+        for (var artist in artistList) {
           int artistId = artist.id;
           List<SongModel> artistSongs = await queryAudiosFromAlbum(
             albumId: artistId,
@@ -294,24 +291,25 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
               artist.album, (songs) => [...songs, ...artistSongs],
               ifAbsent: () => artistSongs);
         }
-        _playerState.artistListSongs.addAll(artistSongsMap);
+        artistListSongs.addAll(artistSongsMap);
       }),
     ]);
 
-    _playerState.songLog.value = '';
+    songLog.value = '';
     // Carrega as músicas
     await songLoad(songList, 0);
   }
 
+  // ==================================================
   // defined songs in background
   Future<void> songLoad(List<SongModel> songList, int index) async {
     // Atualiza a lista de músicas no estado
-    _playerState.songList.value = songList;
+    songList = songList;
 
     // Cria a playlist de fontes de áudio em um único passo
     List<AudioSource> playlist = List.generate(songList.length, (i) {
       final song = songList[i];
-      final imagePath = _playerState.imageCache[song.id];
+      final imagePath = imageCache[song.id];
       return AudioSource.uri(
         Uri.parse(song.uri!),
         tag: MediaItem(
@@ -335,7 +333,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     handleCurrentIndex(index);
 
     // Modo de playlist (Loop, Shuffle, etc)
-    switch (AppShared.playlistModeValue.value) {
+    switch (AppShared.getShared(SharedAttributes.playlistMode)) {
       // Modo loop playlist
       case 0:
         await modeShufflePlaylist();
@@ -351,6 +349,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     }
   }
 
+  // ==================================================
   Future<List<SongModel>> queryAudiosFromAlbum({
     required int albumId,
     required int type,
@@ -372,21 +371,12 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
           orderType: OrderType.ASC_OR_SMALLER,
           sortType: SongSortType.ARTIST,
         );
-      // case 2:
-      //   break;
-      // case 3:
-      //   break;
-      // case 4:
-      //   break;
-      // case 5:
-      //   break;
-      // case 6:
-      //   break;
       default:
         return <SongModel>[];
     }
   }
 
+  // ==================================================
   // Controle de play e pause (para reutilização)
   Future<void> _setPlaybackState({
     required bool isPlaying,
@@ -396,13 +386,14 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       playing: isPlaying,
       controls: controls,
     ));
-    _playerState.isPlaying.value = isPlaying;
+    isPlaying = isPlaying;
   }
 
+  // ==================================================
   // Definir reprodução da música atual
   Future<void> playSong(int? index) async {
-    if (_playerState.songIndex.value != index) {
-      _playerState.songIndex.value = index!;
+    if (songIndex.value != index) {
+      songIndex.value = index!;
       await audioPlayer.seek(Duration.zero, index: index);
     }
     await _setPlaybackState(
@@ -413,6 +404,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     updatePosition();
   }
 
+  // ==================================================
   // Pausar música atual
   Future<void> pauseSong() async {
     await _setPlaybackState(
@@ -422,11 +414,12 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     await audioPlayer.pause();
   }
 
+  // ==================================================
   // Próxima música
   Future<void> nextSong() async {
-    if (_playerState.songList.isNotEmpty) {
-      int currentIndex = _playerState.songIndex.value;
-      int lastIndex = _playerState.songList.length - 1;
+    if (songList.isNotEmpty) {
+      int currentIndex = songIndex.value;
+      int lastIndex = songList.length - 1;
 
       if (currentIndex < lastIndex) {
         await audioPlayer.seekToNext();
@@ -437,68 +430,73 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     }
   }
 
+  // ==================================================
   // Música anterior
   Future<void> previousSong() async {
-    if (_playerState.songList.isNotEmpty) {
-      int currentIndex = _playerState.songIndex.value;
+    if (songList.isNotEmpty) {
+      int currentIndex = songIndex.value;
 
       if (currentIndex > 0) {
         await audioPlayer.seekToPrevious();
       } else {
-        await audioPlayer.seek(Duration.zero,
-            index: _playerState.songList.length - 1);
+        await audioPlayer.seek(Duration.zero, index: songList.length - 1);
       }
       await audioPlayer.play();
     }
   }
 
+  // ==================================================
   // Modo loop para a playlist
   Future<void> modeLoopPlaylist() async {
-    _playerState.isLooping.value = false;
-    _playerState.isShuffle.value = false;
+    isLooping.value = false;
+    isShuffle.value = false;
     await audioPlayer.setShuffleModeEnabled(false);
     await audioPlayer.setLoopMode(LoopMode.off);
   }
 
+  // ==================================================
   // Modo loop para uma música
   Future<void> modeLoopSong() async {
-    _playerState.isLooping.value = true;
-    _playerState.isShuffle.value = false;
+    isLooping.value = true;
+    isShuffle.value = false;
     await audioPlayer.setShuffleModeEnabled(false);
     await audioPlayer.setLoopMode(LoopMode.one);
   }
 
+  // ==================================================
   // Modo shuffle para a playlist
   Future<void> modeShufflePlaylist() async {
-    _playerState.isLooping.value = false;
-    _playerState.isShuffle.value = true;
+    isLooping.value = false;
+    isShuffle.value = true;
     await audioPlayer.setShuffleModeEnabled(true);
     await audioPlayer.setLoopMode(LoopMode.off);
   }
 
+  // ==================================================
   // Alterna entre play e pause
   Future<void> togglePlayPause() async {
-    if (_playerState.isPlaying.value) {
+    if (isPlaying.value) {
       await pauseSong();
     } else {
-      await playSong(_playerState.songIndex.value);
+      await playSong(songIndex.value);
     }
   }
 
+  // ==================================================
   // Alterna entre modos da playlist (loop, shuffle)
   Future<void> togglePlaylist() async {
-    switch (AppShared.playlistModeValue.value) {
+    switch (AppShared.getShared(SharedAttributes.playlistMode)) {
       case 0:
         await modeLoopPlaylist();
-        AppShared.setPlaylistMode(1);
+        AppShared.setShared(SharedAttributes.playlistMode, 1);
         break;
       case 1:
         await modeLoopSong();
-        AppShared.setPlaylistMode(2);
+        AppShared.setShared(SharedAttributes.playlistMode, 2);
         break;
       case 2:
         await modeShufflePlaylist();
-        AppShared.setPlaylistMode(0);
+        AppShared.setShared(SharedAttributes.playlistMode, 0);
         break;
     }
   }

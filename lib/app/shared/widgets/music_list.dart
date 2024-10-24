@@ -2,23 +2,20 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:get/instance_manager.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:playerhub/app/core/app_colors.dart';
-import 'package:playerhub/app/core/app_shared.dart';
-import 'package:playerhub/app/core/controllers/player.dart';
-import 'package:playerhub/app/routes/app_routes.dart';
-import 'package:playerhub/app/shared/widgets/crud_sheet.dart';
+import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/core/controllers/player.dart';
+import 'package:player_hub/app/core/types/app_manifest.dart';
+import 'package:player_hub/app/routes/app_routes.dart';
+import 'package:player_hub/app/shared/widgets/crud_sheet.dart';
 
-class MusicList extends GetView<PlayerController> {
+class MusicList extends GetView<PlayerController> with AppManifest {
   final List<SongModel> songs;
 
-  const MusicList({super.key, required this.songs});
+  MusicList({super.key, required this.songs});
 
   @override
   Widget build(BuildContext context) {
-    final playerStateController = Get.find<PlayerStateController>();
-
     return ListView.builder(
       physics: const ClampingScrollPhysics(),
       itemCount: songs.length,
@@ -46,7 +43,7 @@ class MusicList extends GetView<PlayerController> {
             overflow: TextOverflow.ellipsis,
           ),
           leading: FutureBuilder<Uint8List>(
-            future: AppShared.getImageArray(
+            future: getImageArray(
               id: song.id,
             ),
             builder: (context, snapshot) {
@@ -77,21 +74,18 @@ class MusicList extends GetView<PlayerController> {
             onTap: () {
               crudSheet(context, song);
             },
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            child: Icon(
+            child: const Icon(
               Icons.more_vert,
               size: 30,
-              color: AppColors.current().text,
             ),
           ),
-          onTap: () {
-            if (playerStateController.songList != songs) {
-              controller.songLoad(songs, index);
+          onTap: () async {
+            if (controller.songList != songs) {
+              await controller.songLoad(songs, index);
             } else {
-              controller.playSong(index);
+              await controller.playSong(index);
             }
-            Get.toNamed(AppRoutes.details);
+            await Get.toNamed(AppRoutes.details);
           },
         );
       },

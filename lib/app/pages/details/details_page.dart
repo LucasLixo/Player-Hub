@@ -7,14 +7,14 @@ import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
-import 'package:playerhub/app/core/app_shared.dart';
-import 'package:playerhub/app/core/controllers/player.dart';
-import 'package:playerhub/app/routes/app_routes.dart';
-import 'package:playerhub/app/shared/utils/dynamic_style.dart';
-import 'package:playerhub/app/shared/widgets/center_text.dart';
-import 'package:playerhub/app/shared/widgets/crud_sheet.dart';
-import 'package:playerhub/app/shared/widgets/playlist_mode.dart';
-import 'package:playerhub/app/shared/widgets/playlist_sheet.dart';
+import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/core/controllers/player.dart';
+import 'package:player_hub/app/routes/app_routes.dart';
+import 'package:player_hub/app/shared/utils/dynamic_style.dart';
+import 'package:player_hub/app/shared/widgets/crud_sheet.dart';
+import 'package:player_hub/app/shared/widgets/playlist_mode.dart';
+import 'package:player_hub/app/shared/widgets/playlist_sheet.dart';
+import 'package:helper_hub/src/theme_widget.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({super.key});
@@ -28,7 +28,6 @@ class _DetailsPageState extends State<DetailsPage>
   late AnimationController _controller;
 
   final playerController = Get.find<PlayerController>();
-  final playerStateController = Get.find<PlayerStateController>();
 
   @override
   void initState() {
@@ -48,267 +47,274 @@ class _DetailsPageState extends State<DetailsPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: null,
-      body: Obx(() {
-        final currentSong = playerStateController.currentSong.value;
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        appBar: null,
+        body: Obx(() {
+          final currentSong = playerController.currentSong.value;
 
-        if (currentSong == null) {
-          return CenterText(title: 'cloud_error1'.tr);
-        } else {
-          final currentImage = playerStateController.currentImage.value;
+          if (currentSong == null) {
+            return CenterText(title: 'cloud_error1'.tr);
+          } else {
+            final currentImage = playerController.currentImage.value;
 
-          RxBool isSwipeExecuted = false.obs;
+            final RxBool isSwipeExecuted = false.obs;
 
-          return Stack(
-            children: <Widget>[
-              Positioned.fill(
-                child: currentImage != null
-                    ? Image.file(
-                        File(currentImage),
-                        fit: BoxFit.cover,
-                      )
-                    : const SizedBox.shrink(),
-              ),
-              Positioned.fill(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 16.0, sigmaY: 16.0),
-                  child: Container(
-                    color: Colors.black.withOpacity(0.4),
+            return Stack(
+              children: <Widget>[
+                Positioned.fill(
+                  child: currentImage != null
+                      ? Image.file(
+                          File(currentImage),
+                          fit: BoxFit.cover,
+                        )
+                      : const Space(size: 0),
+                ),
+                Positioned.fill(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 16.0, sigmaY: 16.0),
+                    child: Container(
+                      color: Colors.black.withOpacity(0.4),
+                    ),
                   ),
                 ),
-              ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  physics: const ClampingScrollPhysics(),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AppBar(
-                        systemOverlayStyle: const SystemUiOverlayStyle(
-                          statusBarColor: Colors.transparent,
-                          statusBarIconBrightness: Brightness.light,
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    physics: const ClampingScrollPhysics(),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppBar(
+                          automaticallyImplyLeading: false,
+                          backgroundColor: Colors.transparent,
+                          systemOverlayStyle: const SystemUiOverlayStyle(
+                            statusBarColor: Colors.transparent,
+                            statusBarIconBrightness: Brightness.light,
+                          ),
+                          leading: InkWell(
+                            onTap: () => Get.back(),
+                            child: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Colors.white,
+                              size: 44,
+                            ),
+                          ),
+                          actions: [
+                            InkWell(
+                              onTap: () async {
+                                await Get.toNamed(AppRoutes.equalizer);
+                              },
+                              child: const Icon(
+                                Icons.graphic_eq,
+                                color: Colors.white,
+                                size: 36,
+                              ),
+                            ),
+                            const Space(),
+                            InkWell(
+                              onTap: () => crudSheet(context, currentSong),
+                              child: const Icon(
+                                Icons.more_vert,
+                              ),
+                            ),
+                            const Space(),
+                          ],
                         ),
-                        elevation: 0.0,
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                        foregroundColor: Colors.transparent,
-                        surfaceTintColor: Colors.transparent,
-                        leading: InkWell(
-                          onTap: () => Get.back(),
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          child: const Icon(
-                            Icons.keyboard_arrow_down,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(24),
+                          child: GestureDetector(
+                            onTap: () async {
+                              await playerController.togglePlayPause();
+                            },
+                            onHorizontalDragEnd: (details) async {
+                              if (!isSwipeExecuted.value) {
+                                if (details.primaryVelocity! > 50) {
+                                  // Deslize para a direita
+                                  await playerController.previousSong();
+                                } else if (details.primaryVelocity! < 50) {
+                                  // Deslize para a esquerda
+                                  await playerController.nextSong();
+                                }
+                                isSwipeExecuted.value = true;
+                              }
+                            },
+                            onVerticalDragEnd: (details) {
+                              if (!isSwipeExecuted.value) {
+                                if (details.primaryVelocity! < 50) {
+                                  // Deslize para cima
+                                  crudSheet(context, currentSong);
+                                } else if (details.primaryVelocity! > 50) {
+                                  // Deslize para baixo
+                                  Get.back();
+                                }
+                                isSwipeExecuted.value = true;
+                              }
+                            },
+                            onHorizontalDragStart: (details) {
+                              isSwipeExecuted.value = false;
+                            },
+                            onVerticalDragStart: (details) {
+                              isSwipeExecuted.value = false;
+                            },
+                            child: currentImage != null
+                                ? Image.file(
+                                    File(currentImage),
+                                    fit: BoxFit.cover,
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.width,
+                                  )
+                                : SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.width,
+                                  ),
+                          ),
+                        ),
+                        const Space(
+                          size: 12,
+                          orientation: Axis.vertical,
+                        ),
+                        Text(
+                          AppShared.getTitle(
+                            currentSong.id,
+                            currentSong.title,
+                          ),
+                          style: dynamicStyle(
                             color: Colors.white,
-                            size: 44,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            fontStyle: FontStyle.normal,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        actions: [
-                          InkWell(
-                            onTap: () => Get.toNamed(AppRoutes.equalizer),
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            child: const Icon(
-                              Icons.graphic_eq,
-                              color: Colors.white,
-                              size: 36,
-                            ),
+                        const Space(
+                          size: 4,
+                          orientation: Axis.vertical,
+                        ),
+                        Text(
+                          AppShared.getArtist(
+                            currentSong.id,
+                            currentSong.artist!,
                           ),
-                          const SizedBox(width: 8),
-                          InkWell(
-                            onTap: () => crudSheet(context, currentSong),
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            child: const Icon(
-                              Icons.more_vert,
-                              color: Colors.white,
-                              size: 32,
-                            ),
+                          style: dynamicStyle(
+                            color: Colors.white60,
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            fontStyle: FontStyle.normal,
                           ),
-                          const SizedBox(width: 8),
-                        ],
-                      ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(24),
-                        child: GestureDetector(
-                          onTap: () {
-                            playerController.togglePlayPause();
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const Space(
+                          size: 4,
+                          orientation: Axis.vertical,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              playerController.songPosition.value,
+                              style: dynamicStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                                fontStyle: FontStyle.normal,
+                              ),
+                            ),
+                            Text(
+                              playerController.songDuration.value,
+                              style: dynamicStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                                fontStyle: FontStyle.normal,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Space(
+                          size: 4,
+                          orientation: Axis.vertical,
+                        ),
+                        Slider(
+                          thumbColor: Colors.white,
+                          inactiveColor: Colors.white54,
+                          activeColor: Colors.white,
+                          min: 0.0,
+                          max: playerController.songDurationD.value,
+                          value: playerController.songPositionD.value,
+                          onChanged: (newValue) {
+                            playerController.chargeDurationInSeconds(
+                              newValue.toInt(),
+                            );
                           },
-                          onHorizontalDragEnd: (details) {
-                            if (!isSwipeExecuted.value) {
-                              if (details.primaryVelocity! > 0) {
-                                // Deslize para a direita
-                                playerController.previousSong();
-                              } else if (details.primaryVelocity! < 0) {
-                                // Deslize para a esquerda
-                                playerController.nextSong();
-                              }
-                              isSwipeExecuted.value = true;
-                            }
-                          },
-                          onVerticalDragEnd: (details) {
-                            if (!isSwipeExecuted.value) {
-                              if (details.primaryVelocity! < 0) {
-                                // Deslize para cima
-                                crudSheet(context, currentSong);
-                              } else if (details.primaryVelocity! > 0) {
-                                // Deslize para baixo
-                                Get.back();
-                              }
-                              isSwipeExecuted.value = true;
-                            }
-                          },
-                          onHorizontalDragStart: (details) {
-                            isSwipeExecuted.value = false;
-                          },
-                          onVerticalDragStart: (details) {
-                            isSwipeExecuted.value = false;
-                          },
-                          child: currentImage != null
-                              ? Image.file(
-                                  File(currentImage),
-                                  fit: BoxFit.cover,
-                                  width: MediaQuery.of(context).size.width,
-                                  height: MediaQuery.of(context).size.width,
-                                )
-                              : SizedBox(
-                                  width: MediaQuery.of(context).size.width,
-                                  height: MediaQuery.of(context).size.width,
-                                ),
                         ),
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        AppShared.getTitle(
-                          currentSong.id,
-                          currentSong.title,
+                        const Space(
+                          size: 4,
+                          orientation: Axis.vertical,
                         ),
-                        style: dynamicStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          fontStyle: FontStyle.normal,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const PlaylistMode(),
+                            InkWell(
+                              onTap: () async {
+                                await playerController.previousSong();
+                              },
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              child: const Icon(
+                                Icons.skip_previous_rounded,
+                                size: 40,
+                                color: Colors.white,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                await playerController.togglePlayPause();
+                              },
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              child: AnimatedIcon(
+                                icon: AnimatedIcons.play_pause,
+                                progress: _controller,
+                                size: 64,
+                                color: Colors.white,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                await playerController.nextSong();
+                              },
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              child: const Icon(
+                                Icons.skip_next_rounded,
+                                size: 40,
+                                color: Colors.white,
+                              ),
+                            ),
+                            PlaylistSheet(),
+                          ],
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        AppShared.getArtist(
-                          currentSong.id,
-                          currentSong.artist!,
+                        const Space(
+                          size: 16,
+                          orientation: Axis.vertical,
                         ),
-                        style: dynamicStyle(
-                          color: Colors.white60,
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                          fontStyle: FontStyle.normal,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            playerStateController.songPosition.value,
-                            style: dynamicStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                              fontStyle: FontStyle.normal,
-                            ),
-                          ),
-                          Text(
-                            playerStateController.songDuration.value,
-                            style: dynamicStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                              fontStyle: FontStyle.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 4),
-                      Slider(
-                        thumbColor: Colors.white,
-                        inactiveColor: Colors.white54,
-                        activeColor: Colors.white,
-                        min: 0.0,
-                        max: playerStateController.songDurationD.value
-                            .toDouble(),
-                        value: playerStateController.songPositionD.value
-                            .toDouble(),
-                        onChanged: (newValue) {
-                          playerController.chargeDurationInSeconds(
-                            newValue.toInt(),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const PlaylistMode(),
-                          InkWell(
-                            onTap: () {
-                              playerController.previousSong();
-                            },
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            child: const Icon(
-                              Icons.skip_previous_rounded,
-                              size: 40,
-                              color: Colors.white,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              playerController.togglePlayPause();
-                            },
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            child: AnimatedIcon(
-                              icon: AnimatedIcons.play_pause,
-                              progress: _controller,
-                              size: 64,
-                              color: Colors.white,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              playerController.nextSong();
-                            },
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            child: const Icon(
-                              Icons.skip_next_rounded,
-                              size: 40,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const PlaylistSheet(),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          );
-        }
-      }),
+              ],
+            );
+          }
+        }),
+      ),
     );
   }
 }

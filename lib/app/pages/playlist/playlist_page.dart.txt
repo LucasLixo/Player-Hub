@@ -5,10 +5,10 @@ import 'package:get/instance_manager.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:playerhub/app/shared/widgets/music_list.dart';
-import 'package:playerhub/app/shared/widgets/shortcut.dart';
-import 'package:playerhub/app/core/app_colors.dart';
-import 'package:playerhub/app/core/controllers/player.dart';
+import 'package:player_hub/app/shared/widgets/music_list.dart';
+import 'package:player_hub/app/shared/widgets/shortcut.dart';
+import 'package:player_hub/app/core/app_colors.dart';
+import 'package:player_hub/app/core/controllers/player.dart';
 
 class PlaylistPage extends GetView<PlayerStateController> {
   final String playlistTitle;
@@ -59,7 +59,7 @@ class PlaylistPage extends GetView<PlayerStateController> {
       ),
       bottomNavigationBar: Obx(
         () => controller.songAllList.isEmpty
-            ? const SizedBox.shrink()
+            ? const Space(size: 0)
             : const SafeArea(
                 child: Shortcut(),
               ),

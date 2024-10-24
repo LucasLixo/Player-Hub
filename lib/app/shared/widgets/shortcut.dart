@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
-import 'package:playerhub/app/core/app_colors.dart';
-import 'package:playerhub/app/core/app_shared.dart';
-import 'package:playerhub/app/routes/app_routes.dart';
-import 'package:playerhub/app/core/controllers/player.dart';
+import 'package:player_hub/app/core/static/app_colors.dart';
+import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/routes/app_routes.dart';
+import 'package:player_hub/app/core/controllers/player.dart';
+import 'package:helper_hub/src/theme_widget.dart';
 
 class Shortcut extends StatefulWidget {
   const Shortcut({super.key});
@@ -20,7 +21,6 @@ class _ShortcutState extends State<Shortcut>
   late AnimationController _controller;
 
   final playerController = Get.find<PlayerController>();
-  final playerStateController = Get.find<PlayerStateController>();
 
   @override
   void initState() {
@@ -44,16 +44,15 @@ class _ShortcutState extends State<Shortcut>
   Widget build(BuildContext context) {
     return Obx(
       () {
-        final currentSong = playerStateController.currentSong.value;
-        if (playerStateController.songList.isEmpty) {
-          return const SizedBox.shrink();
+        final currentSong = playerController.currentSong.value;
+        if (playerController.songList.isEmpty) {
+          return const Space(size: 0);
         }
         if (currentSong == null) {
-          playerController
-              .handleCurrentIndex(playerStateController.songIndex.value);
+          playerController.handleCurrentIndex(playerController.songIndex.value);
         }
         if (currentSong != null) {
-          final currentImage = playerStateController.currentImage.value;
+          final currentImage = playerController.currentImage.value;
 
           return ListTile(
             tileColor: AppColors.current().surface,
@@ -71,7 +70,7 @@ class _ShortcutState extends State<Shortcut>
               overflow: TextOverflow.ellipsis,
             ),
             subtitle: Text(
-              playerStateController.songPosition.value,
+              playerController.songPosition.value,
               style: Theme.of(context).textTheme.labelMedium,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -104,9 +103,7 @@ class _ShortcutState extends State<Shortcut>
                     color: AppColors.current().text,
                   ),
                 ),
-                const SizedBox(
-                  width: 8,
-                ),
+                const Space(size: 0),
                 InkWell(
                   onTap: () {
                     playerController.togglePlayPause();
@@ -120,9 +117,7 @@ class _ShortcutState extends State<Shortcut>
                     color: AppColors.current().text,
                   ),
                 ),
-                const SizedBox(
-                  width: 8,
-                ),
+                const Space(size: 0),
                 InkWell(
                   onTap: () {
                     playerController.nextSong();
@@ -135,18 +130,16 @@ class _ShortcutState extends State<Shortcut>
                     color: AppColors.current().text,
                   ),
                 ),
-                const SizedBox(
-                  width: 8,
-                ),
+                const Space(size: 0),
               ],
             ),
-            onTap: () {
-              Get.toNamed(AppRoutes.details);
+            onTap: () async {
+              await Get.toNamed(AppRoutes.details);
             },
           );
         }
 
-        return const SizedBox.shrink();
+        return const Space(size: 0);
       },
     );
   }

@@ -4,10 +4,11 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:playerhub/app/shared/widgets/music_list.dart';
-import 'package:playerhub/app/shared/widgets/shortcut.dart';
-import 'package:playerhub/app/core/app_colors.dart';
-import 'package:playerhub/app/core/controllers/player.dart';
+import 'package:player_hub/app/shared/widgets/music_list.dart';
+import 'package:player_hub/app/shared/widgets/shortcut.dart';
+import 'package:player_hub/app/core/static/app_colors.dart';
+import 'package:player_hub/app/core/controllers/player.dart';
+import 'package:helper_hub/src/theme_widget.dart';
 
 class PlaylistPage extends StatefulWidget {
   final String playlistTitle;
@@ -25,61 +26,53 @@ class PlaylistPage extends StatefulWidget {
 
 class _PlaylistPageState extends State<PlaylistPage> {
   final playerController = Get.find<PlayerController>();
-  final playerStateController = Get.find<PlayerStateController>();
 
   @override
   void initState() {
     super.initState();
     if (widget.playlistTitle == 'playlist1'.tr) {
-      playerStateController.isListRecent.value = true;
+      playerController.isListRecent.value = true;
     }
   }
 
   @override
   void dispose() {
     if (widget.playlistTitle == 'playlist1'.tr) {
-      playerStateController.isListRecent.value = false;
+      playerController.isListRecent.value = false;
     }
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.current().background,
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        foregroundColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        leading: InkWell(
-          onTap: () {
-            Get.back();
-          },
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          child: Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.current().text,
-            size: 26,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.current().background,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: AppColors.current().background,
+          leading: InkWell(
+            onTap: () {
+              Get.back();
+            },
+            child: const Icon(
+              Icons.arrow_back_ios,
+            ),
+          ),
+          title: Text(
+            widget.playlistTitle,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
-        title: Text(
-          widget.playlistTitle,
-          style: Theme.of(context).textTheme.titleMedium,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: MusicList(songs: widget.playlistList),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: MusicList(songs: widget.playlistList),
-      ),
-      bottomNavigationBar: Obx(
-        () => playerStateController.songAllList.isEmpty
-            ? const SizedBox.shrink()
-            : const SafeArea(
-                child: Shortcut(),
-              ),
+        bottomNavigationBar: Obx(
+          () => playerController.songAllList.isEmpty
+              ? const Space(size: 0)
+              : const Shortcut(),
+        ),
       ),
     );
   }

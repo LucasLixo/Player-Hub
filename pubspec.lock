@@ -233,11 +233,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.1.11"
-      resolved-ref: "35738ee1caf3422037236a39c6ff86590764b50b"
+      ref: "0.2.17"
+      resolved-ref: "596b3f5e5698e2dfc17e743d4b855e437b610bb1"
       url: "https://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@github.com/LucasLixo/Helper-Hub.git"
     source: git
-    version: "0.1.11"
+    version: "0.2.17"
   home_widget:
     dependency: "direct main"
     description:
@@ -553,10 +553,10 @@ packages:
     dependency: transitive
     description:
       name: plugin_platform_interface
-      sha256: f4f88d4a900933e7267e2b353594774fc0d07fb072b47eedcd5b54e1ea3269f8
+      sha256: "4820fbfdb9478b1ebae27888254d445073732dae3d6ea81f0b7e06d5dedc3f02"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.7"
+    version: "2.1.8"
   rxdart:
     dependency: transitive
     description:

@@ -1,6 +1,6 @@
 import 'package:get/route_manager.dart';
-import 'package:playerhub/app/routes/app_routes.dart';
-import 'package:playerhub/app/routes/app_imports.dart';
+import 'package:player_hub/app/routes/app_routes.dart';
+import 'package:player_hub/app/routes/app_imports.dart';
 
 abstract class AppPages {
   static final List<GetPage> pages = [

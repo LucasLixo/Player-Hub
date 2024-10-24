@@ -1,4 +1,4 @@
-import 'package:playerhub/app/app_widget.dart';
+import 'package:player_hub/app/app_widget.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

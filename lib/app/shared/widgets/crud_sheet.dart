@@ -3,8 +3,9 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:playerhub/app/routes/app_routes.dart';
-import 'package:playerhub/app/core/app_colors.dart';
+import 'package:player_hub/app/routes/app_routes.dart';
+import 'package:player_hub/app/core/static/app_colors.dart';
+import 'package:helper_hub/src/theme_widget.dart';
 
 void crudSheet(BuildContext context, SongModel song) {
   showModalBottomSheet(
@@ -17,7 +18,10 @@ void crudSheet(BuildContext context, SongModel song) {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 12),
+            const Space(
+              size: 12,
+              orientation: Axis.vertical,
+            ),
             FractionallySizedBox(
               widthFactor: 0.7,
               child: Text(
@@ -27,30 +31,10 @@ void crudSheet(BuildContext context, SongModel song) {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            const SizedBox(height: 12),
-            // ListTile(
-            //   tileColor: Colors.transparent,
-            //   splashColor: Colors.transparent,
-            //   focusColor: Colors.transparent,
-            //   title: Text(
-            //     'crud_sheet1'.tr,
-            //     style: dynamicStyle(
-            //       18,
-            //       AppColors.current().text,
-            //       FontWeight.normal,
-            //       FontStyle.normal,
-            //     ),
-            //   ),
-            //   trailing: Icon(
-            //     Icons.playlist_add,
-            //     color: AppColors.current().text,
-            //     size: 28,
-            //   ),
-            //   onTap: () {
-            //     Navigator.of(context).pop();
-            //     _showDialogPlaylist(context, song);
-            //   },
-            // ),
+            const Space(
+              size: 12,
+              orientation: Axis.vertical,
+            ),
             ListTile(
               tileColor: Colors.transparent,
               splashColor: Colors.transparent,
@@ -64,149 +48,16 @@ void crudSheet(BuildContext context, SongModel song) {
                 color: AppColors.current().text,
                 size: 28,
               ),
-              onTap: () {
+              onTap: () async {
                 Navigator.of(context).pop();
-                Get.toNamed(AppRoutes.edit, arguments: {
+                await Get.toNamed(AppRoutes.edit, arguments: {
                   'song': song,
                 });
               },
             ),
-            // ListTile(
-            //   tileColor: Colors.transparent,
-            //   splashColor: Colors.transparent,
-            //   focusColor: Colors.transparent,
-            //   title: Text(
-            //     'crud_sheet2'.tr,
-            //     style: dynamicStyle(
-            //       18,
-            //       AppColors.current().text,
-            //       FontWeight.normal,
-            //       FontStyle.normal,
-            //     ),
-            //   ),
-            //   trailing: Icon(
-            //     Icons.delete,
-            //     color: AppColors.current().text,
-            //     size: 28,
-            //   ),
-            //   onTap: () async {
-            //     final file = File(song.data);
-            //     if (await file.exists()) {
-            //       await file.delete();
-            //     }
-            //     Navigator.of(context).pop();
-            //   },
-            // ),
           ],
         ),
       );
     },
   );
 }
-
-// TextEditingController _textController = TextEditingController();
-// Future<String?> _showDialogPlaylist(
-//     BuildContext context, SongModel song) async {
-//   return showDialog<String>(
-//     context: context,
-//     barrierDismissible: false,
-//     builder: (BuildContext context) => Dialog(
-//       backgroundColor: AppColors.current().surface,
-//       child: Padding(
-//         padding: const EdgeInsets.all(10.0),
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           mainAxisAlignment: MainAxisAlignment.end,
-//           children: <Widget>[
-//             TextField(
-//               controller: _textController,
-//               focusNode: FocusNode(),
-//               style: dynamicStyle(
-//                 18,
-//                 AppColors.current().text,
-//                 FontWeight.normal,
-//                 FontStyle.normal,
-//               ),
-//               cursorColor: AppColors.current().text,
-//               decoration: InputDecoration(
-//                 border: UnderlineInputBorder(
-//                   borderSide: BorderSide(color: AppColors.current().text),
-//                 ),
-//                 labelText: 'crud_sheet_dialog_3'.tr,
-//                 labelStyle: Theme.of(context).textTheme.labelMedium,
-//               ),
-//             ),
-//             const SizedBox(height: 8),
-//             Obx(() => AppPlaylist.playlistLocal.isEmpty
-//                 ? const SizedBox.shrink()
-//                 : ListView.builder(
-//                     shrinkWrap: true,
-//                     physics: const BouncingScrollPhysics(),
-//                     itemCount: AppPlaylist.playlistLocal.length,
-//                     itemBuilder: (BuildContext context, int index) {
-//                       final playlist = AppPlaylist.playlistLocal[index];
-// 
-//                       return ListTile(
-//                         tileColor: Colors.transparent,
-//                         splashColor: Colors.transparent,
-//                         focusColor: Colors.transparent,
-//                         title: Text(
-//                           playlist.title,
-//                           style: Theme.of(context).textTheme.bodyLarge,
-//                           maxLines: 1,
-//                           overflow: TextOverflow.ellipsis,
-//                         ),
-//                         onTap: () {
-//                           AppPlaylist.addSongsToPlaylist(playlist.title, [song]);
-//                           Navigator.of(context).pop();
-//                         },
-//                       );
-//                     },
-//                   )),
-//             const SizedBox(height: 8),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 TextButton(
-//                   onPressed: () {
-//                     Navigator.of(context).pop();
-//                   },
-//                   child: Text(
-//                     'crud_sheet_dialog_1'.tr,
-//                     style: dynamicStyle(
-//                       16,
-//                       AppColors.current().primary,
-//                       FontWeight.w600,
-//                       FontStyle.normal,
-//                     ),
-//                   ),
-//                 ),
-//                 TextButton(
-//                   onPressed: () {
-//                     String titlePlaylist = _textController.text.trim();
-//                     if (titlePlaylist.isNotEmpty) {
-//                       AppPlaylist.addPlaylist(
-//                         Playlist(title: _textController.text, songs: [song]),
-//                       );
-//                       _textController.text = '';
-//                     }
-//                     Navigator.of(context).pop();
-//                   },
-//                   child: Text(
-//                     'crud_sheet_dialog_2'.tr,
-//                     style: dynamicStyle(
-//                       16,
-//                       AppColors.current().primary,
-//                       FontWeight.w600,
-//                       FontStyle.normal,
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ],
-//         ),
-//       ),
-//     ),
-//   );
-// }

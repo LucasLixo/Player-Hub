@@ -2,12 +2,14 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
-import 'package:playerhub/app/core/app_colors.dart';
-import 'package:playerhub/app/core/app_shared.dart';
-import 'package:playerhub/app/core/controllers/player.dart';
+import 'package:player_hub/app/core/static/app_colors.dart';
+import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/core/controllers/player.dart';
+import 'package:player_hub/app/core/types/app_manifest.dart';
+import 'package:helper_hub/src/theme_widget.dart';
 
-class PlaylistSheet extends GetView<PlayerStateController> {
-  const PlaylistSheet({super.key});
+class PlaylistSheet extends GetView<PlayerController> with AppManifest {
+  PlaylistSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class PlaylistSheet extends GetView<PlayerStateController> {
                 final songIndex = controller.songIndex.value;
 
                 if (songList.isEmpty) {
-                  return const SizedBox.shrink();
+                  return const Space(size: 0);
                 }
 
                 return Container(
@@ -62,9 +64,9 @@ class PlaylistSheet extends GetView<PlayerStateController> {
                                 color: AppColors.current().text,
                                 size: 32,
                               )
-                            : const SizedBox.shrink(),
+                            : const Space(size: 0),
                         leading: FutureBuilder<Uint8List>(
-                          future: AppShared.getImageArray(
+                          future: getImageArray(
                             id: song.id,
                           ),
                           builder: (context, snapshot) {

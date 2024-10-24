@@ -4,13 +4,14 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:playerhub/app/core/app_shared.dart';
-import 'package:playerhub/app/shared/widgets/music_list.dart';
-import 'package:playerhub/app/core/app_colors.dart';
-import 'package:playerhub/app/core/controllers/player.dart';
-import 'package:playerhub/app/shared/widgets/shortcut.dart';
+import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/shared/widgets/music_list.dart';
+import 'package:player_hub/app/core/static/app_colors.dart';
+import 'package:player_hub/app/core/controllers/player.dart';
+import 'package:player_hub/app/shared/widgets/shortcut.dart';
+import 'package:helper_hub/src/theme_widget.dart';
 
-class SearchPage extends GetView<PlayerStateController> {
+class SearchPage extends GetView<PlayerController> {
   SearchPage({super.key});
 
   final TextEditingController _textController = TextEditingController();
@@ -35,54 +36,47 @@ class SearchPage extends GetView<PlayerStateController> {
 
     _textController.addListener(filterSongs);
 
-    return Scaffold(
-      backgroundColor: AppColors.current().background,
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        foregroundColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        leading: InkWell(
-          onTap: () => Get.back(),
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          child: Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.current().text,
-            size: 26,
-          ),
-        ),
-        title: TextField(
-          controller: _textController,
-          focusNode: _focusNode,
-          style: Theme.of(context).textTheme.titleMedium,
-          cursorColor: AppColors.current().text,
-          decoration: InputDecoration(
-            border: UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.current().text),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.current().background,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: AppColors.current().background,
+          leading: InkWell(
+            onTap: () => Get.back(),
+            child: const Icon(
+              Icons.arrow_back_ios,
             ),
-            labelText: 'app_search'.tr,
-            labelStyle: Theme.of(context).textTheme.labelMedium,
+          ),
+          title: TextField(
+            controller: _textController,
+            focusNode: _focusNode,
+            style: Theme.of(context).textTheme.titleMedium,
+            cursorColor: AppColors.current().text,
+            decoration: InputDecoration(
+              border: UnderlineInputBorder(
+                borderSide: BorderSide(color: AppColors.current().text),
+              ),
+              labelText: 'app_search'.tr,
+              labelStyle: Theme.of(context).textTheme.labelMedium,
+            ),
           ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Obx(
-          () => controller.filteredSongs.isEmpty
-              ? const SizedBox.shrink()
-              : MusicList(
-                  songs: controller.filteredSongs,
-                ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Obx(
+            () => controller.filteredSongs.isEmpty
+                ? const Space(size: 0)
+                : MusicList(
+                    songs: controller.filteredSongs,
+                  ),
+          ),
         ),
-      ),
-      bottomNavigationBar: Obx(
-        () => controller.songAllList.isEmpty
-            ? const SizedBox.shrink()
-            : const SafeArea(
-                child: Shortcut(),
-              ),
+        bottomNavigationBar: Obx(
+          () => controller.songAllList.isEmpty
+              ? const Space(size: 0)
+              : const Shortcut(),
+        ),
       ),
     );
   }

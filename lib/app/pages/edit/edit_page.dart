@@ -4,12 +4,13 @@ import 'package:get/instance_manager.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:playerhub/app/core/app_shared.dart';
-import 'package:playerhub/app/core/app_colors.dart';
-import 'package:playerhub/app/shared/utils/show_toast.dart';
-import 'package:playerhub/app/core/controllers/player.dart';
+import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/core/static/app_colors.dart';
+import 'package:player_hub/app/shared/utils/show_toast.dart';
+import 'package:player_hub/app/core/controllers/player.dart';
+import 'package:helper_hub/src/theme_widget.dart';
 
-class EditPage extends GetView<PlayerStateController> {
+class EditPage extends GetView<PlayerController> {
   final SongModel song;
 
   const EditPage({
@@ -38,85 +39,77 @@ class EditPage extends GetView<PlayerStateController> {
       await AppShared.setArtist(song.id, textControllerArtist.text);
     }
 
-    return Scaffold(
-      backgroundColor: AppColors.current().background,
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        foregroundColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        leading: InkWell(
-          onTap: () => Get.back(),
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          child: Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.current().text,
-            size: 26,
-          ),
-        ),
-        title: Text(
-          AppShared.getTitle(song.id, song.title),
-          style: Theme.of(context).textTheme.titleMedium,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        actions: [
-          InkWell(
-            onTap: () {
-              saveInfo();
-              showToast(
-                  "${'edit_save'.tr}: ${AppShared.getTitle(song.id, song.title)}");
-            },
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            child: Icon(
-              Icons.save,
-              color: AppColors.current().text,
-              size: 32,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.current().background,
+        appBar: AppBar(
+          elevation: 0.0,
+          automaticallyImplyLeading: false,
+          backgroundColor: AppColors.current().background,
+          leading: InkWell(
+            onTap: () => Get.back(),
+            child: const Icon(
+              Icons.arrow_back_ios,
             ),
           ),
-          const SizedBox(width: 8),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
-        child: Column(
-          children: [
-            ListTile(
-              title: Text(
-                'edit_title'.tr,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              subtitle: TextField(
-                controller: textControllerTitle,
-                style: Theme.of(context).textTheme.titleMedium,
-                cursorColor: AppColors.current().text,
-                decoration: InputDecoration(
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.current().text),
-                  ),
-                ),
+          title: Text(
+            AppShared.getTitle(song.id, song.title),
+            style: Theme.of(context).textTheme.titleMedium,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          actions: [
+            InkWell(
+              onTap: () {
+                saveInfo();
+                showToast(
+                    "${'edit_save'.tr}: ${AppShared.getTitle(song.id, song.title)}");
+              },
+              child: const Icon(
+                Icons.save,
               ),
             ),
-            ListTile(
-              title: Text(
-                'edit_artist'.tr,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              subtitle: TextField(
-                controller: textControllerArtist,
-                style: Theme.of(context).textTheme.titleMedium,
-                cursorColor: AppColors.current().text,
-                decoration: InputDecoration(
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.current().text),
-                  ),
-                ),
-              ),
-            ),
+            const Space(),
           ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
+          child: Column(
+            children: [
+              ListTile(
+                title: Text(
+                  'edit_title'.tr,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                subtitle: TextField(
+                  controller: textControllerTitle,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  cursorColor: AppColors.current().text,
+                  decoration: InputDecoration(
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.current().text),
+                    ),
+                  ),
+                ),
+              ),
+              ListTile(
+                title: Text(
+                  'edit_artist'.tr,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                subtitle: TextField(
+                  controller: textControllerArtist,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  cursorColor: AppColors.current().text,
+                  decoration: InputDecoration(
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.current().text),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
