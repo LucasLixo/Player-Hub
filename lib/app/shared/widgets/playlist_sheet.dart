@@ -30,10 +30,9 @@ class PlaylistSheet extends GetView<PlayerController> with AppManifest {
                   return const Space(size: 0);
                 }
 
-                return Container(
+                return SizedBox(
                   height: MediaQuery.of(context).size.height * 0.4,
                   width: double.infinity,
-                  padding: const EdgeInsets.all(8.0),
                   child: ListView.builder(
                     physics: const ClampingScrollPhysics(),
                     itemCount: songList.length,
@@ -45,7 +44,7 @@ class PlaylistSheet extends GetView<PlayerController> with AppManifest {
                         splashColor: Colors.transparent,
                         focusColor: Colors.transparent,
                         contentPadding:
-                            const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 2.0),
+                            const EdgeInsets.fromLTRB(16.0, 2.0, 16.0, 2.0),
                         title: Text(
                           AppShared.getTitle(song.id, song.title),
                           style: Theme.of(context).textTheme.bodyLarge,
@@ -94,8 +93,8 @@ class PlaylistSheet extends GetView<PlayerController> with AppManifest {
                             }
                           },
                         ),
-                        onTap: () {
-                          playerController.playSong(index);
+                        onTap: () async {
+                          await playerController.playSong(index);
                         },
                       );
                     },
@@ -106,8 +105,6 @@ class PlaylistSheet extends GetView<PlayerController> with AppManifest {
           },
         );
       },
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
       child: const Icon(
         Icons.queue_music,
         size: 30,

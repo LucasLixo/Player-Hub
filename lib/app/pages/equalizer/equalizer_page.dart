@@ -14,10 +14,7 @@ import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 
 class EqualizerPage extends GetView<PlayerController> {
-  EqualizerPage({super.key});
-
-  final RxBool _equalizerMode =
-      AppShared.getShared(SharedAttributes.equalizeMode).obx;
+  const EqualizerPage({super.key});
 
   Future<void> _initializeEqualizer(int id) async {
     await EqualizerFlutter.init(id);
@@ -29,12 +26,14 @@ class EqualizerPage extends GetView<PlayerController> {
         AppShared.getShared(SharedAttributes.frequency)[i].toInt(),
       );
     }
-    await EqualizerFlutter.setEnabled(_equalizerMode.value);
+    await EqualizerFlutter.setEnabled(
+      AppShared.getShared(SharedAttributes.equalizeMode),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final sessionId = controller.audioPlayer.androidAudioSessionId;
+    final int? sessionId = controller.audioPlayer.androidAudioSessionId;
     if (sessionId != null) {
       _initializeEqualizer(sessionId);
     }
@@ -58,21 +57,21 @@ class EqualizerPage extends GetView<PlayerController> {
           actions: [
             Obx(
               () => Switch(
-                value: _equalizerMode.value,
+                value: AppShared.getShared(SharedAttributes.equalizeMode),
                 onChanged: (bool value) async {
                   await AppShared.setShared(
-                      SharedAttributes.equalizeMode, value);
-                  EqualizerFlutter.setEnabled(value);
-                  _equalizerMode.value = value;
-
+                    SharedAttributes.equalizeMode,
+                    value,
+                  );
+                  await EqualizerFlutter.setEnabled(value);
                   for (int i = 0; i < 5; i++) {
-                    EqualizerFlutter.setBandLevel(
-                        i,
-                        AppShared.getShared(SharedAttributes.frequency)[i]
-                            .toInt());
+                    await EqualizerFlutter.setBandLevel(
+                      i,
+                      AppShared.getShared(SharedAttributes.frequency)[i]
+                          .toInt(),
+                    );
                   }
-
-                  showToast(value
+                  await showToast(value
                       ? "${'setting_equalizer'.tr} ${'app_enable'.tr}"
                       : "${'setting_equalizer'.tr} ${'app_disable'.tr}");
                 },
@@ -88,8 +87,8 @@ class EqualizerPage extends GetView<PlayerController> {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               trailing: InkWell(
-                onTap: () {
-                  AppShared.setShared(SharedAttributes.frequency,
+                onTap: () async {
+                  await AppShared.setShared(SharedAttributes.frequency,
                       SharedAttributes.frequency.value);
                 },
                 child: const Icon(
@@ -122,7 +121,8 @@ class EqualizerPage extends GetView<PlayerController> {
                   if (snapshot.hasData) {
                     return Obx(
                       () => CustomEQ(
-                        enabled: _equalizerMode.value,
+                        enabled:
+                            AppShared.getShared(SharedAttributes.equalizeMode),
                         bandLevelRange: snapshot.data!,
                       ),
                     );
@@ -210,13 +210,14 @@ class _CustomEQState extends State<CustomEQ> {
               quarterTurns: -1,
               child: Center(
                 child: Obx(() {
-                  final RxDouble value =
-                      AppShared.getShared(SharedAttributes.frequency)[bandId]
-                          .obs;
+                  final RxDouble value = RxDouble(
+                    AppShared.getShared(SharedAttributes.frequency)[bandId]
+                        as double,
+                  );
 
                   EqualizerFlutter.setBandLevel(
                     bandId,
-                    value.toInt(),
+                    value.value.toInt(),
                   );
 
                   return Slider(

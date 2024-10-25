@@ -16,24 +16,24 @@ class InterfaceVisualizer {
         _headlineImage = headlineImage;
 
   // ==================================================
-  void updateHeadline() {
-    HomeWidget.saveWidgetData<String>(
+  Future<void> updateHeadline() async {
+    await HomeWidget.saveWidgetData<String>(
       'headline_title',
       _headlineTitle,
     );
-    HomeWidget.saveWidgetData<String>(
+    await HomeWidget.saveWidgetData<String>(
       'headline_subtitle',
       _headlineSubtitle,
     );
     if (_headlineImage != null) {
-      HomeWidget.saveWidgetData<String>(
+      await HomeWidget.saveWidgetData<String>(
         'headline_image',
         _headlineImage,
       );
     }
-    HomeWidget.updateWidget(
-      name: 'InterfaceVisualizer',
-      androidName: 'InterfaceVisualizer',
+    await HomeWidget.updateWidget(
+      name: 'VisualizerMusic',
+      androidName: 'VisualizerMusic',
     );
   }
 }

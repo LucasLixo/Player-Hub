@@ -14,8 +14,6 @@ class PlaylistMode extends GetView<PlayerController> {
       onTap: () async {
         await controller.togglePlaylist();
       },
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
       child: Obx(() {
         IconData icon;
         switch (AppShared.getShared(SharedAttributes.playlistMode)) {

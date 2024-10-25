@@ -8,6 +8,7 @@ import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/types/app_manifest.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/shared/widgets/crud_sheet.dart';
+import 'package:player_hub/app/core/static/app_colors.dart';
 
 class MusicList extends GetView<PlayerController> with AppManifest {
   final List<SongModel> songs;
@@ -74,9 +75,9 @@ class MusicList extends GetView<PlayerController> with AppManifest {
             onTap: () {
               crudSheet(context, song);
             },
-            child: const Icon(
+            child: Icon(
               Icons.more_vert,
-              size: 30,
+              color: AppColors.current().text,
             ),
           ),
           onTap: () async {

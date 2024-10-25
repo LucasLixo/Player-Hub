@@ -19,10 +19,10 @@ class HomePage extends GetView<PlayerController> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      initialIndex: 0,
-      length: 4,
-      child: SafeArea(
+    return SafeArea(
+      child: DefaultTabController(
+        initialIndex: 0,
+        length: 4,
         child: Scaffold(
           backgroundColor: AppColors.current().background,
           appBar: AppBar(

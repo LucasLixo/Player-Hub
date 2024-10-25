@@ -49,8 +49,9 @@ class SettingPage extends GetView<PlayerController> {
                   await controller.getAllSongs();
                   await showToast("${'setting_reload'.tr} ${'home_tab1'.tr}");
                 },
-                child: const Icon(
+                child: Icon(
                   Icons.refresh,
+                  color: AppColors.current().text,
                   size: 32,
                 ),
               ),
@@ -85,6 +86,14 @@ class SettingPage extends GetView<PlayerController> {
                 'setting_equalizer'.tr,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
+              subtitle: Obx(() {
+                return Text(
+                  AppShared.getShared(SharedAttributes.equalizeMode)
+                      ? 'app_enable'.tr
+                      : 'app_disable'.tr,
+                  style: Theme.of(context).textTheme.labelMedium,
+                );
+              }),
               trailing: InkWell(
                 onTap: () async {
                   await Get.toNamed(AppRoutes.equalizer);
@@ -137,8 +146,9 @@ class SettingPage extends GetView<PlayerController> {
               }),
               trailing: Obx(() {
                 return PopupMenuButton<int>(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.sort_by_alpha,
+                    color: AppColors.current().text,
                     size: 32,
                   ),
                   color: AppColors.current().surface,

@@ -51,7 +51,7 @@ enum SharedAttributes {
     type: bool,
   ),
 
-  /// List<double>
+  /// List double
   frequency(
     key: 'kqxx5lnk8ls64jx4ve6g09n4ah0ttaaq9eua',
     value: [3.0, 0.0, 0.0, 0.0, 3.0],

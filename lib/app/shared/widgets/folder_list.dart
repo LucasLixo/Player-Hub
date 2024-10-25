@@ -19,59 +19,57 @@ class FolderList extends GetView<PlayerController> with AppManifest {
         final title = controller.folderList[index];
         final songs = controller.folderListSongs[title];
 
-        return Container(
-          margin: const EdgeInsets.only(bottom: 8),
-          child: ListTile(
-            tileColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            focusColor: Colors.transparent,
-            title: Text(
-              title,
-              style: Theme.of(context).textTheme.bodyLarge,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+        return ListTile(
+          tileColor: Colors.transparent,
+          splashColor: Colors.transparent,
+          focusColor: Colors.transparent,
+          contentPadding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 2.0),
+          title: Text(
+            title,
+            style: Theme.of(context).textTheme.bodyLarge,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          subtitle: Text(
+            songs!.length.toString(),
+            style: Theme.of(context).textTheme.labelMedium,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          leading: FutureBuilder<Uint8List>(
+            future: getImageArray(
+              id: songs[0].id,
             ),
-            subtitle: Text(
-              songs!.length.toString(),
-              style: Theme.of(context).textTheme.labelMedium,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            leading: FutureBuilder<Uint8List>(
-              future: getImageArray(
-                id: songs[0].id,
-              ),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const SizedBox(
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const SizedBox(
+                  width: 50.0,
+                  height: 50.0,
+                );
+              } else if (snapshot.hasError || !snapshot.hasData) {
+                return const SizedBox(
+                  width: 50.0,
+                  height: 50.0,
+                );
+              } else {
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.memory(
+                    snapshot.data!,
+                    fit: BoxFit.cover,
                     width: 50.0,
                     height: 50.0,
-                  );
-                } else if (snapshot.hasError || !snapshot.hasData) {
-                  return const SizedBox(
-                    width: 50.0,
-                    height: 50.0,
-                  );
-                } else {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.memory(
-                      snapshot.data!,
-                      fit: BoxFit.cover,
-                      width: 50.0,
-                      height: 50.0,
-                    ),
-                  );
-                }
-              },
-            ),
-            onTap: () async {
-              await Get.toNamed(AppRoutes.playlist, arguments: {
-                'playlistTitle': title,
-                'playlistList': songs,
-              });
+                  ),
+                );
+              }
             },
           ),
+          onTap: () async {
+            await Get.toNamed(AppRoutes.playlist, arguments: {
+              'playlistTitle': title,
+              'playlistList': songs,
+            });
+          },
         );
       },
     );

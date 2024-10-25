@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -59,8 +58,6 @@ class _DetailsPageState extends State<DetailsPage>
           } else {
             final currentImage = playerController.currentImage.value;
 
-            final RxBool isSwipeExecuted = false.obs;
-
             return Stack(
               children: <Widget>[
                 Positioned.fill(
@@ -92,6 +89,7 @@ class _DetailsPageState extends State<DetailsPage>
                         AppBar(
                           automaticallyImplyLeading: false,
                           backgroundColor: Colors.transparent,
+                          foregroundColor: Colors.transparent,
                           systemOverlayStyle: const SystemUiOverlayStyle(
                             statusBarColor: Colors.transparent,
                             statusBarIconBrightness: Brightness.light,
@@ -112,7 +110,7 @@ class _DetailsPageState extends State<DetailsPage>
                               child: const Icon(
                                 Icons.graphic_eq,
                                 color: Colors.white,
-                                size: 36,
+                                size: 34,
                               ),
                             ),
                             const Space(),
@@ -120,6 +118,8 @@ class _DetailsPageState extends State<DetailsPage>
                               onTap: () => crudSheet(context, currentSong),
                               child: const Icon(
                                 Icons.more_vert,
+                                color: Colors.white,
+                                size: 34,
                               ),
                             ),
                             const Space(),
@@ -127,52 +127,17 @@ class _DetailsPageState extends State<DetailsPage>
                         ),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(24),
-                          child: GestureDetector(
-                            onTap: () async {
-                              await playerController.togglePlayPause();
-                            },
-                            onHorizontalDragEnd: (details) async {
-                              if (!isSwipeExecuted.value) {
-                                if (details.primaryVelocity! > 50) {
-                                  // Deslize para a direita
-                                  await playerController.previousSong();
-                                } else if (details.primaryVelocity! < 50) {
-                                  // Deslize para a esquerda
-                                  await playerController.nextSong();
-                                }
-                                isSwipeExecuted.value = true;
-                              }
-                            },
-                            onVerticalDragEnd: (details) {
-                              if (!isSwipeExecuted.value) {
-                                if (details.primaryVelocity! < 50) {
-                                  // Deslize para cima
-                                  crudSheet(context, currentSong);
-                                } else if (details.primaryVelocity! > 50) {
-                                  // Deslize para baixo
-                                  Get.back();
-                                }
-                                isSwipeExecuted.value = true;
-                              }
-                            },
-                            onHorizontalDragStart: (details) {
-                              isSwipeExecuted.value = false;
-                            },
-                            onVerticalDragStart: (details) {
-                              isSwipeExecuted.value = false;
-                            },
-                            child: currentImage != null
-                                ? Image.file(
-                                    File(currentImage),
-                                    fit: BoxFit.cover,
-                                    width: MediaQuery.of(context).size.width,
-                                    height: MediaQuery.of(context).size.width,
-                                  )
-                                : SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: MediaQuery.of(context).size.width,
-                                  ),
-                          ),
+                          child: currentImage != null
+                              ? Image.file(
+                                  File(currentImage),
+                                  fit: BoxFit.cover,
+                                  width: MediaQuery.of(context).size.width,
+                                  height: MediaQuery.of(context).size.width,
+                                )
+                              : SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: MediaQuery.of(context).size.width,
+                                ),
                         ),
                         const Space(
                           size: 12,

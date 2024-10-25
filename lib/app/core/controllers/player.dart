@@ -3,6 +3,7 @@ import 'package:get/get_rx/get_rx.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:player_hub/app/core/enums/query_songs.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:player_hub/app/core/interfaces/visualizer.dart';
@@ -80,18 +81,19 @@ class PlayerController extends BaseAudioHandler
   }
 
   // ==================================================
-  void _updateInterfaceVisualizer(SongModel song) {
-    final songId = song.id;
-    final songTitle = AppShared.getTitle(songId, song.title);
-    final songArtist = AppShared.getArtist(songId, song.artist!);
-    String? image = imageCache[songId];
+  Future<void> _updateInterfaceVisualizer(SongModel song) async {
+    final int songId = song.id;
+
+    final String songTitle = AppShared.getTitle(songId, song.title);
+    final String songArtist = AppShared.getArtist(songId, song.artist!);
+    final String? image = imageCache[songId];
 
     InterfaceVisualizer visualizerMusic = InterfaceVisualizer(
       headlineTitle: songTitle,
       headlineSubtitle: songArtist,
       headlineImage: image,
     );
-    visualizerMusic.updateHeadline();
+    await visualizerMusic.updateHeadline();
 
     currentImage.value = image;
   }
@@ -121,12 +123,11 @@ class PlayerController extends BaseAudioHandler
 
   // ==================================================
   // charge duration in seconds
-  void chargeDurationInSeconds(int seconds) {
-    var duration = Duration(seconds: seconds);
-    audioPlayer.seek(duration);
+  Future<void> chargeDurationInSeconds(int seconds) async {
+    await audioPlayer.seek(Duration(seconds: seconds));
   }
 
-  void handleCurrentIndex(int? index) {
+  Future<void> handleCurrentIndex(int? index) async {
     if (songList.isEmpty) {
       currentSong.value = null;
       return;
@@ -139,11 +140,9 @@ class PlayerController extends BaseAudioHandler
     songIndex.value = index;
     currentSong.value = songList[index];
 
-    final factor = currentSong.value;
-
-    if (factor != null) {
-      _updateInterfaceVisualizer(factor);
-      _updateRecentList(factor);
+    if (currentSong.value != null) {
+      await _updateInterfaceVisualizer(currentSong.value!);
+      _updateRecentList(currentSong.value!);
     }
   }
 
@@ -152,7 +151,7 @@ class PlayerController extends BaseAudioHandler
   Future<void> getAllSongs() async {
     songIndex.value = 0;
 
-    List<SongModel> songs = [];
+    final List<SongModel> songs = [];
     final List<Future> futures = [];
 
     // Adiciona a busca de músicas baseado no tipo de ordenação selecionado
@@ -160,29 +159,23 @@ class PlayerController extends BaseAudioHandler
     switch (AppShared.getShared(SharedAttributes.getSongs)) {
       // Por data adicionada
       case 0:
-        songQuery = _audioQuery.querySongs(
-          ignoreCase: true,
-          orderType: OrderType.DESC_OR_GREATER,
-          sortType: SongSortType.DATE_ADDED,
-          uriType: UriType.EXTERNAL,
+        songQuery = QuerySongs.getQuerySongs(
+          _audioQuery,
+          QuerySongs.dateAdded,
         );
         break;
       // Por ordem alfabética (A a Z)
       case 1:
-        songQuery = _audioQuery.querySongs(
-          ignoreCase: true,
-          orderType: OrderType.ASC_OR_SMALLER,
-          sortType: SongSortType.TITLE,
-          uriType: UriType.EXTERNAL,
+        songQuery = QuerySongs.getQuerySongs(
+          _audioQuery,
+          QuerySongs.title,
         );
         break;
       // Por duração
       case 2:
-        songQuery = _audioQuery.querySongs(
-          ignoreCase: true,
-          orderType: OrderType.DESC_OR_GREATER,
-          sortType: SongSortType.DURATION,
-          uriType: UriType.EXTERNAL,
+        songQuery = QuerySongs.getQuerySongs(
+          _audioQuery,
+          QuerySongs.duration,
         );
         break;
       default:
@@ -213,12 +206,12 @@ class PlayerController extends BaseAudioHandler
     final results = await Future.wait(futures);
 
     // Extraindo os resultados
-    songs = results[0] as List<SongModel>;
+    songs.addAll(results[0] as List<SongModel>);
     albumList.value = results[1] as List<AlbumModel>;
     artistList.value = results[2] as List<AlbumModel>;
 
     // Remove músicas por duração
-    songs = songs
+    songs
         .where((song) =>
             song.duration != null &&
             song.duration! >
@@ -302,9 +295,9 @@ class PlayerController extends BaseAudioHandler
 
   // ==================================================
   // defined songs in background
-  Future<void> songLoad(List<SongModel> songList, int index) async {
+  Future<void> songLoad(List<SongModel> songListLoaded, int index) async {
     // Atualiza a lista de músicas no estado
-    songList = songList;
+    songList.addAll(songListLoaded);
 
     // Cria a playlist de fontes de áudio em um único passo
     List<AudioSource> playlist = List.generate(songList.length, (i) {
@@ -330,7 +323,7 @@ class PlayerController extends BaseAudioHandler
       initialIndex: index,
     );
 
-    handleCurrentIndex(index);
+    await handleCurrentIndex(index);
 
     // Modo de playlist (Loop, Shuffle, etc)
     switch (AppShared.getShared(SharedAttributes.playlistMode)) {
@@ -378,10 +371,10 @@ class PlayerController extends BaseAudioHandler
 
   // ==================================================
   // Controle de play e pause (para reutilização)
-  Future<void> _setPlaybackState({
+  void _setPlaybackState({
     required bool isPlaying,
     required List<MediaControl> controls,
-  }) async {
+  }) {
     playbackState.add(playbackState.value.copyWith(
       playing: isPlaying,
       controls: controls,
@@ -396,7 +389,7 @@ class PlayerController extends BaseAudioHandler
       songIndex.value = index!;
       await audioPlayer.seek(Duration.zero, index: index);
     }
-    await _setPlaybackState(
+    _setPlaybackState(
       isPlaying: true,
       controls: [MediaControl.pause],
     );
@@ -407,7 +400,7 @@ class PlayerController extends BaseAudioHandler
   // ==================================================
   // Pausar música atual
   Future<void> pauseSong() async {
-    await _setPlaybackState(
+    _setPlaybackState(
       isPlaying: false,
       controls: [MediaControl.play],
     );
@@ -422,7 +415,11 @@ class PlayerController extends BaseAudioHandler
       int lastIndex = songList.length - 1;
 
       if (currentIndex < lastIndex) {
-        await audioPlayer.seekToNext();
+        if (isLooping.value) {
+          await audioPlayer.seek(Duration.zero, index: currentIndex + 1);
+        } else {
+          await audioPlayer.seekToNext();
+        }
       } else {
         await audioPlayer.seek(Duration.zero, index: 0);
       }
@@ -435,11 +432,16 @@ class PlayerController extends BaseAudioHandler
   Future<void> previousSong() async {
     if (songList.isNotEmpty) {
       int currentIndex = songIndex.value;
+      int lastIndex = songList.length - 1;
 
       if (currentIndex > 0) {
-        await audioPlayer.seekToPrevious();
+        if (isLooping.value) {
+          await audioPlayer.seek(Duration.zero, index: currentIndex - 1);
+        } else {
+          await audioPlayer.seekToPrevious();
+        }
       } else {
-        await audioPlayer.seek(Duration.zero, index: songList.length - 1);
+        await audioPlayer.seek(Duration.zero, index: lastIndex);
       }
       await audioPlayer.play();
     }
