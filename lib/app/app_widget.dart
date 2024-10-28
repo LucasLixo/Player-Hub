@@ -44,7 +44,7 @@ class _AppWidgetState extends State<AppWidget> with WidgetsBindingObserver {
   }
 
   void _onEnterApp() {
-    AppShared.loadNavigationBar();
+    AppShared.loadTheme();
   }
 
   void _onExitApp() {}

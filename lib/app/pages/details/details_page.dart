@@ -6,6 +6,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
@@ -31,6 +32,12 @@ class _DetailsPageState extends State<DetailsPage>
   @override
   void initState() {
     super.initState();
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+      ),
+    );
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
@@ -42,6 +49,17 @@ class _DetailsPageState extends State<DetailsPage>
         _controller.reverse();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: AppColors.current().background,
+        statusBarIconBrightness: AppColors.current().brightness,
+      ),
+    );
+    super.dispose();
   }
 
   @override
@@ -90,10 +108,10 @@ class _DetailsPageState extends State<DetailsPage>
                           automaticallyImplyLeading: false,
                           backgroundColor: Colors.transparent,
                           foregroundColor: Colors.transparent,
-                          systemOverlayStyle: const SystemUiOverlayStyle(
-                            statusBarColor: Colors.transparent,
-                            statusBarIconBrightness: Brightness.light,
-                          ),
+                          // systemOverlayStyle: const SystemUiOverlayStyle(
+                          //   statusBarColor: Colors.transparent,
+                          //   statusBarIconBrightness: Brightness.light,
+                          // ),
                           leading: InkWell(
                             onTap: () => Get.back(),
                             child: const Icon(
@@ -110,7 +128,7 @@ class _DetailsPageState extends State<DetailsPage>
                               child: const Icon(
                                 Icons.graphic_eq,
                                 color: Colors.white,
-                                size: 34,
+                                size: 32,
                               ),
                             ),
                             const Space(),
@@ -119,7 +137,7 @@ class _DetailsPageState extends State<DetailsPage>
                               child: const Icon(
                                 Icons.more_vert,
                                 color: Colors.white,
-                                size: 34,
+                                size: 32,
                               ),
                             ),
                             const Space(),

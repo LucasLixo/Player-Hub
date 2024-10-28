@@ -19,6 +19,10 @@ class SearchPage extends GetView<PlayerController> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _focusNode.unfocus();
+    });
+
     void filterSongs() {
       var query = _textController.text.toLowerCase();
 
@@ -35,10 +39,6 @@ class SearchPage extends GetView<PlayerController> {
     }
 
     _textController.addListener(filterSongs);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _focusNode.unfocus();
-    });
 
     return PopScope(
       canPop: false,
@@ -66,29 +66,34 @@ class SearchPage extends GetView<PlayerController> {
                 _textController.dispose();
                 _focusNode.dispose();
               },
-              child: const Icon(
+              child: Icon(
                 Icons.arrow_back_ios,
+                color: AppColors.current().text,
+                size: 32,
               ),
             ),
-            title: TextField(
-              cursorHeight: 28.0,
-              controller: _textController,
-              focusNode: _focusNode,
-              style: Theme.of(context).textTheme.titleMedium,
-              cursorColor: AppColors.current().text,
-              decoration: InputDecoration(
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.current().text),
+            title: Padding(
+              padding: const EdgeInsets.only(bottom: 12.0),
+              child: TextField(
+                cursorHeight: 28.0,
+                controller: _textController,
+                focusNode: _focusNode,
+                style: Theme.of(context).textTheme.titleMedium,
+                cursorColor: AppColors.current().text,
+                decoration: InputDecoration(
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.current().text),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.current().text),
+                  ),
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.current().text),
+                  ),
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  labelText: 'app_search'.tr,
+                  labelStyle: Theme.of(context).textTheme.labelMedium,
                 ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.current().text),
-                ),
-                border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.current().text),
-                ),
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                labelText: 'app_search'.tr,
-                labelStyle: Theme.of(context).textTheme.labelMedium,
               ),
             ),
           ),

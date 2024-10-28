@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -68,6 +69,26 @@ class SplashPage extends GetView<PlayerController> {
             style: Theme.of(context).textTheme.displayMedium,
             textAlign: TextAlign.center,
           ),
+        ),
+        bottomNavigationBar: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Obx(() {
+              return Text(
+                controller.songLog.value,
+                style: Theme.of(context).textTheme.titleMedium,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              );
+            }),
+            LinearProgressIndicator(
+              color: AppColors.current().primary,
+              backgroundColor: AppColors.current().surface,
+              minHeight: 4.0,
+            ),
+          ],
         ),
       ),
     );

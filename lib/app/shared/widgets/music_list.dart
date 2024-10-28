@@ -48,12 +48,9 @@ class MusicList extends GetView<PlayerController> with AppManifest {
               id: song.id,
             ),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const SizedBox(
-                  width: 50.0,
-                  height: 50.0,
-                );
-              } else if (snapshot.hasError || !snapshot.hasData) {
+              if (snapshot.connectionState == ConnectionState.waiting ||
+                  snapshot.hasError ||
+                  !snapshot.hasData) {
                 return const SizedBox(
                   width: 50.0,
                   height: 50.0,

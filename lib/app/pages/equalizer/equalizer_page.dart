@@ -46,8 +46,10 @@ class EqualizerPage extends GetView<PlayerController> {
           backgroundColor: AppColors.current().background,
           leading: InkWell(
             onTap: () => Get.back(),
-            child: const Icon(
+            child: Icon(
               Icons.arrow_back_ios,
+              color: AppColors.current().text,
+              size: 32,
             ),
           ),
           title: Text(

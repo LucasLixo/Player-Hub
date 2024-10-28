@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:helper_hub/src/theme_material.dart';
 
 /// Class to manage preferences and images in the application using GetX.
 abstract class AppShared extends GetxController {
@@ -46,7 +47,6 @@ abstract class AppShared extends GetxController {
       SharedAttributes.changeLanguage,
       SharedAttributes.ignoreTime,
       // SharedAttributes.equalizeMode,
-      SharedAttributes.equalizeMode,
       SharedAttributes.playlistMode,
       SharedAttributes.frequency,
     ];
@@ -60,15 +60,24 @@ abstract class AppShared extends GetxController {
       sharedMap[setting.name] = SharedAttributes.getAttributesMap[setting.name];
     }
 
-    loadNavigationBar();
+    loadTheme();
   }
 
   // ==================================================
-  static void loadNavigationBar() {
+  static void loadTheme() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: AppColors.current().surface,
       systemNavigationBarIconBrightness: AppColors.current().brightness,
     ));
+    Get.changeTheme((sharedMap[SharedAttributes.darkMode.name] as bool)
+        ? ThemeMaterial.dark()
+        : ThemeMaterial.light());
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: AppColors.current().background,
+        statusBarIconBrightness: AppColors.current().brightness,
+      ),
+    );
   }
 
   // ==================================================

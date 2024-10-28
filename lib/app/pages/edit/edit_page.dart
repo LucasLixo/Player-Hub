@@ -43,13 +43,14 @@ class EditPage extends GetView<PlayerController> {
       child: Scaffold(
         backgroundColor: AppColors.current().background,
         appBar: AppBar(
-          elevation: 0.0,
           automaticallyImplyLeading: false,
           backgroundColor: AppColors.current().background,
           leading: InkWell(
             onTap: () => Get.back(),
-            child: const Icon(
+            child: Icon(
               Icons.arrow_back_ios,
+              color: AppColors.current().text,
+              size: 32,
             ),
           ),
           title: Text(
@@ -60,13 +61,15 @@ class EditPage extends GetView<PlayerController> {
           ),
           actions: [
             InkWell(
-              onTap: () {
-                saveInfo();
-                showToast(
+              onTap: () async {
+                await saveInfo();
+                await showToast(
                     "${'edit_save'.tr}: ${AppShared.getTitle(song.id, song.title)}");
               },
-              child: const Icon(
+              child: Icon(
                 Icons.save,
+                color: AppColors.current().text,
+                size: 32,
               ),
             ),
             const Space(),

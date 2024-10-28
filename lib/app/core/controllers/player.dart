@@ -153,9 +153,9 @@ class PlayerController extends BaseAudioHandler
 
     final List<SongModel> songs = [];
     final List<Future> futures = [];
+    Future<List<SongModel>> songQuery;
 
     // Adiciona a busca de músicas baseado no tipo de ordenação selecionado
-    Future<List<SongModel>> songQuery;
     switch (AppShared.getShared(SharedAttributes.getSongs)) {
       // Por data adicionada
       case 0:
@@ -215,7 +215,8 @@ class PlayerController extends BaseAudioHandler
         .where((song) =>
             song.duration != null &&
             song.duration! >
-                AppShared.getShared(SharedAttributes.ignoreTime) * 1000)
+                (AppShared.getShared(SharedAttributes.ignoreTime) as int) *
+                    1000)
         .toList();
 
     await songAllLoad(songs); // Carrega todas as músicas filtradas
@@ -297,6 +298,7 @@ class PlayerController extends BaseAudioHandler
   // defined songs in background
   Future<void> songLoad(List<SongModel> songListLoaded, int index) async {
     // Atualiza a lista de músicas no estado
+    songList.clear();
     songList.addAll(songListLoaded);
 
     // Cria a playlist de fontes de áudio em um único passo

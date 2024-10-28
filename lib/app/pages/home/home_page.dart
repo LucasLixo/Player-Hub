@@ -32,11 +32,15 @@ class HomePage extends GetView<PlayerController> {
               onTap: () async {
                 await Get.toNamed(AppRoutes.setting);
               },
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              child: const Icon(
+              child: Icon(
                 Icons.sort_rounded,
+                color: AppColors.current().text,
+                size: 32,
               ),
+            ),
+            title: Text(
+              AppShared.title,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
             actions: [
               InkWell(
@@ -46,8 +50,10 @@ class HomePage extends GetView<PlayerController> {
                     'playlistList': controller.recentList,
                   });
                 },
-                child: const Icon(
+                child: Icon(
                   Icons.schedule,
+                  color: AppColors.current().text,
+                  size: 32,
                 ),
               ),
               const Space(),
@@ -55,16 +61,14 @@ class HomePage extends GetView<PlayerController> {
                 onTap: () async {
                   await Get.toNamed(AppRoutes.search);
                 },
-                child: const Icon(
+                child: Icon(
                   Icons.search,
+                  color: AppColors.current().text,
+                  size: 32,
                 ),
               ),
               const Space(),
             ],
-            title: Text(
-              AppShared.title,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
             bottom: TabBar(
               isScrollable: true,
               dividerColor: Colors.transparent,
