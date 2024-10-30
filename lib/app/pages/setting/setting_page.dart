@@ -36,210 +36,208 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: AppColors.current().background,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppColors.current().background,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: AppColors.current().background,
-          leading: InkWell(
-            onTap: () => Get.back(),
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.current().text,
-              size: 32,
-            ),
-          ),
-          title: Text(
-            'setting_title'.tr,
-            style: Theme.of(context).textTheme.headlineMedium,
+        leading: InkWell(
+          onTap: () => Get.back(),
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.current().text,
+            size: 32,
           ),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // build ReloadSongs
-            ListTile(
+        title: Text(
+          'setting_title'.tr,
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // build ReloadSongs
+          ListTile(
+            title: Text(
+              "${'setting_reload'.tr} ${'home_tab1'.tr}",
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            trailing: InkWell(
+              onTap: () async {
+                await controller.getAllSongs();
+                // await showToast("${'setting_reload'.tr} ${'home_tab1'.tr}");
+              },
+              child: Icon(
+                Icons.refresh,
+                color: AppColors.current().text,
+                size: 32,
+              ),
+            ),
+          ),
+          // build IgnoreTimeTile
+          Obx(
+            () => ListTile(
               title: Text(
-                "${'setting_reload'.tr} ${'home_tab1'.tr}",
+                'setting_ignore'.trParams({
+                  'seconds': AppShared.getShared(SharedAttributes.ignoreTime)
+                      .toString(),
+                }),
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              trailing: InkWell(
-                onTap: () async {
-                  await controller.getAllSongs();
-                  // await showToast("${'setting_reload'.tr} ${'home_tab1'.tr}");
+              subtitle: Slider(
+                thumbColor: AppColors.current().primary,
+                activeColor: AppColors.current().primary,
+                min: 0,
+                max: 120,
+                value:
+                    AppShared.getShared(SharedAttributes.ignoreTime).toDouble(),
+                onChanged: (value) async {
+                  await AppShared.setShared(
+                      SharedAttributes.ignoreTime, value.toInt());
+                  isEdited.value = true;
                 },
-                child: Icon(
-                  Icons.refresh,
+              ),
+            ),
+          ),
+          // build Equalizer
+          ListTile(
+            title: Text(
+              'setting_equalizer'.tr,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            subtitle: Obx(() {
+              return Text(
+                AppShared.getShared(SharedAttributes.equalizeMode)
+                    ? 'app_enable'.tr
+                    : 'app_disable'.tr,
+                style: Theme.of(context).textTheme.labelMedium,
+              );
+            }),
+            trailing: InkWell(
+              onTap: () async {
+                await Get.toNamed(AppRoutes.equalizer);
+              },
+              child: Icon(
+                Icons.graphic_eq,
+                color: AppColors.current().text,
+                size: 32,
+              ),
+            ),
+          ),
+          // build DarkModeTile
+          ListTile(
+            title: Text(
+              'setting_mode'.tr,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            subtitle: Obx(() {
+              return Text(
+                AppShared.getShared(SharedAttributes.darkMode)
+                    ? 'app_enable'.tr
+                    : 'app_disable'.tr,
+                style: Theme.of(context).textTheme.labelMedium,
+              );
+            }),
+            trailing: Obx(() {
+              return Switch(
+                value: AppShared.getShared(SharedAttributes.darkMode),
+                onChanged: (bool value) async {
+                  await AppShared.setShared(SharedAttributes.darkMode, value);
+                  await AppShared.loadTheme();
+                },
+              );
+            }),
+          ),
+          // build SortOptionTile
+          ListTile(
+            title: Text(
+              'setting_sort'.tr,
+              style: Theme.of(context).textTheme.bodyLarge,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            subtitle: Obx(() {
+              return Text(
+                SortType.getTypeTitlebyCode(
+                    AppShared.getShared(SharedAttributes.getSongs)),
+                style: Theme.of(context).textTheme.labelMedium,
+              );
+            }),
+            trailing: Obx(() {
+              return PopupMenuButton<int>(
+                icon: Icon(
+                  Icons.sort_by_alpha,
                   color: AppColors.current().text,
                   size: 32,
                 ),
-              ),
+                color: AppColors.current().surface,
+                onSelected: (int code) async {
+                  await AppShared.setShared(SharedAttributes.getSongs, code);
+                  isEdited.value = true;
+                },
+                itemBuilder: (BuildContext context) {
+                  return SortType.values.map((sortTypeOption) {
+                    return PopupMenuItem<int>(
+                      value: sortTypeOption.index,
+                      child: Text(
+                        SortType.getTypeTitlebyCode(sortTypeOption.index),
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                    );
+                  }).toList();
+                },
+              );
+            }),
+          ),
+          // build LanguageSelectionTile
+          ListTile(
+            title: Text(
+              'setting_language'.tr,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
-            // build IgnoreTimeTile
-            Obx(
-              () => ListTile(
-                title: Text(
-                  'setting_ignore'.trParams({
-                    'seconds': AppShared.getShared(SharedAttributes.ignoreTime)
-                        .toString(),
-                  }),
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                subtitle: Slider(
-                  thumbColor: AppColors.current().primary,
-                  activeColor: AppColors.current().primary,
-                  min: 0,
-                  max: 120,
-                  value: AppShared.getShared(SharedAttributes.ignoreTime)
-                      .toDouble(),
-                  onChanged: (value) async {
-                    await AppShared.setShared(
-                        SharedAttributes.ignoreTime, value.toInt());
-                    isEdited.value = true;
-                  },
-                ),
-              ),
-            ),
-            // build Equalizer
-            ListTile(
-              title: Text(
-                'setting_equalizer'.tr,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              subtitle: Obx(() {
+            subtitle: Obx(() {
+              if (AppShared.getShared(SharedAttributes.changeLanguage)) {
                 return Text(
-                  AppShared.getShared(SharedAttributes.equalizeMode)
-                      ? 'app_enable'.tr
-                      : 'app_disable'.tr,
+                  AppLanguages.getLanguagesTitleByCode(
+                    AppShared.getShared(SharedAttributes.defaultLanguage),
+                  ),
                   style: Theme.of(context).textTheme.labelMedium,
                 );
-              }),
-              trailing: InkWell(
-                onTap: () async {
-                  await Get.toNamed(AppRoutes.equalizer);
-                },
-                child: Icon(
-                  Icons.graphic_eq,
+              } else {
+                return const Space(size: 0);
+              }
+            }),
+            trailing: Obx(() {
+              return PopupMenuButton<int>(
+                icon: Icon(
+                  Icons.language,
                   color: AppColors.current().text,
                   size: 32,
                 ),
-              ),
-            ),
-            // build DarkModeTile
-            ListTile(
-              title: Text(
-                'setting_mode'.tr,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              subtitle: Obx(() {
-                return Text(
-                  AppShared.getShared(SharedAttributes.darkMode)
-                      ? 'app_enable'.tr
-                      : 'app_disable'.tr,
-                  style: Theme.of(context).textTheme.labelMedium,
-                );
-              }),
-              trailing: Obx(() {
-                return Switch(
-                  value: AppShared.getShared(SharedAttributes.darkMode),
-                  onChanged: (bool value) async {
-                    await AppShared.setShared(SharedAttributes.darkMode, value);
-                    await AppShared.loadTheme();
-                  },
-                );
-              }),
-            ),
-            // build SortOptionTile
-            ListTile(
-              title: Text(
-                'setting_sort'.tr,
-                style: Theme.of(context).textTheme.bodyLarge,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              subtitle: Obx(() {
-                return Text(
-                  SortType.getTypeTitlebyCode(
-                      AppShared.getShared(SharedAttributes.getSongs)),
-                  style: Theme.of(context).textTheme.labelMedium,
-                );
-              }),
-              trailing: Obx(() {
-                return PopupMenuButton<int>(
-                  icon: Icon(
-                    Icons.sort_by_alpha,
-                    color: AppColors.current().text,
-                    size: 32,
-                  ),
-                  color: AppColors.current().surface,
-                  onSelected: (int code) async {
-                    await AppShared.setShared(SharedAttributes.getSongs, code);
-                    isEdited.value = true;
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return SortType.values.map((sortTypeOption) {
-                      return PopupMenuItem<int>(
-                        value: sortTypeOption.index,
-                        child: Text(
-                          SortType.getTypeTitlebyCode(sortTypeOption.index),
-                          style: Theme.of(context).textTheme.labelMedium,
-                        ),
-                      );
-                    }).toList();
-                  },
-                );
-              }),
-            ),
-            // build LanguageSelectionTile
-            ListTile(
-              title: Text(
-                'setting_language'.tr,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              subtitle: Obx(() {
-                if (AppShared.getShared(SharedAttributes.changeLanguage)) {
-                  return Text(
-                    AppLanguages.getLanguagesTitleByCode(
-                      AppShared.getShared(SharedAttributes.defaultLanguage),
-                    ),
-                    style: Theme.of(context).textTheme.labelMedium,
-                  );
-                } else {
-                  return const Space(size: 0);
-                }
-              }),
-              trailing: Obx(() {
-                return PopupMenuButton<int>(
-                  icon: Icon(
-                    Icons.language,
-                    color: AppColors.current().text,
-                    size: 32,
-                  ),
-                  color: AppColors.current().surface,
-                  onSelected: (int code) async {
-                    await AppShared.setShared(
-                        SharedAttributes.defaultLanguage, code);
-                    await AppShared.setShared(
-                        SharedAttributes.changeLanguage, true);
-                    await Get.toNamed(AppRoutes.splash);
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return AppLanguages.values.map((appLanguagesOption) {
-                      return PopupMenuItem<int>(
-                        value: appLanguagesOption.code,
-                        child: Text(
-                          appLanguagesOption.title,
-                          style: Theme.of(context).textTheme.labelMedium,
-                        ),
-                      );
-                    }).toList();
-                  },
-                );
-              }),
-            ),
-          ],
-        ),
+                color: AppColors.current().surface,
+                onSelected: (int code) async {
+                  await AppShared.setShared(
+                      SharedAttributes.defaultLanguage, code);
+                  await AppShared.setShared(
+                      SharedAttributes.changeLanguage, true);
+                  await Get.toNamed(AppRoutes.splash);
+                },
+                itemBuilder: (BuildContext context) {
+                  return AppLanguages.values.map((appLanguagesOption) {
+                    return PopupMenuItem<int>(
+                      value: appLanguagesOption.code,
+                      child: Text(
+                        appLanguagesOption.title,
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                    );
+                  }).toList();
+                },
+              );
+            }),
+          ),
+        ],
       ),
     );
   }

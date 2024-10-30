@@ -45,36 +45,34 @@ class _PlaylistPageState extends State<PlaylistPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: AppColors.current().background,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppColors.current().background,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: AppColors.current().background,
-          leading: InkWell(
-            onTap: () {
-              Get.back();
-            },
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.current().text,
-              size: 32,
-            ),
-          ),
-          title: Text(
-            widget.playlistTitle,
-            style: Theme.of(context).textTheme.titleMedium,
+        leading: InkWell(
+          onTap: () {
+            Get.back();
+          },
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.current().text,
+            size: 32,
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: MusicList(songs: widget.playlistList),
+        title: Text(
+          widget.playlistTitle,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
-        bottomNavigationBar: Obx(
-          () => playerController.songAllList.isEmpty
-              ? const Space(size: 0)
-              : const Shortcut(),
-        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: MusicList(songs: widget.playlistList),
+      ),
+      bottomNavigationBar: Obx(
+        () => playerController.songAllList.isEmpty
+            ? const Space(size: 0)
+            : const Shortcut(),
       ),
     );
   }

@@ -39,80 +39,78 @@ class EditPage extends GetView<PlayerController> {
       await AppShared.setArtist(song.id, textControllerArtist.text);
     }
 
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: AppColors.current().background,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppColors.current().background,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: AppColors.current().background,
-          leading: InkWell(
-            onTap: () => Get.back(),
+        leading: InkWell(
+          onTap: () => Get.back(),
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.current().text,
+            size: 32,
+          ),
+        ),
+        title: Text(
+          AppShared.getTitle(song.id, song.title),
+          style: Theme.of(context).textTheme.titleMedium,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        actions: [
+          InkWell(
+            onTap: () async {
+              await saveInfo();
+              await showToast(
+                  "${'edit_save'.tr}: ${AppShared.getTitle(song.id, song.title)}");
+            },
             child: Icon(
-              Icons.arrow_back_ios,
+              Icons.save,
               color: AppColors.current().text,
               size: 32,
             ),
           ),
-          title: Text(
-            AppShared.getTitle(song.id, song.title),
-            style: Theme.of(context).textTheme.titleMedium,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          actions: [
-            InkWell(
-              onTap: () async {
-                await saveInfo();
-                await showToast(
-                    "${'edit_save'.tr}: ${AppShared.getTitle(song.id, song.title)}");
-              },
-              child: Icon(
-                Icons.save,
-                color: AppColors.current().text,
-                size: 32,
+          const Space(),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
+        child: Column(
+          children: [
+            ListTile(
+              title: Text(
+                'edit_title'.tr,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              subtitle: TextField(
+                controller: textControllerTitle,
+                style: Theme.of(context).textTheme.titleMedium,
+                cursorColor: AppColors.current().text,
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.current().text),
+                  ),
+                ),
               ),
             ),
-            const Space(),
+            ListTile(
+              title: Text(
+                'edit_artist'.tr,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              subtitle: TextField(
+                controller: textControllerArtist,
+                style: Theme.of(context).textTheme.titleMedium,
+                cursorColor: AppColors.current().text,
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.current().text),
+                  ),
+                ),
+              ),
+            ),
           ],
-        ),
-        body: Padding(
-          padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
-          child: Column(
-            children: [
-              ListTile(
-                title: Text(
-                  'edit_title'.tr,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                subtitle: TextField(
-                  controller: textControllerTitle,
-                  style: Theme.of(context).textTheme.titleMedium,
-                  cursorColor: AppColors.current().text,
-                  decoration: InputDecoration(
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.current().text),
-                    ),
-                  ),
-                ),
-              ),
-              ListTile(
-                title: Text(
-                  'edit_artist'.tr,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                subtitle: TextField(
-                  controller: textControllerArtist,
-                  style: Theme.of(context).textTheme.titleMedium,
-                  cursorColor: AppColors.current().text,
-                  decoration: InputDecoration(
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.current().text),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );

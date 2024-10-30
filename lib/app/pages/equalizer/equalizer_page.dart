@@ -38,105 +38,102 @@ class EqualizerPage extends GetView<PlayerController> {
       _initializeEqualizer(sessionId);
     }
 
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: AppColors.current().background,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppColors.current().background,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: AppColors.current().background,
-          leading: InkWell(
-            onTap: () => Get.back(),
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.current().text,
-              size: 32,
-            ),
+        leading: InkWell(
+          onTap: () => Get.back(),
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.current().text,
+            size: 32,
           ),
-          title: Text(
-            'setting_equalizer'.tr,
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-          actions: [
-            Obx(
-              () => Switch(
-                value: AppShared.getShared(SharedAttributes.equalizeMode),
-                onChanged: (bool value) async {
-                  await AppShared.setShared(
-                    SharedAttributes.equalizeMode,
-                    value,
-                  );
-                  await EqualizerFlutter.setEnabled(value);
-                  for (int i = 0; i < 5; i++) {
-                    await EqualizerFlutter.setBandLevel(
-                      i,
-                      AppShared.getShared(SharedAttributes.frequency)[i]
-                          .toInt(),
-                    );
-                  }
-                  await showToast(value
-                      ? "${'setting_equalizer'.tr} ${'app_enable'.tr}"
-                      : "${'setting_equalizer'.tr} ${'app_disable'.tr}");
-                },
-              ),
-            ),
-          ],
         ),
-        body: Column(
-          children: [
-            ListTile(
-              title: Text(
-                'setting_reset'.tr,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              trailing: InkWell(
-                onTap: () async {
-                  await AppShared.setShared(SharedAttributes.frequency,
-                      SharedAttributes.frequency.value);
-                },
-                child: const Icon(
-                  Icons.refresh,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'equalizer_frequency1'.tr,
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                  Text(
-                    'equalizer_frequency2'.tr,
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                ],
-              ),
-            ),
-            FutureBuilder<List<int>>(
-              future: EqualizerFlutter.getBandLevelRange(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Space(size: 0);
-                } else if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasData) {
-                    return Obx(
-                      () => CustomEQ(
-                        enabled:
-                            AppShared.getShared(SharedAttributes.equalizeMode),
-                        bandLevelRange: snapshot.data!,
-                      ),
-                    );
-                  } else if (snapshot.hasError) {
-                    return const Space(size: 0);
-                  }
+        title: Text(
+          'setting_equalizer'.tr,
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
+        actions: [
+          Obx(
+            () => Switch(
+              value: AppShared.getShared(SharedAttributes.equalizeMode),
+              onChanged: (bool value) async {
+                await AppShared.setShared(
+                  SharedAttributes.equalizeMode,
+                  value,
+                );
+                await EqualizerFlutter.setEnabled(value);
+                for (int i = 0; i < 5; i++) {
+                  await EqualizerFlutter.setBandLevel(
+                    i,
+                    AppShared.getShared(SharedAttributes.frequency)[i].toInt(),
+                  );
                 }
-                return const CenterText(title: 'Unexpected state');
+                await showToast(value
+                    ? "${'setting_equalizer'.tr} ${'app_enable'.tr}"
+                    : "${'setting_equalizer'.tr} ${'app_disable'.tr}");
               },
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          ListTile(
+            title: Text(
+              'setting_reset'.tr,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            trailing: InkWell(
+              onTap: () async {
+                await AppShared.setShared(SharedAttributes.frequency,
+                    SharedAttributes.frequency.value);
+              },
+              child: const Icon(
+                Icons.refresh,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'equalizer_frequency1'.tr,
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+                Text(
+                  'equalizer_frequency2'.tr,
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+              ],
+            ),
+          ),
+          FutureBuilder<List<int>>(
+            future: EqualizerFlutter.getBandLevelRange(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Space(size: 0);
+              } else if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasData) {
+                  return Obx(
+                    () => CustomEQ(
+                      enabled:
+                          AppShared.getShared(SharedAttributes.equalizeMode),
+                      bandLevelRange: snapshot.data!,
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return const Space(size: 0);
+                }
+              }
+              return const CenterText(title: 'Unexpected state');
+            },
+          ),
+        ],
       ),
     );
   }

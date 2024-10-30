@@ -10,25 +10,19 @@ class WaitPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SafeArea(
-        child: Scaffold(
-          backgroundColor: AppColors.current().background,
-          appBar: null,
-          body: Center(
-            child: Text(
-              AppShared.title,
-              style: dynamicStyle(
-                fontSize: 32,
-                color: error
-                    ? AppColors.current().error
-                    : AppColors.current().text,
-                fontWeight: FontWeight.normal,
-                fontStyle: FontStyle.normal,
-              ),
-              textAlign: TextAlign.center,
-            ),
+    return Scaffold(
+      backgroundColor: AppColors.current().background,
+      appBar: null,
+      body: Center(
+        child: Text(
+          AppShared.title,
+          style: dynamicStyle(
+            fontSize: 32,
+            color: error ? AppColors.current().error : AppColors.current().text,
+            fontWeight: FontWeight.normal,
+            fontStyle: FontStyle.normal,
           ),
+          textAlign: TextAlign.center,
         ),
       ),
     );

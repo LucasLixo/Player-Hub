@@ -19,110 +19,108 @@ class HomePage extends GetView<PlayerController> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: DefaultTabController(
-        initialIndex: 0,
-        length: 4,
-        child: Scaffold(
+    return DefaultTabController(
+      initialIndex: 0,
+      length: 4,
+      child: Scaffold(
+        backgroundColor: AppColors.current().background,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: AppColors.current().background,
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: AppColors.current().background,
-            leading: InkWell(
+          leading: InkWell(
+            onTap: () async {
+              await Get.toNamed(AppRoutes.setting);
+            },
+            child: Icon(
+              Icons.sort_rounded,
+              color: AppColors.current().text,
+              size: 32,
+            ),
+          ),
+          title: Text(
+            AppShared.title,
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          actions: [
+            InkWell(
               onTap: () async {
-                await Get.toNamed(AppRoutes.setting);
+                await Get.toNamed(AppRoutes.playlist, arguments: {
+                  'playlistTitle': 'playlist1'.tr,
+                  'playlistList': controller.recentList,
+                });
               },
               child: Icon(
-                Icons.sort_rounded,
+                Icons.schedule,
                 color: AppColors.current().text,
                 size: 32,
               ),
             ),
-            title: Text(
-              AppShared.title,
-              style: Theme.of(context).textTheme.headlineMedium,
+            const Space(),
+            InkWell(
+              onTap: () async {
+                await Get.toNamed(AppRoutes.search);
+              },
+              child: Icon(
+                Icons.search,
+                color: AppColors.current().text,
+                size: 32,
+              ),
             ),
-            actions: [
-              InkWell(
-                onTap: () async {
-                  await Get.toNamed(AppRoutes.playlist, arguments: {
-                    'playlistTitle': 'playlist1'.tr,
-                    'playlistList': controller.recentList,
-                  });
-                },
-                child: Icon(
-                  Icons.schedule,
-                  color: AppColors.current().text,
-                  size: 32,
-                ),
-              ),
-              const Space(),
-              InkWell(
-                onTap: () async {
-                  await Get.toNamed(AppRoutes.search);
-                },
-                child: Icon(
-                  Icons.search,
-                  color: AppColors.current().text,
-                  size: 32,
-                ),
-              ),
-              const Space(),
+            const Space(),
+          ],
+          bottom: TabBar(
+            isScrollable: true,
+            dividerColor: Colors.transparent,
+            labelStyle: Theme.of(context).textTheme.bodyMedium,
+            unselectedLabelStyle: Theme.of(context).textTheme.bodyMedium,
+            indicatorColor: AppColors.current().primary,
+            indicatorWeight: 4,
+            labelColor: AppColors.current().primary,
+            overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+            unselectedLabelColor: AppColors.current().textGray,
+            tabs: <Tab>[
+              Tab(text: 'home_tab1'.tr),
+              Tab(text: 'home_tab2'.tr),
+              Tab(text: 'home_tab3'.tr),
+              Tab(text: 'home_tab4'.tr),
             ],
-            bottom: TabBar(
-              isScrollable: true,
-              dividerColor: Colors.transparent,
-              labelStyle: Theme.of(context).textTheme.bodyMedium,
-              unselectedLabelStyle: Theme.of(context).textTheme.bodyMedium,
-              indicatorColor: AppColors.current().primary,
-              indicatorWeight: 4,
-              labelColor: AppColors.current().primary,
-              overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-              unselectedLabelColor: AppColors.current().textGray,
-              tabs: <Tab>[
-                Tab(text: 'home_tab1'.tr),
-                Tab(text: 'home_tab2'.tr),
-                Tab(text: 'home_tab3'.tr),
-                Tab(text: 'home_tab4'.tr),
-              ],
-            ),
           ),
-          body: Obx(
-            () {
-              if (controller.songAllList.isEmpty) {
-                return TabBarView(
-                  children: <Widget>[
-                    CenterText(title: 'home_not_tab1'.tr),
-                    CenterText(title: 'home_not_tab2'.tr),
-                    CenterText(title: 'home_not_tab3'.tr),
-                    CenterText(title: 'home_not_tab4'.tr),
-                  ],
-                );
-              } else {
-                return TabBarView(
-                  children: <Widget>[
-                    MusicList(songs: controller.songAllList),
-                    FolderList(),
-                    AlbumList(
-                      albumList: controller.albumList,
-                      albumSongs: controller.albumListSongs,
-                      isAlbumArtist: false,
-                    ),
-                    AlbumList(
-                      albumList: controller.artistList,
-                      albumSongs: controller.artistListSongs,
-                      isAlbumArtist: true,
-                    ),
-                  ],
-                );
-              }
-            },
-          ),
-          bottomNavigationBar: Obx(
-            () => controller.songAllList.isEmpty
-                ? const Space(size: 0)
-                : const Shortcut(),
-          ),
+        ),
+        body: Obx(
+          () {
+            if (controller.songAllList.isEmpty) {
+              return TabBarView(
+                children: <Widget>[
+                  CenterText(title: 'home_not_tab1'.tr),
+                  CenterText(title: 'home_not_tab2'.tr),
+                  CenterText(title: 'home_not_tab3'.tr),
+                  CenterText(title: 'home_not_tab4'.tr),
+                ],
+              );
+            } else {
+              return TabBarView(
+                children: <Widget>[
+                  MusicList(songs: controller.songAllList),
+                  FolderList(),
+                  AlbumList(
+                    albumList: controller.albumList,
+                    albumSongs: controller.albumListSongs,
+                    isAlbumArtist: false,
+                  ),
+                  AlbumList(
+                    albumList: controller.artistList,
+                    albumSongs: controller.artistListSongs,
+                    isAlbumArtist: true,
+                  ),
+                ],
+              );
+            }
+          },
+        ),
+        bottomNavigationBar: Obx(
+          () => controller.songAllList.isEmpty
+              ? const Space(size: 0)
+              : const Shortcut(),
         ),
       ),
     );

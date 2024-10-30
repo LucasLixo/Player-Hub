@@ -59,37 +59,35 @@ class SplashPage extends GetView<PlayerController> {
       _permissionsApp();
     });
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.current().background,
-        appBar: null,
-        body: Center(
-          child: Text(
-            AppShared.title,
-            style: Theme.of(context).textTheme.displayMedium,
-            textAlign: TextAlign.center,
+    return Scaffold(
+      backgroundColor: AppColors.current().background,
+      appBar: null,
+      body: Center(
+        child: Text(
+          AppShared.title,
+          style: Theme.of(context).textTheme.displayMedium,
+          textAlign: TextAlign.center,
+        ),
+      ),
+      bottomNavigationBar: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Obx(() {
+            return Text(
+              controller.songLog.value,
+              style: Theme.of(context).textTheme.titleMedium,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            );
+          }),
+          LinearProgressIndicator(
+            color: AppColors.current().primary,
+            backgroundColor: AppColors.current().surface,
+            minHeight: 4.0,
           ),
-        ),
-        bottomNavigationBar: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Obx(() {
-              return Text(
-                controller.songLog.value,
-                style: Theme.of(context).textTheme.titleMedium,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              );
-            }),
-            LinearProgressIndicator(
-              color: AppColors.current().primary,
-              backgroundColor: AppColors.current().surface,
-              minHeight: 4.0,
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }

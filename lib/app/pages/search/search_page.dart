@@ -52,76 +52,74 @@ class SearchPage extends GetView<PlayerController> {
         _textController.dispose();
         _focusNode.dispose();
       },
-      child: SafeArea(
-        child: Scaffold(
+      child: Scaffold(
+        backgroundColor: AppColors.current().background,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: AppColors.current().background,
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: AppColors.current().background,
-            leading: InkWell(
-              onTap: () {
-                _focusNode.unfocus();
-                Get.back();
-                _textController.clear();
-                _textController.dispose();
-                _focusNode.dispose();
-              },
-              child: Icon(
-                Icons.arrow_back_ios,
-                color: AppColors.current().text,
-                size: 32,
-              ),
+          leading: InkWell(
+            onTap: () {
+              _focusNode.unfocus();
+              Get.back();
+              _textController.clear();
+              _textController.dispose();
+              _focusNode.dispose();
+            },
+            child: Icon(
+              Icons.arrow_back_ios,
+              color: AppColors.current().text,
+              size: 32,
             ),
-            title: Padding(
-              padding: const EdgeInsets.only(bottom: 12.0),
-              child: TextField(
-                cursorHeight: 28.0,
-                controller: _textController,
-                focusNode: _focusNode,
-                style: Theme.of(context).textTheme.titleMedium,
-                cursorColor: AppColors.current().text,
-                decoration: InputDecoration(
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.current().text),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.current().text),
-                  ),
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.current().text),
-                  ),
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  labelText: 'app_search'.tr,
-                  labelStyle: Theme.of(context).textTheme.labelMedium,
+          ),
+          title: Padding(
+            padding: const EdgeInsets.only(bottom: 12.0),
+            child: TextField(
+              cursorHeight: 28.0,
+              controller: _textController,
+              focusNode: _focusNode,
+              style: Theme.of(context).textTheme.titleMedium,
+              cursorColor: AppColors.current().text,
+              decoration: InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.current().text),
                 ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.current().text),
+                ),
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.current().text),
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                labelText: 'app_search'.tr,
+                labelStyle: Theme.of(context).textTheme.labelMedium,
               ),
             ),
           ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Obx(
-              () => controller.filteredSongs.isEmpty
-                  ? const Space(size: 0)
-                  : GestureDetector(
-                      onTap: () {
-                        _focusNode.unfocus();
-                      },
-                      child: MusicList(
-                        songs: controller.filteredSongs,
-                      ),
-                    ),
-            ),
-          ),
-          bottomNavigationBar: Obx(
-            () => controller.songAllList.isEmpty
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Obx(
+            () => controller.filteredSongs.isEmpty
                 ? const Space(size: 0)
                 : GestureDetector(
                     onTap: () {
                       _focusNode.unfocus();
                     },
-                    child: const Shortcut(),
+                    child: MusicList(
+                      songs: controller.filteredSongs,
+                    ),
                   ),
           ),
+        ),
+        bottomNavigationBar: Obx(
+          () => controller.songAllList.isEmpty
+              ? const Space(size: 0)
+              : GestureDetector(
+                  onTap: () {
+                    _focusNode.unfocus();
+                  },
+                  child: const Shortcut(),
+                ),
         ),
       ),
     );
