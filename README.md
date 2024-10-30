@@ -1,6 +1,6 @@
 <div align="center">
 
-<img width="" src="fastlane/App.pngg"  width=160 height=160  align="center">
+<img width="" src="fastlane/App.png"  width=160 height=160  align="center">
 
 # Player Hub
 
@@ -20,18 +20,18 @@
 
 >[!Warning]
 >
->helper_hub
->get
->permission_handler
->flutter_launcher_icons
->audio_service
->on_audio_query
->just_audio
->just_audio_background
->just_audio_platform_interface
->shared_preferences
->device_info_plus
->path_provider
->flutter_phoenix
->equalizer_flutter
->home_widget
+>helper_hub,
+>get,
+>permission_handler,
+>flutter_launcher_icons,
+>audio_service,
+>on_audio_query,
+>just_audio,
+>just_audio_background,
+>just_audio_platform_interface,
+>shared_preferences,
+>device_info_plus,
+>path_provider,
+>flutter_phoenix,
+>equalizer_flutter,
+>home_widget.
