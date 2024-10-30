@@ -4,6 +4,18 @@
 
 # Player Hub
 
+## Audio Player for Android
+
+### Languages
+
+&nbsp;&nbsp;| &nbsp;&nbsp;
+<a href="#">English</a>
+&nbsp;&nbsp;| &nbsp;&nbsp;
+<a href="#">Portuguese</a>
+&nbsp;&nbsp;| &nbsp;&nbsp;
+<a href="#">Español</a>
+&nbsp;&nbsp;| &nbsp;&nbsp;
+
 </div>
 
 ## Screenshots
