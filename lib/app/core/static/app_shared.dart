@@ -1,12 +1,13 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:flutter/material.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:helper_hub/src/theme_material.dart';
 
 /// Class to manage preferences and images in the application using GetX.
 abstract class AppShared extends GetxController {
@@ -60,24 +61,21 @@ abstract class AppShared extends GetxController {
       sharedMap[setting.name] = SharedAttributes.getAttributesMap[setting.name];
     }
 
-    loadTheme();
+    await loadTheme();
   }
 
   // ==================================================
-  static void loadTheme() {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: AppColors.current().surface,
-      systemNavigationBarIconBrightness: AppColors.current().brightness,
-    ));
-    Get.changeTheme((sharedMap[SharedAttributes.darkMode.name] as bool)
-        ? ThemeMaterial.dark()
-        : ThemeMaterial.light());
+  static Future<void> loadTheme() async {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: AppColors.current().background,
+        systemNavigationBarColor: AppColors.current().surface,
+        systemNavigationBarIconBrightness: AppColors.current().brightness,
+        statusBarColor: Colors.transparent,
         statusBarIconBrightness: AppColors.current().brightness,
       ),
     );
+
+    await Phoenix.rebirth(Get.context!);
   }
 
   // ==================================================

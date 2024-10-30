@@ -41,12 +41,12 @@ void main() async {
     ]);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await await Get.toNamed(AppRoutes.splash);
+      await Get.toNamed(AppRoutes.splash);
     });
   }, (Object error, StackTrace stack) async {
     debugPrint("$error");
     debugPrintStack(stackTrace: stack);
 
-    await await Get.toNamed(AppRoutes.error);
+    await Get.toNamed(AppRoutes.error);
   });
 }

@@ -8,7 +8,6 @@ import 'package:player_hub/app/core/enums/languages.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
 import 'package:player_hub/app/core/enums/sort_type.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 // import 'package:player_hub/app/shared/utils/show_toast.dart';
@@ -146,8 +145,7 @@ class _SettingPageState extends State<SettingPage> {
                   value: AppShared.getShared(SharedAttributes.darkMode),
                   onChanged: (bool value) async {
                     await AppShared.setShared(SharedAttributes.darkMode, value);
-                    await Phoenix.rebirth(Get.context!);
-                    AppShared.loadTheme();
+                    await AppShared.loadTheme();
                   },
                 );
               }),

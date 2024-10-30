@@ -43,8 +43,8 @@ class _AppWidgetState extends State<AppWidget> with WidgetsBindingObserver {
     }
   }
 
-  void _onEnterApp() {
-    AppShared.loadTheme();
+  Future<void> _onEnterApp() async {
+    await AppShared.loadTheme();
   }
 
   void _onExitApp() {}
