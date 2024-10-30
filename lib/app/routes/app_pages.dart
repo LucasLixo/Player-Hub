@@ -19,7 +19,13 @@ abstract class AppPages {
     ),
     GetPage(
       name: AppRoutes.splash,
-      page: () => const SafeArea(child: SplashPage()),
+      page: () => const SafeArea(child: SplashPage(waitSeconds: 0)),
+      transitionDuration: const Duration(milliseconds: 300),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: AppRoutes.restart,
+      page: () => const SafeArea(child: SplashPage(waitSeconds: 1)),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.fade,
     ),
@@ -44,17 +50,16 @@ abstract class AppPages {
     GetPage(
       name: AppRoutes.edit,
       page: () => SafeArea(
-          child: EditPage(
-        song: Get.arguments['song'],
-      )),
+        child: EditPage(
+          song: Get.arguments['song'],
+        ),
+      ),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
     ),
     GetPage(
       name: AppRoutes.search,
-      page: () => SafeArea(
-        child: SearchPage(),
-      ),
+      page: () => SafeArea(child: SearchPage()),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
     ),
@@ -67,10 +72,11 @@ abstract class AppPages {
     GetPage(
       name: AppRoutes.playlist,
       page: () => SafeArea(
-          child: PlaylistPage(
-        playlistTitle: Get.arguments['playlistTitle'],
-        playlistList: Get.arguments['playlistList'],
-      )),
+        child: PlaylistPage(
+          playlistTitle: Get.arguments['playlistTitle'],
+          playlistList: Get.arguments['playlistList'],
+        ),
+      ),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
     ),

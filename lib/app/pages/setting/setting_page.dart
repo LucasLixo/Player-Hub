@@ -221,7 +221,7 @@ class _SettingPageState extends State<SettingPage> {
                       SharedAttributes.defaultLanguage, code);
                   await AppShared.setShared(
                       SharedAttributes.changeLanguage, true);
-                  await Get.toNamed(AppRoutes.splash);
+                  await Get.toNamed(AppRoutes.restart);
                 },
                 itemBuilder: (BuildContext context) {
                   return AppLanguages.values.map((appLanguagesOption) {

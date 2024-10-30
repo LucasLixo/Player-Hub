@@ -14,7 +14,12 @@ import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 
 class SplashPage extends GetView<PlayerController> {
-  const SplashPage({super.key});
+  final int waitSeconds;
+
+  const SplashPage({
+    super.key,
+    required this.waitSeconds,
+  });
 
   Future<void> _permissionsApp() async {
     PermissionStatus audioPermissionStatus;
@@ -49,6 +54,8 @@ class SplashPage extends GetView<PlayerController> {
     if (controller.songAllList.isEmpty) {
       await controller.getAllSongs();
     }
+
+    await Future.delayed(Duration(seconds: waitSeconds));
 
     await Get.offAllNamed(AppRoutes.home);
   }
