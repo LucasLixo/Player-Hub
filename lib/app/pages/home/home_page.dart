@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
@@ -27,6 +28,10 @@ class HomePage extends GetView<PlayerController> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: AppColors.current().background,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: AppColors.current().background,
+            statusBarIconBrightness: Brightness.light,
+          ),
           leading: InkWell(
             onTap: () async {
               await Get.toNamed(AppRoutes.setting);

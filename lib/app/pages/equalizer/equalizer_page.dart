@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:equalizer_flutter/equalizer_flutter.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -43,6 +44,10 @@ class EqualizerPage extends GetView<PlayerController> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.current().background,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: AppColors.current().background,
+          statusBarIconBrightness: Brightness.light,
+        ),
         leading: InkWell(
           onTap: () => Get.back(),
           child: Icon(

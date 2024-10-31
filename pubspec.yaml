@@ -20,7 +20,7 @@ dependencies:
   helper_hub:
     git:
       url: https://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@github.com/LucasLixo/Helper-Hub.git
-      ref: 0.2.17
+      ref: 0.2.19
   get: 4.6.6
   permission_handler: 11.3.1
   flutter_launcher_icons: 0.14.1

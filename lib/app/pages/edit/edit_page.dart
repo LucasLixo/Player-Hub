@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
@@ -44,6 +45,10 @@ class EditPage extends GetView<PlayerController> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.current().background,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: AppColors.current().background,
+          statusBarIconBrightness: Brightness.light,
+        ),
         leading: InkWell(
           onTap: () => Get.back(),
           child: Icon(

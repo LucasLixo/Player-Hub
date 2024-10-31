@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:flutter/material.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
 import 'package:flutter/services.dart';
@@ -70,8 +69,6 @@ abstract class AppShared extends GetxController {
       SystemUiOverlayStyle(
         systemNavigationBarColor: AppColors.current().surface,
         systemNavigationBarIconBrightness: AppColors.current().brightness,
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: AppColors.current().brightness,
       ),
     );
 

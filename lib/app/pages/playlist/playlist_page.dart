@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -50,6 +51,10 @@ class _PlaylistPageState extends State<PlaylistPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.current().background,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: AppColors.current().background,
+          statusBarIconBrightness: Brightness.light,
+        ),
         leading: InkWell(
           onTap: () {
             Get.back();
