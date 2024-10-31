@@ -60,7 +60,7 @@ class SearchPage extends GetView<PlayerController> {
           backgroundColor: AppColors.current().background,
           systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: AppColors.current().background,
-            statusBarIconBrightness: Brightness.light,
+            statusBarIconBrightness: AppColors.current().brightness,
             systemNavigationBarColor: AppColors.current().background,
             systemNavigationBarIconBrightness: AppColors.current().brightness,
           ),

@@ -5,7 +5,7 @@ description: >-
   with high audio quality and an intuitive interface.
   Organize your tracks, adjust the sound with the equalizer and enjoy a limitless music experience.
 publish_to: 'none'
-version: 1.7.54+83
+version: 1.7.55+86
 
 environment:
   sdk: '>=3.4.4 <4.0.0' # current is: 3.5.3
@@ -20,7 +20,7 @@ dependencies:
   helper_hub:
     git:
       url: https://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@github.com/LucasLixo/Helper-Hub.git
-      ref: 0.2.20
+      ref: 0.2.21
   get: 4.6.6
   permission_handler: 11.3.1
   flutter_launcher_icons: 0.14.1

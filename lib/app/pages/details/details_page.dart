@@ -6,6 +6,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
@@ -42,6 +43,19 @@ class _DetailsPageState extends State<DetailsPage>
         _controller.reverse();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: AppColors.current().background,
+        statusBarIconBrightness: AppColors.current().brightness,
+        systemNavigationBarColor: AppColors.current().background,
+        systemNavigationBarIconBrightness: AppColors.current().brightness,
+      ),
+    );
+    super.dispose();
   }
 
   @override
