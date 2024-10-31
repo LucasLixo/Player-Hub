@@ -26,7 +26,7 @@ class PlaylistPage extends StatefulWidget {
 }
 
 class _PlaylistPageState extends State<PlaylistPage> {
-  final playerController = Get.find<PlayerController>();
+  final PlayerController playerController = Get.find<PlayerController>();
 
   @override
   void initState() {

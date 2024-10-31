@@ -11,7 +11,6 @@ import 'package:player_hub/app/core/enums/sort_type.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
-// import 'package:player_hub/app/shared/utils/show_toast.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 
@@ -23,7 +22,7 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  final PlayerController controller = Get.put(PlayerController());
+  final PlayerController controller = Get.find<PlayerController>();
 
   final RxBool isEdited = false.obs;
 

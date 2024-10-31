@@ -20,7 +20,7 @@ class _ShortcutState extends State<Shortcut>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
-  final playerController = Get.find<PlayerController>();
+  final PlayerController playerController = Get.find<PlayerController>();
 
   @override
   void initState() {

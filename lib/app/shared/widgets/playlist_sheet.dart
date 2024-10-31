@@ -13,7 +13,7 @@ class PlaylistSheet extends GetView<PlayerController> with AppManifest {
 
   @override
   Widget build(BuildContext context) {
-    final playerController = Get.find<PlayerController>();
+    final PlayerController playerController = Get.find<PlayerController>();
 
     return InkWell(
       onTap: () {
