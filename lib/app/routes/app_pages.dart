@@ -19,15 +19,15 @@ abstract class AppPages {
     ),
     GetPage(
       name: AppRoutes.splash,
-      page: () => const SafeArea(child: SplashPage(waitSeconds: 0)),
+      page: () => const SafeArea(child: SplashPage(waitSecond: false)),
       transitionDuration: const Duration(milliseconds: 300),
-      transition: Transition.fade,
+      transition: Transition.rightToLeft,
     ),
     GetPage(
       name: AppRoutes.restart,
-      page: () => const SafeArea(child: SplashPage(waitSeconds: 1)),
+      page: () => const SafeArea(child: SplashPage(waitSecond: true)),
       transitionDuration: const Duration(milliseconds: 300),
-      transition: Transition.fade,
+      transition: Transition.rightToLeft,
     ),
     GetPage(
       name: AppRoutes.home,

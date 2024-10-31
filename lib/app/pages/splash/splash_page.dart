@@ -14,11 +14,11 @@ import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 
 class SplashPage extends GetView<PlayerController> {
-  final int waitSeconds;
+  final bool waitSecond;
 
   const SplashPage({
     super.key,
-    required this.waitSeconds,
+    required this.waitSecond,
   });
 
   Future<void> _permissionsApp() async {
@@ -55,7 +55,9 @@ class SplashPage extends GetView<PlayerController> {
       await controller.getAllSongs();
     }
 
-    await Future.delayed(Duration(seconds: waitSeconds));
+    if (waitSecond) {
+      await Future.delayed(const Duration(seconds: 1));
+    }
 
     await Get.offAllNamed(AppRoutes.home);
   }
@@ -76,26 +78,31 @@ class SplashPage extends GetView<PlayerController> {
           textAlign: TextAlign.center,
         ),
       ),
-      bottomNavigationBar: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Obx(() {
-            return Text(
-              controller.songLog.value,
-              style: Theme.of(context).textTheme.titleMedium,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            );
-          }),
-          LinearProgressIndicator(
+      bottomNavigationBar: Obx(() {
+        if (controller.songLog.value.isNotEmpty) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                controller.songLog.value,
+                style: Theme.of(context).textTheme.titleMedium,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          );
+        } else if (waitSecond) {
+          return LinearProgressIndicator(
             color: AppColors.current().primary,
             backgroundColor: AppColors.current().surface,
             minHeight: 4.0,
-          ),
-        ],
-      ),
+          );
+        } else {
+          return const Space(size: 0);
+        }
+      }),
     );
   }
 }
