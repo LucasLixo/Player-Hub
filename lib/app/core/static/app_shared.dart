@@ -67,7 +67,9 @@ abstract class AppShared extends GetxController {
   static Future<void> loadTheme() async {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        systemNavigationBarColor: AppColors.current().surface,
+        statusBarColor: AppColors.current().background,
+        statusBarIconBrightness: Brightness.light,
+        systemNavigationBarColor: AppColors.current().background,
         systemNavigationBarIconBrightness: AppColors.current().brightness,
       ),
     );

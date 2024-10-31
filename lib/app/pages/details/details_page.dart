@@ -91,6 +91,8 @@ class _DetailsPageState extends State<DetailsPage>
                         systemOverlayStyle: const SystemUiOverlayStyle(
                           statusBarColor: Colors.transparent,
                           statusBarIconBrightness: Brightness.light,
+                          systemNavigationBarColor: Colors.white,
+                          systemNavigationBarIconBrightness: Brightness.light,
                         ),
                         foregroundColor: Colors.transparent,
                         leading: InkWell(

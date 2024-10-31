@@ -47,6 +47,8 @@ class EqualizerPage extends GetView<PlayerController> {
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: AppColors.current().background,
           statusBarIconBrightness: Brightness.light,
+          systemNavigationBarColor: AppColors.current().background,
+          systemNavigationBarIconBrightness: AppColors.current().brightness,
         ),
         leading: InkWell(
           onTap: () => Get.back(),

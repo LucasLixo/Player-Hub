@@ -29,7 +29,13 @@ void main() async {
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
       ]),
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge),
+      SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.manual,
+        overlays: [
+          SystemUiOverlay.top,
+          SystemUiOverlay.bottom,
+        ],
+      ),
       JustAudioBackground.init(
         androidNotificationChannelId: "${AppShared.package}.channel.audio",
         androidNotificationChannelName: AppShared.title,

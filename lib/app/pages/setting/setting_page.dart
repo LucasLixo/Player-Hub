@@ -44,6 +44,8 @@ class _SettingPageState extends State<SettingPage> {
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: AppColors.current().background,
           statusBarIconBrightness: Brightness.light,
+          systemNavigationBarColor: AppColors.current().background,
+          systemNavigationBarIconBrightness: AppColors.current().brightness,
         ),
         leading: InkWell(
           onTap: () => Get.back(),

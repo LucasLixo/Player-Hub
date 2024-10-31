@@ -233,11 +233,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.2.19"
-      resolved-ref: b1a50e3ac0c76a3b283a3528602d72d27809def0
+      ref: "0.2.20"
+      resolved-ref: bc68a8d1e7e0d3781fa8754d0d3088df2de96204
       url: "https://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@github.com/LucasLixo/Helper-Hub.git"
     source: git
-    version: "0.2.19"
+    version: "0.2.20"
   home_widget:
     dependency: "direct main"
     description:
