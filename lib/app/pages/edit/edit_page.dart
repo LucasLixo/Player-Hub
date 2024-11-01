@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
@@ -45,14 +44,10 @@ class EditPage extends GetView<PlayerController> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.current().background,
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: AppColors.current().background,
-          statusBarIconBrightness: AppColors.current().brightness,
-          systemNavigationBarColor: AppColors.current().background,
-          systemNavigationBarIconBrightness: AppColors.current().brightness,
-        ),
         leading: InkWell(
-          onTap: () => Get.back(),
+          onTap: () {
+            Get.back();
+          },
           child: Icon(
             Icons.arrow_back_ios,
             color: AppColors.current().text,
@@ -81,43 +76,45 @@ class EditPage extends GetView<PlayerController> {
           const Space(),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
-        child: Column(
-          children: [
-            ListTile(
-              title: Text(
-                'edit_title'.tr,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              subtitle: TextField(
-                controller: textControllerTitle,
-                style: Theme.of(context).textTheme.titleMedium,
-                cursorColor: AppColors.current().text,
-                decoration: InputDecoration(
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.current().text),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
+          child: Column(
+            children: [
+              ListTile(
+                title: Text(
+                  'edit_title'.tr,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                subtitle: TextField(
+                  controller: textControllerTitle,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  cursorColor: AppColors.current().text,
+                  decoration: InputDecoration(
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.current().text),
+                    ),
                   ),
                 ),
               ),
-            ),
-            ListTile(
-              title: Text(
-                'edit_artist'.tr,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              subtitle: TextField(
-                controller: textControllerArtist,
-                style: Theme.of(context).textTheme.titleMedium,
-                cursorColor: AppColors.current().text,
-                decoration: InputDecoration(
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.current().text),
+              ListTile(
+                title: Text(
+                  'edit_artist'.tr,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                subtitle: TextField(
+                  controller: textControllerArtist,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  cursorColor: AppColors.current().text,
+                  decoration: InputDecoration(
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.current().text),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

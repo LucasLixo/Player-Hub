@@ -77,41 +77,48 @@ class SplashPage extends GetView<PlayerController> {
       await _permissionsApp();
     });
 
-    return Scaffold(
-      backgroundColor: AppColors.current().background,
-      appBar: null,
-      body: Center(
-        child: Text(
-          AppShared.title,
-          style: Theme.of(context).textTheme.displayMedium,
-          textAlign: TextAlign.center,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.current().background,
+        appBar: null,
+        body: Center(
+          child: Text(
+            AppShared.title,
+            style: Theme.of(context).textTheme.displayMedium,
+            textAlign: TextAlign.center,
+          ),
         ),
+        bottomNavigationBar: Obx(() {
+          if (controller.songLog.value.isNotEmpty) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  controller.songLog.value,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                LinearProgressIndicator(
+                  color: AppColors.current().primary,
+                  backgroundColor: AppColors.current().surface,
+                  minHeight: 4.0,
+                ),
+              ],
+            );
+          } else if (waitSecond) {
+            return LinearProgressIndicator(
+              color: AppColors.current().primary,
+              backgroundColor: AppColors.current().surface,
+              minHeight: 4.0,
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        }),
       ),
-      bottomNavigationBar: Obx(() {
-        if (controller.songLog.value.isNotEmpty) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                controller.songLog.value,
-                style: Theme.of(context).textTheme.titleMedium,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          );
-        } else if (waitSecond) {
-          return LinearProgressIndicator(
-            color: AppColors.current().primary,
-            backgroundColor: AppColors.current().surface,
-            minHeight: 4.0,
-          );
-        } else {
-          return const SizedBox.shrink();
-        }
-      }),
     );
   }
 }

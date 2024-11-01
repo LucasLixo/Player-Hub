@@ -29,9 +29,8 @@ class HomePage extends GetView<PlayerController> {
           automaticallyImplyLeading: false,
           backgroundColor: AppColors.current().background,
           systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: AppColors.current().background,
-            statusBarIconBrightness: AppColors.current().brightness,
-            systemNavigationBarColor: AppColors.current().background,
+            systemNavigationBarColor: AppColors.current().surface,
+            systemNavigationBarDividerColor: Colors.transparent,
             systemNavigationBarIconBrightness: AppColors.current().brightness,
           ),
           leading: InkWell(
@@ -93,36 +92,38 @@ class HomePage extends GetView<PlayerController> {
             ],
           ),
         ),
-        body: Obx(
-          () {
-            if (controller.songAllList.isEmpty) {
-              return TabBarView(
-                children: <Widget>[
-                  CenterText(title: 'home_not_tab1'.tr),
-                  CenterText(title: 'home_not_tab2'.tr),
-                  CenterText(title: 'home_not_tab3'.tr),
-                  CenterText(title: 'home_not_tab4'.tr),
-                ],
-              );
-            } else {
-              return TabBarView(
-                children: <Widget>[
-                  MusicList(songs: controller.songAllList),
-                  FolderList(),
-                  AlbumList(
-                    albumList: controller.albumList,
-                    albumSongs: controller.albumListSongs,
-                    isAlbumArtist: false,
-                  ),
-                  AlbumList(
-                    albumList: controller.artistList,
-                    albumSongs: controller.artistListSongs,
-                    isAlbumArtist: true,
-                  ),
-                ],
-              );
-            }
-          },
+        body: SafeArea(
+          child: Obx(
+            () {
+              if (controller.songAllList.isEmpty) {
+                return TabBarView(
+                  children: <Widget>[
+                    CenterText(title: 'home_not_tab1'.tr),
+                    CenterText(title: 'home_not_tab2'.tr),
+                    CenterText(title: 'home_not_tab3'.tr),
+                    CenterText(title: 'home_not_tab4'.tr),
+                  ],
+                );
+              } else {
+                return TabBarView(
+                  children: <Widget>[
+                    MusicList(songs: controller.songAllList),
+                    FolderList(),
+                    AlbumList(
+                      albumList: controller.albumList,
+                      albumSongs: controller.albumListSongs,
+                      isAlbumArtist: false,
+                    ),
+                    AlbumList(
+                      albumList: controller.artistList,
+                      albumSongs: controller.artistListSongs,
+                      isAlbumArtist: true,
+                    ),
+                  ],
+                );
+              }
+            },
+          ),
         ),
         bottomNavigationBar: Obx(
           () => controller.songAllList.isEmpty

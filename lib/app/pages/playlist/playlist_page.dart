@@ -52,9 +52,8 @@ class _PlaylistPageState extends State<PlaylistPage> {
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.current().background,
         systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: AppColors.current().background,
-          statusBarIconBrightness: AppColors.current().brightness,
-          systemNavigationBarColor: AppColors.current().background,
+          systemNavigationBarColor: AppColors.current().surface,
+          systemNavigationBarDividerColor: Colors.transparent,
           systemNavigationBarIconBrightness: AppColors.current().brightness,
         ),
         leading: InkWell(
@@ -72,9 +71,11 @@ class _PlaylistPageState extends State<PlaylistPage> {
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: MusicList(songs: widget.playlistList),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: MusicList(songs: widget.playlistList),
+        ),
       ),
       bottomNavigationBar: Obx(
         () => playerController.songAllList.isEmpty

@@ -59,9 +59,8 @@ class SearchPage extends GetView<PlayerController> {
           automaticallyImplyLeading: false,
           backgroundColor: AppColors.current().background,
           systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: AppColors.current().background,
-            statusBarIconBrightness: AppColors.current().brightness,
-            systemNavigationBarColor: AppColors.current().background,
+            systemNavigationBarColor: AppColors.current().surface,
+            systemNavigationBarDividerColor: Colors.transparent,
             systemNavigationBarIconBrightness: AppColors.current().brightness,
           ),
           leading: InkWell(
@@ -103,19 +102,21 @@ class SearchPage extends GetView<PlayerController> {
             ),
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Obx(
-            () => controller.filteredSongs.isEmpty
-                ? const Space(size: 0)
-                : GestureDetector(
-                    onTap: () {
-                      _focusNode.unfocus();
-                    },
-                    child: MusicList(
-                      songs: controller.filteredSongs,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Obx(
+              () => controller.filteredSongs.isEmpty
+                  ? const Space(size: 0)
+                  : GestureDetector(
+                      onTap: () {
+                        _focusNode.unfocus();
+                      },
+                      child: MusicList(
+                        songs: controller.filteredSongs,
+                      ),
                     ),
-                  ),
+            ),
           ),
         ),
         bottomNavigationBar: Obx(

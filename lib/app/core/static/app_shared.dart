@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
@@ -67,9 +68,10 @@ abstract class AppShared extends GetxController {
   static Future<void> loadTheme() async {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: AppColors.current().background,
+        statusBarColor: Colors.transparent,
         statusBarIconBrightness: AppColors.current().brightness,
         systemNavigationBarColor: AppColors.current().background,
+        systemNavigationBarDividerColor: Colors.transparent,
         systemNavigationBarIconBrightness: AppColors.current().brightness,
       ),
     );
