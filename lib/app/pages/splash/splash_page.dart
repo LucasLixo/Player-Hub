@@ -16,7 +16,6 @@ import 'package:player_hub/app/core/static/app_shared.dart';
 
 class SplashPage extends GetView<PlayerController> {
   final bool waitSecond;
-
   final RxBool isRequestingPermission = false.obs;
 
   SplashPage({
@@ -88,36 +87,35 @@ class SplashPage extends GetView<PlayerController> {
             textAlign: TextAlign.center,
           ),
         ),
-        bottomNavigationBar: Obx(() {
-          if (controller.songLog.value.isNotEmpty) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  controller.songLog.value,
-                  style: Theme.of(context).textTheme.titleMedium,
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                LinearProgressIndicator(
-                  color: AppColors.current().primary,
-                  backgroundColor: AppColors.current().surface,
-                  minHeight: 4.0,
-                ),
-              ],
-            );
-          } else if (waitSecond) {
-            return LinearProgressIndicator(
-              color: AppColors.current().primary,
-              backgroundColor: AppColors.current().surface,
-              minHeight: 4.0,
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        }),
+        bottomNavigationBar: ListTile(
+          tileColor: Colors.transparent,
+          splashColor: Colors.transparent,
+          focusColor: Colors.transparent,
+          title: Obx(() {
+            if (controller.songLog.value.isNotEmpty) {
+              return Text(
+                controller.songLog.value,
+                style: Theme.of(context).textTheme.titleMedium,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          }),
+          subtitle: Obx(() {
+            if (waitSecond.obs.value || controller.songLog.value.isNotEmpty) {
+              return LinearProgressIndicator(
+                color: AppColors.current().primary,
+                backgroundColor: AppColors.current().surface,
+                minHeight: 4.0,
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          }),
+        ),
       ),
     );
   }

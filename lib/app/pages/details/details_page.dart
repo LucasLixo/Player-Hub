@@ -46,7 +46,7 @@ class _DetailsPageState extends State<DetailsPage>
 
   @override
   void dispose() {
-    AppShared.loadTheme();
+    AppShared.loadTheme(false);
     super.dispose();
   }
 
@@ -90,7 +90,7 @@ class _DetailsPageState extends State<DetailsPage>
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: <Widget>[
                       AppBar(
                         automaticallyImplyLeading: false,
                         backgroundColor: Colors.transparent,
@@ -191,7 +191,7 @@ class _DetailsPageState extends State<DetailsPage>
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: <Widget>[
                           Text(
                             playerController.songPosition.value,
                             style: dynamicStyle(
@@ -235,7 +235,7 @@ class _DetailsPageState extends State<DetailsPage>
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: <Widget>[
                           const PlaylistMode(),
                           InkWell(
                             onTap: () async {

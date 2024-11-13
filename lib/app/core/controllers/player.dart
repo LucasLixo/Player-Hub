@@ -211,12 +211,11 @@ class PlayerController extends BaseAudioHandler
     artistList.value = results[2] as List<AlbumModel>;
 
     // Remove músicas por duração
+    int ignoreTime = AppShared.getShared(SharedAttributes.ignoreTime) as int;
+
     songs
         .where((song) =>
-            song.duration != null &&
-            song.duration! >
-                (AppShared.getShared(SharedAttributes.ignoreTime) as int) *
-                    1000)
+            song.duration != null && song.duration! > ignoreTime * 1000)
         .toList();
 
     await songAllLoad(songs); // Carrega todas as músicas filtradas

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
@@ -20,11 +22,17 @@ class EditPage extends GetView<PlayerController> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController textControllerTitle = TextEditingController(
-      text: AppShared.getTitle(
-        song.id,
-        song.title,
-      ),
+    final RxString title = ''.obs;
+
+    final TextEditingController textControllerTitle = TextEditingController();
+
+    textControllerTitle.addListener(() {
+      title.value = textControllerTitle.text.trim();
+    });
+
+    textControllerTitle.text = AppShared.getTitle(
+      song.id,
+      song.title,
     );
 
     final TextEditingController textControllerArtist = TextEditingController(
@@ -54,12 +62,14 @@ class EditPage extends GetView<PlayerController> {
             size: 32,
           ),
         ),
-        title: Text(
-          AppShared.getTitle(song.id, song.title),
-          style: Theme.of(context).textTheme.titleMedium,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
+        title: Obx(() {
+          return Text(
+            title.value,
+            style: Theme.of(context).textTheme.titleMedium,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          );
+        }),
         actions: [
           InkWell(
             onTap: () async {
@@ -80,7 +90,7 @@ class EditPage extends GetView<PlayerController> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
           child: Column(
-            children: [
+            children: <Widget>[
               ListTile(
                 title: Text(
                   'edit_title'.tr,

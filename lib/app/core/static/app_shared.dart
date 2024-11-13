@@ -65,7 +65,9 @@ abstract class AppShared extends GetxController {
   }
 
   // ==================================================
-  static Future<void> loadTheme() async {
+  static Future<void> loadTheme([
+    bool isRebirth = true,
+  ]) async {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -76,7 +78,9 @@ abstract class AppShared extends GetxController {
       ),
     );
 
-    await Phoenix.rebirth(Get.context!);
+    if (isRebirth) {
+      await Phoenix.rebirth(Get.context!);
+    }
   }
 
   // ==================================================

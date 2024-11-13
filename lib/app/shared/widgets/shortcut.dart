@@ -92,7 +92,7 @@ class _ShortcutState extends State<Shortcut>
               ),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
-                children: [
+                children: <Widget>[
                   InkWell(
                     onTap: () {
                       playerController.previousSong();

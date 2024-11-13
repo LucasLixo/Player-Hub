@@ -82,62 +82,62 @@ class EqualizerPage extends GetView<PlayerController> {
         ],
       ),
       body: SafeArea(
-      child:  Column(
-        children: [
-          ListTile(
-            title: Text(
-              'setting_reset'.tr,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            trailing: InkWell(
-              onTap: () async {
-                await AppShared.setShared(SharedAttributes.frequency,
-                    SharedAttributes.frequency.value);
-              },
-              child: const Icon(
-                Icons.refresh,
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              title: Text(
+                'setting_reset'.tr,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              trailing: InkWell(
+                onTap: () async {
+                  await AppShared.setShared(SharedAttributes.frequency,
+                      SharedAttributes.frequency.value);
+                },
+                child: const Icon(
+                  Icons.refresh,
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'equalizer_frequency1'.tr,
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                Text(
-                  'equalizer_frequency2'.tr,
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'equalizer_frequency1'.tr,
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                  Text(
+                    'equalizer_frequency2'.tr,
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                ],
+              ),
             ),
-          ),
-          FutureBuilder<List<int>>(
-            future: EqualizerFlutter.getBandLevelRange(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Space(size: 0);
-              } else if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasData) {
-                  return Obx(
-                    () => CustomEQ(
-                      enabled:
-                          AppShared.getShared(SharedAttributes.equalizeMode),
-                      bandLevelRange: snapshot.data!,
-                    ),
-                  );
-                } else if (snapshot.hasError) {
+            FutureBuilder<List<int>>(
+              future: EqualizerFlutter.getBandLevelRange(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Space(size: 0);
+                } else if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasData) {
+                    return Obx(
+                      () => CustomEQ(
+                        enabled:
+                            AppShared.getShared(SharedAttributes.equalizeMode),
+                        bandLevelRange: snapshot.data!,
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Space(size: 0);
+                  }
                 }
-              }
-              return const CenterText(title: 'Unexpected state');
-            },
-          ),
-        ],
-      ),
+                return const CenterText(title: 'Unexpected state');
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -178,7 +178,7 @@ class _CustomEQState extends State<CustomEQ> {
           if (snapshot.hasData) {
             int bandId = 0;
             return Column(
-              children: [
+              children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,7 +202,7 @@ class _CustomEQState extends State<CustomEQ> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
+        children: <Widget>[
           const Space(
             size: 16,
             orientation: Axis.vertical,

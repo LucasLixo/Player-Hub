@@ -58,24 +58,21 @@ class _SettingPageState extends State<SettingPage> {
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             // build ReloadSongs
             ListTile(
               title: Text(
                 "${'setting_reload'.tr} ${'home_tab1'.tr}",
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              trailing: InkWell(
-                onTap: () async {
-                  await controller.getAllSongs();
-                  // await showToast("${'setting_reload'.tr} ${'home_tab1'.tr}");
-                },
-                child: Icon(
-                  Icons.refresh,
-                  color: AppColors.current().text,
-                  size: 32,
-                ),
+              trailing: Icon(
+                Icons.refresh,
+                color: AppColors.current().text,
+                size: 32,
               ),
+              onTap: () async {
+                await controller.getAllSongs();
+              },
             ),
             // build IgnoreTimeTile
             Obx(
@@ -116,16 +113,14 @@ class _SettingPageState extends State<SettingPage> {
                   style: Theme.of(context).textTheme.labelMedium,
                 );
               }),
-              trailing: InkWell(
-                onTap: () async {
-                  await Get.toNamed(AppRoutes.equalizer);
-                },
-                child: Icon(
-                  Icons.graphic_eq,
-                  color: AppColors.current().text,
-                  size: 32,
-                ),
+              trailing: Icon(
+                Icons.graphic_eq,
+                color: AppColors.current().text,
+                size: 32,
               ),
+              onTap: () async {
+                await Get.toNamed(AppRoutes.equalizer);
+              },
             ),
             // build DarkModeTile
             ListTile(

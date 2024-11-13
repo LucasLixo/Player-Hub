@@ -93,36 +93,47 @@ class HomePage extends GetView<PlayerController> {
           ),
         ),
         body: SafeArea(
-          child: Obx(
-            () {
-              if (controller.songAllList.isEmpty) {
-                return TabBarView(
-                  children: <Widget>[
-                    CenterText(title: 'home_not_tab1'.tr),
-                    CenterText(title: 'home_not_tab2'.tr),
-                    CenterText(title: 'home_not_tab3'.tr),
-                    CenterText(title: 'home_not_tab4'.tr),
-                  ],
-                );
-              } else {
-                return TabBarView(
-                  children: <Widget>[
-                    MusicList(songs: controller.songAllList),
-                    FolderList(),
-                    AlbumList(
-                      albumList: controller.albumList,
-                      albumSongs: controller.albumListSongs,
-                      isAlbumArtist: false,
-                    ),
-                    AlbumList(
-                      albumList: controller.artistList,
-                      albumSongs: controller.artistListSongs,
-                      isAlbumArtist: true,
-                    ),
-                  ],
-                );
-              }
-            },
+          child: TabBarView(
+            children: <Widget>[
+              Obx(() {
+                if (controller.songAllList.isNotEmpty) {
+                  return MusicList(songs: controller.songAllList);
+                } else {
+                  return CenterText(title: 'home_not_tab1'.tr);
+                }
+              }),
+              Obx(() {
+                if (controller.folderList.isNotEmpty) {
+                  return FolderList();
+                } else {
+                  return CenterText(title: 'home_not_tab2'.tr);
+                }
+              }),
+              Obx(() {
+                if (controller.albumList.isNotEmpty &&
+                    controller.albumListSongs.isNotEmpty) {
+                  return AlbumList(
+                    albumList: controller.albumList,
+                    albumSongs: controller.albumListSongs,
+                    isAlbumArtist: false,
+                  );
+                } else {
+                  return CenterText(title: 'home_not_tab3'.tr);
+                }
+              }),
+              Obx(() {
+                if (controller.artistList.isNotEmpty &&
+                    controller.artistListSongs.isNotEmpty) {
+                  return AlbumList(
+                    albumList: controller.artistList,
+                    albumSongs: controller.artistListSongs,
+                    isAlbumArtist: true,
+                  );
+                } else {
+                  return CenterText(title: 'home_not_tab4'.tr);
+                }
+              }),
+            ],
           ),
         ),
         bottomNavigationBar: Obx(
