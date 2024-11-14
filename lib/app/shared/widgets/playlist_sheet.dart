@@ -16,8 +16,8 @@ class PlaylistSheet extends GetView<PlayerController> with AppManifest {
     final PlayerController playerController = Get.find<PlayerController>();
 
     return InkWell(
-      onTap: () {
-        showModalBottomSheet(
+      onTap: () async {
+        await showModalBottomSheet(
           context: context,
           backgroundColor: AppColors.current().background,
           builder: (BuildContext context) {

@@ -5,6 +5,8 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:player_hub/app/core/enums/shared_attibutes.dart';
+import 'package:player_hub/app/core/enums/sort_type.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/shared/widgets/album_list.dart';
@@ -97,7 +99,57 @@ class HomePage extends GetView<PlayerController> {
             children: <Widget>[
               Obx(() {
                 if (controller.songAllList.isNotEmpty) {
-                  return MusicList(songs: controller.songAllList);
+                  return MusicList(
+                    songs: controller.songAllList,
+                    first: ListTile(
+                      tileColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      contentPadding:
+                          const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 2.0),
+                      title: Text(
+                        'setting_sort'.tr,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      subtitle: Obx(() {
+                        return Text(
+                          SortType.getTypeTitlebyCode(
+                              AppShared.getShared(SharedAttributes.getSongs)),
+                          style: Theme.of(context).textTheme.labelMedium,
+                        );
+                      }),
+                      trailing: Obx(() {
+                        return PopupMenuButton<int>(
+                          icon: Icon(
+                            Icons.swap_vert,
+                            color: AppColors.current().text,
+                            size: 32,
+                          ),
+                          color: AppColors.current().surface,
+                          onSelected: (int code) async {
+                            await AppShared.setShared(
+                                SharedAttributes.getSongs, code);
+                            await controller.getAllSongs();
+                          },
+                          itemBuilder: (BuildContext context) {
+                            return SortType.values.map((sortTypeOption) {
+                              return PopupMenuItem<int>(
+                                value: sortTypeOption.index,
+                                child: Text(
+                                  SortType.getTypeTitlebyCode(
+                                      sortTypeOption.index),
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
+                                ),
+                              );
+                            }).toList();
+                          },
+                        );
+                      }),
+                    ),
+                  );
                 } else {
                   return CenterText(title: 'home_not_tab1'.tr);
                 }

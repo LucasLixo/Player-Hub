@@ -238,7 +238,7 @@ class PlayerController extends BaseAudioHandler
       Future(() async {
         for (var song in songList) {
           if (!imageCache.containsKey(song.id)) {
-            final imagePath = await getImageFile(id: song.id);
+            final String imagePath = await getImageFile(id: song.id);
             imageCache[song.id] = imagePath;
           }
           songLog.value = AppShared.getTitle(song.id, song.title);

@@ -19,7 +19,7 @@ void main() async {
     LicenseRegistry.addLicense(() async* {
       yield LicenseEntryWithLineBreaks(
         ['google_fonts'],
-        await rootBundle.loadString('assets/fonts/OpenSans-OFL.txt'),
+        await rootBundle.loadString('assets/licenses/OpenSans-OFL.txt'),
       );
     });
 

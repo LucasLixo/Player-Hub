@@ -6,7 +6,7 @@ import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:player_hub/app/core/enums/languages.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
-import 'package:player_hub/app/core/enums/sort_type.dart';
+// import 'package:player_hub/app/core/enums/sort_type.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
@@ -146,48 +146,6 @@ class _SettingPageState extends State<SettingPage> {
                 );
               }),
             ),
-            // build SortOptionTile
-            ListTile(
-              title: Text(
-                'setting_sort'.tr,
-                style: Theme.of(context).textTheme.bodyLarge,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              subtitle: Obx(() {
-                return Text(
-                  SortType.getTypeTitlebyCode(
-                      AppShared.getShared(SharedAttributes.getSongs)),
-                  style: Theme.of(context).textTheme.labelMedium,
-                );
-              }),
-              trailing: Obx(() {
-                return PopupMenuButton<int>(
-                  icon: Icon(
-                    Icons.sort_by_alpha,
-                    color: AppColors.current().text,
-                    size: 32,
-                  ),
-                  color: AppColors.current().surface,
-                  onSelected: (int code) async {
-                    await AppShared.setShared(SharedAttributes.getSongs, code);
-                    isEdited.value = true;
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return SortType.values.map((sortTypeOption) {
-                      return PopupMenuItem<int>(
-                        value: sortTypeOption.index,
-                        child: Text(
-                          SortType.getTypeTitlebyCode(sortTypeOption.index),
-                          style: Theme.of(context).textTheme.labelMedium,
-                        ),
-                      );
-                    }).toList();
-                  },
-                );
-              }),
-            ),
-            // build LanguageSelectionTile
             ListTile(
               title: Text(
                 'setting_language'.tr,

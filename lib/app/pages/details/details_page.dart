@@ -89,7 +89,7 @@ class _DetailsPageState extends State<DetailsPage>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       AppBar(
                         automaticallyImplyLeading: false,
@@ -125,7 +125,9 @@ class _DetailsPageState extends State<DetailsPage>
                           ),
                           const Space(),
                           InkWell(
-                            onTap: () => crudSheet(context, currentSong),
+                            onTap: () async {
+                              await crudSheet(context, currentSong);
+                            },
                             child: const Icon(
                               Icons.more_vert,
                               color: Colors.white,

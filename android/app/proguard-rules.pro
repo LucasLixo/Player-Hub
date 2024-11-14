@@ -18,6 +18,7 @@
 # Other
 -keepattributes *Annotation*
 -keepattributes SourceFile, LineNumberTable
+-keep class androidx.lifecycle.DefaultLifecycleObserver
 
 # Logging 
 -assumenosideeffects class android.util.Log {

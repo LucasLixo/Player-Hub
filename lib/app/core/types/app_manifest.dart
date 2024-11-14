@@ -22,25 +22,22 @@ mixin AppManifest {
 
   // ==================================================
   Future<Uint8List> getImageArray({required int id}) async {
-    final audioQuery = OnAudioQuery();
+    // final audioQuery = OnAudioQuery();
 
-    // Tries to get the album art
-    final Uint8List? data = await audioQuery.queryArtwork(
-      id,
-      ArtworkType.AUDIO,
-      format: ArtworkFormat.JPEG,
-      size: 64,
-      quality: 100,
-    );
+    // final Uint8List? data = await audioQuery.queryArtwork(
+    //   id,
+    //   ArtworkType.AUDIO,
+    //   format: ArtworkFormat.JPEG,
+    //   size: 64,
+    //   quality: 100,
+    // );
 
-    if (data != null && data.isNotEmpty) {
-      return data;
-    } else {
-      final String randomImagePath =
-          imagePaths[Random().nextInt(imagePaths.length)];
-      final ByteData imageData = await rootBundle.load(randomImagePath);
-      return imageData.buffer.asUint8List();
-    }
+    // if (data != null && data.isNotEmpty) {
+    //   return data;
+    // } else {
+    // }
+    final File imageFile = File(await getImageFile(id: id));
+    return imageFile.readAsBytes();
   }
 
   // ==================================================
@@ -49,23 +46,19 @@ mixin AppManifest {
 
     final File file = File('${AppShared.documentDir.path}/$id.jpg');
 
-    // Returns the path if the image already exists
     if (await file.exists()) return file.path;
 
-    // Tries to get the album art
     final Uint8List? data = await audioQuery.queryArtwork(
       id,
       ArtworkType.AUDIO,
       format: ArtworkFormat.JPEG,
-      size: 256,
+      size: 128, // 256,
       quality: 100,
     );
 
-    // If the artwork is found, save it to the temporary directory
     if (data != null && data.isNotEmpty) {
       await file.writeAsBytes(data);
     } else {
-      // If not, save a random image from the assets
       final String randomImagePath =
           imagePaths[Random().nextInt(imagePaths.length)];
       final ByteData imageData = await rootBundle.load(randomImagePath);
@@ -74,5 +67,11 @@ mixin AppManifest {
     }
 
     return file.path;
+  }
+
+  // ==================================================
+  Future<void> setImageFile({required int id, required Uint8List bytes}) async {
+    final File file = File('${AppShared.documentDir.path}/$id.jpg');
+    await file.writeAsBytes(bytes);
   }
 }

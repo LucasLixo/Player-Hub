@@ -3,12 +3,23 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:helper_hub/src/theme_widget.dart';
+import 'package:share_plus/share_plus.dart';
 
-void crudSheet(BuildContext context, SongModel song) {
-  showModalBottomSheet(
+Future<void> crudSheet(BuildContext context, SongModel song) async {
+  Future<void> sharedFiles() async {
+    final ShareResult result = await Share.shareXFiles(
+      [XFile(song.data, name: song.displayNameWOExt)],
+      text: AppShared.getTitle(song.id, song.title),
+    );
+
+    if (result.status == ShareResultStatus.success) {}
+  }
+
+  await showModalBottomSheet(
     context: context,
     backgroundColor: AppColors.current().background,
     builder: (BuildContext context) {
@@ -53,6 +64,24 @@ void crudSheet(BuildContext context, SongModel song) {
                 await Get.toNamed(AppRoutes.edit, arguments: {
                   'song': song,
                 });
+              },
+            ),
+            ListTile(
+              tileColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              focusColor: Colors.transparent,
+              title: Text(
+                'crud_sheet4'.tr,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              trailing: Icon(
+                Icons.share,
+                color: AppColors.current().text,
+                size: 28,
+              ),
+              onTap: () async {
+                Navigator.of(context).pop();
+                await sharedFiles();
               },
             ),
           ],
