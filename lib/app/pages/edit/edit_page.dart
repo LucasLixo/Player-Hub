@@ -32,13 +32,15 @@ class EditPage extends GetView<PlayerController> with AppFunctions {
       await AppShared.setArtist(song.id, textControllerArtist.text);
 
       if (imagePicker.value != null) {
-        await AppManifest.setImageFile(
-          id: song.id,
-          bytes: await imagePicker.value!.readAsBytes(),
-        );
         await Get.toNamed(AppRoutes.splash, arguments: {
           'function': () async {
-            await Future.delayed(const Duration(seconds: 1));
+            await Future.wait([
+              Future.delayed(const Duration(seconds: 1)),
+              AppManifest.setImageFile(
+                id: song.id,
+                bytes: await imagePicker.value!.readAsBytes(),
+              ),
+            ]);
           },
         });
       }
@@ -55,7 +57,7 @@ class EditPage extends GetView<PlayerController> with AppFunctions {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
-        allowedExtensions: ['jpg'],
+        allowedExtensions: ['jpg', 'jpeg', 'png'],
       );
 
       if (result != null && result.files.single.path != null) {

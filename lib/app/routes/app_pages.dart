@@ -62,7 +62,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: AppRoutes.search,
-      page: () => SearchPage(),
+      page: () => const SearchPage(),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
     ),

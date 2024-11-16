@@ -3,17 +3,37 @@ import 'dart:math';
 
 import 'package:flutter/services.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:image/image.dart' as img;
 import 'package:player_hub/app/core/static/app_shared.dart';
 
 abstract class AppManifest {
   // ==================================================
   static Future<Uint8List> getImageArray({required int id}) async {
     final File imageFile = File(await getImageFile(id: id));
-    return imageFile.readAsBytes();
+
+    final Uint8List imageBytes = await imageFile.readAsBytes();
+
+    img.Image? image = img.decodeImage(imageBytes);
+
+    if (image != null) {
+      image = img.copyResize(
+        image,
+        width: 64,
+        height: 64,
+      );
+
+      return Uint8List.fromList(img.encodeJpg(image));
+    }
+
+    return imageBytes;
   }
 
   // ==================================================
   static Future<String> getImageFile({required int id}) async {
+    final File file = File('${AppShared.documentDir.path}/$id.jpg');
+
+    if (await file.exists()) return file.path;
+
     final List<String> imagePaths = [
       'assets/images/lowpoly_blue.jpg',
       'assets/images/lowpoly_green.jpg',
@@ -21,15 +41,11 @@ abstract class AppManifest {
     ];
     final audioQuery = OnAudioQuery();
 
-    final File file = File('${AppShared.documentDir.path}/$id.jpg');
-
-    if (await file.exists()) return file.path;
-
     final Uint8List? data = await audioQuery.queryArtwork(
       id,
       ArtworkType.AUDIO,
       format: ArtworkFormat.JPEG,
-      size: 128, // 256,
+      size: 256,
       quality: 100,
     );
 
@@ -47,9 +63,25 @@ abstract class AppManifest {
   }
 
   // ==================================================
-  static Future<void> setImageFile(
-      {required int id, required Uint8List bytes}) async {
-    final File file = File('${AppShared.documentDir.path}/$id.jpg');
-    await file.writeAsBytes(bytes);
+  static Future<void> setImageFile({
+    required int id,
+    required Uint8List bytes,
+  }) async {
+    try {
+      img.Image? image = img.decodeImage(bytes);
+      if (image == null) {
+        return;
+      }
+      image = img.copyResize(
+        image,
+        width: 256,
+        height: 256,
+      );
+
+      final File file = File('${AppShared.documentDir.path}/$id.jpg');
+      await file.writeAsBytes(img.encodeJpg(image, quality: 100));
+    } catch (e) {
+      return;
+    }
   }
 }

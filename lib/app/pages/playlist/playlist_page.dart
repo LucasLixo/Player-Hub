@@ -72,7 +72,7 @@ class _PlaylistPageState extends State<PlaylistPage> with AppWidgets {
         ),
       ),
       bottomNavigationBar: Obx(
-        () => playerController.songAppList.isEmpty
+        () => playerController.songList.isEmpty
             ? const Space(size: 0)
             : const Shortcut(),
       ),

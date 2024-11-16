@@ -5,7 +5,7 @@ description: >-
   with high audio quality and an intuitive interface.
   Organize your tracks, adjust the sound with the equalizer and enjoy a limitless music experience.
 publish_to: 'none'
-version: 1.8.69+116
+version: 1.8.70+117
 
 environment:
   sdk: '>=3.4.4 <4.0.0' # current is: 3.5.3
@@ -39,6 +39,7 @@ dependencies:
   home_widget: 0.7.0
   share_plus: 9.0.0
   file_picker: 8.0.7
+  image: 4.3.0
 
 dev_dependencies:
   flutter_test:
