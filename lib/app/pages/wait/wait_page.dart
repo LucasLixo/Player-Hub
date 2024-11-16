@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
-import 'package:player_hub/app/shared/utils/dynamic_style.dart';
+import 'package:player_hub/app/core/types/app_functions.dart';
 
-class WaitPage extends StatelessWidget {
+class WaitPage extends StatelessWidget with AppFunctions {
   final bool error;
 
-  const WaitPage({super.key, required this.error});
+  const WaitPage({
+    super.key,
+    required this.error,
+  });
 
   @override
   Widget build(BuildContext context) {

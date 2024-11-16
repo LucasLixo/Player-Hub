@@ -7,18 +7,18 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
 import 'package:player_hub/app/core/enums/sort_type.dart';
+import 'package:player_hub/app/core/types/app_widgets.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
-import 'package:player_hub/app/shared/widgets/album_list.dart';
-import 'package:player_hub/app/shared/widgets/shortcut.dart';
+import 'package:player_hub/app/shared/class/shortcut.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
-import 'package:player_hub/app/shared/widgets/music_list.dart';
-import 'package:player_hub/app/shared/widgets/folder_list.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 
-class HomePage extends GetView<PlayerController> {
-  const HomePage({super.key});
+class HomePage extends GetView<PlayerController> with AppWidgets {
+  const HomePage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +99,7 @@ class HomePage extends GetView<PlayerController> {
             children: <Widget>[
               Obx(() {
                 if (controller.songAppList.isNotEmpty) {
-                  return MusicList(
+                  return musicList(
                     songs: controller.songAppList,
                     first: ListTile(
                       tileColor: Colors.transparent,
@@ -158,7 +158,7 @@ class HomePage extends GetView<PlayerController> {
               }),
               Obx(() {
                 if (controller.folderList.isNotEmpty) {
-                  return FolderList();
+                  return folderList();
                 } else {
                   return CenterText(title: 'home_not_tab2'.tr);
                 }
@@ -166,7 +166,7 @@ class HomePage extends GetView<PlayerController> {
               Obx(() {
                 if (controller.albumList.isNotEmpty &&
                     controller.albumListSongs.isNotEmpty) {
-                  return AlbumList(
+                  return albumList(
                     albumList: controller.albumList,
                     albumSongs: controller.albumListSongs,
                     isAlbumArtist: false,
@@ -178,7 +178,7 @@ class HomePage extends GetView<PlayerController> {
               Obx(() {
                 if (controller.artistList.isNotEmpty &&
                     controller.artistListSongs.isNotEmpty) {
-                  return AlbumList(
+                  return albumList(
                     albumList: controller.artistList,
                     albumSongs: controller.artistListSongs,
                     isAlbumArtist: true,

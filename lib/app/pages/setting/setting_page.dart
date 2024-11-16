@@ -14,7 +14,9 @@ import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 
 class SettingPage extends StatefulWidget {
-  const SettingPage({super.key});
+  const SettingPage({
+    super.key,
+  });
 
   @override
   State<SettingPage> createState() => _SettingPageState();

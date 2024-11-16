@@ -6,14 +6,14 @@ import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
+import 'package:player_hub/app/core/types/app_functions.dart';
 import 'package:player_hub/app/core/types/app_manifest.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
-import 'package:player_hub/app/shared/utils/show_toast.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 import 'package:share_plus/share_plus.dart';
 
-class EditPage extends GetView<PlayerController> with AppManifest {
+class EditPage extends GetView<PlayerController> with AppFunctions {
   final SongModel song;
 
   final Rx<File?> imagePicker = Rx<File?>(null);
@@ -32,7 +32,7 @@ class EditPage extends GetView<PlayerController> with AppManifest {
       await AppShared.setArtist(song.id, textControllerArtist.text);
 
       if (imagePicker.value != null) {
-        await setImageFile(
+        await AppManifest.setImageFile(
           id: song.id,
           bytes: await imagePicker.value!.readAsBytes(),
         );

@@ -8,7 +8,7 @@ import 'package:get/instance_manager.dart';
 import 'package:player_hub/app/app_bindings.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/routes/app_pages.dart';
-import 'package:player_hub/app/core/translations/app_translations.dart';
+import 'package:player_hub/app/core/types/app_translations.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 

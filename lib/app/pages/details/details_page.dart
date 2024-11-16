@@ -8,11 +8,9 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
+import 'package:player_hub/app/core/types/app_functions.dart';
+import 'package:player_hub/app/core/types/app_widgets.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
-import 'package:player_hub/app/shared/utils/dynamic_style.dart';
-import 'package:player_hub/app/shared/widgets/crud_music.dart';
-import 'package:player_hub/app/shared/widgets/playlist_mode.dart';
-import 'package:player_hub/app/shared/widgets/playlist_sheet.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -23,7 +21,7 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AppFunctions, AppWidgets {
   late AnimationController _controller;
 
   final PlayerController playerController = Get.find<PlayerController>();
@@ -127,7 +125,6 @@ class _DetailsPageState extends State<DetailsPage>
                           InkWell(
                             onTap: () async {
                               await crudMusic(
-                                context,
                                 song: currentSong,
                               );
                             },
@@ -241,7 +238,7 @@ class _DetailsPageState extends State<DetailsPage>
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          const PlaylistMode(),
+                          playlistMode(),
                           InkWell(
                             onTap: () async {
                               await playerController.previousSong();
@@ -279,7 +276,7 @@ class _DetailsPageState extends State<DetailsPage>
                               color: Colors.white,
                             ),
                           ),
-                          PlaylistSheet(),
+                          playlistSheet(),
                         ],
                       ),
                       const Space(

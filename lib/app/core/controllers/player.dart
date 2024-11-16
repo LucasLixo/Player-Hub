@@ -9,8 +9,7 @@ import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:player_hub/app/core/interfaces/visualizer.dart';
 import 'package:player_hub/app/core/types/app_manifest.dart';
 
-class PlayerController extends BaseAudioHandler
-    with QueueHandler, SeekHandler, AppManifest {
+class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   // ==================================================
   final RxString songLog = ''.obs;
   // address of sound in list
@@ -242,7 +241,8 @@ class PlayerController extends BaseAudioHandler
       Future(() async {
         for (var song in songList) {
           if (!imageCache.containsKey(song.id)) {
-            final String imagePath = await getImageFile(id: song.id);
+            final String imagePath =
+                await AppManifest.getImageFile(id: song.id);
             imageCache[song.id] = imagePath;
           }
           songLog.value = AppShared.getTitle(song.id, song.title);

@@ -6,20 +6,22 @@ import 'package:get/instance_manager.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
-import 'package:player_hub/app/shared/widgets/music_list.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
+import 'package:player_hub/app/core/types/app_widgets.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
-import 'package:player_hub/app/shared/widgets/shortcut.dart';
+import 'package:player_hub/app/shared/class/shortcut.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 
-class SearchPage extends GetView<PlayerController> {
-  SearchPage({super.key});
-
-  final TextEditingController _textController = TextEditingController();
-  final FocusNode _focusNode = FocusNode();
+class SearchPage extends GetView<PlayerController> with AppWidgets {
+  const SearchPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController _textController = TextEditingController();
+    final FocusNode _focusNode = FocusNode();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _focusNode.unfocus();
     });
@@ -112,7 +114,7 @@ class SearchPage extends GetView<PlayerController> {
                       onTap: () {
                         _focusNode.unfocus();
                       },
-                      child: MusicList(
+                      child: musicList(
                         songs: controller.filteredSongs,
                       ),
                     ),

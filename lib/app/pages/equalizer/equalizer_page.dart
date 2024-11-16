@@ -8,13 +8,15 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
-import 'package:player_hub/app/shared/utils/show_toast.dart';
+import 'package:player_hub/app/core/types/app_functions.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 
-class EqualizerPage extends GetView<PlayerController> {
-  const EqualizerPage({super.key});
+class EqualizerPage extends GetView<PlayerController> with AppFunctions {
+  const EqualizerPage({
+    super.key,
+  });
 
   Future<void> _initializeEqualizer(int id) async {
     await EqualizerFlutter.init(id);

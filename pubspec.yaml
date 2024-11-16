@@ -5,7 +5,7 @@ description: >-
   with high audio quality and an intuitive interface.
   Organize your tracks, adjust the sound with the equalizer and enjoy a limitless music experience.
 publish_to: 'none'
-version: 1.8.68+114
+version: 1.8.69+116
 
 environment:
   sdk: '>=3.4.4 <4.0.0' # current is: 3.5.3

@@ -40,7 +40,6 @@ class _ShortcutState extends State<Shortcut>
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Obx(

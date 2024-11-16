@@ -16,7 +16,6 @@ import 'package:player_hub/app/core/static/app_shared.dart';
 
 class SplashPage extends GetView<PlayerController> {
   final Future<void> Function()? function;
-
   final RxBool isRequestingPermission = false.obs;
 
   SplashPage({
