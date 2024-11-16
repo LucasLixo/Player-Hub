@@ -18,13 +18,19 @@ abstract class AppPages {
     ),
     GetPage(
       name: AppRoutes.splash,
-      page: () => SplashPage(waitSecond: false),
+      page: () => SplashPage(
+        function: Get.arguments['function'],
+      ),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
     ),
     GetPage(
       name: AppRoutes.restart,
-      page: () => SplashPage(waitSecond: true),
+      page: () => SplashPage(
+        function: () async {
+          await Future.delayed(const Duration(seconds: 1));
+        },
+      ),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
     ),

@@ -7,6 +7,7 @@ import 'package:player_hub/app/core/enums/shared_attibutes.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:player_hub/app/core/enums/languages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Class to manage preferences and images in the application using GetX.
@@ -50,6 +51,7 @@ abstract class AppShared extends GetxController {
       // SharedAttributes.equalizeMode,
       SharedAttributes.playlistMode,
       SharedAttributes.frequency,
+      SharedAttributes.ignoreFolder,
     ];
 
     for (var setting in listSettings) {
@@ -81,6 +83,15 @@ abstract class AppShared extends GetxController {
     if (isRebirth) {
       await Phoenix.rebirth(Get.context!);
     }
+  }
+
+  static Future<void> updatedLocale() async {
+    int code = await AppShared.getShared(SharedAttributes.defaultLanguage);
+
+    await Get.updateLocale(Locale(
+      AppLanguages.getLanguagesLocale[code][0],
+      AppLanguages.getLanguagesLocale[code][1],
+    ));
   }
 
   // ==================================================

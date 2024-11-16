@@ -56,6 +56,13 @@ enum SharedAttributes {
     key: 'kqxx5lnk8ls64jx4ve6g09n4ah0ttaaq9eua',
     value: [3.0, 0.0, 0.0, 0.0, 3.0],
     type: List<double>,
+  ),
+
+  /// List string
+  ignoreFolder(
+    key: '5enmh692h6p0loqqaj3izpgawe298wsoqbu2',
+    value: <String>[],
+    type: List<String>,
   );
 
   // ==================================================
@@ -109,6 +116,10 @@ enum SharedAttributes {
       case == bool:
         result = sharedPreferences.getBool(sharedIndexes.key);
         break;
+      case == List<String>:
+        result =
+            sharedPreferences.getStringList(sharedIndexes.key) ?? <String>[];
+        break;
       case == List<double>:
         result = List<double>.generate(
           sharedIndexes.value.length,
@@ -139,6 +150,9 @@ enum SharedAttributes {
         break;
       case == bool:
         await sharedPreferences.setBool(sharedIndexes.key, value);
+        break;
+      case == List<String>:
+        await sharedPreferences.setStringList(sharedIndexes.key, value);
         break;
       case == List<double>:
         List<double> listValue = value as List<double>;

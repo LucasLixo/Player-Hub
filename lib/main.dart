@@ -47,7 +47,11 @@ void main() async {
     ]);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Get.toNamed(AppRoutes.splash);
+      await Get.toNamed(AppRoutes.splash, arguments: {
+        'function': () async {
+          await AppShared.updatedLocale();
+        },
+      });
     });
   }, (Object error, StackTrace stack) async {
     debugPrint("$error");

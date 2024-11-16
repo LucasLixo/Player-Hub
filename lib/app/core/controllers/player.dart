@@ -33,6 +33,7 @@ class PlayerController extends BaseAudioHandler
   // playlists
   final RxList<SongModel> filteredSongs = <SongModel>[].obs;
   final RxList<SongModel> songAllList = <SongModel>[].obs;
+  final RxList<SongModel> songAppList = <SongModel>[].obs;
   final RxList<SongModel> songList = <SongModel>[].obs;
 
   // ==================================================
@@ -151,12 +152,12 @@ class PlayerController extends BaseAudioHandler
   Future<void> getAllSongs() async {
     songIndex.value = 0;
 
-    final List<SongModel> songs = [];
+    List<SongModel> songs = [];
     final List<Future> futures = [];
     Future<List<SongModel>> songQuery;
 
     // Adiciona a busca de músicas baseado no tipo de ordenação selecionado
-    switch (AppShared.getShared(SharedAttributes.getSongs)) {
+    switch (AppShared.getShared(SharedAttributes.getSongs) as int) {
       // Por data adicionada
       case 0:
         songQuery = QuerySongs.getQuerySongs(
@@ -210,22 +211,13 @@ class PlayerController extends BaseAudioHandler
     albumList.value = results[1] as List<AlbumModel>;
     artistList.value = results[2] as List<AlbumModel>;
 
-    // Remove músicas por duração
-    int ignoreTime = AppShared.getShared(SharedAttributes.ignoreTime) as int;
+    songAllList.value = songs;
 
-    songs
-        .where((song) =>
-            song.duration != null && song.duration! > ignoreTime * 1000)
-        .toList();
-
-    await songAllLoad(songs); // Carrega todas as músicas filtradas
+    await songAllLoad(songs);
   }
 
   // ==================================================
   Future<void> songAllLoad(List<SongModel> songList) async {
-    // Atualiza a lista de todas as músicas no estado
-    songAllList.value = songList;
-
     // Otimiza a criação de 'folderList', 'folderListSongs', 'albumListSongs' e 'artistListSongs' paralelamente
     Set<String> folderSet = {};
     Map<String, List<SongModel>> folderSongsMap = {};
@@ -234,6 +226,18 @@ class PlayerController extends BaseAudioHandler
 
     // Processa álbuns e artistas paralelamente
     await Future.wait([
+      Future(() async {
+        // Processa as músicas para pastas
+        folderListSongs.clear();
+        for (var song in songList) {
+          String folderName = song.data.split('/').reversed.skip(1).first;
+          folderSet.add(folderName);
+          folderSongsMap.update(folderName, (s) => [...s, song],
+              ifAbsent: () => [song]);
+        }
+        folderList.value = folderSet.toList();
+        folderListSongs.addAll(folderSongsMap);
+      }),
       // Processamento de cache de imagens em paralelo para reduzir o tempo de execução
       Future(() async {
         for (var song in songList) {
@@ -243,18 +247,6 @@ class PlayerController extends BaseAudioHandler
           }
           songLog.value = AppShared.getTitle(song.id, song.title);
         }
-      }),
-      // Processa as músicas para pastas
-      Future(() async {
-        folderListSongs.clear();
-        for (var song in songList) {
-          String folderName = song.data.split('/').reversed.skip(1).first;
-          folderSet.add(folderName);
-          folderSongsMap.update(folderName, (songs) => [...songs, song],
-              ifAbsent: () => [song]);
-        }
-        folderList.value = folderSet.toList();
-        folderListSongs.addAll(folderSongsMap);
       }),
       // Processamento de álbuns
       Future(() async {
@@ -289,13 +281,34 @@ class PlayerController extends BaseAudioHandler
     ]);
 
     songLog.value = '';
+
+    // Remove músicas com base em duração e pastas ignoradas
+    int ignoreTime = AppShared.getShared(SharedAttributes.ignoreTime) as int;
+    List<String> ignoreFolder =
+        AppShared.getShared(SharedAttributes.ignoreFolder) as List<String>;
+
+    songList = songList.where((song) {
+      if (ignoreFolder.contains(song.data.split('/').reversed.skip(1).first) ||
+          (song.duration != null && song.duration! < (ignoreTime * 1000))) {
+        return false;
+      } else {
+        return true;
+      }
+    }).toList();
+
+    // Atualiza a lista de todas as músicas no estado
+    songAppList.value = songList;
+
     // Carrega as músicas
     await songLoad(songList, 0);
   }
 
   // ==================================================
   // defined songs in background
-  Future<void> songLoad(List<SongModel> songListLoaded, int index) async {
+  Future<void> songLoad(
+    List<SongModel> songListLoaded, [
+    int index = 0,
+  ]) async {
     // Atualiza a lista de músicas no estado
     songList.clear();
     songList.addAll(songListLoaded);
@@ -327,7 +340,7 @@ class PlayerController extends BaseAudioHandler
     await handleCurrentIndex(index);
 
     // Modo de playlist (Loop, Shuffle, etc)
-    switch (AppShared.getShared(SharedAttributes.playlistMode)) {
+    switch (AppShared.getShared(SharedAttributes.playlistMode) as int) {
       // Modo loop playlist
       case 0:
         await modeShufflePlaylist();
@@ -488,7 +501,7 @@ class PlayerController extends BaseAudioHandler
   // ==================================================
   // Alterna entre modos da playlist (loop, shuffle)
   Future<void> togglePlaylist() async {
-    switch (AppShared.getShared(SharedAttributes.playlistMode)) {
+    switch (AppShared.getShared(SharedAttributes.playlistMode) as int) {
       case 0:
         await modeLoopPlaylist();
         AppShared.setShared(SharedAttributes.playlistMode, 1);

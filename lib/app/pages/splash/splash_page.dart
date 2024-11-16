@@ -15,12 +15,13 @@ import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 
 class SplashPage extends GetView<PlayerController> {
-  final bool waitSecond;
+  final Future<void> Function()? function;
+
   final RxBool isRequestingPermission = false.obs;
 
   SplashPage({
     super.key,
-    required this.waitSecond,
+    required this.function,
   });
 
   Future<void> _permissionsApp() async {
@@ -28,7 +29,7 @@ class SplashPage extends GetView<PlayerController> {
     isRequestingPermission.value = true;
 
     PermissionStatus audioPermissionStatus;
-    AndroidDeviceInfo build = await DeviceInfoPlugin().androidInfo;
+    final AndroidDeviceInfo build = await DeviceInfoPlugin().androidInfo;
 
     try {
       if (build.version.sdkInt >= 33) {
@@ -63,8 +64,8 @@ class SplashPage extends GetView<PlayerController> {
       await controller.getAllSongs();
     }
 
-    if (waitSecond) {
-      await Future.delayed(const Duration(seconds: 1));
+    if (function != null) {
+      await function!();
     }
 
     await Get.offAllNamed(AppRoutes.home);
@@ -105,7 +106,8 @@ class SplashPage extends GetView<PlayerController> {
             }
           }),
           subtitle: Obx(() {
-            if (waitSecond.obs.value || controller.songLog.value.isNotEmpty) {
+            if (function.obs.value != null ||
+                controller.songLog.value.isNotEmpty) {
               return LinearProgressIndicator(
                 color: AppColors.current().primary,
                 backgroundColor: AppColors.current().surface,

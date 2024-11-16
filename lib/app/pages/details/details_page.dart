@@ -10,7 +10,7 @@ import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/shared/utils/dynamic_style.dart';
-import 'package:player_hub/app/shared/widgets/crud_sheet.dart';
+import 'package:player_hub/app/shared/widgets/crud_music.dart';
 import 'package:player_hub/app/shared/widgets/playlist_mode.dart';
 import 'package:player_hub/app/shared/widgets/playlist_sheet.dart';
 import 'package:helper_hub/src/theme_widget.dart';
@@ -126,7 +126,10 @@ class _DetailsPageState extends State<DetailsPage>
                           const Space(),
                           InkWell(
                             onTap: () async {
-                              await crudSheet(context, currentSong);
+                              await crudMusic(
+                                context,
+                                song: currentSong,
+                              );
                             },
                             child: const Icon(
                               Icons.more_vert,

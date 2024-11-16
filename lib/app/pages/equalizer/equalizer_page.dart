@@ -58,8 +58,8 @@ class EqualizerPage extends GetView<PlayerController> {
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         actions: [
-          Obx(
-            () => Switch(
+          Obx(() {
+            return Switch(
               value: AppShared.getShared(SharedAttributes.equalizeMode),
               onChanged: (bool value) async {
                 await AppShared.setShared(
@@ -77,8 +77,8 @@ class EqualizerPage extends GetView<PlayerController> {
                     ? "${'setting_equalizer'.tr} ${'app_enable'.tr}"
                     : "${'setting_equalizer'.tr} ${'app_disable'.tr}");
               },
-            ),
-          ),
+            );
+          }),
         ],
       ),
       body: SafeArea(
@@ -122,13 +122,13 @@ class EqualizerPage extends GetView<PlayerController> {
                   return const Space(size: 0);
                 } else if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasData) {
-                    return Obx(
-                      () => CustomEQ(
+                    return Obx(() {
+                      return CustomEQ(
                         enabled:
                             AppShared.getShared(SharedAttributes.equalizeMode),
                         bandLevelRange: snapshot.data!,
-                      ),
-                    );
+                      );
+                    });
                   } else if (snapshot.hasError) {
                     return const Space(size: 0);
                   }

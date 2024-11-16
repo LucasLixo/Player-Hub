@@ -28,7 +28,9 @@ class _SettingPageState extends State<SettingPage> {
   @override
   void dispose() {
     if (isEdited.value) {
-      controller.getAllSongs();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        controller.getAllSongs();
+      });
     }
     super.dispose();
   }
@@ -89,11 +91,14 @@ class _SettingPageState extends State<SettingPage> {
                   activeColor: AppColors.current().primary,
                   min: 0,
                   max: 120,
-                  value: AppShared.getShared(SharedAttributes.ignoreTime)
-                      .toDouble(),
+                  value:
+                      (AppShared.getShared(SharedAttributes.ignoreTime) as int)
+                          .toDouble(),
                   onChanged: (value) async {
                     await AppShared.setShared(
-                        SharedAttributes.ignoreTime, value.toInt());
+                      SharedAttributes.ignoreTime,
+                      value.toInt(),
+                    );
                     isEdited.value = true;
                   },
                 ),
@@ -176,7 +181,15 @@ class _SettingPageState extends State<SettingPage> {
                         SharedAttributes.defaultLanguage, code);
                     await AppShared.setShared(
                         SharedAttributes.changeLanguage, true);
-                    await Get.toNamed(AppRoutes.restart);
+
+                    await Get.toNamed(AppRoutes.splash, arguments: {
+                      'function': () async {
+                        await Future.wait([
+                          Future.delayed(const Duration(seconds: 1)),
+                          AppShared.updatedLocale(),
+                        ]);
+                      },
+                    });
                   },
                   itemBuilder: (BuildContext context) {
                     return AppLanguages.values.map((appLanguagesOption) {

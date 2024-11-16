@@ -98,15 +98,17 @@ class HomePage extends GetView<PlayerController> {
           child: TabBarView(
             children: <Widget>[
               Obx(() {
-                if (controller.songAllList.isNotEmpty) {
+                if (controller.songAppList.isNotEmpty) {
                   return MusicList(
-                    songs: controller.songAllList,
+                    songs: controller.songAppList,
                     first: ListTile(
                       tileColor: Colors.transparent,
                       splashColor: Colors.transparent,
                       focusColor: Colors.transparent,
-                      contentPadding:
-                          const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 2.0),
+                      contentPadding: const EdgeInsets.only(
+                        left: 16.0,
+                        right: 8.0,
+                      ),
                       title: Text(
                         'setting_sort'.tr,
                         style: Theme.of(context).textTheme.bodyLarge,
@@ -189,7 +191,7 @@ class HomePage extends GetView<PlayerController> {
           ),
         ),
         bottomNavigationBar: Obx(
-          () => controller.songAllList.isEmpty
+          () => controller.songAppList.isEmpty
               ? const Space(size: 0)
               : const Shortcut(),
         ),

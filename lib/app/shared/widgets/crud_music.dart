@@ -9,7 +9,10 @@ import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 import 'package:share_plus/share_plus.dart';
 
-Future<void> crudSheet(BuildContext context, SongModel song) async {
+Future<void> crudMusic(
+  BuildContext context, {
+  required SongModel song,
+}) async {
   Future<void> sharedFiles() async {
     final ShareResult result = await Share.shareXFiles(
       [XFile(song.data, name: song.displayNameWOExt)],

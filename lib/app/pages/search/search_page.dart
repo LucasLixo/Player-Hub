@@ -30,7 +30,7 @@ class SearchPage extends GetView<PlayerController> {
       if (query.isEmpty) {
         controller.filteredSongs.clear();
       } else {
-        controller.filteredSongs.value = controller.songAllList.where((song) {
+        controller.filteredSongs.value = controller.songAppList.where((song) {
           return song.title.toLowerCase().contains(query) ||
               AppShared.getArtist(song.id, song.artist!)
                   .toLowerCase()
@@ -120,7 +120,7 @@ class SearchPage extends GetView<PlayerController> {
           ),
         ),
         bottomNavigationBar: Obx(
-          () => controller.songAllList.isEmpty
+          () => controller.songAppList.isEmpty
               ? const Space(size: 0)
               : GestureDetector(
                   onTap: () {

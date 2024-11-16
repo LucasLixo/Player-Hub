@@ -36,7 +36,11 @@ class EditPage extends GetView<PlayerController> with AppManifest {
           id: song.id,
           bytes: await imagePicker.value!.readAsBytes(),
         );
-        await Get.toNamed(AppRoutes.restart);
+        await Get.toNamed(AppRoutes.splash, arguments: {
+          'function': () async {
+            await Future.delayed(const Duration(seconds: 1));
+          },
+        });
       }
 
       await showToast(
@@ -148,6 +152,8 @@ class EditPage extends GetView<PlayerController> with AppManifest {
                             title: Text(
                               'Compartilhar',
                               style: Theme.of(context).textTheme.titleMedium,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                             onTap: () async {
                               await _shareImage();
@@ -162,6 +168,8 @@ class EditPage extends GetView<PlayerController> with AppManifest {
                             title: Text(
                               'Trocar Imagem',
                               style: Theme.of(context).textTheme.titleMedium,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                             onTap: () async {
                               await _pickerFile();
