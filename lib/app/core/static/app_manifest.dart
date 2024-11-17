@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -8,7 +9,9 @@ import 'package:player_hub/app/core/static/app_shared.dart';
 
 abstract class AppManifest {
   // ==================================================
-  static Future<Uint8List> getImageArray({required int id}) async {
+  static Future<Uint8List> getImageArray({
+    required int id,
+  }) async {
     final File imageFile = File(await getImageFile(id: id));
 
     final Uint8List imageBytes = await imageFile.readAsBytes();
@@ -83,5 +86,19 @@ abstract class AppManifest {
     } catch (e) {
       return;
     }
+  }
+
+  // ==================================================
+  static String encodeToBase64(String input) {
+    List<int> bytes = utf8.encode(input);
+    String encoded = base64.encode(bytes);
+    return encoded;
+  }
+
+  // ==================================================
+  static String decodeFromBase64(String encoded) {
+    List<int> decodedBytes = base64.decode(encoded);
+    String decoded = utf8.decode(decodedBytes);
+    return decoded;
   }
 }

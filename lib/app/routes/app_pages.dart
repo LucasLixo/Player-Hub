@@ -1,4 +1,5 @@
 import 'package:get/route_manager.dart';
+import 'package:player_hub/app/core/enums/selection_types.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/routes/app_imports.dart';
 
@@ -77,6 +78,18 @@ abstract class AppPages {
       page: () => PlaylistPage(
         playlistTitle: Get.arguments['playlistTitle'],
         playlistList: Get.arguments['playlistList'],
+        playlistType: Get.arguments['playlistType'] ?? SelectionTypes.none,
+      ),
+      transitionDuration: const Duration(milliseconds: 300),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: AppRoutes.selection,
+      page: () => SelectionPage(
+        selectionType: Get.arguments['selectionType'],
+        selectionTitle: Get.arguments['selectionTitle'],
+        selectionIndex: Get.arguments['selectionIndex'],
+        selectionList: Get.arguments['selectionList'],
       ),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,

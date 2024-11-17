@@ -59,7 +59,7 @@ class EqualizerPage extends GetView<PlayerController> with AppFunctions {
           'setting_equalizer'.tr,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
-        actions: [
+        actions: <Widget>[
           Obx(() {
             return Switch(
               value: AppShared.getShared(SharedAttributes.equalizeMode),
@@ -93,11 +93,15 @@ class EqualizerPage extends GetView<PlayerController> with AppFunctions {
               ),
               trailing: InkWell(
                 onTap: () async {
-                  await AppShared.setShared(SharedAttributes.frequency,
-                      SharedAttributes.frequency.value);
+                  await AppShared.setShared(
+                    SharedAttributes.frequency,
+                    SharedAttributes.frequency.value,
+                  );
                 },
-                child: const Icon(
+                child: Icon(
                   Icons.refresh,
+                  size: 32,
+                  color: AppColors.current().text,
                 ),
               ),
             ),

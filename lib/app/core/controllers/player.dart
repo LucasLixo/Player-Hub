@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:just_audio/just_audio.dart';
@@ -7,7 +10,7 @@ import 'package:player_hub/app/core/enums/query_songs.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:player_hub/app/core/interfaces/visualizer.dart';
-import 'package:player_hub/app/core/types/app_manifest.dart';
+import 'package:player_hub/app/core/static/app_manifest.dart';
 
 class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   // ==================================================
@@ -36,6 +39,12 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   final RxList<SongModel> songList = <SongModel>[].obs;
 
   // ==================================================
+  // Playlist list
+  final RxList<String> playlistList = <String>[].obs;
+  final RxMap<String, List<SongModel>> playlistListSongs =
+      <String, List<SongModel>>{}.obs;
+
+  // ==================================================
   // folder list
   final RxList<String> folderList = <String>[].obs;
   final RxList<AlbumModel> albumList = <AlbumModel>[].obs;
@@ -50,7 +59,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       <String, List<SongModel>>{}.obs;
 
   // ==================================================
-  final RxMap<int, String> imageCache = <int, String>{}.obs;
+  final RxMap<int, String> _imageCache = <int, String>{}.obs;
   // if in recent list
   final RxBool isListRecent = false.obs;
   // recent list
@@ -58,7 +67,9 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   // current song
   final Rx<SongModel?> currentSong = Rx<SongModel?>(null);
   // current image
-  final Rx<String?> currentImage = Rx<String?>(null);
+  final Rx<Uint8List?> currentImage = Rx<Uint8List?>(null);
+  // current image Path
+  final Rx<String?> currentImagePath = Rx<String?>(null);
 
   // ==================================================
   final OnAudioQuery _audioQuery = OnAudioQuery();
@@ -71,7 +82,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     });
     audioPlayer.playerStateStream.listen(_handlePlayerState);
     audioPlayer.currentIndexStream.listen(handleCurrentIndex);
-    updatePosition();
+    _updatePosition();
   }
 
   // ==================================================
@@ -86,7 +97,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
 
     final String songTitle = AppShared.getTitle(songId, song.title);
     final String songArtist = AppShared.getArtist(songId, song.artist!);
-    final String? image = imageCache[songId];
+    final String? image = _imageCache[songId];
 
     InterfaceVisualizer visualizerMusic = InterfaceVisualizer(
       headlineTitle: songTitle,
@@ -95,7 +106,10 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     );
     await visualizerMusic.updateHeadline();
 
-    currentImage.value = image;
+    currentImagePath.value = image;
+    if (image != null) {
+      currentImage.value = await File(image).readAsBytes();
+    }
   }
 
   // ==================================================
@@ -108,7 +122,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
 
   // ==================================================
   // update position
-  void updatePosition() {
+  void _updatePosition() {
     audioPlayer.durationStream.listen((d) {
       if (d != null) {
         songDuration.value = d.toString().split(".")[0];
@@ -147,13 +161,49 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
   }
 
   // ==================================================
+  // update playlist
+  Future<void> _initPlaylist() async {
+    playlistList.clear();
+    playlistList.assignAll(
+        AppShared.getShared(SharedAttributes.listAllPlaylist) as List<String>);
+
+    playlistListSongs.clear();
+    for (int index = 0; index < playlistList.length; index++) {
+      final String title = playlistList[index];
+      playlistListSongs[title] = _getSongsFromIds(AppShared.getPlaylist(title));
+    }
+  }
+
+  Future<void> _updatePlaylistList() async {
+    await AppShared.setShared(
+      SharedAttributes.listAllPlaylist,
+      playlistList.toList(),
+    );
+  }
+
+  Future<void> _updatePlaylistListSongs(String title) async {
+    await AppShared.setPlaylist(
+        title, _getIdsFromSongs(playlistListSongs[title] ?? <SongModel>[]));
+  }
+
+  // ==================================================
+  // Utils
+  List<int> _getIdsFromSongs(List<SongModel> songs) {
+    return songs.map((song) => song.id).toList();
+  }
+
+  List<SongModel> _getSongsFromIds(List<int> ids) {
+    return songAllList.where((song) => ids.contains(song.id)).toList();
+  }
+
+  // ==================================================
   // Get Songs
   Future<void> getAllSongs() async {
     songIndex.value = 0;
 
-    List<SongModel> songs = [];
+    final List<SongModel> songs = [];
     final List<Future> futures = [];
-    Future<List<SongModel>> songQuery;
+    late Future<List<SongModel>> songQuery;
 
     // Adiciona a busca de músicas baseado no tipo de ordenação selecionado
     switch (AppShared.getShared(SharedAttributes.getSongs) as int) {
@@ -212,6 +262,8 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
 
     songAllList.value = songs;
 
+    await _initPlaylist();
+
     await songAllLoad(songs);
   }
 
@@ -240,10 +292,10 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       // Processamento de cache de imagens em paralelo para reduzir o tempo de execução
       Future(() async {
         for (var song in songList) {
-          if (!imageCache.containsKey(song.id)) {
+          if (!_imageCache.containsKey(song.id)) {
             final String imagePath =
                 await AppManifest.getImageFile(id: song.id);
-            imageCache[song.id] = imagePath;
+            _imageCache[song.id] = imagePath;
           }
           songLog.value = AppShared.getTitle(song.id, song.title);
         }
@@ -316,7 +368,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     // Cria a playlist de fontes de áudio em um único passo
     List<AudioSource> playlist = List.generate(songList.length, (i) {
       final song = songList[i];
-      final imagePath = imageCache[song.id];
+      final imagePath = _imageCache[song.id];
       return AudioSource.uri(
         Uri.parse(song.uri!),
         tag: MediaItem(
@@ -408,7 +460,7 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       controls: [MediaControl.pause],
     );
     await audioPlayer.play();
-    updatePosition();
+    _updatePosition();
   }
 
   // ==================================================
@@ -514,6 +566,49 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
         await modeShufflePlaylist();
         AppShared.setShared(SharedAttributes.playlistMode, 0);
         break;
+    }
+  }
+
+  // ==================================================
+  Future<void> addPlaylist(String title) async {
+    if (!playlistList.contains(title)) {
+      playlistList.add(title);
+      playlistListSongs.putIfAbsent(title, () => <SongModel>[]);
+      await _updatePlaylistList();
+      await _updatePlaylistListSongs(title);
+    }
+  }
+
+  Future<void> removePlaylist(String title) async {
+    if (playlistList.contains(title)) {
+      playlistList.remove(title);
+      playlistListSongs.remove(title);
+      await _updatePlaylistList();
+      await _updatePlaylistListSongs(title);
+    }
+  }
+
+  Future<void> addSongsPlaylist(String title, List<SongModel> songs) async {
+    if (!playlistList.contains(title)) {
+      await addPlaylist(title);
+    }
+
+    final existingSongs = playlistListSongs[title];
+    if (existingSongs != null) {
+      for (var song in songs) {
+        if (!existingSongs.any((s) => s.id == song.id)) {
+          existingSongs.add(song);
+        }
+      }
+      await _updatePlaylistListSongs(title);
+    }
+  }
+
+  Future<void> removeSongsPlaylist(String title, List<SongModel> songs) async {
+    if (playlistListSongs.containsKey(title)) {
+      playlistListSongs[title]
+          ?.removeWhere((song) => songs.any((s) => s.id == song.id));
+      await _updatePlaylistListSongs(title);
     }
   }
 }

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,9 +8,11 @@ import 'package:get/instance_manager.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/types/app_functions.dart';
-import 'package:player_hub/app/core/types/app_widgets.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:helper_hub/src/theme_widget.dart';
+import 'package:player_hub/app/shared/widgets/crud_music.dart';
+import 'package:player_hub/app/shared/widgets/playlist_mode.dart';
+import 'package:player_hub/app/shared/widgets/playlist_sheet.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({super.key});
@@ -21,7 +22,7 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage>
-    with SingleTickerProviderStateMixin, AppFunctions, AppWidgets {
+    with SingleTickerProviderStateMixin, AppFunctions {
   late AnimationController _controller;
 
   final PlayerController playerController = Get.find<PlayerController>();
@@ -59,14 +60,14 @@ class _DetailsPageState extends State<DetailsPage>
         if (currentSong == null) {
           return CenterText(title: 'cloud_error1'.tr);
         } else {
-          final currentImage = playerController.currentImage.value;
+          final Uint8List? currentImage = playerController.currentImage.value;
 
           return Stack(
             children: <Widget>[
               Positioned.fill(
                 child: currentImage != null
-                    ? Image.file(
-                        File(currentImage),
+                    ? Image.memory(
+                        currentImage,
                         fit: BoxFit.cover,
                       )
                     : const Space(size: 0),
@@ -140,8 +141,8 @@ class _DetailsPageState extends State<DetailsPage>
                       ClipRRect(
                         borderRadius: BorderRadius.circular(24),
                         child: currentImage != null
-                            ? Image.file(
-                                File(currentImage),
+                            ? Image.memory(
+                                currentImage,
                                 fit: BoxFit.cover,
                                 width: MediaQuery.of(context).size.width,
                                 height: MediaQuery.of(context).size.width,

@@ -10,4 +10,5 @@ abstract class AppRoutes {
   static const String search = '/search';
   static const String playlist = '/playlist';
   static const String equalizer = '/equalizer';
+  static const String selection = '/selection';
 }

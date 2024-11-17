@@ -7,7 +7,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/types/app_functions.dart';
-import 'package:player_hub/app/core/types/app_manifest.dart';
+import 'package:player_hub/app/core/static/app_manifest.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:helper_hub/src/theme_widget.dart';
@@ -69,8 +69,8 @@ class EditPage extends GetView<PlayerController> with AppFunctions {
   }
 
   Future<void> _shareImage() async {
-    final pathShared =
-        imagePicker.value?.path ?? controller.imageCache[song.id];
+    final String? pathShared =
+        imagePicker.value?.path ?? controller.currentImagePath.value;
 
     if (pathShared != null) {
       await Share.shareXFiles(
@@ -85,7 +85,7 @@ class EditPage extends GetView<PlayerController> with AppFunctions {
     textControllerTitle.text = AppShared.getTitle(song.id, song.title);
     textControllerArtist.text = AppShared.getArtist(song.id, song.artist!);
 
-    final String? imageFile = controller.imageCache[song.id];
+    final String? imageFile = controller.currentImagePath.value;
 
     return Scaffold(
       backgroundColor: AppColors.current().background,

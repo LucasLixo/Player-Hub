@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -7,27 +6,27 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
-import 'package:player_hub/app/core/types/app_widgets.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/shared/class/shortcut.dart';
 import 'package:helper_hub/src/theme_widget.dart';
+import 'package:player_hub/app/shared/widgets/music_list.dart';
 
-class SearchPage extends GetView<PlayerController> with AppWidgets {
+class SearchPage extends GetView<PlayerController> {
   const SearchPage({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _textController = TextEditingController();
-    final FocusNode _focusNode = FocusNode();
+    final TextEditingController textController = TextEditingController();
+    final FocusNode focusNode = FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _focusNode.unfocus();
+      focusNode.unfocus();
     });
 
     void filterSongs() {
-      var query = _textController.text.toLowerCase();
+      var query = textController.text.toLowerCase();
 
       if (query.isEmpty) {
         controller.filteredSongs.clear();
@@ -41,7 +40,7 @@ class SearchPage extends GetView<PlayerController> with AppWidgets {
       }
     }
 
-    _textController.addListener(filterSongs);
+    textController.addListener(filterSongs);
 
     return PopScope(
       canPop: false,
@@ -49,29 +48,24 @@ class SearchPage extends GetView<PlayerController> with AppWidgets {
         if (didPop) {
           return;
         }
-        _focusNode.unfocus();
+        focusNode.unfocus();
         Get.back();
-        _textController.clear();
-        _textController.dispose();
-        _focusNode.dispose();
+        textController.clear();
+        textController.dispose();
+        focusNode.dispose();
       },
       child: Scaffold(
         backgroundColor: AppColors.current().background,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: AppColors.current().background,
-          systemOverlayStyle: SystemUiOverlayStyle(
-            systemNavigationBarColor: AppColors.current().surface,
-            systemNavigationBarDividerColor: Colors.transparent,
-            systemNavigationBarIconBrightness: AppColors.current().brightness,
-          ),
+          backgroundColor: AppColors.current().surface,
           leading: InkWell(
             onTap: () {
-              _focusNode.unfocus();
+              focusNode.unfocus();
               Get.back();
-              _textController.clear();
-              _textController.dispose();
-              _focusNode.dispose();
+              textController.clear();
+              textController.dispose();
+              focusNode.dispose();
             },
             child: Icon(
               Icons.arrow_back_ios,
@@ -83,8 +77,8 @@ class SearchPage extends GetView<PlayerController> with AppWidgets {
             padding: const EdgeInsets.only(bottom: 12.0),
             child: TextField(
               cursorHeight: 28.0,
-              controller: _textController,
-              focusNode: _focusNode,
+              controller: textController,
+              focusNode: focusNode,
               style: Theme.of(context).textTheme.titleMedium,
               cursorColor: AppColors.current().text,
               decoration: InputDecoration(
@@ -112,7 +106,7 @@ class SearchPage extends GetView<PlayerController> with AppWidgets {
                   ? const Space(size: 0)
                   : GestureDetector(
                       onTap: () {
-                        _focusNode.unfocus();
+                        focusNode.unfocus();
                       },
                       child: musicList(
                         songs: controller.filteredSongs,
@@ -126,7 +120,7 @@ class SearchPage extends GetView<PlayerController> with AppWidgets {
               ? const Space(size: 0)
               : GestureDetector(
                   onTap: () {
-                    _focusNode.unfocus();
+                    focusNode.unfocus();
                   },
                   child: const Shortcut(),
                 ),

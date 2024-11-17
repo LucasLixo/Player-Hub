@@ -59,6 +59,13 @@ enum SharedAttributes {
   ),
 
   /// List string
+  listAllPlaylist(
+    key: '9ebnkopoibwnbwn97yrjjtj679225krm3rp7',
+    value: <String>[],
+    type: List<String>,
+  ),
+
+  /// List string
   ignoreFolder(
     key: '5enmh692h6p0loqqaj3izpgawe298wsoqbu2',
     value: <String>[],
@@ -127,6 +134,12 @@ enum SharedAttributes {
               sharedPreferences.getDouble('${sharedIndexes.key}$i') ??
               sharedIndexes.value[i],
         );
+      case == List<int>:
+        result = sharedPreferences
+                .getStringList(sharedIndexes.key)
+                ?.map((e) => int.parse(e))
+                .toList() ??
+            <int>[];
         break;
     }
     return result ?? getAttributesMap[sharedIndexes.name];
@@ -160,6 +173,12 @@ enum SharedAttributes {
           await sharedPreferences.setDouble(
               '${sharedIndexes.key}$i', listValue[i]);
         }
+        break;
+      case == List<int>:
+        await sharedPreferences.setStringList(
+          sharedIndexes.key,
+          value.map((e) => e.toString()).toList(),
+        );
         break;
     }
     getAttributesMap[sharedIndexes.name] = value;

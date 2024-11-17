@@ -5,17 +5,22 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:player_hub/app/core/enums/selection_types.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
 import 'package:player_hub/app/core/enums/sort_type.dart';
-import 'package:player_hub/app/core/types/app_widgets.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/shared/class/shortcut.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:helper_hub/src/theme_widget.dart';
+import 'package:player_hub/app/shared/widgets/album_list.dart';
+import 'package:player_hub/app/shared/widgets/crud_create_playlist.dart';
+import 'package:player_hub/app/shared/widgets/folder_list.dart';
+import 'package:player_hub/app/shared/widgets/music_list.dart';
+import 'package:player_hub/app/shared/widgets/playlist_list.dart';
 
-class HomePage extends GetView<PlayerController> with AppWidgets {
+class HomePage extends GetView<PlayerController> {
   const HomePage({
     super.key,
   });
@@ -151,14 +156,19 @@ class HomePage extends GetView<PlayerController> with AppWidgets {
                         );
                       }),
                     ),
+                    selectiontype: SelectionTypes.add,
                   );
                 } else {
                   return CenterText(title: 'home_not_tab1'.tr);
                 }
               }),
               Obx(() {
-                if (controller.folderList.isNotEmpty) {
-                  return folderList();
+                if (controller.folderList.isNotEmpty ||
+                    controller.playlistList.isNotEmpty) {
+                  return ListView(
+                    physics: const ClampingScrollPhysics(),
+                    children: playlistList() + folderList(),
+                  );
                 } else {
                   return CenterText(title: 'home_not_tab2'.tr);
                 }
@@ -194,6 +204,31 @@ class HomePage extends GetView<PlayerController> with AppWidgets {
           () => controller.songAppList.isEmpty
               ? const Space(size: 0)
               : const Shortcut(),
+        ),
+        floatingActionButton: Builder(
+          builder: (context) {
+            final TabController tabController =
+                DefaultTabController.of(context);
+
+            return AnimatedBuilder(
+              animation: tabController,
+              builder: (context, _) {
+                return tabController.index == 1
+                    ? FloatingActionButton(
+                        onPressed: () async {
+                          await crudCreatePlaylist();
+                        },
+                        backgroundColor: AppColors.current().primary,
+                        child: Icon(
+                          Icons.add,
+                          color: AppColors.current().text,
+                          size: 32,
+                        ),
+                      )
+                    : const SizedBox.shrink();
+              },
+            );
+          },
         ),
       ),
     );
