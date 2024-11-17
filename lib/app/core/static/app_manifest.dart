@@ -24,7 +24,7 @@ abstract class AppManifest {
 
     switch (type) {
       case ArrayImageTypes.low:
-        file = File('${AppShared.documentDir.path}/${id}_32.jpg');
+        file = File('${AppShared.documentDir.path}/${id}_64.jpg');
         break;
       case ArrayImageTypes.high:
         file = File('${AppShared.documentDir.path}/${id}_256.jpg');
@@ -39,7 +39,7 @@ abstract class AppManifest {
     required int id,
     required ArrayImageTypes type,
   }) async {
-    final File fileLow = File('${AppShared.documentDir.path}/${id}_32.jpg');
+    final File fileLow = File('${AppShared.documentDir.path}/${id}_64.jpg');
     final File fileHigh = File('${AppShared.documentDir.path}/${id}_256.jpg');
 
     if (!await fileLow.exists() || !await fileHigh.exists()) {
@@ -60,7 +60,7 @@ abstract class AppManifest {
   }) async {
     final OnAudioQuery audioQuery = OnAudioQuery();
 
-    final File fileLow = File('${AppShared.documentDir.path}/${id}_32.jpg');
+    final File fileLow = File('${AppShared.documentDir.path}/${id}_64.jpg');
     final File fileHigh = File('${AppShared.documentDir.path}/${id}_256.jpg');
 
     final List<Uint8List?> dataResults = await Future.wait([
@@ -68,7 +68,7 @@ abstract class AppManifest {
         id,
         ArtworkType.AUDIO,
         format: ArtworkFormat.JPEG,
-        size: 32,
+        size: 64,
         quality: 100,
       ),
       audioQuery.queryArtwork(
@@ -110,7 +110,7 @@ abstract class AppManifest {
     required int id,
     required Uint8List bytes,
   }) async {
-    final File fileLow = File('${AppShared.documentDir.path}/${id}_32.jpg');
+    final File fileLow = File('${AppShared.documentDir.path}/${id}_64.jpg');
     final File fileHigh = File('${AppShared.documentDir.path}/${id}_256.jpg');
 
     await fileLow.writeAsBytes(bytes);
