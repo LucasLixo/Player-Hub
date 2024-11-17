@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:flutter/services.dart';
+import 'package:player_hub/app/core/enums/selection_types.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/core/static/app_manifest.dart';
 
@@ -67,6 +68,7 @@ Widget albumList({
           await Get.toNamed(AppRoutes.playlist, arguments: {
             'playlistTitle': title,
             'playlistList': songs,
+            'playlistType': SelectionTypes.none,
           });
         },
       );

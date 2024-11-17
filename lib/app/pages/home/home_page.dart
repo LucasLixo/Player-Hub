@@ -16,9 +16,9 @@ import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 import 'package:player_hub/app/shared/widgets/album_list.dart';
 import 'package:player_hub/app/shared/widgets/crud_create_playlist.dart';
-import 'package:player_hub/app/shared/widgets/folder_list.dart';
+import 'package:player_hub/app/shared/class/folder_list.dart';
 import 'package:player_hub/app/shared/widgets/music_list.dart';
-import 'package:player_hub/app/shared/widgets/playlist_list.dart';
+import 'package:player_hub/app/shared/class/playlist_list.dart';
 
 class HomePage extends GetView<PlayerController> {
   const HomePage({
@@ -60,6 +60,7 @@ class HomePage extends GetView<PlayerController> {
                 await Get.toNamed(AppRoutes.playlist, arguments: {
                   'playlistTitle': 'playlist1'.tr,
                   'playlistList': controller.recentList,
+                  'playlistType': SelectionTypes.none,
                 });
               },
               child: Icon(
@@ -165,9 +166,14 @@ class HomePage extends GetView<PlayerController> {
               Obx(() {
                 if (controller.folderList.isNotEmpty ||
                     controller.playlistList.isNotEmpty) {
-                  return ListView(
-                    physics: const ClampingScrollPhysics(),
-                    children: playlistList() + folderList(),
+                  return const SingleChildScrollView(
+                    physics: ClampingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        PlaylistList(),
+                        FolderList(),
+                      ],
+                    ),
                   );
                 } else {
                   return CenterText(title: 'home_not_tab2'.tr);

@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
-import 'package:player_hub/app/core/enums/selection_types.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
@@ -11,44 +10,38 @@ import 'package:helper_hub/src/theme_widget.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:player_hub/app/pages/selection/selection_controller.dart';
-import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/shared/widgets/crud_add_playlist.dart';
 
-class SelectionPage extends StatefulWidget {
-  final SelectionTypes selectionType;
+class SelectionAddPage extends StatefulWidget {
   final String? selectionTitle;
-  final int selectionIndex;
-  final List<SongModel> selectionList;
+  final List<int> selectionIndex;
 
-  const SelectionPage({
+  const SelectionAddPage({
     super.key,
-    required this.selectionType,
     required this.selectionTitle,
     required this.selectionIndex,
-    required this.selectionList,
   });
 
   @override
-  State<SelectionPage> createState() => _SelectionPageState();
+  State<SelectionAddPage> createState() => _SelectionAddPageState();
 }
 
-class _SelectionPageState extends State<SelectionPage> {
-  late SelectionController controller;
+class _SelectionAddPageState extends State<SelectionAddPage> {
+  late SelectionController selectionController;
   late PlayerController playerController;
 
   @override
   void initState() {
     super.initState();
     // Inicializando os controladores
-    controller = Get.find<SelectionController>();
+    selectionController = Get.find<SelectionController>();
     playerController = Get.find<PlayerController>();
 
-    controller.selectedItems.clear();
-    controller.selectionList.clear();
+    selectionController.selectedItems.clear();
 
-    // Atualizando o estado inicial
-    controller.selectionList.value = widget.selectionList;
-    controller.toggleItemSelection(widget.selectionIndex);
+    for (var index in widget.selectionIndex) {
+      selectionController.toggleItemSelection(index);
+    }
   }
 
   @override
@@ -56,7 +49,7 @@ class _SelectionPageState extends State<SelectionPage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: AppColors.current().surface,
+        backgroundColor: AppColors.current().background,
         systemOverlayStyle: SystemUiOverlayStyle(
           systemNavigationBarColor: AppColors.current().surface,
           systemNavigationBarDividerColor: Colors.transparent,
@@ -65,6 +58,7 @@ class _SelectionPageState extends State<SelectionPage> {
         leading: InkWell(
           onTap: () {
             Get.back();
+            playerController.songSelectionList.clear();
           },
           child: Icon(
             Icons.arrow_back_ios,
@@ -78,19 +72,39 @@ class _SelectionPageState extends State<SelectionPage> {
         ),
         actions: <Widget>[
           Obx(() {
-            return Text(
-              controller.selectedItems.length.toString(),
-              style: Theme.of(context).textTheme.headlineLarge,
+            return InkWell(
+              onTap: () {
+                if (selectionController.selectedItems.length ==
+                    playerController.songSelectionList.length) {
+                  selectionController.selectedItems.clear();
+                } else {
+                  selectionController.selectedItems.clear();
+                  selectionController.selectedItems.addAll(
+                    List<int>.generate(
+                      playerController.songSelectionList.length,
+                      (index) => index,
+                    ),
+                  );
+                }
+              },
+              child: Icon(
+                selectionController.selectedItems.length ==
+                        playerController.songSelectionList.length
+                    ? Icons.clear_all_outlined
+                    : Icons.done_all_outlined,
+                size: 32,
+                color: AppColors.current().text,
+              ),
             );
           }),
-          const Space(size: 24),
+          const Space(),
         ],
       ),
       body: ListView.builder(
         physics: const ClampingScrollPhysics(),
-        itemCount: widget.selectionList.length,
+        itemCount: playerController.songSelectionList.length,
         itemBuilder: (BuildContext context, int index) {
-          final SongModel song = widget.selectionList[index];
+          final SongModel song = playerController.songSelectionList[index];
 
           return ListTile(
             tileColor: Colors.transparent,
@@ -119,10 +133,10 @@ class _SelectionPageState extends State<SelectionPage> {
               overflow: TextOverflow.ellipsis,
             ),
             onTap: () {
-              controller.toggleItemSelection(index);
+              selectionController.toggleItemSelection(index);
             },
             trailing: Obx(() {
-              final bool isSelected = controller.isSelected(index);
+              final bool isSelected = selectionController.isSelected(index);
 
               return Container(
                 width: 24,
@@ -144,46 +158,33 @@ class _SelectionPageState extends State<SelectionPage> {
       ),
       bottomNavigationBar: SafeArea(
         child: Obx(() {
-          return Container(
-            color: controller.selectedItems.isNotEmpty
-                ? AppColors.current().primary
-                : AppColors.current().surface,
-            width: MediaQuery.of(context).size.width,
-            child: ListTile(
-              title: Text(
-                widget.selectionType == SelectionTypes.add
-                    ? 'crud_sheet1'.tr
-                    : 'crud_sheet8'.tr,
-                style: Theme.of(context).textTheme.headlineLarge,
-              ),
-              leading: Icon(
-                widget.selectionType == SelectionTypes.add
-                    ? Icons.add
-                    : Icons.remove,
-                color: AppColors.current().text,
-                size: 42,
-              ),
-              onTap: () async {
-                if (widget.selectionType == SelectionTypes.add) {
-                  await crudAddPlaylist(songs: controller.getSelectedSongs());
-                  Get.back();
-                }
-                if (widget.selectionType == SelectionTypes.remove &&
-                    widget.selectionTitle != null) {
-                  playerController.removeSongsPlaylist(
-                    widget.selectionTitle!,
-                    controller.getSelectedSongs(),
+          if (selectionController.selectedItems.isNotEmpty) {
+            return Container(
+              color: AppColors.current().surface,
+              width: MediaQuery.of(context).size.width,
+              child: ListTile(
+                title: Text(
+                  'crud_sheet1'.tr,
+                  style: Theme.of(context).textTheme.headlineLarge,
+                ),
+                leading: Icon(
+                  Icons.add,
+                  color: AppColors.current().text,
+                  size: 42,
+                ),
+                onTap: () async {
+                  await crudAddPlaylist(
+                    songs: selectionController.getSelectedSongs(
+                      playerController.songSelectionList.toList(),
+                    ),
                   );
-                  Get.back();
-                }
-                await Get.toNamed(AppRoutes.splash, arguments: {
-                  'function': () async {
-                    await Future.delayed(const Duration(seconds: 1));
-                  },
-                });
-              },
-            ),
-          );
+                  selectionController.selectedItems.clear();
+                },
+              ),
+            );
+          }
+
+          return const SizedBox.shrink();
         }),
       ),
     );

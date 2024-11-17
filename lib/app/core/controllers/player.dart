@@ -6,6 +6,7 @@ import 'package:get/get_rx/get_rx.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:player_hub/app/core/enums/array_image_types.dart';
 import 'package:player_hub/app/core/enums/query_songs.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
@@ -33,24 +34,23 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
 
   // ==================================================
   // playlists
-  final RxList<SongModel> filteredSongs = <SongModel>[].obs;
   final RxList<SongModel> songAllList = <SongModel>[].obs;
   final RxList<SongModel> songAppList = <SongModel>[].obs;
   final RxList<SongModel> songList = <SongModel>[].obs;
 
-  // ==================================================
-  // Playlist list
-  final RxList<String> playlistList = <String>[].obs;
-  final RxMap<String, List<SongModel>> playlistListSongs =
-      <String, List<SongModel>>{}.obs;
+  final RxList<SongModel> songSearchList = <SongModel>[].obs;
+  final RxList<SongModel> songSelectionList = <SongModel>[].obs;
 
   // ==================================================
   // folder list
+  final RxList<String> playlistList = <String>[].obs;
   final RxList<String> folderList = <String>[].obs;
   final RxList<AlbumModel> albumList = <AlbumModel>[].obs;
   final RxList<AlbumModel> artistList = <AlbumModel>[].obs;
 
   // ==================================================
+  final RxMap<String, List<SongModel>> playlistListSongs =
+      <String, List<SongModel>>{}.obs;
   final RxMap<String, List<SongModel>> folderListSongs =
       <String, List<SongModel>>{}.obs;
   final RxMap<String, List<SongModel>> albumListSongs =
@@ -60,10 +60,12 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
 
   // ==================================================
   final RxMap<int, String> _imageCache = <int, String>{}.obs;
+
+  // ==================================================
   // if in recent list
   final RxBool isListRecent = false.obs;
   // recent list
-  final List<SongModel> recentList = <SongModel>[];
+  final RxList<SongModel> recentList = <SongModel>[].obs;
   // current song
   final Rx<SongModel?> currentSong = Rx<SongModel?>(null);
   // current image
@@ -293,9 +295,10 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       Future(() async {
         for (var song in songList) {
           if (!_imageCache.containsKey(song.id)) {
-            final String imagePath =
-                await AppManifest.getImageFile(id: song.id);
-            _imageCache[song.id] = imagePath;
+            _imageCache[song.id] = await AppManifest.getImageFile(
+              id: song.id,
+              type: ArrayImageTypes.high,
+            );
           }
           songLog.value = AppShared.getTitle(song.id, song.title);
         }
@@ -367,8 +370,8 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
 
     // Cria a playlist de fontes de áudio em um único passo
     List<AudioSource> playlist = List.generate(songList.length, (i) {
-      final song = songList[i];
-      final imagePath = _imageCache[song.id];
+      final SongModel song = songList[i];
+      final String? imagePath = _imageCache[song.id];
       return AudioSource.uri(
         Uri.parse(song.uri!),
         tag: MediaItem(

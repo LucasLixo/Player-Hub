@@ -4,7 +4,6 @@ import 'package:on_audio_query/on_audio_query.dart';
 
 class SelectionController extends GetxController {
   final RxSet<int> selectedItems = <int>{}.obs;
-  final RxList<SongModel> selectionList = <SongModel>[].obs;
 
   void toggleItemSelection(int index) {
     if (selectedItems.contains(index)) {
@@ -14,7 +13,7 @@ class SelectionController extends GetxController {
     }
   }
 
-  List<SongModel> getSelectedSongs() {
+  List<SongModel> getSelectedSongs(List<SongModel> selectionList) {
     return selectedItems.map((index) => selectionList[index]).toList();
   }
 

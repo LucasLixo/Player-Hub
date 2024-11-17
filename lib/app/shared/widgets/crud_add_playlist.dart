@@ -16,7 +16,7 @@ Future<void> crudAddPlaylist({
       final PlayerController controller = Get.find<PlayerController>();
 
       return Dialog(
-        backgroundColor: AppColors.current().surface,
+        backgroundColor: AppColors.current().background,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
@@ -44,7 +44,7 @@ Future<void> crudAddPlaylist({
                         Navigator.of(context).pop();
                       },
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 6.0),
+                        padding: const EdgeInsets.only(bottom: 8.0),
                         child: Text(
                           title,
                           style: Theme.of(context).textTheme.bodyLarge,

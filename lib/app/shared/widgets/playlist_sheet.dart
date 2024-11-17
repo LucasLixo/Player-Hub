@@ -61,31 +61,31 @@ Widget playlistSheet() {
                             size: 32,
                           )
                         : const Space(size: 0),
-                    leading: FutureBuilder<Uint8List>(
-                      future: AppManifest.getImageArray(
-                        id: song.id,
-                      ),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                                ConnectionState.waiting ||
-                            snapshot.hasError ||
-                            !snapshot.hasData) {
-                          return const SizedBox(
-                            width: 50.0,
-                            height: 50.0,
-                          );
-                        } else {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.memory(
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: FutureBuilder<Uint8List>(
+                        future: AppManifest.getImageArray(
+                          id: song.id,
+                        ),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                                  ConnectionState.waiting ||
+                              snapshot.hasError ||
+                              !snapshot.hasData) {
+                            return const SizedBox(
+                              width: 50.0,
+                              height: 50.0,
+                            );
+                          } else {
+                            return Image.memory(
                               snapshot.data!,
                               fit: BoxFit.cover,
                               width: 50.0,
                               height: 50.0,
-                            ),
-                          );
-                        }
-                      },
+                            );
+                          }
+                        },
+                      ),
                     ),
                     onTap: () async {
                       await controller.playSong(index);

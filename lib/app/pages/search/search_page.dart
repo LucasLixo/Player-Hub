@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -29,9 +30,9 @@ class SearchPage extends GetView<PlayerController> {
       var query = textController.text.toLowerCase();
 
       if (query.isEmpty) {
-        controller.filteredSongs.clear();
+        controller.songSearchList.clear();
       } else {
-        controller.filteredSongs.value = controller.songAppList.where((song) {
+        controller.songSearchList.value = controller.songAppList.where((song) {
           return song.title.toLowerCase().contains(query) ||
               AppShared.getArtist(song.id, song.artist!)
                   .toLowerCase()
@@ -58,7 +59,12 @@ class SearchPage extends GetView<PlayerController> {
         backgroundColor: AppColors.current().background,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: AppColors.current().surface,
+          backgroundColor: AppColors.current().background,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            systemNavigationBarColor: AppColors.current().surface,
+            systemNavigationBarDividerColor: Colors.transparent,
+            systemNavigationBarIconBrightness: AppColors.current().brightness,
+          ),
           leading: InkWell(
             onTap: () {
               focusNode.unfocus();
@@ -102,14 +108,14 @@ class SearchPage extends GetView<PlayerController> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Obx(
-              () => controller.filteredSongs.isEmpty
+              () => controller.songSearchList.isEmpty
                   ? const Space(size: 0)
                   : GestureDetector(
                       onTap: () {
                         focusNode.unfocus();
                       },
                       child: musicList(
-                        songs: controller.filteredSongs,
+                        songs: controller.songSearchList,
                       ),
                     ),
             ),

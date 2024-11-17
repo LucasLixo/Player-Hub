@@ -2,7 +2,6 @@ abstract class AppRoutes {
   static const String wait = '/wait';
   static const String error = '/error';
   static const String splash = '/splash';
-  static const String restart = '/restart';
   static const String home = '/home';
   static const String setting = '/setting';
   static const String details = '/details';
@@ -10,5 +9,6 @@ abstract class AppRoutes {
   static const String search = '/search';
   static const String playlist = '/playlist';
   static const String equalizer = '/equalizer';
-  static const String selection = '/selection';
+  static const String selectionAdd = '/selectionAdd';
+  static const String selectionRemove = '/selectionRemove';
 }
