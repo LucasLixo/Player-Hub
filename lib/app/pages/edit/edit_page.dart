@@ -152,9 +152,9 @@ class EditPage extends GetView<PlayerController> with AppFunctions {
                         children: [
                           ListTile(
                             title: Text(
-                              'Compartilhar',
-                              style: Theme.of(context).textTheme.titleMedium,
-                              maxLines: 1,
+                              'edit_share'.tr,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                             onTap: () async {
@@ -168,9 +168,9 @@ class EditPage extends GetView<PlayerController> with AppFunctions {
                           ),
                           ListTile(
                             title: Text(
-                              'Trocar Imagem',
-                              style: Theme.of(context).textTheme.titleMedium,
-                              maxLines: 1,
+                              'edit_replace'.tr,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                             onTap: () async {

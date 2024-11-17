@@ -8,6 +8,7 @@ import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/static/app_manifest.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
+import 'package:player_hub/app/shared/widgets/crud_playlist.dart';
 
 class PlaylistList extends GetView<PlayerController> {
   const PlaylistList({super.key});
@@ -16,6 +17,7 @@ class PlaylistList extends GetView<PlayerController> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (controller.playlistList.isNotEmpty)
             Padding(
@@ -85,7 +87,9 @@ class PlaylistList extends GetView<PlayerController> {
                     color: AppColors.current().text,
                     size: 32,
                   ),
-                  onTap: () async {},
+                  onTap: () async {
+                    await crudPlaylist(playlistTitle: title);
+                  },
                 ),
                 onTap: () async {
                   if (songs.value?.isNotEmpty ?? false) {

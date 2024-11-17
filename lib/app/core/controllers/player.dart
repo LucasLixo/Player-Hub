@@ -591,6 +591,21 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
     }
   }
 
+  Future<void> renamePlaylist(String oldTitle, String newTitle) async {
+    if (playlistList.contains(oldTitle)) {
+      playlistList.remove(oldTitle);
+      playlistList.add(newTitle);
+
+      playlistListSongs[newTitle] =
+          playlistListSongs[oldTitle] ?? <SongModel>[];
+      playlistListSongs.remove(oldTitle);
+
+      await AppShared.deletePlaylist(oldTitle);
+      await _updatePlaylistList();
+      await _updatePlaylistListSongs(newTitle);
+    }
+  }
+
   Future<void> addSongsPlaylist(String title, List<SongModel> songs) async {
     if (!playlistList.contains(title)) {
       await addPlaylist(title);

@@ -12,7 +12,7 @@ import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 import 'package:player_hub/app/shared/widgets/crud_music.dart';
 import 'package:player_hub/app/shared/widgets/playlist_mode.dart';
-import 'package:player_hub/app/shared/widgets/playlist_sheet.dart';
+import 'package:player_hub/app/shared/widgets/detailts_sheet.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({super.key});
@@ -277,7 +277,7 @@ class _DetailsPageState extends State<DetailsPage>
                               color: Colors.white,
                             ),
                           ),
-                          playlistSheet(),
+                          detailsSheet(),
                         ],
                       ),
                       const Space(

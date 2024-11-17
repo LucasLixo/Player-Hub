@@ -10,7 +10,7 @@ import 'package:player_hub/app/core/static/app_manifest.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 
-Widget playlistSheet() {
+Widget detailsSheet() {
   final PlayerController controller = Get.find<PlayerController>();
 
   return InkWell(

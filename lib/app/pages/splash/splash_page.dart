@@ -92,17 +92,15 @@ class SplashPage extends GetView<PlayerController> {
           splashColor: Colors.transparent,
           focusColor: Colors.transparent,
           title: Obx(() {
-            if (controller.songLog.value.isNotEmpty) {
-              return Text(
-                controller.songLog.value,
-                style: Theme.of(context).textTheme.titleMedium,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              );
-            } else {
-              return const SizedBox.shrink();
-            }
+            return Text(
+              controller.songLog.value.isNotEmpty
+                  ? controller.songLog.value
+                  : '',
+              style: Theme.of(context).textTheme.titleMedium,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            );
           }),
           subtitle: Obx(() {
             if (function.obs.value != null ||
