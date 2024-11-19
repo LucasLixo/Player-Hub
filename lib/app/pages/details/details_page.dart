@@ -10,9 +10,9 @@ import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/types/app_functions.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:helper_hub/src/theme_widget.dart';
-import 'package:player_hub/app/shared/widgets/crud_music.dart';
+import 'package:player_hub/app/shared/more_vert/crud_music.dart';
 import 'package:player_hub/app/shared/widgets/playlist_mode.dart';
-import 'package:player_hub/app/shared/widgets/detailts_sheet.dart';
+import 'package:player_hub/app/shared/more_vert/detailts_sheet.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({super.key});
@@ -45,7 +45,7 @@ class _DetailsPageState extends State<DetailsPage>
 
   @override
   void dispose() {
-    AppShared.loadTheme(false);
+    AppShared.loadTheme(isRebirth: false);
     super.dispose();
   }
 

@@ -58,8 +58,10 @@ class _ShortcutState extends State<Shortcut>
               tileColor: AppColors.current().surface,
               splashColor: Colors.transparent,
               focusColor: Colors.transparent,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 10 + 4.0, vertical: 2),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 10 + 4.0,
+                vertical: 2.0,
+              ),
               title: Text(
                 AppShared.getTitle(
                   currentSong.id,

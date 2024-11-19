@@ -1,86 +1,100 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:get/instance_manager.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
-import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
-Future<void> crudRenamePlaylist({
-  required String playlistTitle,
+Future<String?> dialogTextField({
+  required String title,
+  required String description,
 }) async {
-  await showDialog(
+  return await showDialog<String>(
     context: Get.context!,
     barrierDismissible: true,
     builder: (BuildContext context) {
-      final PlayerController controller = Get.find<PlayerController>();
-
       final TextEditingController textController = TextEditingController();
-      final RxString title = ''.obs;
+      final FocusNode textFocus = FocusNode();
+
+      final RxString text = ''.obs;
 
       textController.addListener(() {
-        title.value = textController.text;
+        text.value = textController.text;
       });
+      textFocus.requestFocus();
 
-      textController.text = playlistTitle;
+      textController.text = description;
 
       return Dialog(
-        backgroundColor: AppColors.current().surface,
+        backgroundColor: AppColors.current().background,
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.symmetric(
+            vertical: 12.0,
+            horizontal: 16.0,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Text(
-                'crud_sheet9'.tr,
+                title,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               const SizedBox(height: 20),
               TextField(
+                cursorHeight: 28.0,
                 controller: textController,
+                focusNode: textFocus,
                 style: Theme.of(context).textTheme.titleMedium,
                 cursorColor: AppColors.current().text,
                 decoration: InputDecoration(
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.current().text),
+                  fillColor: AppColors.current().surface,
+                  filled: true,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(12),
+                    ),
+                    borderSide: BorderSide(color: AppColors.current().primary),
                   ),
+                  enabledBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(12),
+                    ),
+                    borderSide: BorderSide(color: Colors.transparent),
+                  ),
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
                 ),
+                onSubmitted: (String? value) {
+                  String currentTitle = text.value.trim();
+                  if (currentTitle.isNotEmpty && value != null) {
+                    Navigator.of(context).pop(currentTitle);
+                  }
+                },
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(null);
                     },
-                    child: Container(
+                    child: SizedBox(
                       width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.width * 0.1,
-                      decoration: BoxDecoration(
-                        color: AppColors.current().background,
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      alignment: Alignment.center,
                       child: Text(
                         'crud_sheet_dialog_2'.tr,
                         style: Theme.of(context).textTheme.bodyLarge,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
                   Obx(() {
                     return InkWell(
-                      onTap: () async {
-                        String currentTitle = title.value.trim();
+                      onTap: () {
+                        String currentTitle = text.value.trim();
                         if (currentTitle.isNotEmpty) {
-                          await controller.renamePlaylist(
-                            playlistTitle,
-                            currentTitle,
-                          );
-                          Navigator.of(context).pop();
+                          Navigator.of(context).pop(currentTitle);
                         }
                       },
                       child: Container(
@@ -100,7 +114,6 @@ Future<void> crudRenamePlaylist({
                   }),
                 ],
               ),
-              const SizedBox(width: 10),
             ],
           ),
         ),

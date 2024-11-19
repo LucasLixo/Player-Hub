@@ -12,8 +12,11 @@ import 'package:player_hub/app/core/enums/shared_attibutes.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:player_hub/app/core/interfaces/visualizer.dart';
 import 'package:player_hub/app/core/static/app_manifest.dart';
+import 'package:player_hub/app/core/types/app_functions.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
-class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
+class PlayerController extends BaseAudioHandler
+    with QueueHandler, SeekHandler, AppFunctions {
   // ==================================================
   final RxString songLog = ''.obs;
   // address of sound in list
@@ -579,6 +582,8 @@ class PlayerController extends BaseAudioHandler with QueueHandler, SeekHandler {
       playlistListSongs.putIfAbsent(title, () => <SongModel>[]);
       await _updatePlaylistList();
       await _updatePlaylistListSongs(title);
+    } else {
+      await showToast('playlist2'.tr);
     }
   }
 

@@ -122,11 +122,77 @@ class EditPage extends GetView<PlayerController> with AppFunctions {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
+          padding: const EdgeInsets.symmetric(horizontal: 6),
           child: Column(
             children: <Widget>[
+              ListTile(
+                title: Text(
+                  'edit_title'.tr,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                subtitle: TextField(
+                  cursorHeight: 28.0,
+                  controller: textControllerTitle,
+                  focusNode: null,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  cursorColor: AppColors.current().text,
+                  decoration: InputDecoration(
+                    fillColor: AppColors.current().surface,
+                    filled: true,
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                      borderSide:
+                          BorderSide(color: AppColors.current().primary),
+                    ),
+                    enabledBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                      borderSide: BorderSide(color: Colors.transparent),
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                  ),
+                ),
+              ),
+              ListTile(
+                title: Text(
+                  'edit_artist'.tr,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                subtitle: TextField(
+                  cursorHeight: 28.0,
+                  controller: textControllerArtist,
+                  focusNode: null,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  cursorColor: AppColors.current().text,
+                  decoration: InputDecoration(
+                    fillColor: AppColors.current().surface,
+                    filled: true,
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                      borderSide:
+                          BorderSide(color: AppColors.current().primary),
+                    ),
+                    enabledBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                      borderSide: BorderSide(color: Colors.transparent),
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                  ),
+                ),
+              ),
+              const Space(
+                size: 12,
+                orientation: Axis.vertical,
+              ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 14.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   mainAxisSize: MainAxisSize.max,
@@ -186,38 +252,6 @@ class EditPage extends GetView<PlayerController> with AppFunctions {
                       ),
                     ),
                   ],
-                ),
-              ),
-              ListTile(
-                title: Text(
-                  'edit_title'.tr,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                subtitle: TextField(
-                  controller: textControllerTitle,
-                  style: Theme.of(context).textTheme.titleMedium,
-                  cursorColor: AppColors.current().text,
-                  decoration: InputDecoration(
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.current().text),
-                    ),
-                  ),
-                ),
-              ),
-              ListTile(
-                title: Text(
-                  'edit_artist'.tr,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                subtitle: TextField(
-                  controller: textControllerArtist,
-                  style: Theme.of(context).textTheme.titleMedium,
-                  cursorColor: AppColors.current().text,
-                  decoration: InputDecoration(
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.current().text),
-                    ),
-                  ),
                 ),
               ),
             ],

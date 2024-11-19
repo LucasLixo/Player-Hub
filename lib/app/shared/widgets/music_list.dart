@@ -10,7 +10,7 @@ import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/static/app_manifest.dart';
-import 'package:player_hub/app/shared/widgets/crud_music.dart';
+import 'package:player_hub/app/shared/more_vert/crud_music.dart';
 
 // ==================================================
 Widget musicList({
@@ -105,13 +105,13 @@ Widget musicList({
               controller.songSelectionList.addAll(songs);
               await Get.toNamed(AppRoutes.selectionAdd, arguments: {
                 'selectionTitle': selectionTitle,
-                'selectionIndex': [myIndex],
+                'selectionIndex': myIndex,
               });
               break;
             case SelectionTypes.remove:
               await Get.toNamed(AppRoutes.selectionRemove, arguments: {
                 'selectionTitle': selectionTitle,
-                'selectionIndex': [myIndex],
+                'selectionIndex': myIndex,
               });
               break;
           }

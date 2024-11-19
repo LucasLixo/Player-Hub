@@ -110,7 +110,7 @@ class FolderList extends GetView<PlayerController> {
                 await Get.toNamed(AppRoutes.playlist, arguments: {
                   'playlistTitle': title,
                   'playlistList': songs,
-                  'playlistType': SelectionTypes.none,
+                  'playlistType': SelectionTypes.add,
                 });
               },
             );

@@ -15,7 +15,7 @@ import 'package:player_hub/app/routes/app_routes.dart';
 
 class SelectionRemovePage extends StatefulWidget {
   final String selectionTitle;
-  final List<int> selectionIndex;
+  final int selectionIndex;
 
   const SelectionRemovePage({
     super.key,
@@ -40,9 +40,7 @@ class _SelectionRemovePageState extends State<SelectionRemovePage> {
 
     selectionController.selectedItems.clear();
 
-    for (var index in widget.selectionIndex) {
-      selectionController.toggleItemSelection(index);
-    }
+    selectionController.toggleItemSelection(widget.selectionIndex);
   }
 
   @override
@@ -59,6 +57,7 @@ class _SelectionRemovePageState extends State<SelectionRemovePage> {
         await Get.offAllNamed(AppRoutes.home);
       },
       child: Scaffold(
+        backgroundColor: AppColors.current().background,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: AppColors.current().background,

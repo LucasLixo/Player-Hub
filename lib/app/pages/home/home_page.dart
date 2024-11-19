@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -15,15 +15,40 @@ import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 import 'package:player_hub/app/shared/widgets/album_list.dart';
-import 'package:player_hub/app/shared/widgets/crud_create_playlist.dart';
 import 'package:player_hub/app/shared/class/folder_list.dart';
+import 'package:player_hub/app/shared/dialog/dialog_text_field.dart';
 import 'package:player_hub/app/shared/widgets/music_list.dart';
 import 'package:player_hub/app/shared/class/playlist_list.dart';
 
-class HomePage extends GetView<PlayerController> {
-  const HomePage({
-    super.key,
-  });
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  final PlayerController playerController = Get.find<PlayerController>();
+
+  late TabController tabController;
+  final RxInt currentIndex = 0.obs;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 4, vsync: this);
+    tabController.addListener(() {
+      if (tabController.indexIsChanging) {
+        currentIndex.value = tabController.index;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +84,8 @@ class HomePage extends GetView<PlayerController> {
               onTap: () async {
                 await Get.toNamed(AppRoutes.playlist, arguments: {
                   'playlistTitle': 'playlist1'.tr,
-                  'playlistList': controller.recentList,
-                  'playlistType': SelectionTypes.none,
+                  'playlistList': playerController.recentList,
+                  'playlistType': SelectionTypes.add,
                 });
               },
               child: Icon(
@@ -83,6 +108,7 @@ class HomePage extends GetView<PlayerController> {
             const Space(),
           ],
           bottom: TabBar(
+            controller: tabController,
             isScrollable: true,
             dividerColor: Colors.transparent,
             labelStyle: Theme.of(context).textTheme.bodyMedium,
@@ -102,11 +128,12 @@ class HomePage extends GetView<PlayerController> {
         ),
         body: SafeArea(
           child: TabBarView(
+            controller: tabController,
             children: <Widget>[
               Obx(() {
-                if (controller.songAppList.isNotEmpty) {
+                if (playerController.songAppList.isNotEmpty) {
                   return musicList(
-                    songs: controller.songAppList,
+                    songs: playerController.songAppList,
                     first: ListTile(
                       tileColor: Colors.transparent,
                       splashColor: Colors.transparent,
@@ -114,6 +141,34 @@ class HomePage extends GetView<PlayerController> {
                       contentPadding: const EdgeInsets.only(
                         left: 16.0,
                         right: 8.0,
+                      ),
+                      leading: InkWell(
+                        onTap: () async {
+                          if (playerController.songList !=
+                              playerController.songAppList) {
+                            await playerController.songLoad(
+                                playerController.songAppList, 0);
+                          } else {
+                            await playerController.playSong(0);
+                          }
+                          await Get.toNamed(AppRoutes.details);
+                        },
+                        child: Container(
+                          width: 50.0,
+                          height: 50.0,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: AppColors.current().surface,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(12),
+                            ),
+                          ),
+                          child: Icon(
+                            Icons.play_circle,
+                            color: AppColors.current().text,
+                            size: 32,
+                          ),
+                        ),
                       ),
                       title: Text(
                         'setting_sort'.tr,
@@ -139,7 +194,7 @@ class HomePage extends GetView<PlayerController> {
                           onSelected: (int code) async {
                             await AppShared.setShared(
                                 SharedAttributes.getSongs, code);
-                            await controller.getAllSongs();
+                            await playerController.getAllSongs();
                           },
                           itemBuilder: (BuildContext context) {
                             return SortType.values.map((sortTypeOption) {
@@ -147,7 +202,8 @@ class HomePage extends GetView<PlayerController> {
                                 value: sortTypeOption.index,
                                 child: Text(
                                   SortType.getTypeTitlebyCode(
-                                      sortTypeOption.index),
+                                    sortTypeOption.index,
+                                  ),
                                   style:
                                       Theme.of(context).textTheme.labelMedium,
                                 ),
@@ -164,8 +220,8 @@ class HomePage extends GetView<PlayerController> {
                 }
               }),
               Obx(() {
-                if (controller.folderList.isNotEmpty ||
-                    controller.playlistList.isNotEmpty) {
+                if (playerController.folderList.isNotEmpty ||
+                    playerController.playlistList.isNotEmpty) {
                   return const SingleChildScrollView(
                     physics: ClampingScrollPhysics(),
                     child: Column(
@@ -180,11 +236,11 @@ class HomePage extends GetView<PlayerController> {
                 }
               }),
               Obx(() {
-                if (controller.albumList.isNotEmpty &&
-                    controller.albumListSongs.isNotEmpty) {
+                if (playerController.albumList.isNotEmpty &&
+                    playerController.albumListSongs.isNotEmpty) {
                   return albumList(
-                    albumList: controller.albumList,
-                    albumSongs: controller.albumListSongs,
+                    albumList: playerController.albumList,
+                    albumSongs: playerController.albumListSongs,
                     isAlbumArtist: false,
                   );
                 } else {
@@ -192,11 +248,11 @@ class HomePage extends GetView<PlayerController> {
                 }
               }),
               Obx(() {
-                if (controller.artistList.isNotEmpty &&
-                    controller.artistListSongs.isNotEmpty) {
+                if (playerController.artistList.isNotEmpty &&
+                    playerController.artistListSongs.isNotEmpty) {
                   return albumList(
-                    albumList: controller.artistList,
-                    albumSongs: controller.artistListSongs,
+                    albumList: playerController.artistList,
+                    albumSongs: playerController.artistListSongs,
                     isAlbumArtist: true,
                   );
                 } else {
@@ -207,35 +263,33 @@ class HomePage extends GetView<PlayerController> {
           ),
         ),
         bottomNavigationBar: Obx(
-          () => controller.songAppList.isEmpty
+          () => playerController.songAppList.isEmpty
               ? const Space(size: 0)
               : const Shortcut(),
         ),
-        floatingActionButton: Builder(
-          builder: (context) {
-            final TabController tabController =
-                DefaultTabController.of(context);
-
-            return AnimatedBuilder(
-              animation: tabController,
-              builder: (context, _) {
-                return tabController.index == 1
-                    ? FloatingActionButton(
-                        onPressed: () async {
-                          await crudCreatePlaylist();
-                        },
-                        backgroundColor: AppColors.current().primary,
-                        child: Icon(
-                          Icons.add,
-                          color: AppColors.current().text,
-                          size: 32,
-                        ),
-                      )
-                    : const SizedBox.shrink();
+        floatingActionButton: Obx(() {
+          if (currentIndex.value == 1) {
+            return FloatingActionButton(
+              onPressed: () async {
+                final String? result = await dialogTextField(
+                  title: 'crud_sheet6'.tr,
+                  description: '',
+                );
+                if (result != null) {
+                  playerController.addPlaylist(result);
+                }
               },
+              backgroundColor: AppColors.current().primary,
+              child: Icon(
+                Icons.add,
+                color: AppColors.current().text,
+                size: 32,
+              ),
             );
-          },
-        ),
+          } else {
+            return const SizedBox.shrink();
+          }
+        }),
       ),
     );
   }

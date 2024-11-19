@@ -5,6 +5,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:player_hub/app/core/enums/selection_types.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
@@ -79,28 +80,30 @@ class SearchPage extends GetView<PlayerController> {
               size: 32,
             ),
           ),
-          title: Padding(
-            padding: const EdgeInsets.only(bottom: 12.0),
-            child: TextField(
-              cursorHeight: 28.0,
-              controller: textController,
-              focusNode: focusNode,
-              style: Theme.of(context).textTheme.titleMedium,
-              cursorColor: AppColors.current().text,
-              decoration: InputDecoration(
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.current().text),
+          title: TextField(
+            cursorHeight: 28.0,
+            controller: textController,
+            focusNode: focusNode,
+            style: Theme.of(context).textTheme.titleMedium,
+            cursorColor: AppColors.current().text,
+            decoration: InputDecoration(
+              fillColor: AppColors.current().surface,
+              filled: true,
+              focusedBorder: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(12),
                 ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.current().text),
-                ),
-                border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.current().text),
-                ),
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                labelText: 'app_search'.tr,
-                labelStyle: Theme.of(context).textTheme.labelMedium,
+                borderSide: BorderSide(color: AppColors.current().primary),
               ),
+              enabledBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(12),
+                ),
+                borderSide: BorderSide(color: Colors.transparent),
+              ),
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+              labelText: 'app_search'.tr,
+              labelStyle: Theme.of(context).textTheme.labelMedium,
             ),
           ),
         ),
@@ -116,6 +119,7 @@ class SearchPage extends GetView<PlayerController> {
                       },
                       child: musicList(
                         songs: controller.songSearchList,
+                        selectiontype: SelectionTypes.add,
                       ),
                     ),
             ),

@@ -148,7 +148,7 @@ class _SettingPageState extends State<SettingPage> {
                   value: AppShared.getShared(SharedAttributes.darkMode),
                   onChanged: (bool value) async {
                     await AppShared.setShared(SharedAttributes.darkMode, value);
-                    await AppShared.loadTheme();
+                    await AppShared.loadTheme(isRebirth: true);
                   },
                 );
               }),

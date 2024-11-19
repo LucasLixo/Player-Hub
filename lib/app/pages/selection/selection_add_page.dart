@@ -11,11 +11,11 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:player_hub/app/pages/selection/selection_controller.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
-import 'package:player_hub/app/shared/widgets/crud_add_playlist.dart';
+import 'package:player_hub/app/shared/widgets/add_playlist.dart';
 
 class SelectionAddPage extends StatefulWidget {
   final String? selectionTitle;
-  final List<int> selectionIndex;
+  final int selectionIndex;
 
   const SelectionAddPage({
     super.key,
@@ -40,9 +40,7 @@ class _SelectionAddPageState extends State<SelectionAddPage> {
 
     selectionController.selectedItems.clear();
 
-    for (var index in widget.selectionIndex) {
-      selectionController.toggleItemSelection(index);
-    }
+    selectionController.toggleItemSelection(widget.selectionIndex);
   }
 
   @override
@@ -56,6 +54,7 @@ class _SelectionAddPageState extends State<SelectionAddPage> {
         await Get.offAllNamed(AppRoutes.home);
       },
       child: Scaffold(
+        backgroundColor: AppColors.current().background,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: AppColors.current().background,
@@ -182,7 +181,7 @@ class _SelectionAddPageState extends State<SelectionAddPage> {
                     size: 42,
                   ),
                   onTap: () async {
-                    await crudAddPlaylist(
+                    await addPlaylist(
                       songs: selectionController.getSelectedSongs(
                         playerController.songSelectionList.toList(),
                       ),

@@ -4,7 +4,6 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:helper_hub/src/theme_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -13,6 +12,7 @@ import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/shared/dialog/dialog_text.dart';
 
 class SplashPage extends GetView<PlayerController> {
   final Future<void> Function()? function;
@@ -40,18 +40,14 @@ class SplashPage extends GetView<PlayerController> {
       if (audioPermissionStatus.isGranted) {
         await _initializeApp();
       } else if (audioPermissionStatus.isDenied) {
-        await showWindowConfirm(
-          context: Get.context!,
-          colors: AppColors.current(),
+        await dialogText(
           title: 'app_again'.tr,
-          subtitle: 'app_permision1'.tr,
-          textConfirm: 'crud_sheet_dialog_1'.tr,
-          textCancel: 'crud_sheet_dialog_2'.tr,
-          confirm: () => SystemNavigator.pop(),
-          cancel: null,
+          description: 'app_permision1'.tr,
         );
+        await SystemNavigator.pop();
       } else if (audioPermissionStatus.isPermanentlyDenied) {
         await openAppSettings();
+        await SystemNavigator.pop();
       }
     } finally {
       isRequestingPermission.value = false;

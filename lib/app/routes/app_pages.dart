@@ -68,6 +68,7 @@ abstract class AppPages {
         playlistTitle: Get.arguments['playlistTitle'],
         playlistList: Get.arguments['playlistList'],
         playlistType: Get.arguments['playlistType'],
+        isPlaylist: Get.arguments['isPlaylist'] ?? false,
       ),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,

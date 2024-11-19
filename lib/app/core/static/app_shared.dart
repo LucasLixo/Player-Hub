@@ -65,13 +65,13 @@ abstract class AppShared extends GetxController {
       sharedMap[setting.name] = SharedAttributes.getAttributesMap[setting.name];
     }
 
-    await loadTheme();
+    await loadTheme(isRebirth: true);
   }
 
   // ==================================================
-  static Future<void> loadTheme([
-    bool isRebirth = true,
-  ]) async {
+  static Future<void> loadTheme({
+    required bool isRebirth,
+  }) async {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,

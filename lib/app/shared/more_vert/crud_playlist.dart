@@ -5,7 +5,8 @@ import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:get/instance_manager.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:player_hub/app/shared/widgets/crud_rename_playlist.dart';
+import 'package:player_hub/app/shared/dialog/dialog_bool.dart';
+import 'package:player_hub/app/shared/dialog/dialog_text_field.dart';
 
 Future<void> crudPlaylist({
   required String playlistTitle,
@@ -54,7 +55,16 @@ Future<void> crudPlaylist({
               ),
               onTap: () async {
                 Navigator.of(context).pop();
-                await crudRenamePlaylist(playlistTitle: playlistTitle);
+                final String? result = await dialogTextField(
+                  title: 'crud_sheet9'.tr,
+                  description: playlistTitle,
+                );
+                if (result != null) {
+                  await controller.renamePlaylist(
+                    playlistTitle,
+                    result,
+                  );
+                }
               },
             ),
             ListTile(
@@ -71,8 +81,13 @@ Future<void> crudPlaylist({
                 size: 28,
               ),
               onTap: () async {
+                final bool? result = await dialogBool(
+                  title: 'crud_sheet7'.tr,
+                );
                 Navigator.of(context).pop();
-                await controller.removePlaylist(playlistTitle);
+                if (result != null && result) {
+                  await controller.removePlaylist(playlistTitle);
+                }
               },
             ),
           ],
