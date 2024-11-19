@@ -8,7 +8,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 Widget playlistMode() {
   final PlayerController controller = Get.find<PlayerController>();
 
-  return InkWell(
+  return GestureDetector(
     onTap: () async {
       await controller.togglePlaylist();
     },

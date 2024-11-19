@@ -66,7 +66,7 @@ class _SelectionRemovePageState extends State<SelectionRemovePage> {
             systemNavigationBarDividerColor: Colors.transparent,
             systemNavigationBarIconBrightness: AppColors.current().brightness,
           ),
-          leading: InkWell(
+          leading: GestureDetector(
             onTap: () async {
               await Get.offAllNamed(AppRoutes.home);
             },
@@ -82,7 +82,7 @@ class _SelectionRemovePageState extends State<SelectionRemovePage> {
           ),
           actions: <Widget>[
             Obx(() {
-              return InkWell(
+              return GestureDetector(
                 onTap: () {
                   if (selectionController.selectedItems.length ==
                       currentList.length) {

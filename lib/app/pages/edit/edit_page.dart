@@ -92,8 +92,10 @@ class EditPage extends GetView<PlayerController> with AppFunctions {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.current().background,
-        leading: InkWell(
-          onTap: () => Get.back(),
+        leading: GestureDetector(
+          onTap: () {
+            Get.back();
+          },
           child: Icon(
             Icons.arrow_back_ios,
             color: AppColors.current().text,
@@ -107,7 +109,7 @@ class EditPage extends GetView<PlayerController> with AppFunctions {
           overflow: TextOverflow.ellipsis,
         ),
         actions: [
-          InkWell(
+          GestureDetector(
             onTap: () async {
               await _saveInfo();
             },

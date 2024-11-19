@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             systemNavigationBarDividerColor: Colors.transparent,
             systemNavigationBarIconBrightness: AppColors.current().brightness,
           ),
-          leading: InkWell(
+          leading: GestureDetector(
             onTap: () async {
               await Get.toNamed(AppRoutes.setting);
             },
@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           actions: [
-            InkWell(
+            GestureDetector(
               onTap: () async {
                 await Get.toNamed(AppRoutes.playlist, arguments: {
                   'playlistTitle': 'playlist1'.tr,
@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             ),
             const Space(),
-            InkWell(
+            GestureDetector(
               onTap: () async {
                 await Get.toNamed(AppRoutes.search);
               },
@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         left: 16.0,
                         right: 8.0,
                       ),
-                      leading: InkWell(
+                      leading: GestureDetector(
                         onTap: () async {
                           if (playerController.songList !=
                               playerController.songAppList) {

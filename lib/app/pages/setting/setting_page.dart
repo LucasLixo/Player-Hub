@@ -30,8 +30,8 @@ class _SettingPageState extends State<SettingPage> {
   @override
   void dispose() {
     if (isEdited.value) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        controller.getAllSongs();
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await controller.getAllSongs();
       });
     }
     super.dispose();
@@ -44,7 +44,7 @@ class _SettingPageState extends State<SettingPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.current().background,
-        leading: InkWell(
+        leading: GestureDetector(
           onTap: () {
             Get.back();
           },

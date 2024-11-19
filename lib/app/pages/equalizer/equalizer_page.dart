@@ -45,7 +45,7 @@ class EqualizerPage extends GetView<PlayerController> with AppFunctions {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.current().background,
-        leading: InkWell(
+        leading: GestureDetector(
           onTap: () {
             Get.back();
           },
@@ -91,7 +91,7 @@ class EqualizerPage extends GetView<PlayerController> with AppFunctions {
                 'setting_reset'.tr,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              trailing: InkWell(
+              trailing: GestureDetector(
                 onTap: () async {
                   await AppShared.setShared(
                     SharedAttributes.frequency,

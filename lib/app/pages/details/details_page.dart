@@ -101,7 +101,7 @@ class _DetailsPageState extends State<DetailsPage>
                           systemNavigationBarIconBrightness: Brightness.light,
                         ),
                         foregroundColor: Colors.transparent,
-                        leading: InkWell(
+                        leading: GestureDetector(
                           onTap: () {
                             Get.back();
                           },
@@ -112,7 +112,7 @@ class _DetailsPageState extends State<DetailsPage>
                           ),
                         ),
                         actions: [
-                          InkWell(
+                          GestureDetector(
                             onTap: () async {
                               await Get.toNamed(AppRoutes.equalizer);
                             },
@@ -123,7 +123,7 @@ class _DetailsPageState extends State<DetailsPage>
                             ),
                           ),
                           const Space(),
-                          InkWell(
+                          GestureDetector(
                             onTap: () async {
                               await crudMusic(
                                 song: currentSong,
@@ -240,24 +240,20 @@ class _DetailsPageState extends State<DetailsPage>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           playlistMode(),
-                          InkWell(
+                          GestureDetector(
                             onTap: () async {
                               await playerController.previousSong();
                             },
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
                             child: const Icon(
                               Icons.skip_previous_rounded,
                               size: 40,
                               color: Colors.white,
                             ),
                           ),
-                          InkWell(
+                          GestureDetector(
                             onTap: () async {
                               await playerController.togglePlayPause();
                             },
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
                             child: AnimatedIcon(
                               icon: AnimatedIcons.play_pause,
                               progress: _controller,
@@ -265,12 +261,10 @@ class _DetailsPageState extends State<DetailsPage>
                               color: Colors.white,
                             ),
                           ),
-                          InkWell(
+                          GestureDetector(
                             onTap: () async {
                               await playerController.nextSong();
                             },
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
                             child: const Icon(
                               Icons.skip_next_rounded,
                               size: 40,

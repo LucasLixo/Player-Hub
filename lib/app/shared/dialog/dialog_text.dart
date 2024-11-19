@@ -37,7 +37,7 @@ Future<void> dialogText({
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  InkWell(
+                  GestureDetector(
                     onTap: () {
                       Navigator.of(context).pop();
                     },
@@ -51,7 +51,7 @@ Future<void> dialogText({
                     ),
                   ),
                   Obx(() {
-                    return InkWell(
+                    return GestureDetector(
                       onTap: () {
                         Navigator.of(context).pop();
                       },

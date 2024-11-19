@@ -63,7 +63,7 @@ class _SelectionAddPageState extends State<SelectionAddPage> {
             systemNavigationBarDividerColor: Colors.transparent,
             systemNavigationBarIconBrightness: AppColors.current().brightness,
           ),
-          leading: InkWell(
+          leading: GestureDetector(
             onTap: () async {
               await Get.offAllNamed(AppRoutes.home);
               playerController.songSelectionList.clear();
@@ -80,7 +80,7 @@ class _SelectionAddPageState extends State<SelectionAddPage> {
           ),
           actions: <Widget>[
             Obx(() {
-              return InkWell(
+              return GestureDetector(
                 onTap: () {
                   if (selectionController.selectedItems.length ==
                       playerController.songSelectionList.length) {

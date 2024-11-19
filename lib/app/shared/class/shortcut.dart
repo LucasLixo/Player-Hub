@@ -93,25 +93,20 @@ class _ShortcutState extends State<Shortcut>
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  InkWell(
-                    onTap: () {
-                      playerController.previousSong();
+                  GestureDetector(
+                    onTap: () async {
+                      await playerController.previousSong();
                     },
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
                     child: Icon(
                       Icons.skip_previous_rounded,
                       size: 32,
                       color: AppColors.current().text,
                     ),
                   ),
-                  const Space(size: 0),
-                  InkWell(
-                    onTap: () {
-                      playerController.togglePlayPause();
+                  GestureDetector(
+                    onTap: () async {
+                      await playerController.togglePlayPause();
                     },
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
                     child: AnimatedIcon(
                       icon: AnimatedIcons.play_pause,
                       progress: _controller,
@@ -119,20 +114,16 @@ class _ShortcutState extends State<Shortcut>
                       color: AppColors.current().text,
                     ),
                   ),
-                  const Space(size: 0),
-                  InkWell(
-                    onTap: () {
-                      playerController.nextSong();
+                  GestureDetector(
+                    onTap: () async {
+                      await playerController.nextSong();
                     },
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
                     child: Icon(
                       Icons.skip_next_rounded,
                       size: 32,
                       color: AppColors.current().text,
                     ),
                   ),
-                  const Space(size: 0),
                 ],
               ),
               onTap: () async {

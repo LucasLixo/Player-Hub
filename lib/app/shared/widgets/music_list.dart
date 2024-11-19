@@ -77,7 +77,7 @@ Widget musicList({
             },
           ),
         ),
-        trailing: InkWell(
+        trailing: GestureDetector(
           onTap: () async {
             await crudMusic(
               song: song,

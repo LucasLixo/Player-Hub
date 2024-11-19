@@ -81,7 +81,7 @@ class PlaylistList extends GetView<PlayerController> {
                           height: 50.0,
                         ),
                 ),
-                trailing: InkWell(
+                trailing: GestureDetector(
                   child: Icon(
                     Icons.more_vert,
                     color: AppColors.current().text,

@@ -76,7 +76,7 @@ Future<String?> dialogTextField({
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  InkWell(
+                  GestureDetector(
                     onTap: () {
                       Navigator.of(context).pop(null);
                     },
@@ -90,7 +90,7 @@ Future<String?> dialogTextField({
                     ),
                   ),
                   Obx(() {
-                    return InkWell(
+                    return GestureDetector(
                       onTap: () {
                         String currentTitle = text.value.trim();
                         if (currentTitle.isNotEmpty) {

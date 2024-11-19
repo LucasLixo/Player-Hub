@@ -84,7 +84,7 @@ class FolderList extends GetView<PlayerController> {
 
                 final RxBool isIgnored = listFolderIgnore.contains(title).obs;
 
-                return InkWell(
+                return GestureDetector(
                   child: Icon(
                     isIgnored.value ? Icons.visibility_off : Icons.visibility,
                     color: AppColors.current().text,

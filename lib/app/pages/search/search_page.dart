@@ -66,7 +66,7 @@ class SearchPage extends GetView<PlayerController> {
             systemNavigationBarDividerColor: Colors.transparent,
             systemNavigationBarIconBrightness: AppColors.current().brightness,
           ),
-          leading: InkWell(
+          leading: GestureDetector(
             onTap: () {
               focusNode.unfocus();
               Get.back();

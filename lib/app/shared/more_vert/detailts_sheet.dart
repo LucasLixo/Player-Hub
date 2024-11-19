@@ -13,7 +13,7 @@ import 'package:helper_hub/src/theme_widget.dart';
 Widget detailsSheet() {
   final PlayerController controller = Get.find<PlayerController>();
 
-  return InkWell(
+  return GestureDetector(
     onTap: () async {
       await showModalBottomSheet(
         context: Get.context!,

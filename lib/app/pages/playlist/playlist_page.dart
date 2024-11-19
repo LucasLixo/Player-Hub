@@ -63,7 +63,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
           systemNavigationBarDividerColor: Colors.transparent,
           systemNavigationBarIconBrightness: AppColors.current().brightness,
         ),
-        leading: InkWell(
+        leading: GestureDetector(
           onTap: () {
             Get.back();
           },
@@ -79,7 +79,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
         ),
         actions: widget.isPlaylist
             ? [
-                InkWell(
+                GestureDetector(
                   onTap: () async {
                     final bool? result = await dialogBool(
                       title: 'crud_sheet7'.tr,

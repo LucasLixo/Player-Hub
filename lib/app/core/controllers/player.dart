@@ -21,7 +21,7 @@ class PlayerController extends BaseAudioHandler
   final RxString songLog = ''.obs;
   // address of sound in list
   final RxInt songIndex = 0.obs;
-  final RxInt songSession = 0.obs;
+
   // state play
   final RxBool isPlaying = false.obs;
   // playback options
@@ -93,7 +93,6 @@ class PlayerController extends BaseAudioHandler
   // ==================================================
   void _handlePlayerState(PlayerState state) {
     isPlaying.value = state.playing;
-    songSession.value = audioPlayer.androidAudioSessionId ?? 0;
   }
 
   // ==================================================
