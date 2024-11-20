@@ -222,14 +222,41 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               Obx(() {
                 if (playerController.folderList.isNotEmpty ||
                     playerController.playlistList.isNotEmpty) {
-                  return const SingleChildScrollView(
-                    physics: ClampingScrollPhysics(),
-                    child: Column(
-                      children: [
-                        PlaylistList(),
-                        FolderList(),
-                      ],
-                    ),
+                  return Stack(
+                    children: [
+                      const Positioned.fill(
+                        child: SingleChildScrollView(
+                          physics: ClampingScrollPhysics(),
+                          child: Column(
+                            children: [
+                              PlaylistList(),
+                              FolderList(),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 10,
+                        right: 10,
+                        child: FloatingActionButton(
+                          onPressed: () async {
+                            final String? result = await dialogTextField(
+                              title: 'crud_sheet6'.tr,
+                              description: '',
+                            );
+                            if (result != null) {
+                              playerController.addPlaylist(result);
+                            }
+                          },
+                          backgroundColor: AppColors.current().primary,
+                          child: Icon(
+                            Icons.add,
+                            color: AppColors.current().text,
+                            size: 32,
+                          ),
+                        ),
+                      ),
+                    ],
                   );
                 } else {
                   return CenterText(title: 'home_not_tab2'.tr);
@@ -267,29 +294,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ? const Space(size: 0)
               : const Shortcut(),
         ),
-        floatingActionButton: Obx(() {
-          if (currentIndex.value == 1) {
-            return FloatingActionButton(
-              onPressed: () async {
-                final String? result = await dialogTextField(
-                  title: 'crud_sheet6'.tr,
-                  description: '',
-                );
-                if (result != null) {
-                  playerController.addPlaylist(result);
-                }
-              },
-              backgroundColor: AppColors.current().primary,
-              child: Icon(
-                Icons.add,
-                color: AppColors.current().text,
-                size: 32,
-              ),
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        }),
       ),
     );
   }

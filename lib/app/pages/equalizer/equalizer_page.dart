@@ -10,36 +10,16 @@ import 'package:player_hub/app/core/enums/shared_attibutes.dart';
 import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:player_hub/app/core/types/app_functions.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
-import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:helper_hub/src/theme_widget.dart';
+import 'package:player_hub/app/pages/equalizer/equalize_controller.dart';
 
-class EqualizerPage extends GetView<PlayerController> with AppFunctions {
+class EqualizerPage extends GetView<EqualizerController> with AppFunctions {
   const EqualizerPage({
     super.key,
   });
 
-  Future<void> _initializeEqualizer(int id) async {
-    await EqualizerFlutter.init(id);
-    await EqualizerFlutter.open(id);
-    await EqualizerFlutter.setAudioSessionId(id);
-    for (int i = 0; i < 5; i++) {
-      await EqualizerFlutter.setBandLevel(
-        i,
-        AppShared.getShared(SharedAttributes.frequency)[i].toInt(),
-      );
-    }
-    await EqualizerFlutter.setEnabled(
-      AppShared.getShared(SharedAttributes.equalizeMode),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final int? sessionId = controller.audioPlayer.androidAudioSessionId;
-    if (sessionId != null) {
-      _initializeEqualizer(sessionId);
-    }
-
     return Scaffold(
       backgroundColor: AppColors.current().background,
       appBar: AppBar(
@@ -64,20 +44,7 @@ class EqualizerPage extends GetView<PlayerController> with AppFunctions {
             return Switch(
               value: AppShared.getShared(SharedAttributes.equalizeMode),
               onChanged: (bool value) async {
-                await AppShared.setShared(
-                  SharedAttributes.equalizeMode,
-                  value,
-                );
-                await EqualizerFlutter.setEnabled(value);
-                for (int i = 0; i < 5; i++) {
-                  await EqualizerFlutter.setBandLevel(
-                    i,
-                    AppShared.getShared(SharedAttributes.frequency)[i].toInt(),
-                  );
-                }
-                await showToast(value
-                    ? "${'setting_equalizer'.tr} ${'app_enable'.tr}"
-                    : "${'setting_equalizer'.tr} ${'app_disable'.tr}");
+                await controller.toggleEqualizer(value);
               },
             );
           }),
@@ -121,89 +88,54 @@ class EqualizerPage extends GetView<PlayerController> with AppFunctions {
                 ],
               ),
             ),
-            FutureBuilder<List<int>>(
-              future: EqualizerFlutter.getBandLevelRange(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Space(size: 0);
-                } else if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasData) {
-                    return Obx(() {
-                      return CustomEQ(
-                        enabled:
-                            AppShared.getShared(SharedAttributes.equalizeMode),
-                        bandLevelRange: snapshot.data!,
-                      );
-                    });
-                  } else if (snapshot.hasError) {
-                    return const Space(size: 0);
-                  }
-                }
-                return const CenterText(title: 'Unexpected state');
-              },
-            ),
+            Obx(() {
+              return _customEQ(
+                context,
+                enabled: AppShared.getShared(SharedAttributes.equalizeMode),
+                bandLevelRange: controller.bandLevelRange,
+              );
+            })
           ],
         ),
       ),
     );
   }
-}
 
-class CustomEQ extends StatefulWidget {
-  const CustomEQ({
-    super.key,
-    required this.enabled,
-    required this.bandLevelRange,
-  });
+  Widget _customEQ(
+    BuildContext context, {
+    required bool enabled,
+    required List<int> bandLevelRange,
+  }) {
+    int bandId = 0;
 
-  final bool enabled;
-  final List<int> bandLevelRange;
-
-  @override
-  State<CustomEQ> createState() => _CustomEQState();
-}
-
-class _CustomEQState extends State<CustomEQ> {
-  late double min, max;
-  late Future<List<int>> fetchCenterBandFreqs;
-
-  @override
-  void initState() {
-    super.initState();
-    min = widget.bandLevelRange[0].toDouble();
-    max = widget.bandLevelRange[1].toDouble();
-    fetchCenterBandFreqs = EqualizerFlutter.getCenterBandFreqs();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<int>>(
-      future: fetchCenterBandFreqs,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasData) {
-            int bandId = 0;
-            return Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: snapshot.data!.map((freq) {
-                    return _buildSliderBand(freq, bandId++);
-                  }).toList(),
-                ),
-              ],
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: controller.bandCenterFrequencies.map((freq) {
+            return _buildSliderBand(
+              context,
+              enabled: enabled,
+              freq: freq,
+              bandId: bandId++,
+              minLevel: bandLevelRange[0].toDouble(),
+              maxLevel: bandLevelRange[1].toDouble(),
             );
-          } else if (snapshot.hasError) {
-            return CenterText(title: 'cloud_error1'.tr);
-          }
-        }
-        return CenterText(title: 'cloud_error1'.tr);
-      },
+          }).toList(),
+        ),
+      ],
     );
   }
 
-  Widget _buildSliderBand(int freq, int bandId) {
+  Widget _buildSliderBand(
+    BuildContext context, {
+    required bool enabled,
+    required int freq,
+    required int bandId,
+    required double minLevel,
+    required double maxLevel,
+  }) {
     return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -232,10 +164,10 @@ class _CustomEQState extends State<CustomEQ> {
                   return Slider(
                     thumbColor: AppColors.current().primary,
                     activeColor: AppColors.current().primary,
-                    min: min,
-                    max: max,
+                    min: minLevel,
+                    max: maxLevel,
                     value: value.value,
-                    onChanged: widget.enabled
+                    onChanged: enabled
                         ? (lowerValue) {
                             value.value = lowerValue;
                             AppShared.sharedMap[SharedAttributes.frequency.name]

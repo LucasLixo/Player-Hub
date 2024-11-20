@@ -31,6 +31,9 @@ abstract class AppPages {
       page: () => const HomePage(),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.fade,
+      binding: BindingsBuilder(() {
+        AppBinding().equalizerController();
+      }),
     ),
     GetPage(
       name: AppRoutes.setting,

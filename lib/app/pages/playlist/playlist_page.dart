@@ -84,11 +84,11 @@ class _PlaylistPageState extends State<PlaylistPage> {
                     final bool? result = await dialogBool(
                       title: 'crud_sheet7'.tr,
                     );
-                    await Get.offAllNamed(AppRoutes.home);
                     if (result != null && result) {
                       await playerController
                           .removePlaylist(widget.playlistTitle);
                     }
+                    await Get.offAllNamed(AppRoutes.home);
                   },
                   child: Icon(
                     Icons.delete,
