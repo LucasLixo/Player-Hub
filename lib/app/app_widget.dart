@@ -5,7 +5,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/state_manager.dart';
 import 'package:get/instance_manager.dart';
-import 'package:player_hub/app/app_bindings.dart';
+import 'package:player_hub/app/routes/app_bindings.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/routes/app_pages.dart';
 import 'package:player_hub/app/core/types/app_translations.dart';

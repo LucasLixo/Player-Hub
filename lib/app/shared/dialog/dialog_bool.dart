@@ -36,7 +36,7 @@ Future<bool?> dialogBool({
                       Navigator.of(context).pop(false);
                     },
                     child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
+                      width: Get.width * 0.3,
                       child: Text(
                         'no'.tr,
                         style: Theme.of(context).textTheme.bodyLarge,
@@ -50,8 +50,8 @@ Future<bool?> dialogBool({
                         Navigator.of(context).pop(true);
                       },
                       child: Container(
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        height: MediaQuery.of(context).size.width * 0.1,
+                        width: Get.width * 0.3,
+                        height: Get.width * 0.1,
                         decoration: BoxDecoration(
                           color: AppColors.current().primary,
                           borderRadius: BorderRadius.circular(12.0),

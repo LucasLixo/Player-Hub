@@ -26,7 +26,7 @@ Future<void> crudMusic({
     backgroundColor: AppColors.current().background,
     builder: (BuildContext context) {
       return SizedBox(
-        height: MediaQuery.of(context).size.height * 0.4,
+        height: Get.height * 0.4,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -144,12 +144,12 @@ class _DetailsPageState extends State<DetailsPage>
                             ? Image.memory(
                                 currentImage,
                                 fit: BoxFit.cover,
-                                width: MediaQuery.of(context).size.width,
-                                height: MediaQuery.of(context).size.width,
+                                width: Get.width,
+                                height: Get.width,
                               )
                             : SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                height: MediaQuery.of(context).size.width,
+                                width: Get.width,
+                                height: Get.width,
                               ),
                       ),
                       const Space(

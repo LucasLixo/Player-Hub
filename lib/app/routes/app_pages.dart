@@ -1,6 +1,6 @@
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
-import 'package:player_hub/app/app_bindings.dart';
+import 'package:player_hub/app/routes/app_bindings.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/routes/app_imports.dart';
 
@@ -31,9 +31,6 @@ abstract class AppPages {
       page: () => const HomePage(),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.fade,
-      binding: BindingsBuilder(() {
-        AppBinding().equalizerController();
-      }),
     ),
     GetPage(
       name: AppRoutes.setting,
@@ -66,6 +63,9 @@ abstract class AppPages {
       page: () => const EqualizerPage(),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
+      binding: BindingsBuilder(() {
+        AppBinding().equalizerController();
+      }),
     ),
     GetPage(
       name: AppRoutes.playlist,

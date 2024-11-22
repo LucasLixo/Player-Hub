@@ -20,6 +20,13 @@ class EqualizerPage extends GetView<EqualizerController> with AppFunctions {
 
   @override
   Widget build(BuildContext context) {
+    () async {
+      if (controller.bandLevelRange.value == null ||
+          controller.bandCenterFrequencies.value == null) {
+        await controller.initializeBand();
+      }
+    };
+
     return Scaffold(
       backgroundColor: AppColors.current().background,
       appBar: AppBar(
@@ -51,52 +58,59 @@ class EqualizerPage extends GetView<EqualizerController> with AppFunctions {
         ],
       ),
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              title: Text(
-                'setting_reset'.tr,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              trailing: GestureDetector(
-                onTap: () async {
-                  await AppShared.setShared(
-                    SharedAttributes.frequency,
-                    SharedAttributes.frequency.value,
-                  );
-                },
-                child: Icon(
-                  Icons.refresh,
-                  size: 32,
-                  color: AppColors.current().text,
+        child: Obx(() {
+          if (controller.bandLevelRange.value != null &&
+              controller.bandCenterFrequencies.value != null) {
+            return Column(
+              children: <Widget>[
+                ListTile(
+                  title: Text(
+                    'setting_reset'.tr,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  trailing: GestureDetector(
+                    onTap: () async {
+                      await AppShared.setShared(
+                        SharedAttributes.frequency,
+                        SharedAttributes.frequency.value,
+                      );
+                    },
+                    child: Icon(
+                      Icons.refresh,
+                      size: 32,
+                      color: AppColors.current().text,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'equalizer_frequency1'.tr,
-                    style: Theme.of(context).textTheme.labelMedium,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'equalizer_frequency1'.tr,
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                      Text(
+                        'equalizer_frequency2'.tr,
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                    ],
                   ),
-                  Text(
-                    'equalizer_frequency2'.tr,
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                ],
-              ),
-            ),
-            Obx(() {
-              return _customEQ(
-                context,
-                enabled: AppShared.getShared(SharedAttributes.equalizeMode),
-                bandLevelRange: controller.bandLevelRange,
-              );
-            })
-          ],
-        ),
+                ),
+                Obx(() {
+                  return _customEQ(
+                    context,
+                    enabled: AppShared.getShared(SharedAttributes.equalizeMode),
+                    bandLevelRange: controller.bandLevelRange.value!,
+                  );
+                })
+              ],
+            );
+          }
+
+          return const SizedBox.shrink();
+        }),
       ),
     );
   }
@@ -113,7 +127,7 @@ class EqualizerPage extends GetView<EqualizerController> with AppFunctions {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: controller.bandCenterFrequencies.map((freq) {
+          children: controller.bandCenterFrequencies.value!.map((freq) {
             return _buildSliderBand(
               context,
               enabled: enabled,

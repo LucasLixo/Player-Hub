@@ -18,18 +18,19 @@ abstract class AppManifest {
   // ==================================================
   static Future<Uint8List> getImageArray({
     required int id,
-    ArrayImageTypes type = ArrayImageTypes.low,
+    ArrayImageTypes type = ArrayImageTypes.high,
   }) async {
     late File file;
-
-    switch (type) {
-      case ArrayImageTypes.low:
-        file = File('${AppShared.documentDir.path}/${id}_64.jpg');
-        break;
-      case ArrayImageTypes.high:
-        file = File('${AppShared.documentDir.path}/${id}_256.jpg');
-        break;
-    }
+//
+    // switch (type) {
+    //   case ArrayImageTypes.low:
+    //     file = File('${AppShared.documentDir.path}/${id}_64.jpg');
+    //     break;
+    //   case ArrayImageTypes.high:
+    //     file = File('${AppShared.documentDir.path}/${id}_256.jpg');
+    //     break;
+    // }
+    file = File('${AppShared.documentDir.path}/${id}_256.jpg');
 
     return file.readAsBytes();
   }
@@ -39,19 +40,20 @@ abstract class AppManifest {
     required int id,
     required ArrayImageTypes type,
   }) async {
-    final File fileLow = File('${AppShared.documentDir.path}/${id}_64.jpg');
+    // final File fileLow = File('${AppShared.documentDir.path}/${id}_64.jpg');
     final File fileHigh = File('${AppShared.documentDir.path}/${id}_256.jpg');
 
-    if (!await fileLow.exists() || !await fileHigh.exists()) {
+    if (/* !await fileLow.exists() || */ !await fileHigh.exists()) {
       await _generateImageFile(id: id);
     }
 
-    switch (type) {
-      case ArrayImageTypes.low:
-        return fileLow.path;
-      case ArrayImageTypes.high:
-        return fileHigh.path;
-    }
+    // switch (type) {
+    //   case ArrayImageTypes.low:
+    //     return fileLow.path;
+    //   case ArrayImageTypes.high:
+    //     return fileHigh.path;
+    // }
+    return fileHigh.path;
   }
 
   // ==================================================
@@ -60,17 +62,17 @@ abstract class AppManifest {
   }) async {
     final OnAudioQuery audioQuery = OnAudioQuery();
 
-    final File fileLow = File('${AppShared.documentDir.path}/${id}_64.jpg');
+    // final File fileLow = File('${AppShared.documentDir.path}/${id}_64.jpg');
     final File fileHigh = File('${AppShared.documentDir.path}/${id}_256.jpg');
 
     final List<Uint8List?> dataResults = await Future.wait([
-      audioQuery.queryArtwork(
-        id,
-        ArtworkType.AUDIO,
-        format: ArtworkFormat.JPEG,
-        size: 64,
-        quality: 100,
-      ),
+      // audioQuery.queryArtwork(
+      //   id,
+      //   ArtworkType.AUDIO,
+      //   format: ArtworkFormat.JPEG,
+      //   size: 64,
+      //   quality: 100,
+      // ),
       audioQuery.queryArtwork(
         id,
         ArtworkType.AUDIO,
@@ -79,28 +81,27 @@ abstract class AppManifest {
         quality: 100,
       ),
     ]);
-    final Uint8List? dataLow = dataResults[0];
+    // final Uint8List? dataLow = dataResults[0];
     final Uint8List? dataHigh = dataResults[1];
 
-    if (dataLow != null &&
-        dataLow.isNotEmpty &&
-        dataHigh != null &&
-        dataHigh.isNotEmpty) {
-      await fileLow.writeAsBytes(dataLow);
+    if ( // dataLow != null &&
+        // dataLow.isNotEmpty &&
+        dataHigh != null && dataHigh.isNotEmpty) {
+      // await fileLow.writeAsBytes(dataLow);
       await fileHigh.writeAsBytes(dataHigh);
     } else {
       final String randomImageColor =
           _imageColors[Random().nextInt(_imageColors.length)];
 
-      final ByteData imageDataLow =
-          await rootBundle.load('assets/images/low_poly_$randomImageColor.jpg');
-      final Uint8List imageBytesLow = imageDataLow.buffer.asUint8List();
+      // final ByteData imageDataLow =
+      //     await rootBundle.load('assets/images/low_poly_$randomImageColor.jpg');
+      // final Uint8List imageBytesLow = imageDataLow.buffer.asUint8List();
 
       final ByteData imageDataHigh = await rootBundle
           .load('assets/images/high_poly_$randomImageColor.jpg');
       final Uint8List imageBytesHigh = imageDataHigh.buffer.asUint8List();
 
-      await fileLow.writeAsBytes(imageBytesLow);
+      // await fileLow.writeAsBytes(imageBytesLow);
       await fileHigh.writeAsBytes(imageBytesHigh);
     }
   }
@@ -110,10 +111,10 @@ abstract class AppManifest {
     required int id,
     required Uint8List bytes,
   }) async {
-    final File fileLow = File('${AppShared.documentDir.path}/${id}_64.jpg');
+    // final File fileLow = File('${AppShared.documentDir.path}/${id}_64.jpg');
     final File fileHigh = File('${AppShared.documentDir.path}/${id}_256.jpg');
 
-    await fileLow.writeAsBytes(bytes);
+    // await fileLow.writeAsBytes(bytes);
     await fileHigh.writeAsBytes(bytes);
   }
 

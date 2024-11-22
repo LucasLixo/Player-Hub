@@ -81,7 +81,7 @@ Future<String?> dialogTextField({
                       Navigator.of(context).pop(null);
                     },
                     child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
+                      width: Get.width * 0.3,
                       child: Text(
                         'crud_sheet_dialog_2'.tr,
                         style: Theme.of(context).textTheme.bodyLarge,
@@ -98,8 +98,8 @@ Future<String?> dialogTextField({
                         }
                       },
                       child: Container(
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        height: MediaQuery.of(context).size.width * 0.1,
+                        width: Get.width * 0.3,
+                        height: Get.width * 0.1,
                         decoration: BoxDecoration(
                           color: AppColors.current().primary,
                           borderRadius: BorderRadius.circular(12.0),

@@ -71,13 +71,13 @@ class JustAudioBackground {
     );
   }
 
-  Future<void> nextSong() async {
+  /* Future<void> nextSong() async {
     await _audioHandler.skipToNext();
   }
 
   Future<void> previousSong() async {
     await _audioHandler.skipToPrevious();
-  }
+  } */
 
   /* Future<void> repeatDisable() async {
     _audioHandler.setRepeatMode(AudioServiceRepeatMode.none);

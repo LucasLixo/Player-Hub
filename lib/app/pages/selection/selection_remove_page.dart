@@ -172,7 +172,7 @@ class _SelectionRemovePageState extends State<SelectionRemovePage> {
             if (selectionController.selectedItems.isNotEmpty) {
               return Container(
                 color: AppColors.current().surface,
-                width: MediaQuery.of(context).size.width,
+                width: Get.width,
                 child: ListTile(
                   title: Text(
                     'crud_sheet8'.tr,

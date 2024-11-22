@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
@@ -20,35 +20,8 @@ import 'package:player_hub/app/shared/dialog/dialog_text_field.dart';
 import 'package:player_hub/app/shared/widgets/music_list.dart';
 import 'package:player_hub/app/shared/class/playlist_list.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends GetView<PlayerController> {
   const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  final PlayerController playerController = Get.find<PlayerController>();
-
-  late TabController tabController;
-  final RxInt currentIndex = 0.obs;
-
-  @override
-  void initState() {
-    super.initState();
-    tabController = TabController(length: 4, vsync: this);
-    tabController.addListener(() {
-      if (tabController.indexIsChanging) {
-        currentIndex.value = tabController.index;
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    tabController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +57,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               onTap: () async {
                 await Get.toNamed(AppRoutes.playlist, arguments: {
                   'playlistTitle': 'playlist1'.tr,
-                  'playlistList': playerController.recentList,
+                  'playlistList': controller.recentList,
                   'playlistType': SelectionTypes.add,
                 });
               },
@@ -108,7 +81,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             const Space(),
           ],
           bottom: TabBar(
-            controller: tabController,
             isScrollable: true,
             dividerColor: Colors.transparent,
             labelStyle: Theme.of(context).textTheme.bodyMedium,
@@ -128,12 +100,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
         body: SafeArea(
           child: TabBarView(
-            controller: tabController,
             children: <Widget>[
               Obx(() {
-                if (playerController.songAppList.isNotEmpty) {
+                if (controller.songAppList.isNotEmpty) {
                   return musicList(
-                    songs: playerController.songAppList,
+                    songs: controller.songAppList,
                     first: ListTile(
                       tileColor: Colors.transparent,
                       splashColor: Colors.transparent,
@@ -144,12 +115,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       ),
                       leading: GestureDetector(
                         onTap: () async {
-                          if (playerController.songList !=
-                              playerController.songAppList) {
-                            await playerController.songLoad(
-                                playerController.songAppList, 0);
+                          if (controller.songList != controller.songAppList) {
+                            await controller.songLoad(
+                                controller.songAppList, 0);
                           } else {
-                            await playerController.playSong(0);
+                            await controller.playSong(0);
                           }
                           await Get.toNamed(AppRoutes.details);
                         },
@@ -181,6 +151,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           SortType.getTypeTitlebyCode(
                               AppShared.getShared(SharedAttributes.getSongs)),
                           style: Theme.of(context).textTheme.labelMedium,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         );
                       }),
                       trailing: Obx(() {
@@ -194,7 +166,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           onSelected: (int code) async {
                             await AppShared.setShared(
                                 SharedAttributes.getSongs, code);
-                            await playerController.getAllSongs();
+                            await controller.getAllSongs();
                           },
                           itemBuilder: (BuildContext context) {
                             return SortType.values.map((sortTypeOption) {
@@ -220,8 +192,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 }
               }),
               Obx(() {
-                if (playerController.folderList.isNotEmpty ||
-                    playerController.playlistList.isNotEmpty) {
+                if (controller.folderList.isNotEmpty ||
+                    controller.playlistList.isNotEmpty) {
                   return Stack(
                     children: [
                       const Positioned.fill(
@@ -245,7 +217,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               description: '',
                             );
                             if (result != null) {
-                              playerController.addPlaylist(result);
+                              controller.addPlaylist(result);
                             }
                           },
                           backgroundColor: AppColors.current().primary,
@@ -263,11 +235,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 }
               }),
               Obx(() {
-                if (playerController.albumList.isNotEmpty &&
-                    playerController.albumListSongs.isNotEmpty) {
+                if (controller.albumList.isNotEmpty &&
+                    controller.albumListSongs.isNotEmpty) {
                   return albumList(
-                    albumList: playerController.albumList,
-                    albumSongs: playerController.albumListSongs,
+                    albumList: controller.albumList,
+                    albumSongs: controller.albumListSongs,
                     isAlbumArtist: false,
                   );
                 } else {
@@ -275,11 +247,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 }
               }),
               Obx(() {
-                if (playerController.artistList.isNotEmpty &&
-                    playerController.artistListSongs.isNotEmpty) {
+                if (controller.artistList.isNotEmpty &&
+                    controller.artistListSongs.isNotEmpty) {
                   return albumList(
-                    albumList: playerController.artistList,
-                    albumSongs: playerController.artistListSongs,
+                    albumList: controller.artistList,
+                    albumSongs: controller.artistListSongs,
                     isAlbumArtist: true,
                   );
                 } else {
@@ -290,7 +262,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ),
         ),
         bottomNavigationBar: Obx(
-          () => playerController.songAppList.isEmpty
+          () => controller.songAppList.isEmpty
               ? const Space(size: 0)
               : const Shortcut(),
         ),

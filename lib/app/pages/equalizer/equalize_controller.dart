@@ -6,8 +6,8 @@ import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:player_hub/app/core/types/app_functions.dart';
 
 class EqualizerController extends GetxController with AppFunctions {
-  late List<int> bandLevelRange;
-  late List<int> bandCenterFrequencies;
+  Rx<List<int>?> bandLevelRange = Rxn<List<int>>();
+  Rx<List<int>?> bandCenterFrequencies = Rxn<List<int>>();
 
   final PlayerController playerController = Get.find<PlayerController>();
 
@@ -15,27 +15,18 @@ class EqualizerController extends GetxController with AppFunctions {
   void onInit() {
     super.onInit();
 
-    _initializeBands();
-
     playerController.audioPlayer.androidAudioSessionIdStream
         .listen((int? id) async {
       await _initializeEqualizer(id ?? 0);
     });
   }
 
-  Future<void> _initializeBands() async {
-    final List<List<int>> dataResults = await Future.wait([
-      EqualizerFlutter.getBandLevelRange(),
-      EqualizerFlutter.getCenterBandFreqs(),
-    ]);
-    bandLevelRange = dataResults[0];
-    bandCenterFrequencies = dataResults[1];
-  }
-
   Future<void> _initializeEqualizer(int id) async {
     await EqualizerFlutter.init(id);
     await EqualizerFlutter.open(id);
     await EqualizerFlutter.setAudioSessionId(id);
+
+    await initializeBand();
 
     for (int i = 0; i < 5; i++) {
       await EqualizerFlutter.setBandLevel(
@@ -49,7 +40,18 @@ class EqualizerController extends GetxController with AppFunctions {
     );
   }
 
+  Future<void> initializeBand() async {
+    try {
+      bandLevelRange.value = await EqualizerFlutter.getBandLevelRange();
+      bandCenterFrequencies.value = await EqualizerFlutter.getCenterBandFreqs();
+    } catch (e) {
+      bandLevelRange.value = null;
+      bandCenterFrequencies.value = null;
+    }
+  }
+
   Future<void> toggleEqualizer(bool value) async {
+    await initializeBand();
     await AppShared.setShared(
       SharedAttributes.equalizeMode,
       value,

@@ -11,7 +11,7 @@ import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:player_hub/app/app_widget.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 
-void main() async {
+Future<void> main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     SemanticsBinding.instance.ensureSemantics();
@@ -22,10 +22,8 @@ void main() async {
         await rootBundle.loadString('assets/licenses/OpenSans-OFL.txt'),
       );
     });
-
     runApp(Phoenix(child: const AppWidget()));
-
-    Future.wait([
+    await Future.wait([
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
       ]),
@@ -57,6 +55,6 @@ void main() async {
     debugPrint("$error");
     debugPrintStack(stackTrace: stack);
 
-    await Get.toNamed(AppRoutes.error);
+    await Get.offAllNamed(AppRoutes.error);
   });
 }

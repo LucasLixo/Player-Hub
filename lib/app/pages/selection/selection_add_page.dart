@@ -169,7 +169,7 @@ class _SelectionAddPageState extends State<SelectionAddPage> {
             if (selectionController.selectedItems.isNotEmpty) {
               return Container(
                 color: AppColors.current().surface,
-                width: MediaQuery.of(context).size.width,
+                width: Get.width,
                 child: ListTile(
                   title: Text(
                     'crud_sheet1'.tr,
