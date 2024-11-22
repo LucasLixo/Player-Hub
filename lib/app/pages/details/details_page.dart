@@ -5,7 +5,8 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
-import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/services/app_chrome.dart';
+import 'package:player_hub/app/services/app_shared.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/types/app_functions.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
@@ -26,6 +27,8 @@ class _DetailsPageState extends State<DetailsPage>
   late AnimationController _controller;
 
   final PlayerController playerController = Get.find<PlayerController>();
+  final AppShared sharedController = Get.find<AppShared>();
+  final AppChrome chromeController = Get.find<AppChrome>();
 
   @override
   void initState() {
@@ -45,7 +48,7 @@ class _DetailsPageState extends State<DetailsPage>
 
   @override
   void dispose() {
-    AppShared.loadTheme(isRebirth: false);
+    chromeController.loadTheme(isRebirth: false);
     super.dispose();
   }
 
@@ -157,7 +160,7 @@ class _DetailsPageState extends State<DetailsPage>
                         orientation: Axis.vertical,
                       ),
                       Text(
-                        AppShared.getTitle(
+                        sharedController.getTitle(
                           currentSong.id,
                           currentSong.title,
                         ),
@@ -175,7 +178,7 @@ class _DetailsPageState extends State<DetailsPage>
                         orientation: Axis.vertical,
                       ),
                       Text(
-                        AppShared.getArtist(
+                        sharedController.getArtist(
                           currentSong.id,
                           currentSong.artist!,
                         ),

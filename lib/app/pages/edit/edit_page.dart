@@ -4,7 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/services/app_shared.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/types/app_functions.dart';
 import 'package:player_hub/app/core/static/app_manifest.dart';
@@ -13,7 +13,10 @@ import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 import 'package:share_plus/share_plus.dart';
 
-class EditPage extends GetView<PlayerController> with AppFunctions {
+class EditPage extends StatelessWidget with AppFunctions {
+  final PlayerController playerController = Get.find<PlayerController>();
+  final AppShared sharedController = Get.find<AppShared>();
+
   final SongModel song;
 
   final Rx<File?> imagePicker = Rx<File?>(null);
@@ -28,8 +31,8 @@ class EditPage extends GetView<PlayerController> with AppFunctions {
 
   Future<void> _saveInfo() async {
     try {
-      await AppShared.setTitle(song.id, textControllerTitle.text);
-      await AppShared.setArtist(song.id, textControllerArtist.text);
+      await sharedController.setTitle(song.id, textControllerTitle.text);
+      await sharedController.setArtist(song.id, textControllerArtist.text);
 
       if (imagePicker.value != null) {
         await Get.toNamed(AppRoutes.splash, arguments: {
@@ -46,7 +49,7 @@ class EditPage extends GetView<PlayerController> with AppFunctions {
       }
 
       await showToast(
-        "${'edit_save'.tr}: ${AppShared.getTitle(song.id, song.title)}",
+        "${'edit_save'.tr}: ${sharedController.getTitle(song.id, song.title)}",
       );
     } catch (e) {
       printDebug('Failed to save information.');
@@ -70,22 +73,23 @@ class EditPage extends GetView<PlayerController> with AppFunctions {
 
   Future<void> _shareImage() async {
     final String? pathShared =
-        imagePicker.value?.path ?? controller.currentImagePath.value;
+        imagePicker.value?.path ?? playerController.currentImagePath.value;
 
     if (pathShared != null) {
       await Share.shareXFiles(
         [XFile(pathShared, name: song.displayNameWOExt)],
-        text: AppShared.getTitle(song.id, song.title),
+        text: sharedController.getTitle(song.id, song.title),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    textControllerTitle.text = AppShared.getTitle(song.id, song.title);
-    textControllerArtist.text = AppShared.getArtist(song.id, song.artist!);
+    textControllerTitle.text = sharedController.getTitle(song.id, song.title);
+    textControllerArtist.text =
+        sharedController.getArtist(song.id, song.artist!);
 
-    final String? imageFile = controller.currentImagePath.value;
+    final String? imageFile = playerController.currentImagePath.value;
 
     return Scaffold(
       backgroundColor: AppColors.current().background,
@@ -145,14 +149,19 @@ class EditPage extends GetView<PlayerController> with AppFunctions {
                       borderRadius: const BorderRadius.all(
                         Radius.circular(12),
                       ),
-                      borderSide:
-                          BorderSide(color: AppColors.current().primary),
+                      borderSide: BorderSide(
+                        color: AppColors.current().primary,
+                        width: 2.0,
+                      ),
                     ),
                     enabledBorder: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(12),
                       ),
-                      borderSide: BorderSide(color: Colors.transparent),
+                      borderSide: BorderSide(
+                        color: Colors.transparent,
+                        width: 2.0,
+                      ),
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                   ),
@@ -176,14 +185,19 @@ class EditPage extends GetView<PlayerController> with AppFunctions {
                       borderRadius: const BorderRadius.all(
                         Radius.circular(12),
                       ),
-                      borderSide:
-                          BorderSide(color: AppColors.current().primary),
+                      borderSide: BorderSide(
+                        color: AppColors.current().primary,
+                        width: 2.0,
+                      ),
                     ),
                     enabledBorder: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(12),
                       ),
-                      borderSide: BorderSide(color: Colors.transparent),
+                      borderSide: BorderSide(
+                        color: Colors.transparent,
+                        width: 2.0,
+                      ),
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                   ),

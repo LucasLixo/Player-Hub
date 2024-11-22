@@ -4,7 +4,7 @@ import 'package:get/route_manager.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:player_hub/app/core/enums/selection_types.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
-import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/services/app_shared.dart';
 import 'package:flutter/services.dart';
 import 'package:get/instance_manager.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
@@ -20,6 +20,8 @@ class FolderList extends GetView<PlayerController> {
 
   @override
   Widget build(BuildContext context) {
+    final AppShared sharedController = Get.find<AppShared>();
+
     return Obx(() {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,9 +80,8 @@ class FolderList extends GetView<PlayerController> {
                 },
               ),
               trailing: Obx(() {
-                List<String> listFolderIgnore =
-                    AppShared.getShared(SharedAttributes.ignoreFolder)
-                        as List<String>;
+                List<String> listFolderIgnore = sharedController
+                    .getShared(SharedAttributes.ignoreFolder) as List<String>;
 
                 final RxBool isIgnored = listFolderIgnore.contains(title).obs;
 
@@ -96,7 +97,7 @@ class FolderList extends GetView<PlayerController> {
                     } else {
                       listFolderIgnore.add(title);
                     }
-                    await AppShared.setShared(
+                    await sharedController.setShared(
                       SharedAttributes.ignoreFolder,
                       listFolderIgnore,
                     );

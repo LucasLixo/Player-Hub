@@ -3,7 +3,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
-import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/services/app_shared.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:helper_hub/src/theme_widget.dart';
@@ -20,6 +20,7 @@ class _ShortcutState extends State<Shortcut>
   late AnimationController _controller;
 
   final PlayerController playerController = Get.find<PlayerController>();
+  final AppShared sharedController = Get.find<AppShared>();
 
   @override
   void initState() {
@@ -63,7 +64,7 @@ class _ShortcutState extends State<Shortcut>
                 vertical: 2.0,
               ),
               title: Text(
-                AppShared.getTitle(
+                sharedController.getTitle(
                   currentSong.id,
                   currentSong.title,
                 ),

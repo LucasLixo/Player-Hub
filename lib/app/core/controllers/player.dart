@@ -2,14 +2,15 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:get/instance_manager.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:player_hub/app/core/enums/array_image_types.dart';
+import 'package:player_hub/app/core/enums/image_quality.dart';
 import 'package:player_hub/app/core/enums/query_songs.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
-import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/services/app_shared.dart';
 import 'package:player_hub/app/core/interfaces/visualizer.dart';
 import 'package:player_hub/app/core/static/app_manifest.dart';
 import 'package:player_hub/app/core/types/app_functions.dart';
@@ -17,6 +18,9 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 class PlayerController extends BaseAudioHandler
     with QueueHandler, SeekHandler, AppFunctions {
+  // ==================================================
+  final AppShared sharedController = Get.find<AppShared>();
+
   // ==================================================
   final RxString songLog = ''.obs;
   // address of sound in list
@@ -99,8 +103,8 @@ class PlayerController extends BaseAudioHandler
   Future<void> _updateInterfaceVisualizer(SongModel song) async {
     final int songId = song.id;
 
-    final String songTitle = AppShared.getTitle(songId, song.title);
-    final String songArtist = AppShared.getArtist(songId, song.artist!);
+    final String songTitle = sharedController.getTitle(songId, song.title);
+    final String songArtist = sharedController.getArtist(songId, song.artist!);
     final String? image = _imageCache[songId];
 
     InterfaceVisualizer visualizerMusic = InterfaceVisualizer(
@@ -168,25 +172,26 @@ class PlayerController extends BaseAudioHandler
   // update playlist
   Future<void> _initPlaylist() async {
     playlistList.clear();
-    playlistList.assignAll(
-        AppShared.getShared(SharedAttributes.listAllPlaylist) as List<String>);
+    playlistList.assignAll(sharedController
+        .getShared(SharedAttributes.listAllPlaylist) as List<String>);
 
     playlistListSongs.clear();
     for (int index = 0; index < playlistList.length; index++) {
       final String title = playlistList[index];
-      playlistListSongs[title] = _getSongsFromIds(AppShared.getPlaylist(title));
+      playlistListSongs[title] =
+          _getSongsFromIds(sharedController.getPlaylist(title));
     }
   }
 
   Future<void> _updatePlaylistList() async {
-    await AppShared.setShared(
+    await sharedController.setShared(
       SharedAttributes.listAllPlaylist,
       playlistList.toList(),
     );
   }
 
   Future<void> _updatePlaylistListSongs(String title) async {
-    await AppShared.setPlaylist(
+    await sharedController.setPlaylist(
         title, _getIdsFromSongs(playlistListSongs[title] ?? <SongModel>[]));
   }
 
@@ -210,7 +215,7 @@ class PlayerController extends BaseAudioHandler
     late Future<List<SongModel>> songQuery;
 
     // Adiciona a busca de músicas baseado no tipo de ordenação selecionado
-    switch (AppShared.getShared(SharedAttributes.getSongs) as int) {
+    switch (sharedController.getShared(SharedAttributes.getSongs) as int) {
       // Por data adicionada
       case 0:
         songQuery = QuerySongs.getQuerySongs(
@@ -299,10 +304,10 @@ class PlayerController extends BaseAudioHandler
           if (!_imageCache.containsKey(song.id)) {
             _imageCache[song.id] = await AppManifest.getImageFile(
               id: song.id,
-              type: ArrayImageTypes.high,
+              type: ImageQuality.high,
             );
           }
-          songLog.value = AppShared.getTitle(song.id, song.title);
+          songLog.value = sharedController.getTitle(song.id, song.title);
         }
       }),
       // Processamento de álbuns
@@ -340,9 +345,10 @@ class PlayerController extends BaseAudioHandler
     songLog.value = '';
 
     // Remove músicas com base em duração e pastas ignoradas
-    int ignoreTime = AppShared.getShared(SharedAttributes.ignoreTime) as int;
-    List<String> ignoreFolder =
-        AppShared.getShared(SharedAttributes.ignoreFolder) as List<String>;
+    int ignoreTime =
+        sharedController.getShared(SharedAttributes.ignoreTime) as int;
+    List<String> ignoreFolder = sharedController
+        .getShared(SharedAttributes.ignoreFolder) as List<String>;
 
     songList = songList.where((song) {
       if (ignoreFolder.contains(song.data.split('/').reversed.skip(1).first) ||
@@ -378,8 +384,8 @@ class PlayerController extends BaseAudioHandler
         Uri.parse(song.uri!),
         tag: MediaItem(
           id: song.id.toString(),
-          title: AppShared.getTitle(song.id, song.title),
-          artist: AppShared.getArtist(song.id, song.artist!),
+          title: sharedController.getTitle(song.id, song.title),
+          artist: sharedController.getArtist(song.id, song.artist!),
           artUri: imagePath != null ? Uri.file(imagePath) : null,
         ),
       );
@@ -397,7 +403,7 @@ class PlayerController extends BaseAudioHandler
     await handleCurrentIndex(index);
 
     // Modo de playlist (Loop, Shuffle, etc)
-    switch (AppShared.getShared(SharedAttributes.playlistMode) as int) {
+    switch (sharedController.getShared(SharedAttributes.playlistMode) as int) {
       // Modo loop playlist
       case 0:
         await modeShufflePlaylist();
@@ -558,18 +564,18 @@ class PlayerController extends BaseAudioHandler
   // ==================================================
   // Alterna entre modos da playlist (loop, shuffle)
   Future<void> togglePlaylist() async {
-    switch (AppShared.getShared(SharedAttributes.playlistMode) as int) {
+    switch (sharedController.getShared(SharedAttributes.playlistMode) as int) {
       case 0:
         await modeLoopPlaylist();
-        AppShared.setShared(SharedAttributes.playlistMode, 1);
+        sharedController.setShared(SharedAttributes.playlistMode, 1);
         break;
       case 1:
         await modeLoopSong();
-        AppShared.setShared(SharedAttributes.playlistMode, 2);
+        sharedController.setShared(SharedAttributes.playlistMode, 2);
         break;
       case 2:
         await modeShufflePlaylist();
-        AppShared.setShared(SharedAttributes.playlistMode, 0);
+        sharedController.setShared(SharedAttributes.playlistMode, 0);
         break;
     }
   }
@@ -604,7 +610,7 @@ class PlayerController extends BaseAudioHandler
           playlistListSongs[oldTitle] ?? <SongModel>[];
       playlistListSongs.remove(oldTitle);
 
-      await AppShared.deletePlaylist(oldTitle);
+      await sharedController.deletePlaylist(oldTitle);
       await _updatePlaylistList();
       await _updatePlaylistListSongs(newTitle);
     }

@@ -1,0 +1,138 @@
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:player_hub/app/core/enums/box_types.dart';
+import 'package:player_hub/app/core/enums/shared_attibutes.dart';
+import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:player_hub/app/core/enums/languages.dart';
+import 'package:player_hub/app/core/static/app_manifest.dart';
+import 'package:get_storage/get_storage.dart';
+
+class AppShared extends GetxService {
+  // ==================================================
+  late GetStorage _boxApp;
+  late GetStorage _boxStorage;
+  late GetStorage boxOthers;
+
+  // ==================================================
+  late Directory temporaryDir;
+  late Directory documentDir;
+
+  // ==================================================
+  final RxMap<String, dynamic> sharedMap =
+      Map<String, dynamic>.from(SharedAttributes.getAttributesMap).obs;
+
+  // ==================================================
+  Future<void> init() async {
+    await GetStorage.init(BoxTypes.app.toString());
+    await GetStorage.init(BoxTypes.storage.toString());
+    await GetStorage.init(BoxTypes.others.toString());
+
+    _boxApp = GetStorage(BoxTypes.app.toString());
+    _boxStorage = GetStorage(BoxTypes.storage.toString());
+    boxOthers = GetStorage(BoxTypes.storage.toString());
+
+    temporaryDir = await getApplicationCacheDirectory();
+    documentDir = await getApplicationDocumentsDirectory();
+
+    final List<SharedAttributes> listSettings = [
+      SharedAttributes.darkMode,
+      SharedAttributes.defaultLanguage,
+      SharedAttributes.changeLanguage,
+      SharedAttributes.ignoreTime,
+      // SharedAttributes.equalizeMode,
+      SharedAttributes.playlistMode,
+      SharedAttributes.frequency,
+      SharedAttributes.ignoreFolder,
+      SharedAttributes.listAllPlaylist,
+    ];
+
+    for (var setting in listSettings) {
+      SharedAttributes.getAttributesMap[setting.name] =
+          SharedAttributes.getValueShared(
+        _boxApp,
+        setting,
+      );
+      sharedMap[setting.name] = SharedAttributes.getAttributesMap[setting.name];
+    }
+  }
+
+  // ==================================================
+  Future<void> updatedLocale() async {
+    final int code = await getShared(SharedAttributes.defaultLanguage);
+
+    await Get.updateLocale(Locale(
+      AppLanguages.getLanguagesLocale[code][0],
+      AppLanguages.getLanguagesLocale[code][1],
+    ));
+  }
+
+  // ==================================================
+  dynamic getShared(SharedAttributes appShared) {
+    return sharedMap[appShared.name];
+  }
+
+  // ==================================================
+  Future<void> setShared(
+    SharedAttributes appShared,
+    dynamic value,
+  ) async {
+    await SharedAttributes.setValueShared(
+      _boxApp,
+      appShared,
+      value,
+    );
+    sharedMap[appShared.name] = value;
+  }
+
+  // ==================================================
+  // Gets the song title based on ID
+  String getTitle(int id, String value) {
+    return _boxStorage.read<String>('title-$id') ?? value;
+  }
+
+  // ==================================================
+  // Sets the song title in preferences
+  Future<void> setTitle(int id, String value) async {
+    await _boxStorage.write('title-$id', value);
+  }
+
+  // ==================================================
+  // Gets the song's artist based on the ID
+  String getArtist(int id, String value) {
+    String? artist = _boxStorage.read<String>('artist-$id');
+    return artist ?? (value == '<unknown>' ? '' : value);
+  }
+
+  // ==================================================
+  // Sets the song's artist in preferences
+  Future<void> setArtist(int id, String value) async {
+    await _boxStorage.write('artist-$id', value);
+  }
+
+  // ==================================================
+  // Gets the playlist based on ID
+  List<int> getPlaylist(String name) {
+    final List<dynamic>? playlist = _boxStorage
+        .read<List<dynamic>>('playlist-${AppManifest.encodeToBase64(name)}');
+    if (playlist == null) {
+      return <int>[];
+    }
+    return playlist.cast<int>();
+  }
+
+  // ==================================================
+  // Sets the playlist in preferences
+  Future<void> setPlaylist(String name, List<int> value) async {
+    await _boxStorage.write(
+      'playlist-${AppManifest.encodeToBase64(name)}',
+      value,
+    );
+  }
+
+  // ==================================================
+  // Delete the playlist in preferences
+  Future<void> deletePlaylist(String name) async {
+    await _boxStorage.remove('playlist-${AppManifest.encodeToBase64(name)}');
+  }
+}

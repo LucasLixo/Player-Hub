@@ -15,7 +15,7 @@ Future<void> addPlaylist({
     context: Get.context!,
     barrierDismissible: true,
     builder: (BuildContext context) {
-      final PlayerController controller = Get.find<PlayerController>();
+      final PlayerController playerController = Get.find<PlayerController>();
 
       return Dialog(
         backgroundColor: AppColors.current().background,
@@ -34,7 +34,7 @@ Future<void> addPlaylist({
                 child: Obx(() {
                   return ListView.builder(
                     physics: const ClampingScrollPhysics(),
-                    itemCount: controller.playlistList.length + 1,
+                    itemCount: playerController.playlistList.length + 1,
                     itemBuilder: (BuildContext context, int index) {
                       if (index == 0) {
                         return GestureDetector(
@@ -44,7 +44,7 @@ Future<void> addPlaylist({
                               description: '',
                             );
                             if (result != null) {
-                              controller.addPlaylist(result);
+                              await playerController.addPlaylist(result);
                             }
                           },
                           child: Container(
@@ -68,11 +68,12 @@ Future<void> addPlaylist({
                       }
 
                       final int myIndex = index - 1;
-                      final String title = controller.playlistList[myIndex];
+                      final String title =
+                          playerController.playlistList[myIndex];
 
                       return GestureDetector(
-                        onTap: () {
-                          controller.addSongsPlaylist(title, songs);
+                        onTap: () async {
+                          await playerController.addSongsPlaylist(title, songs);
                           Navigator.of(context).pop();
                         },
                         child: Container(

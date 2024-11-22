@@ -1,4 +1,0 @@
-enum ArrayImageTypes {
-  // low,
-  high;
-}

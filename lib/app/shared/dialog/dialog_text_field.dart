@@ -54,13 +54,19 @@ Future<String?> dialogTextField({
                     borderRadius: const BorderRadius.all(
                       Radius.circular(12),
                     ),
-                    borderSide: BorderSide(color: AppColors.current().primary),
+                    borderSide: BorderSide(
+                      color: AppColors.current().primary,
+                      width: 2.0,
+                    ),
                   ),
                   enabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(12),
                     ),
-                    borderSide: BorderSide(color: Colors.transparent),
+                    borderSide: BorderSide(
+                      color: Colors.transparent,
+                      width: 2.0,
+                    ),
                   ),
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                 ),

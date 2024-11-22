@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
-import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/core/static/app_manifest.dart';
 import 'package:player_hub/app/core/types/app_functions.dart';
 
 class WaitPage extends StatelessWidget with AppFunctions {
@@ -19,7 +19,7 @@ class WaitPage extends StatelessWidget with AppFunctions {
         appBar: null,
         body: Center(
           child: Text(
-            AppShared.title,
+            AppManifest.title,
             style: dynamicStyle(
               fontSize: 32,
               color:

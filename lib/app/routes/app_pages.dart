@@ -60,12 +60,12 @@ abstract class AppPages {
     ),
     GetPage(
       name: AppRoutes.equalizer,
-      page: () => const EqualizerPage(),
+      page: () => EqualizerPage(),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
-      binding: BindingsBuilder(() {
-        AppBinding().equalizerController();
-      }),
+      binding: BindingsBuilder(
+        () => AppBinding().functionByRoute(AppRoutes.equalizer),
+      ),
     ),
     GetPage(
       name: AppRoutes.playlist,
@@ -86,9 +86,9 @@ abstract class AppPages {
       ),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
-      binding: BindingsBuilder(() {
-        AppBinding().selectionController();
-      }),
+      binding: BindingsBuilder(
+        () => AppBinding().functionByRoute(AppRoutes.selectionAdd),
+      ),
     ),
     GetPage(
       name: AppRoutes.selectionRemove,
@@ -98,9 +98,9 @@ abstract class AppPages {
       ),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
-      binding: BindingsBuilder(() {
-        AppBinding().selectionController();
-      }),
+      binding: BindingsBuilder(
+        () => AppBinding().functionByRoute(AppRoutes.selectionRemove),
+      ),
     ),
   ];
 }

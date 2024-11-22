@@ -3,18 +3,19 @@ import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
+import 'package:player_hub/app/core/static/app_manifest.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
-import 'package:player_hub/app/core/static/app_shared.dart';
 import 'package:player_hub/app/shared/dialog/dialog_text.dart';
 
-class SplashPage extends GetView<PlayerController> {
+class SplashPage extends StatelessWidget {
+  final PlayerController playerController = Get.find<PlayerController>();
+
   final Future<void> Function()? function;
   final RxBool isRequestingPermission = false.obs;
 
@@ -55,8 +56,8 @@ class SplashPage extends GetView<PlayerController> {
   }
 
   Future<void> _initializeApp() async {
-    if (controller.songAllList.isEmpty) {
-      await controller.getAllSongs();
+    if (playerController.songAllList.isEmpty) {
+      await playerController.getAllSongs();
     }
 
     if (function != null) {
@@ -78,7 +79,7 @@ class SplashPage extends GetView<PlayerController> {
         appBar: null,
         body: Center(
           child: Text(
-            AppShared.title,
+            AppManifest.title,
             style: Theme.of(context).textTheme.displayMedium,
             textAlign: TextAlign.center,
           ),
@@ -89,8 +90,8 @@ class SplashPage extends GetView<PlayerController> {
           focusColor: Colors.transparent,
           title: Obx(() {
             return Text(
-              controller.songLog.value.isNotEmpty
-                  ? controller.songLog.value
+              playerController.songLog.value.isNotEmpty
+                  ? playerController.songLog.value
                   : '',
               style: Theme.of(context).textTheme.titleMedium,
               textAlign: TextAlign.center,
@@ -100,7 +101,7 @@ class SplashPage extends GetView<PlayerController> {
           }),
           subtitle: Obx(() {
             if (function.obs.value != null ||
-                controller.songLog.value.isNotEmpty) {
+                playerController.songLog.value.isNotEmpty) {
               return LinearProgressIndicator(
                 color: AppColors.current().primary,
                 backgroundColor: AppColors.current().surface,

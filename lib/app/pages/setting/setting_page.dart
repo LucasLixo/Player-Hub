@@ -6,11 +6,11 @@ import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:player_hub/app/core/enums/languages.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
-// import 'package:player_hub/app/core/enums/sort_type.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
-import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/services/app_chrome.dart';
+import 'package:player_hub/app/services/app_shared.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 
 class SettingPage extends StatefulWidget {
@@ -23,7 +23,9 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  final PlayerController controller = Get.find<PlayerController>();
+  final PlayerController playerController = Get.find<PlayerController>();
+  final AppShared sharedController = Get.find<AppShared>();
+  final AppChrome chromeController = Get.find<AppChrome>();
 
   final RxBool isEdited = false.obs;
 
@@ -31,7 +33,7 @@ class _SettingPageState extends State<SettingPage> {
   void dispose() {
     if (isEdited.value) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await controller.getAllSongs();
+        await playerController.getAllSongs();
       });
     }
     super.dispose();
@@ -75,7 +77,7 @@ class _SettingPageState extends State<SettingPage> {
                 size: 32,
               ),
               onTap: () async {
-                await controller.getAllSongs();
+                await playerController.getAllSongs();
               },
             ),
             // build IgnoreTimeTile
@@ -83,7 +85,8 @@ class _SettingPageState extends State<SettingPage> {
               () => ListTile(
                 title: Text(
                   'setting_ignore'.trParams({
-                    'seconds': AppShared.getShared(SharedAttributes.ignoreTime)
+                    'seconds': sharedController
+                        .getShared(SharedAttributes.ignoreTime)
                         .toString(),
                   }),
                   style: Theme.of(context).textTheme.bodyLarge,
@@ -93,11 +96,11 @@ class _SettingPageState extends State<SettingPage> {
                   activeColor: AppColors.current().primary,
                   min: 0,
                   max: 120,
-                  value:
-                      (AppShared.getShared(SharedAttributes.ignoreTime) as int)
-                          .toDouble(),
+                  value: (sharedController
+                          .getShared(SharedAttributes.ignoreTime) as int)
+                      .toDouble(),
                   onChanged: (value) async {
-                    await AppShared.setShared(
+                    await sharedController.setShared(
                       SharedAttributes.ignoreTime,
                       value.toInt(),
                     );
@@ -114,7 +117,7 @@ class _SettingPageState extends State<SettingPage> {
               ),
               subtitle: Obx(() {
                 return Text(
-                  AppShared.getShared(SharedAttributes.equalizeMode)
+                  sharedController.getShared(SharedAttributes.equalizeMode)
                       ? 'app_enable'.tr
                       : 'app_disable'.tr,
                   style: Theme.of(context).textTheme.labelMedium,
@@ -137,7 +140,7 @@ class _SettingPageState extends State<SettingPage> {
               ),
               subtitle: Obx(() {
                 return Text(
-                  AppShared.getShared(SharedAttributes.darkMode)
+                  sharedController.getShared(SharedAttributes.darkMode)
                       ? 'app_enable'.tr
                       : 'app_disable'.tr,
                   style: Theme.of(context).textTheme.labelMedium,
@@ -145,10 +148,13 @@ class _SettingPageState extends State<SettingPage> {
               }),
               trailing: Obx(() {
                 return Switch(
-                  value: AppShared.getShared(SharedAttributes.darkMode),
+                  value: sharedController.getShared(SharedAttributes.darkMode),
                   onChanged: (bool value) async {
-                    await AppShared.setShared(SharedAttributes.darkMode, value);
-                    await AppShared.loadTheme(isRebirth: true);
+                    await sharedController.setShared(
+                      SharedAttributes.darkMode,
+                      value,
+                    );
+                    chromeController.loadTheme(isRebirth: true);
                   },
                 );
               }),
@@ -159,10 +165,12 @@ class _SettingPageState extends State<SettingPage> {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               subtitle: Obx(() {
-                if (AppShared.getShared(SharedAttributes.changeLanguage)) {
+                if (sharedController
+                    .getShared(SharedAttributes.changeLanguage)) {
                   return Text(
                     AppLanguages.getLanguagesTitleByCode(
-                      AppShared.getShared(SharedAttributes.defaultLanguage),
+                      sharedController
+                          .getShared(SharedAttributes.defaultLanguage),
                     ),
                     style: Theme.of(context).textTheme.labelMedium,
                   );
@@ -179,16 +187,20 @@ class _SettingPageState extends State<SettingPage> {
                   ),
                   color: AppColors.current().surface,
                   onSelected: (int code) async {
-                    await AppShared.setShared(
-                        SharedAttributes.defaultLanguage, code);
-                    await AppShared.setShared(
-                        SharedAttributes.changeLanguage, true);
+                    await sharedController.setShared(
+                      SharedAttributes.defaultLanguage,
+                      code,
+                    );
+                    await sharedController.setShared(
+                      SharedAttributes.changeLanguage,
+                      true,
+                    );
 
                     await Get.toNamed(AppRoutes.splash, arguments: {
                       'function': () async {
                         await Future.wait([
                           Future.delayed(const Duration(seconds: 1)),
-                          AppShared.updatedLocale(),
+                          sharedController.updatedLocale(),
                         ]);
                       },
                     });

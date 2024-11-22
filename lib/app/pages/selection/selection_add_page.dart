@@ -5,7 +5,8 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
-import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/core/static/app_manifest.dart';
+import 'package:player_hub/app/services/app_shared.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
@@ -28,16 +29,14 @@ class SelectionAddPage extends StatefulWidget {
 }
 
 class _SelectionAddPageState extends State<SelectionAddPage> {
-  late SelectionController selectionController;
-  late PlayerController playerController;
+  final SelectionController selectionController =
+      Get.find<SelectionController>();
+  final PlayerController playerController = Get.find<PlayerController>();
+  final AppShared sharedController = Get.find<AppShared>();
 
   @override
   void initState() {
     super.initState();
-    // Inicializando os controladores
-    selectionController = Get.find<SelectionController>();
-    playerController = Get.find<PlayerController>();
-
     selectionController.selectedItems.clear();
 
     selectionController.toggleItemSelection(widget.selectionIndex);
@@ -75,7 +74,7 @@ class _SelectionAddPageState extends State<SelectionAddPage> {
             ),
           ),
           title: Text(
-            AppShared.title,
+            AppManifest.title,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           actions: <Widget>[
@@ -120,7 +119,7 @@ class _SelectionAddPageState extends State<SelectionAddPage> {
               focusColor: Colors.transparent,
               contentPadding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 2.0),
               title: Text(
-                AppShared.getTitle(
+                sharedController.getTitle(
                   song.id,
                   song.title,
                 ),
@@ -129,7 +128,7 @@ class _SelectionAddPageState extends State<SelectionAddPage> {
                 overflow: TextOverflow.ellipsis,
               ),
               subtitle: Text(
-                AppShared.getArtist(song.id, song.artist!),
+                sharedController.getArtist(song.id, song.artist!),
                 style: Theme.of(context).textTheme.labelMedium,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

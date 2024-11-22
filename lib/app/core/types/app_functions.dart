@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
-import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/core/static/app_manifest.dart';
+import 'package:player_hub/app/services/app_shared.dart';
+import 'package:get/instance_manager.dart';
 
 mixin AppFunctions {
   // ==================================================
@@ -22,13 +26,15 @@ mixin AppFunctions {
 
   // ==================================================
   Future<void> showToast(String message) async {
+    final AppShared sharedController = Get.find<AppShared>();
+
     final MethodChannel toast =
-        const MethodChannel("${AppShared.package}/toast");
+        const MethodChannel("${AppManifest.package}/toast");
 
     try {
       await toast.invokeMethod('showToast', {
         'message': message,
-        'darkMode': AppShared.getShared(SharedAttributes.darkMode),
+        'darkMode': sharedController.getShared(SharedAttributes.darkMode),
       });
     } on PlatformException catch (e) {
       debugPrint("Erro ao exibir toast: ${e.message}");
@@ -40,5 +46,14 @@ mixin AppFunctions {
     print('================================\n');
     print(debug);
     print('\n================================');
+  }
+
+  // ==================================================
+  String getGenerateHash([int length = 32]) {
+    const chars =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+    return List.generate(
+        length, (index) => chars[Random().nextInt(chars.length)]).join();
   }
 }

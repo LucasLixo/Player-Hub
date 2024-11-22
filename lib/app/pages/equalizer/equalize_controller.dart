@@ -2,15 +2,19 @@ import 'package:equalizer_flutter/equalizer_flutter.dart';
 import 'package:get/get.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
-import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/services/app_shared.dart';
 import 'package:player_hub/app/core/types/app_functions.dart';
 
 class EqualizerController extends GetxController with AppFunctions {
+  // ==================================================
   Rx<List<int>?> bandLevelRange = Rxn<List<int>>();
   Rx<List<int>?> bandCenterFrequencies = Rxn<List<int>>();
 
+  // ==================================================
   final PlayerController playerController = Get.find<PlayerController>();
+  final AppShared sharedController = Get.find<AppShared>();
 
+  // ==================================================
   @override
   void onInit() {
     super.onInit();
@@ -21,6 +25,7 @@ class EqualizerController extends GetxController with AppFunctions {
     });
   }
 
+  // ==================================================
   Future<void> _initializeEqualizer(int id) async {
     await EqualizerFlutter.init(id);
     await EqualizerFlutter.open(id);
@@ -31,15 +36,16 @@ class EqualizerController extends GetxController with AppFunctions {
     for (int i = 0; i < 5; i++) {
       await EqualizerFlutter.setBandLevel(
         i,
-        AppShared.getShared(SharedAttributes.frequency)[i].toInt(),
+        sharedController.getShared(SharedAttributes.frequency)[i].toInt(),
       );
     }
 
     await EqualizerFlutter.setEnabled(
-      AppShared.getShared(SharedAttributes.equalizeMode) as bool,
+      sharedController.getShared(SharedAttributes.equalizeMode) as bool,
     );
   }
 
+  // ==================================================
   Future<void> initializeBand() async {
     try {
       bandLevelRange.value = await EqualizerFlutter.getBandLevelRange();
@@ -50,9 +56,10 @@ class EqualizerController extends GetxController with AppFunctions {
     }
   }
 
+  // ==================================================
   Future<void> toggleEqualizer(bool value) async {
     await initializeBand();
-    await AppShared.setShared(
+    await sharedController.setShared(
       SharedAttributes.equalizeMode,
       value,
     );
@@ -60,7 +67,7 @@ class EqualizerController extends GetxController with AppFunctions {
     for (int i = 0; i < 5; i++) {
       await EqualizerFlutter.setBandLevel(
         i,
-        AppShared.getShared(SharedAttributes.frequency)[i].toInt(),
+        sharedController.getShared(SharedAttributes.frequency)[i].toInt(),
       );
     }
     await showToast(value

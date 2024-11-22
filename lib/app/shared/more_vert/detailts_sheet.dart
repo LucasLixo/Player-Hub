@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/services/app_shared.dart';
 import 'package:flutter/services.dart';
 import 'package:get/instance_manager.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
@@ -11,7 +11,8 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 
 Widget detailsSheet() {
-  final PlayerController controller = Get.find<PlayerController>();
+  final PlayerController playerController = Get.find<PlayerController>();
+  final AppShared sharedController = Get.find<AppShared>();
 
   return GestureDetector(
     onTap: () async {
@@ -20,8 +21,8 @@ Widget detailsSheet() {
         backgroundColor: AppColors.current().background,
         builder: (BuildContext context) {
           return Obx(() {
-            final songList = controller.songList;
-            final songIndex = controller.songIndex.value;
+            final songList = playerController.songList;
+            final songIndex = playerController.songIndex.value;
 
             if (songList.isEmpty) {
               return const Space(size: 0);
@@ -43,13 +44,13 @@ Widget detailsSheet() {
                     contentPadding:
                         const EdgeInsets.fromLTRB(16.0, 2.0, 16.0, 2.0),
                     title: Text(
-                      AppShared.getTitle(song.id, song.title),
+                      sharedController.getTitle(song.id, song.title),
                       style: Theme.of(context).textTheme.bodyLarge,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     subtitle: Text(
-                      AppShared.getArtist(song.id, song.artist!),
+                      sharedController.getArtist(song.id, song.artist!),
                       style: Theme.of(context).textTheme.labelMedium,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -88,7 +89,7 @@ Widget detailsSheet() {
                       ),
                     ),
                     onTap: () async {
-                      await controller.playSong(index);
+                      await playerController.playSong(index);
                     },
                   );
                 },

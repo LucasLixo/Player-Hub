@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/services/app_shared.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:player_hub/app/shared/widgets/add_playlist.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:get/instance_manager.dart';
 
 Future<void> crudMusic({
   required SongModel song,
 }) async {
+  final AppShared sharedController = Get.find<AppShared>();
+
   Future<void> sharedFiles() async {
     final ShareResult result = await Share.shareXFiles(
       [XFile(song.data, name: song.displayNameWOExt)],
-      text: AppShared.getTitle(song.id, song.title),
+      text: sharedController.getTitle(song.id, song.title),
     );
 
     if (result.status == ShareResultStatus.success) {}

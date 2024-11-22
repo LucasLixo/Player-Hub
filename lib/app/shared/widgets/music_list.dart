@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:player_hub/app/core/enums/selection_types.dart';
-import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/services/app_shared.dart';
 import 'package:flutter/services.dart';
 import 'package:get/instance_manager.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
@@ -19,7 +19,8 @@ Widget musicList({
   SelectionTypes selectiontype = SelectionTypes.none,
   String? selectionTitle,
 }) {
-  final PlayerController controller = Get.find<PlayerController>();
+  final PlayerController playerController = Get.find<PlayerController>();
+  final AppShared sharedController = Get.find<AppShared>();
 
   return ListView.builder(
     physics: const ClampingScrollPhysics(),
@@ -38,7 +39,7 @@ Widget musicList({
         focusColor: Colors.transparent,
         contentPadding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 2.0),
         title: Text(
-          AppShared.getTitle(
+          sharedController.getTitle(
             song.id,
             song.title,
           ),
@@ -47,7 +48,7 @@ Widget musicList({
           overflow: TextOverflow.ellipsis,
         ),
         subtitle: Text(
-          AppShared.getArtist(song.id, song.artist!),
+          sharedController.getArtist(song.id, song.artist!),
           style: Theme.of(context).textTheme.labelMedium,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
@@ -89,10 +90,10 @@ Widget musicList({
           ),
         ),
         onTap: () async {
-          if (controller.songList != songs) {
-            await controller.songLoad(songs, myIndex);
+          if (playerController.songList != songs) {
+            await playerController.songLoad(songs, myIndex);
           } else {
-            await controller.playSong(myIndex);
+            await playerController.playSong(myIndex);
           }
           await Get.toNamed(AppRoutes.details);
         },
@@ -101,8 +102,8 @@ Widget musicList({
             case SelectionTypes.none:
               break;
             case SelectionTypes.add:
-              controller.songSelectionList.clear();
-              controller.songSelectionList.addAll(songs);
+              playerController.songSelectionList.clear();
+              playerController.songSelectionList.addAll(songs);
               await Get.toNamed(AppRoutes.selectionAdd, arguments: {
                 'selectionTitle': selectionTitle,
                 'selectionIndex': myIndex,

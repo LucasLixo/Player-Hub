@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
-import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/services/app_shared.dart';
 import 'package:get/instance_manager.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
 Widget playlistMode() {
-  final PlayerController controller = Get.find<PlayerController>();
+  final PlayerController playerController = Get.find<PlayerController>();
+  final AppShared sharedController = Get.find<AppShared>();
 
   return GestureDetector(
     onTap: () async {
-      await controller.togglePlaylist();
+      await playerController.togglePlaylist();
     },
     child: Obx(() {
       IconData icon;
-      switch (AppShared.getShared(SharedAttributes.playlistMode)) {
+      switch (sharedController.getShared(SharedAttributes.playlistMode)) {
         case 0:
           icon = Icons.shuffle;
           break;

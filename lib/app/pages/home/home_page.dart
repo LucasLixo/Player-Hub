@@ -8,11 +8,12 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:player_hub/app/core/enums/selection_types.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
 import 'package:player_hub/app/core/enums/sort_type.dart';
+import 'package:player_hub/app/core/static/app_manifest.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/shared/class/shortcut.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
-import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/services/app_shared.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 import 'package:player_hub/app/shared/widgets/album_list.dart';
 import 'package:player_hub/app/shared/class/folder_list.dart';
@@ -20,11 +21,14 @@ import 'package:player_hub/app/shared/dialog/dialog_text_field.dart';
 import 'package:player_hub/app/shared/widgets/music_list.dart';
 import 'package:player_hub/app/shared/class/playlist_list.dart';
 
-class HomePage extends GetView<PlayerController> {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final PlayerController playerController = Get.find<PlayerController>();
+    final AppShared sharedController = Get.find<AppShared>();
+
     return DefaultTabController(
       initialIndex: 0,
       length: 4,
@@ -49,7 +53,7 @@ class HomePage extends GetView<PlayerController> {
             ),
           ),
           title: Text(
-            AppShared.title,
+            AppManifest.title,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           actions: [
@@ -57,7 +61,7 @@ class HomePage extends GetView<PlayerController> {
               onTap: () async {
                 await Get.toNamed(AppRoutes.playlist, arguments: {
                   'playlistTitle': 'playlist1'.tr,
-                  'playlistList': controller.recentList,
+                  'playlistList': playerController.recentList,
                   'playlistType': SelectionTypes.add,
                 });
               },
@@ -102,9 +106,9 @@ class HomePage extends GetView<PlayerController> {
           child: TabBarView(
             children: <Widget>[
               Obx(() {
-                if (controller.songAppList.isNotEmpty) {
+                if (playerController.songAppList.isNotEmpty) {
                   return musicList(
-                    songs: controller.songAppList,
+                    songs: playerController.songAppList,
                     first: ListTile(
                       tileColor: Colors.transparent,
                       splashColor: Colors.transparent,
@@ -115,11 +119,12 @@ class HomePage extends GetView<PlayerController> {
                       ),
                       leading: GestureDetector(
                         onTap: () async {
-                          if (controller.songList != controller.songAppList) {
-                            await controller.songLoad(
-                                controller.songAppList, 0);
+                          if (playerController.songList !=
+                              playerController.songAppList) {
+                            await playerController.songLoad(
+                                playerController.songAppList, 0);
                           } else {
-                            await controller.playSong(0);
+                            await playerController.playSong(0);
                           }
                           await Get.toNamed(AppRoutes.details);
                         },
@@ -148,8 +153,8 @@ class HomePage extends GetView<PlayerController> {
                       ),
                       subtitle: Obx(() {
                         return Text(
-                          SortType.getTypeTitlebyCode(
-                              AppShared.getShared(SharedAttributes.getSongs)),
+                          SortType.getTypeTitlebyCode(sharedController
+                              .getShared(SharedAttributes.getSongs)),
                           style: Theme.of(context).textTheme.labelMedium,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -164,9 +169,9 @@ class HomePage extends GetView<PlayerController> {
                           ),
                           color: AppColors.current().surface,
                           onSelected: (int code) async {
-                            await AppShared.setShared(
+                            await sharedController.setShared(
                                 SharedAttributes.getSongs, code);
-                            await controller.getAllSongs();
+                            await playerController.getAllSongs();
                           },
                           itemBuilder: (BuildContext context) {
                             return SortType.values.map((sortTypeOption) {
@@ -192,8 +197,8 @@ class HomePage extends GetView<PlayerController> {
                 }
               }),
               Obx(() {
-                if (controller.folderList.isNotEmpty ||
-                    controller.playlistList.isNotEmpty) {
+                if (playerController.folderList.isNotEmpty ||
+                    playerController.playlistList.isNotEmpty) {
                   return Stack(
                     children: [
                       const Positioned.fill(
@@ -217,7 +222,7 @@ class HomePage extends GetView<PlayerController> {
                               description: '',
                             );
                             if (result != null) {
-                              controller.addPlaylist(result);
+                              await playerController.addPlaylist(result);
                             }
                           },
                           backgroundColor: AppColors.current().primary,
@@ -235,11 +240,11 @@ class HomePage extends GetView<PlayerController> {
                 }
               }),
               Obx(() {
-                if (controller.albumList.isNotEmpty &&
-                    controller.albumListSongs.isNotEmpty) {
+                if (playerController.albumList.isNotEmpty &&
+                    playerController.albumListSongs.isNotEmpty) {
                   return albumList(
-                    albumList: controller.albumList,
-                    albumSongs: controller.albumListSongs,
+                    albumList: playerController.albumList,
+                    albumSongs: playerController.albumListSongs,
                     isAlbumArtist: false,
                   );
                 } else {
@@ -247,11 +252,11 @@ class HomePage extends GetView<PlayerController> {
                 }
               }),
               Obx(() {
-                if (controller.artistList.isNotEmpty &&
-                    controller.artistListSongs.isNotEmpty) {
+                if (playerController.artistList.isNotEmpty &&
+                    playerController.artistListSongs.isNotEmpty) {
                   return albumList(
-                    albumList: controller.artistList,
-                    albumSongs: controller.artistListSongs,
+                    albumList: playerController.artistList,
+                    albumSongs: playerController.artistListSongs,
                     isAlbumArtist: true,
                   );
                 } else {
@@ -262,7 +267,7 @@ class HomePage extends GetView<PlayerController> {
           ),
         ),
         bottomNavigationBar: Obx(
-          () => controller.songAppList.isEmpty
+          () => playerController.songAppList.isEmpty
               ? const Space(size: 0)
               : const Shortcut(),
         ),

@@ -11,6 +11,8 @@ class AppTranslations extends Translations {
       'app_search': 'Pesquisar',
       'app_permision1':
           'Para continuar, precisamos de acesso aos seus arquivos de áudio',
+      'app_network': 'Sem conexão com a internet',
+      'app_wifi': 'Internet conectada',
       'home_tab1': 'Músicas',
       'home_not_tab1': 'Sem músicas',
       'home_tab2': 'Playlists',
@@ -70,6 +72,8 @@ class AppTranslations extends Translations {
       'app_again': 'Try again',
       'app_search': 'Search',
       'app_permision1': 'To continue, we need access to your audio files',
+      'app_network': 'No internet connection',
+      'app_wifi': 'Internet connected',
       'home_tab1': 'Songs',
       'home_not_tab1': 'No songs',
       'home_tab2': 'Playlists',
@@ -130,6 +134,8 @@ class AppTranslations extends Translations {
       'app_search': 'Buscar',
       'app_permision1':
           'Para continuar, necesitamos acceso a tus archivos de audio',
+      'app_network': 'Sin conexión a internet',
+      'app_wifi': 'conectado a internet',
       'home_tab1': 'Música',
       'home_not_tab1': 'Sin música',
       'home_tab2': 'Playlists',

@@ -11,7 +11,7 @@ import 'package:player_hub/app/shared/dialog/dialog_text_field.dart';
 Future<void> crudPlaylist({
   required String playlistTitle,
 }) async {
-  final PlayerController controller = Get.find<PlayerController>();
+  final PlayerController playerController = Get.find<PlayerController>();
 
   await showModalBottomSheet(
     context: Get.context!,
@@ -60,7 +60,7 @@ Future<void> crudPlaylist({
                   description: playlistTitle,
                 );
                 if (result != null) {
-                  await controller.renamePlaylist(
+                  await playerController.renamePlaylist(
                     playlistTitle,
                     result,
                   );
@@ -86,7 +86,7 @@ Future<void> crudPlaylist({
                 );
                 Navigator.of(context).pop();
                 if (result != null && result) {
-                  await controller.removePlaylist(playlistTitle);
+                  await playerController.removePlaylist(playlistTitle);
                 }
               },
             ),

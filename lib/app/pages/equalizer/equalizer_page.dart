@@ -4,26 +4,29 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
-import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/services/app_shared.dart';
 import 'package:player_hub/app/core/types/app_functions.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 import 'package:player_hub/app/pages/equalizer/equalize_controller.dart';
 
-class EqualizerPage extends GetView<EqualizerController> with AppFunctions {
-  const EqualizerPage({
+class EqualizerPage extends StatelessWidget with AppFunctions {
+  final EqualizerController equalizerController =
+      Get.find<EqualizerController>();
+  final AppShared sharedController = Get.find<AppShared>();
+
+  EqualizerPage({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     () async {
-      if (controller.bandLevelRange.value == null ||
-          controller.bandCenterFrequencies.value == null) {
-        await controller.initializeBand();
+      if (equalizerController.bandLevelRange.value == null ||
+          equalizerController.bandCenterFrequencies.value == null) {
+        await equalizerController.initializeBand();
       }
     };
 
@@ -49,9 +52,9 @@ class EqualizerPage extends GetView<EqualizerController> with AppFunctions {
         actions: <Widget>[
           Obx(() {
             return Switch(
-              value: AppShared.getShared(SharedAttributes.equalizeMode),
+              value: sharedController.getShared(SharedAttributes.equalizeMode),
               onChanged: (bool value) async {
-                await controller.toggleEqualizer(value);
+                await equalizerController.toggleEqualizer(value);
               },
             );
           }),
@@ -59,8 +62,8 @@ class EqualizerPage extends GetView<EqualizerController> with AppFunctions {
       ),
       body: SafeArea(
         child: Obx(() {
-          if (controller.bandLevelRange.value != null &&
-              controller.bandCenterFrequencies.value != null) {
+          if (equalizerController.bandLevelRange.value != null &&
+              equalizerController.bandCenterFrequencies.value != null) {
             return Column(
               children: <Widget>[
                 ListTile(
@@ -70,7 +73,7 @@ class EqualizerPage extends GetView<EqualizerController> with AppFunctions {
                   ),
                   trailing: GestureDetector(
                     onTap: () async {
-                      await AppShared.setShared(
+                      await sharedController.setShared(
                         SharedAttributes.frequency,
                         SharedAttributes.frequency.value,
                       );
@@ -101,8 +104,9 @@ class EqualizerPage extends GetView<EqualizerController> with AppFunctions {
                 Obx(() {
                   return _customEQ(
                     context,
-                    enabled: AppShared.getShared(SharedAttributes.equalizeMode),
-                    bandLevelRange: controller.bandLevelRange.value!,
+                    enabled: sharedController
+                        .getShared(SharedAttributes.equalizeMode),
+                    bandLevelRange: equalizerController.bandLevelRange.value!,
                   );
                 })
               ],
@@ -127,7 +131,8 @@ class EqualizerPage extends GetView<EqualizerController> with AppFunctions {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: controller.bandCenterFrequencies.value!.map((freq) {
+          children:
+              equalizerController.bandCenterFrequencies.value!.map((freq) {
             return _buildSliderBand(
               context,
               enabled: enabled,
@@ -165,14 +170,13 @@ class EqualizerPage extends GetView<EqualizerController> with AppFunctions {
               quarterTurns: -1,
               child: Center(
                 child: Obx(() {
-                  final RxDouble value = RxDouble(
-                    AppShared.getShared(SharedAttributes.frequency)[bandId]
-                        as double,
-                  );
+                  final RxDouble result = (sharedController.getShared(
+                          SharedAttributes.frequency)[bandId] as double)
+                      .obs;
 
                   EqualizerFlutter.setBandLevel(
                     bandId,
-                    value.value.toInt(),
+                    result.value.toInt(),
                   );
 
                   return Slider(
@@ -180,20 +184,23 @@ class EqualizerPage extends GetView<EqualizerController> with AppFunctions {
                     activeColor: AppColors.current().primary,
                     min: minLevel,
                     max: maxLevel,
-                    value: value.value,
+                    value: result.value,
                     onChanged: enabled
                         ? (lowerValue) {
-                            value.value = lowerValue;
-                            AppShared.sharedMap[SharedAttributes.frequency.name]
-                                [bandId] = lowerValue;
+                            result.value = lowerValue;
+                            List<double> listBand = List.from(sharedController
+                                .sharedMap[SharedAttributes.frequency.name]);
+
+                            listBand[bandId] = lowerValue;
+
                             EqualizerFlutter.setBandLevel(
                               bandId,
                               lowerValue.toInt(),
                             );
-                            AppShared.setShared(
+
+                            sharedController.setShared(
                               SharedAttributes.frequency,
-                              AppShared
-                                  .sharedMap[SharedAttributes.frequency.name],
+                              listBand,
                             );
                           }
                         : null,

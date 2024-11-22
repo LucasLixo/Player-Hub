@@ -7,7 +7,10 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
-import 'package:player_hub/app/core/static/app_shared.dart';
+import 'package:player_hub/app/core/static/app_manifest.dart';
+import 'package:player_hub/app/services/app_chrome.dart';
+import 'package:player_hub/app/services/app_network.dart';
+import 'package:player_hub/app/services/app_shared.dart';
 import 'package:player_hub/app/app_widget.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 
@@ -22,32 +25,31 @@ Future<void> main() async {
         await rootBundle.loadString('assets/licenses/OpenSans-OFL.txt'),
       );
     });
+
+    Get.put<AppShared>(AppShared());
+    await Get.find<AppShared>().init();
+
     runApp(Phoenix(child: const AppWidget()));
+
+    Get.put<AppNetwork>(AppNetwork());
+    Get.put<AppChrome>(AppChrome());
+
     await Future.wait([
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-      ]),
-      SystemChrome.setEnabledSystemUIMode(
-        SystemUiMode.manual,
-        overlays: [
-          SystemUiOverlay.top,
-          SystemUiOverlay.bottom,
-        ],
-      ),
       JustAudioBackground.init(
-        androidNotificationChannelId: "${AppShared.package}.channel.audio",
-        androidNotificationChannelName: AppShared.title,
+        androidNotificationChannelId: "${AppManifest.package}.channel.audio",
+        androidNotificationChannelName: AppManifest.title,
         androidShowNotificationBadge: true,
         androidNotificationOngoing: true,
         androidStopForegroundOnPause: true,
       ),
-      AppShared.loadSettings(),
+      Get.find<AppNetwork>().init(),
+      Get.find<AppChrome>().init(),
     ]);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Get.toNamed(AppRoutes.splash, arguments: {
         'function': () async {
-          await AppShared.updatedLocale();
+          await Get.find<AppShared>().updatedLocale();
         },
       });
     });
