@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
@@ -8,9 +7,11 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:player_hub/app/core/enums/selection_types.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
 import 'package:player_hub/app/core/enums/sort_type.dart';
+import 'package:player_hub/app/core/enums/theme_types.dart';
 import 'package:player_hub/app/core/static/app_manifest.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
+import 'package:player_hub/app/services/app_chrome.dart';
 import 'package:player_hub/app/shared/class/shortcut.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/services/app_shared.dart';
@@ -28,6 +29,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final PlayerController playerController = Get.find<PlayerController>();
     final AppShared sharedController = Get.find<AppShared>();
+    final AppChrome chromeController = Get.find<AppChrome>();
 
     return DefaultTabController(
       initialIndex: 0,
@@ -37,10 +39,8 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: AppColors.current().background,
-          systemOverlayStyle: SystemUiOverlayStyle(
-            systemNavigationBarColor: AppColors.current().surface,
-            systemNavigationBarDividerColor: Colors.transparent,
-            systemNavigationBarIconBrightness: AppColors.current().brightness,
+          systemOverlayStyle: chromeController.loadThemeByType(
+            ThemeTypes.topOneBottomTwo,
           ),
           leading: GestureDetector(
             onTap: () async {

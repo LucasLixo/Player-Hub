@@ -6,6 +6,7 @@ import 'package:get/instance_manager.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:player_hub/app/core/enums/languages.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
+import 'package:player_hub/app/core/enums/theme_types.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
@@ -46,6 +47,9 @@ class _SettingPageState extends State<SettingPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.current().background,
+        systemOverlayStyle: chromeController.loadThemeByType(
+          ThemeTypes.topOneBottomOne,
+        ),
         leading: GestureDetector(
           onTap: () {
             Get.back();

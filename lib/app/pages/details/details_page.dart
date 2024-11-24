@@ -1,10 +1,13 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:player_hub/app/core/enums/shared_attibutes.dart';
+import 'package:player_hub/app/core/enums/theme_types.dart';
 import 'package:player_hub/app/services/app_chrome.dart';
 import 'package:player_hub/app/services/app_shared.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
@@ -96,13 +99,12 @@ class _DetailsPageState extends State<DetailsPage>
                       AppBar(
                         automaticallyImplyLeading: false,
                         backgroundColor: Colors.transparent,
-                        systemOverlayStyle: const SystemUiOverlayStyle(
-                          statusBarColor: Colors.transparent,
-                          statusBarIconBrightness: Brightness.light,
-                          systemNavigationBarColor: Colors.black,
-                          systemNavigationBarDividerColor: Colors.transparent,
-                          systemNavigationBarIconBrightness: Brightness.light,
-                        ),
+                        systemOverlayStyle: sharedController
+                                .getShared(SharedAttributes.darkMode) as bool
+                            ? chromeController
+                                .loadThemeByType(ThemeTypes.defaultDark)
+                            : chromeController
+                                .loadThemeByType(ThemeTypes.defaultLight),
                         foregroundColor: Colors.transparent,
                         leading: GestureDetector(
                           onTap: () {

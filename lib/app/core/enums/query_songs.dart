@@ -33,8 +33,6 @@ enum QuerySongs {
           sortType: SongSortType.DURATION,
           uriType: UriType.EXTERNAL,
         );
-      default:
-        throw ArgumentError('Index must be between QuerySongs');
     }
   }
 }

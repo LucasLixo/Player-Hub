@@ -1,7 +1,9 @@
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:player_hub/app/core/enums/image_quality.dart';
 import 'package:player_hub/app/core/enums/selection_types.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
 import 'package:player_hub/app/services/app_shared.dart';
@@ -57,7 +59,10 @@ class FolderList extends GetView<PlayerController> {
                 overflow: TextOverflow.ellipsis,
               ),
               leading: FutureBuilder<Uint8List>(
-                future: AppManifest.getImageArray(id: songs[0].id),
+                future: AppManifest.getImageArray(
+                  id: songs[0].id,
+                  type: ImageQuality.low,
+                ),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting ||
                       snapshot.hasError ||
@@ -80,8 +85,10 @@ class FolderList extends GetView<PlayerController> {
                 },
               ),
               trailing: Obx(() {
-                List<String> listFolderIgnore = sharedController
-                    .getShared(SharedAttributes.ignoreFolder) as List<String>;
+                List<String> listFolderIgnore = List<String>.from(
+                  sharedController.getShared(SharedAttributes.ignoreFolder)
+                      as List<String>,
+                );
 
                 final RxBool isIgnored = listFolderIgnore.contains(title).obs;
 

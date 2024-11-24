@@ -1,6 +1,6 @@
-import 'package:get/state_manager.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:get/state_manager.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';

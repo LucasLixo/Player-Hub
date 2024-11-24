@@ -1,8 +1,12 @@
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:get/get.dart';
+import 'package:get/route_manager.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:player_hub/app/core/enums/image_quality.dart';
 import 'package:player_hub/app/core/enums/selection_types.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
@@ -55,8 +59,10 @@ class PlaylistList extends GetView<PlayerController> {
                   borderRadius: BorderRadius.circular(12),
                   child: songs.value?.isNotEmpty ?? false
                       ? FutureBuilder<Uint8List>(
-                          future:
-                              AppManifest.getImageArray(id: songs.value![0].id),
+                          future: AppManifest.getImageArray(
+                            id: songs.value![0].id,
+                            type: ImageQuality.low,
+                          ),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                     ConnectionState.waiting ||

@@ -4,6 +4,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:player_hub/app/core/enums/theme_types.dart';
+import 'package:player_hub/app/services/app_chrome.dart';
 import 'package:player_hub/app/services/app_shared.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/types/app_functions.dart';
@@ -16,6 +18,7 @@ import 'package:share_plus/share_plus.dart';
 class EditPage extends StatelessWidget with AppFunctions {
   final PlayerController playerController = Get.find<PlayerController>();
   final AppShared sharedController = Get.find<AppShared>();
+  final AppChrome chromeController = Get.find<AppChrome>();
 
   final SongModel song;
 
@@ -96,6 +99,9 @@ class EditPage extends StatelessWidget with AppFunctions {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.current().background,
+        systemOverlayStyle: chromeController.loadThemeByType(
+          ThemeTypes.topOneBottomOne,
+        ),
         leading: GestureDetector(
           onTap: () {
             Get.back();

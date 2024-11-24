@@ -1,5 +1,10 @@
 import 'package:equalizer_flutter/equalizer_flutter.dart';
-import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
 import 'package:player_hub/app/services/app_shared.dart';
@@ -26,6 +31,16 @@ class EqualizerController extends GetxController with AppFunctions {
   }
 
   // ==================================================
+  @override
+  void onReady() {
+    super.onReady();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await initializeBand();
+    });
+  }
+
+  // ==================================================
   Future<void> _initializeEqualizer(int id) async {
     await EqualizerFlutter.init(id);
     await EqualizerFlutter.open(id);
@@ -47,12 +62,20 @@ class EqualizerController extends GetxController with AppFunctions {
 
   // ==================================================
   Future<void> initializeBand() async {
-    try {
-      bandLevelRange.value = await EqualizerFlutter.getBandLevelRange();
-      bandCenterFrequencies.value = await EqualizerFlutter.getCenterBandFreqs();
-    } catch (e) {
-      bandLevelRange.value = null;
-      bandCenterFrequencies.value = null;
+    if (bandLevelRange.value == null) {
+      try {
+        bandLevelRange.value = await EqualizerFlutter.getBandLevelRange();
+      } catch (e) {
+        bandLevelRange.value = null;
+      }
+    }
+    if (bandCenterFrequencies.value == null) {
+      try {
+        bandCenterFrequencies.value =
+            await EqualizerFlutter.getCenterBandFreqs();
+      } catch (e) {
+        bandCenterFrequencies.value = null;
+      }
     }
   }
 

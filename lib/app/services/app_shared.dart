@@ -1,14 +1,19 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:player_hub/app/core/enums/box_types.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
-import 'package:get/get.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:player_hub/app/core/enums/languages.dart';
 import 'package:player_hub/app/core/static/app_manifest.dart';
 import 'package:get_storage/get_storage.dart';
 
-class AppShared extends GetxService {
+class AppShared extends GetxController {
   // ==================================================
   late GetStorage _boxApp;
   late GetStorage _boxStorage;

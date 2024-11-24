@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:player_hub/app/core/enums/theme_types.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/static/app_manifest.dart';
+import 'package:player_hub/app/services/app_chrome.dart';
 import 'package:player_hub/app/services/app_shared.dart';
 import 'package:helper_hub/src/theme_widget.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
@@ -33,6 +34,7 @@ class _SelectionRemovePageState extends State<SelectionRemovePage> {
       Get.find<SelectionController>();
   final PlayerController playerController = Get.find<PlayerController>();
   final AppShared sharedController = Get.find<AppShared>();
+  final AppChrome chromeController = Get.find<AppChrome>();
 
   @override
   void initState() {
@@ -60,10 +62,8 @@ class _SelectionRemovePageState extends State<SelectionRemovePage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: AppColors.current().background,
-          systemOverlayStyle: SystemUiOverlayStyle(
-            systemNavigationBarColor: AppColors.current().surface,
-            systemNavigationBarDividerColor: Colors.transparent,
-            systemNavigationBarIconBrightness: AppColors.current().brightness,
+          systemOverlayStyle: chromeController.loadThemeByType(
+            ThemeTypes.topOneBottomTwo,
           ),
           leading: GestureDetector(
             onTap: () async {

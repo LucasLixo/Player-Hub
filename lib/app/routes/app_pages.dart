@@ -1,10 +1,10 @@
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
-import 'package:player_hub/app/routes/app_bindings.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/routes/app_imports.dart';
 
 abstract class AppPages {
+  // ==================================================
   static final List<GetPage> pages = [
     GetPage(
       name: AppRoutes.wait,
@@ -59,15 +59,6 @@ abstract class AppPages {
       transition: Transition.rightToLeft,
     ),
     GetPage(
-      name: AppRoutes.equalizer,
-      page: () => EqualizerPage(),
-      transitionDuration: const Duration(milliseconds: 300),
-      transition: Transition.rightToLeft,
-      binding: BindingsBuilder(
-        () => AppBinding().functionByRoute(AppRoutes.equalizer),
-      ),
-    ),
-    GetPage(
       name: AppRoutes.playlist,
       page: () => PlaylistPage(
         playlistTitle: Get.arguments['playlistTitle'],
@@ -79,6 +70,12 @@ abstract class AppPages {
       transition: Transition.rightToLeft,
     ),
     GetPage(
+      name: AppRoutes.equalizer,
+      page: () => EqualizerPage(),
+      transitionDuration: const Duration(milliseconds: 300),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
       name: AppRoutes.selectionAdd,
       page: () => SelectionAddPage(
         selectionTitle: Get.arguments['selectionTitle'],
@@ -86,9 +83,6 @@ abstract class AppPages {
       ),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
-      binding: BindingsBuilder(
-        () => AppBinding().functionByRoute(AppRoutes.selectionAdd),
-      ),
     ),
     GetPage(
       name: AppRoutes.selectionRemove,
@@ -98,9 +92,6 @@ abstract class AppPages {
       ),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
-      binding: BindingsBuilder(
-        () => AppBinding().functionByRoute(AppRoutes.selectionRemove),
-      ),
     ),
   ];
 }

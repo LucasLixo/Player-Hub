@@ -23,13 +23,6 @@ class EqualizerPage extends StatelessWidget with AppFunctions {
 
   @override
   Widget build(BuildContext context) {
-    () async {
-      if (equalizerController.bandLevelRange.value == null ||
-          equalizerController.bandCenterFrequencies.value == null) {
-        await equalizerController.initializeBand();
-      }
-    };
-
     return Scaffold(
       backgroundColor: AppColors.current().background,
       appBar: AppBar(

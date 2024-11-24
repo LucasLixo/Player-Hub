@@ -1,8 +1,10 @@
 enum BoxTypes {
+  // ==================================================
   app,
   storage,
   others;
 
+  // ==================================================
   @override
   String toString() {
     switch (this) {

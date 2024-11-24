@@ -49,21 +49,14 @@ abstract class AppManifest {
     required int id,
     required ImageQuality type,
   }) async {
-    final File fileLow = File(
-        '${sharedController.documentDir.path}/${id}_${ImageQuality.low.size}.jpg');
-    final File fileHigh = File(
-        '${sharedController.documentDir.path}/${id}_${ImageQuality.high.size}.jpg');
+    final File targetFile =
+        File('${sharedController.documentDir.path}/${id}_${type.size}.jpg');
 
-    if (!await fileLow.exists() || !await fileHigh.exists()) {
+    if (!await targetFile.exists()) {
       await _generateImageFile(id: id);
     }
 
-    switch (type) {
-      case ImageQuality.low:
-        return fileLow.path;
-      case ImageQuality.high:
-        return fileHigh.path;
-    }
+    return targetFile.path;
   }
 
   // ==================================================
@@ -86,10 +79,10 @@ abstract class AppManifest {
   }) async {
     final OnAudioQuery audioQuery = OnAudioQuery();
 
-    final File fileLow = File(
-        '${sharedController.documentDir.path}/${id}_${ImageQuality.low.size}.jpg');
-    final File fileHigh = File(
-        '${sharedController.documentDir.path}/${id}_${ImageQuality.high.size}.jpg');
+    final List<String> filePaths = [
+      '${sharedController.documentDir.path}/${id}_${ImageQuality.low.size}.jpg',
+      '${sharedController.documentDir.path}/${id}_${ImageQuality.high.size}.jpg',
+    ];
 
     final List<Uint8List?> dataResults = await Future.wait([
       audioQuery.queryArtwork(
@@ -107,30 +100,32 @@ abstract class AppManifest {
         quality: 100,
       ),
     ]);
-    final Uint8List? dataLow = dataResults[0];
-    final Uint8List? dataHigh = dataResults[1];
 
-    if (dataLow != null &&
-        dataLow.isNotEmpty &&
-        dataHigh != null &&
-        dataHigh.isNotEmpty) {
-      await fileLow.writeAsBytes(dataLow);
-      await fileHigh.writeAsBytes(dataHigh);
+    if (dataResults[0]?.isNotEmpty == true &&
+        dataResults[1]?.isNotEmpty == true) {
+      await Future.wait([
+        File(filePaths[0]).writeAsBytes(dataResults[0]!),
+        File(filePaths[1]).writeAsBytes(dataResults[1]!),
+      ]);
     } else {
       final String randomImageColor =
           _imageColors[Random().nextInt(_imageColors.length)];
 
-      final ByteData imageDataLow =
-          await rootBundle.load('assets/images/low_poly_$randomImageColor.jpg');
-      final Uint8List imageBytesLow = imageDataLow.buffer.asUint8List();
+      final List<Uint8List> defaultImages = await Future.wait([
+        _loadAssetImage('assets/images/low_poly_$randomImageColor.jpg'),
+        _loadAssetImage('assets/images/high_poly_$randomImageColor.jpg'),
+      ]);
 
-      final ByteData imageDataHigh = await rootBundle
-          .load('assets/images/high_poly_$randomImageColor.jpg');
-      final Uint8List imageBytesHigh = imageDataHigh.buffer.asUint8List();
-
-      await fileLow.writeAsBytes(imageBytesLow);
-      await fileHigh.writeAsBytes(imageBytesHigh);
+      await Future.wait([
+        File(filePaths[0]).writeAsBytes(defaultImages[0]),
+        File(filePaths[1]).writeAsBytes(defaultImages[1]),
+      ]);
     }
+  }
+
+  static Future<Uint8List> _loadAssetImage(String assetPath) async {
+    final ByteData byteData = await rootBundle.load(assetPath);
+    return byteData.buffer.asUint8List();
   }
 
   // ==================================================

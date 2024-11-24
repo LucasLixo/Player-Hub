@@ -78,7 +78,8 @@ class _ShortcutState extends State<Shortcut>
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              leading: ClipOval(
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
                 child: currentImage != null
                     ? Image.memory(
                         currentImage,

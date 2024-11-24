@@ -1,7 +1,9 @@
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:player_hub/app/core/enums/image_quality.dart';
 import 'package:player_hub/app/core/enums/selection_types.dart';
 import 'package:player_hub/app/services/app_shared.dart';
 import 'package:flutter/services.dart';
@@ -56,9 +58,8 @@ Widget musicList({
         leading: ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: FutureBuilder<Uint8List>(
-            future: AppManifest.getImageArray(
-              id: song.id,
-            ),
+            future:
+                AppManifest.getImageArray(id: song.id, type: ImageQuality.low),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting ||
                   snapshot.hasError ||

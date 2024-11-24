@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -15,25 +16,22 @@ import 'package:player_hub/app/app_widget.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 
 Future<void> main() async {
-  runZonedGuarded(() async {
+  await runZonedGuarded(() async {
+    // Widgets
     WidgetsFlutterBinding.ensureInitialized();
     SemanticsBinding.instance.ensureSemantics();
-
+    // License
     LicenseRegistry.addLicense(() async* {
       yield LicenseEntryWithLineBreaks(
         ['google_fonts'],
         await rootBundle.loadString('assets/licenses/OpenSans-OFL.txt'),
       );
     });
-
-    Get.put<AppShared>(AppShared());
-    await Get.find<AppShared>().init();
-
+    // Preferencies
+    await Get.put<AppShared>(AppShared()).init();
+    // Run App
     runApp(Phoenix(child: const AppWidget()));
-
-    Get.put<AppNetwork>(AppNetwork());
-    Get.put<AppChrome>(AppChrome());
-
+    // Load Services
     await Future.wait([
       JustAudioBackground.init(
         androidNotificationChannelId: "${AppManifest.package}.channel.audio",
@@ -42,10 +40,10 @@ Future<void> main() async {
         androidNotificationOngoing: true,
         androidStopForegroundOnPause: true,
       ),
-      Get.find<AppNetwork>().init(),
-      Get.find<AppChrome>().init(),
+      Get.put<AppNetwork>(AppNetwork()).init(),
+      Get.put<AppChrome>(AppChrome()).init(),
     ]);
-
+    // After Load
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Get.toNamed(AppRoutes.splash, arguments: {
         'function': () async {

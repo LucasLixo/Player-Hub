@@ -3,15 +3,15 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:helper_hub/src/theme_material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:get/state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:player_hub/app/core/static/app_manifest.dart';
-import 'package:player_hub/app/routes/app_bindings.dart';
+import 'package:player_hub/app/services/app_bindings.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/routes/app_pages.dart';
 import 'package:player_hub/app/core/types/app_translations.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/services/app_chrome.dart';
+import 'package:player_hub/app/services/app_observer.dart';
 
 class AppWidget extends StatefulWidget {
   const AppWidget({super.key});
@@ -53,13 +53,14 @@ class _AppWidgetState extends State<AppWidget> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       enableLog: true,
       title: AppManifest.title,
-      debugShowCheckedModeBanner: false,
       themeMode: AppColors.current().themeMode,
       theme: ThemeMaterial.light(),
       darkTheme: ThemeMaterial.dark(),
       getPages: AppPages.pages,
+      navigatorObservers: [AppObserver()],
       initialBinding: AppBinding(),
       initialRoute: AppRoutes.wait,
       translations: AppTranslations(),
