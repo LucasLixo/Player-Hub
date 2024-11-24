@@ -20,6 +20,7 @@ Future<void> main() async {
     // Widgets
     WidgetsFlutterBinding.ensureInitialized();
     SemanticsBinding.instance.ensureSemantics();
+
     // License
     LicenseRegistry.addLicense(() async* {
       yield LicenseEntryWithLineBreaks(
@@ -27,10 +28,13 @@ Future<void> main() async {
         await rootBundle.loadString('assets/licenses/OpenSans-OFL.txt'),
       );
     });
+
     // Preferencies
     await Get.put<AppShared>(AppShared()).init();
+
     // Run App
     runApp(Phoenix(child: const AppWidget()));
+
     // Load Services
     await Future.wait([
       JustAudioBackground.init(
@@ -43,13 +47,12 @@ Future<void> main() async {
       Get.put<AppNetwork>(AppNetwork()).init(),
       Get.put<AppChrome>(AppChrome()).init(),
     ]);
+
     // After Load
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Get.toNamed(AppRoutes.splash, arguments: {
-        'function': () async {
-          await Get.find<AppShared>().updatedLocale();
-        },
-      });
+    await Get.toNamed(AppRoutes.splash, arguments: {
+      'function': () async {
+        await Get.find<AppShared>().updatedLocale();
+      },
     });
   }, (Object error, StackTrace stack) async {
     debugPrint("$error");

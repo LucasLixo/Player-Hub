@@ -1,5 +1,6 @@
 import 'package:get/instance_manager.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
+// import 'package:player_hub/app/pages/edit/edit_controller.dart';
 import 'package:player_hub/app/pages/equalizer/equalize_controller.dart';
 import 'package:player_hub/app/pages/selection/selection_controller.dart';
 
@@ -20,6 +21,14 @@ class AppBinding extends Bindings {
       fenix: true,
     );
   }
+
+  // ==================================================
+  /* void editController() {
+    Get.lazyPut<EditController>(
+      () => EditController(),
+      fenix: true,
+    );
+  } */
 
   // ==================================================
   void equalizerController() {

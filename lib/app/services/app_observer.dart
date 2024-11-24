@@ -48,6 +48,7 @@ class AppObserver extends GetObserver {
       case AppRoutes.details:
         return;
       case AppRoutes.edit:
+        // AppBinding().editController();
         return;
       case AppRoutes.search:
         return;

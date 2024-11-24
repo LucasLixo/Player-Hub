@@ -3,9 +3,11 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:player_hub/app/core/enums/ignores_load.dart';
 import 'package:player_hub/app/core/enums/image_quality.dart';
 import 'package:player_hub/app/core/enums/selection_types.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
+import 'package:player_hub/app/core/enums/updated_load.dart';
 import 'package:player_hub/app/services/app_shared.dart';
 import 'package:flutter/services.dart';
 import 'package:get/instance_manager.dart';
@@ -58,31 +60,31 @@ class FolderList extends GetView<PlayerController> {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              leading: FutureBuilder<Uint8List>(
-                future: AppManifest.getImageArray(
-                  id: songs[0].id,
-                  type: ImageQuality.low,
-                ),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting ||
-                      snapshot.hasError ||
-                      !snapshot.hasData) {
-                    return const SizedBox(
-                      width: 50.0,
-                      height: 50.0,
-                    );
-                  } else {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.memory(
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: FutureBuilder<Uint8List>(
+                  future: AppManifest.getImageArray(
+                    id: songs[0].id,
+                    type: ImageQuality.low,
+                  ),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting ||
+                        snapshot.hasError ||
+                        !snapshot.hasData) {
+                      return const SizedBox(
+                        width: 50.0,
+                        height: 50.0,
+                      );
+                    } else {
+                      return Image.memory(
                         snapshot.data!,
                         fit: BoxFit.cover,
                         width: 50.0,
                         height: 50.0,
-                      ),
-                    );
-                  }
-                },
+                      );
+                    }
+                  },
+                ),
               ),
               trailing: Obx(() {
                 List<String> listFolderIgnore = List<String>.from(
@@ -108,7 +110,15 @@ class FolderList extends GetView<PlayerController> {
                       SharedAttributes.ignoreFolder,
                       listFolderIgnore,
                     );
-                    await controller.songAllLoad(controller.songAllList);
+                    await controller.songAllLoad(
+                      controller.songAllList,
+                      typeLoad: [
+                        UpdatedTypeLoad.folder,
+                      ],
+                      typeInore: [
+                        IgnoresLoad.folders,
+                      ],
+                    );
                     controller.songList.clear();
                     controller.songList.addAll(controller.songAppList);
                   },

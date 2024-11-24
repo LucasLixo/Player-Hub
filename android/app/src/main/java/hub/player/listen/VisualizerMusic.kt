@@ -59,7 +59,7 @@ internal fun updateAppWidget(
         }
 
         // Intent para abrir o aplicativo ao clicar no widget
-        val intent = Intent(context, MainActivity::class.java) // Substitua com a sua MainActivity
+        val intent = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
             context,
             0,

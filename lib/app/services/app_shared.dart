@@ -29,36 +29,25 @@ class AppShared extends GetxController {
 
   // ==================================================
   Future<void> init() async {
-    await GetStorage.init(BoxTypes.app.toString());
-    await GetStorage.init(BoxTypes.storage.toString());
-    await GetStorage.init(BoxTypes.others.toString());
+    await Future.wait([
+      GetStorage.init(BoxTypes.app.toString()),
+      GetStorage.init(BoxTypes.storage.toString()),
+      GetStorage.init(BoxTypes.others.toString()),
+    ]);
 
     _boxApp = GetStorage(BoxTypes.app.toString());
     _boxStorage = GetStorage(BoxTypes.storage.toString());
-    boxOthers = GetStorage(BoxTypes.storage.toString());
+    boxOthers = GetStorage(BoxTypes.others.toString());
 
     temporaryDir = await getApplicationCacheDirectory();
     documentDir = await getApplicationDocumentsDirectory();
 
-    final List<SharedAttributes> listSettings = [
-      SharedAttributes.darkMode,
-      SharedAttributes.defaultLanguage,
-      SharedAttributes.changeLanguage,
-      SharedAttributes.ignoreTime,
-      // SharedAttributes.equalizeMode,
-      SharedAttributes.playlistMode,
-      SharedAttributes.frequency,
-      SharedAttributes.ignoreFolder,
-      SharedAttributes.listAllPlaylist,
-    ];
+    final List<SharedAttributes> listSettings = SharedAttributes.values;
 
     for (var setting in listSettings) {
-      SharedAttributes.getAttributesMap[setting.name] =
-          SharedAttributes.getValueShared(
-        _boxApp,
-        setting,
-      );
-      sharedMap[setting.name] = SharedAttributes.getAttributesMap[setting.name];
+      final dynamic value = SharedAttributes.getValueShared(_boxApp, setting);
+      SharedAttributes.getAttributesMap[setting.name] = value;
+      sharedMap[setting.name] = value;
     }
   }
 

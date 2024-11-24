@@ -1,0 +1,57 @@
+import 'package:get/get_connect.dart';
+import 'package:get/get_connect/http/src/status/http_status.dart';
+
+class EditController extends GetConnect {
+  final String _baseUrl = 'https://api.vagalume.com.br';
+  // 2787622cbc29a299578793e2d3ba9202
+  // c1dc94ed71b286fa8b5d02e13467eb6b
+  final String _apiKey = '2787622cbc29a299578793e2d3ba9202';
+
+  @override
+  void onInit() {
+    httpClient.baseUrl = _baseUrl;
+    httpClient.addRequestModifier<void>((request) {
+      request.url.replace(
+        queryParameters: {
+          ...request.url.queryParameters,
+          'apikey': _apiKey,
+        },
+      );
+      return request;
+    });
+
+    httpClient.addResponseModifier((request, response) {
+      print('==================================================');
+      print('URL: ${response.request?.url}');
+      print('Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+      print('==================================================');
+      return response;
+    });
+
+    httpClient.maxRedirects = 3;
+    httpClient.maxAuthRetries = 3;
+  }
+
+  Future<Response?> fetchMusicInfo(int id) async {
+    final response = await get('/search.php', query: {
+      'musid': id,
+    });
+    return _handleResponse(response);
+  }
+
+  Future<Response?> fetchMusics(String artist, String music) async {
+    final response = await get('/search.art', query: {
+      'art': artist,
+      'mus': music,
+    });
+    return _handleResponse(response);
+  }
+
+  Response? _handleResponse(Response response) {
+    if (response.statusCode == HttpStatus.ok) {
+      return response;
+    }
+    return null;
+  }
+}

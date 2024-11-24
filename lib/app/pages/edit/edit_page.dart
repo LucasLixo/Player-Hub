@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:player_hub/app/core/enums/theme_types.dart';
+// import 'package:player_hub/app/pages/edit/edit_controller.dart';
 import 'package:player_hub/app/services/app_chrome.dart';
 import 'package:player_hub/app/services/app_shared.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
@@ -16,6 +17,7 @@ import 'package:helper_hub/src/theme_widget.dart';
 import 'package:share_plus/share_plus.dart';
 
 class EditPage extends StatelessWidget with AppFunctions {
+  // final EditController editController = Get.find<EditController>();
   final PlayerController playerController = Get.find<PlayerController>();
   final AppShared sharedController = Get.find<AppShared>();
   final AppChrome chromeController = Get.find<AppChrome>();
@@ -119,6 +121,20 @@ class EditPage extends StatelessWidget with AppFunctions {
           overflow: TextOverflow.ellipsis,
         ),
         actions: [
+          /* GestureDetector(
+            onTap: () async {
+              final results = await editController.fetchMusics(
+                sharedController.getArtist(song.id, song.artist!),
+                sharedController.getTitle(song.id, song.title),
+              );
+            },
+            child: Icon(
+              Icons.language,
+              color: AppColors.current().text,
+              size: 32,
+            ),
+          ),
+          const Space(), */
           GestureDetector(
             onTap: () async {
               await _saveInfo();

@@ -1,6 +1,5 @@
-enum SelectionTypes {
+enum IgnoresLoad {
   // ==================================================
-  none,
-  add,
-  remove;
+  duration,
+  folders;
 }

@@ -33,11 +33,11 @@ abstract class AppManifest {
     switch (type) {
       case ImageQuality.low:
         file = File(
-            '${sharedController.documentDir.path}/${id}_${ImageQuality.low.size}.jpg');
+            '${sharedController.documentDir.path}/${id}_${ImageQuality.low.name}.jpg');
         break;
       case ImageQuality.high:
         file = File(
-            '${sharedController.documentDir.path}/${id}_${ImageQuality.high.size}.jpg');
+            '${sharedController.documentDir.path}/${id}_${ImageQuality.high.name}.jpg');
         break;
     }
 
@@ -50,7 +50,7 @@ abstract class AppManifest {
     required ImageQuality type,
   }) async {
     final File targetFile =
-        File('${sharedController.documentDir.path}/${id}_${type.size}.jpg');
+        File('${sharedController.documentDir.path}/${id}_${type.name}.jpg');
 
     if (!await targetFile.exists()) {
       await _generateImageFile(id: id);
@@ -64,10 +64,10 @@ abstract class AppManifest {
     required int id,
     required Uint8List bytes,
   }) async {
-    final File fileLow =
-        File('${sharedController.documentDir.path}/${id}_64.jpg');
-    final File fileHigh =
-        File('${sharedController.documentDir.path}/${id}_256.jpg');
+    final File fileLow = File(
+        '${sharedController.documentDir.path}/${id}_${ImageQuality.low.name}.jpg');
+    final File fileHigh = File(
+        '${sharedController.documentDir.path}/${id}_${ImageQuality.high.name}.jpg');
 
     await fileLow.writeAsBytes(bytes);
     await fileHigh.writeAsBytes(bytes);
@@ -80,8 +80,8 @@ abstract class AppManifest {
     final OnAudioQuery audioQuery = OnAudioQuery();
 
     final List<String> filePaths = [
-      '${sharedController.documentDir.path}/${id}_${ImageQuality.low.size}.jpg',
-      '${sharedController.documentDir.path}/${id}_${ImageQuality.high.size}.jpg',
+      '${sharedController.documentDir.path}/${id}_${ImageQuality.low.name}.jpg',
+      '${sharedController.documentDir.path}/${id}_${ImageQuality.high.name}.jpg',
     ];
 
     final List<Uint8List?> dataResults = await Future.wait([
@@ -90,7 +90,7 @@ abstract class AppManifest {
         ArtworkType.AUDIO,
         format: ArtworkFormat.JPEG,
         size: ImageQuality.low.size,
-        quality: 90,
+        quality: 100,
       ),
       audioQuery.queryArtwork(
         id,

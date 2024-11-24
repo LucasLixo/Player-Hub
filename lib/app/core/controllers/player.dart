@@ -7,9 +7,11 @@ import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:player_hub/app/core/enums/ignores_load.dart';
 import 'package:player_hub/app/core/enums/image_quality.dart';
 import 'package:player_hub/app/core/enums/query_songs.dart';
 import 'package:player_hub/app/core/enums/shared_attibutes.dart';
+import 'package:player_hub/app/core/enums/updated_load.dart';
 import 'package:player_hub/app/services/app_shared.dart';
 import 'package:player_hub/app/core/interfaces/visualizer.dart';
 import 'package:player_hub/app/core/static/app_manifest.dart';
@@ -20,6 +22,9 @@ class PlayerController extends BaseAudioHandler
     with QueueHandler, SeekHandler, AppFunctions {
   // ==================================================
   final AppShared sharedController = Get.find<AppShared>();
+
+  final OnAudioQuery _audioQuery = OnAudioQuery();
+  final AudioPlayer audioPlayer = AudioPlayer();
 
   // ==================================================
   final RxString songLog = ''.obs;
@@ -81,10 +86,6 @@ class PlayerController extends BaseAudioHandler
   final Rx<String?> currentImagePath = Rx<String?>(null);
 
   // ==================================================
-  final OnAudioQuery _audioQuery = OnAudioQuery();
-  final AudioPlayer audioPlayer = AudioPlayer();
-
-  // ==================================================
   PlayerController() {
     audioPlayer.processingStateStream.listen((state) {
       if (state == ProcessingState.completed) nextSong();
@@ -97,6 +98,13 @@ class PlayerController extends BaseAudioHandler
   // ==================================================
   void _handlePlayerState(PlayerState state) {
     isPlaying.value = state.playing;
+  }
+
+  // ==================================================
+  Future<bool> requestPermissions() async {
+    return await _audioQuery.checkAndRequest(
+      retryRequest: false,
+    );
   }
 
   // ==================================================
@@ -273,96 +281,136 @@ class PlayerController extends BaseAudioHandler
 
     await _initPlaylist();
 
-    await songAllLoad(songs);
+    await songAllLoad(
+      songs,
+      typeLoad: [
+        UpdatedTypeLoad.folder,
+        UpdatedTypeLoad.image,
+        UpdatedTypeLoad.album,
+        UpdatedTypeLoad.artist,
+      ],
+      typeInore: [
+        IgnoresLoad.duration,
+        IgnoresLoad.folders,
+      ],
+    );
   }
 
   // ==================================================
-  Future<void> songAllLoad(List<SongModel> songList) async {
-    // Otimiza a criação de 'folderList', 'folderListSongs', 'albumListSongs' e 'artistListSongs' paralelamente
-    Set<String> folderSet = {};
-    Map<String, List<SongModel>> folderSongsMap = {};
-    Map<String, List<SongModel>> albumSongsMap = {};
-    Map<String, List<SongModel>> artistSongsMap = {};
+  Future<void> songAllLoad(
+    List<SongModel> songList, {
+    required List<UpdatedTypeLoad> typeLoad,
+    required List<IgnoresLoad> typeInore,
+  }) async {
+    // Optimize created 'folderList', 'folderListSongs', 'albumListSongs' e 'artistListSongs' paralelamente
+    final Set<String> folderSet = {};
+    final Map<String, List<SongModel>> folderSongsMap = {};
+    final Map<String, List<SongModel>> albumSongsMap = {};
+    final Map<String, List<SongModel>> artistSongsMap = {};
 
-    // Processa álbuns e artistas paralelamente
-    await Future.wait([
-      Future(() async {
-        // Processa as músicas para pastas
-        folderListSongs.clear();
-        for (var song in songList) {
-          String folderName = song.data.split('/').reversed.skip(1).first;
-          folderSet.add(folderName);
-          folderSongsMap.update(folderName, (s) => [...s, song],
-              ifAbsent: () => [song]);
-        }
-        folderList.value = folderSet.toList();
-        folderListSongs.addAll(folderSongsMap);
-      }),
-      // Processamento de cache de imagens em paralelo para reduzir o tempo de execução
-      Future(() async {
-        for (var song in songList) {
-          if (!_imageCache.containsKey(song.id)) {
-            _imageCache[song.id] = await AppManifest.getImageFile(
-              id: song.id,
-              type: ImageQuality.high,
-            );
-          }
-          songLog.value = sharedController.getTitle(song.id, song.title);
-        }
-      }),
-      // Processamento de álbuns
-      Future(() async {
-        albumListSongs.clear();
-        for (var album in albumList) {
-          int albumId = album.id;
-          List<SongModel> albumSongs = await queryAudiosFromAlbum(
-            albumId: albumId,
-            type: 0,
-          );
-          albumSongsMap.update(
-              album.album, (songs) => [...songs, ...albumSongs],
-              ifAbsent: () => albumSongs);
-        }
-        albumListSongs.addAll(albumSongsMap);
-      }),
-      // Processamento de artistas
-      Future(() async {
-        artistListSongs.clear();
-        for (var artist in artistList) {
-          int artistId = artist.id;
-          List<SongModel> artistSongs = await queryAudiosFromAlbum(
-            albumId: artistId,
-            type: 1,
-          );
-          artistSongsMap.update(
-              artist.album, (songs) => [...songs, ...artistSongs],
-              ifAbsent: () => artistSongs);
-        }
-        artistListSongs.addAll(artistSongsMap);
-      }),
-    ]);
+    // Futures
+    final List<Future> futures = [];
 
+    for (var type in typeLoad) {
+      switch (type) {
+        case UpdatedTypeLoad.folder:
+          futures.add(Future(() async {
+            folderListSongs.clear();
+            for (var song in songList) {
+              String folderName = song.data.split('/').reversed.skip(1).first;
+              folderSet.add(folderName);
+              folderSongsMap.update(folderName, (s) => [...s, song],
+                  ifAbsent: () => [song]);
+            }
+            folderList.value = folderSet.toList();
+            folderListSongs.addAll(folderSongsMap);
+          }));
+          break;
+        case UpdatedTypeLoad.image:
+          futures.add(Future(() async {
+            for (var song in songList) {
+              if (!_imageCache.containsKey(song.id)) {
+                _imageCache[song.id] = await AppManifest.getImageFile(
+                  id: song.id,
+                  type: ImageQuality.high,
+                );
+              }
+              songLog.value = song.displayName;
+            }
+          }));
+          break;
+        case UpdatedTypeLoad.album:
+          futures.add(Future(() async {
+            albumListSongs.clear();
+            for (var album in albumList) {
+              int albumId = album.id;
+              List<SongModel> albumSongs = await queryAudiosFromAlbum(
+                albumId: albumId,
+                type: 0,
+              );
+              albumSongsMap.update(
+                  album.album, (songs) => [...songs, ...albumSongs],
+                  ifAbsent: () => albumSongs);
+            }
+            albumListSongs.addAll(albumSongsMap);
+          }));
+          break;
+        case UpdatedTypeLoad.artist:
+          futures.add(Future(() async {
+            artistListSongs.clear();
+            for (var artist in artistList) {
+              int artistId = artist.id;
+              List<SongModel> artistSongs = await queryAudiosFromAlbum(
+                albumId: artistId,
+                type: 1,
+              );
+              artistSongsMap.update(
+                  artist.album, (songs) => [...songs, ...artistSongs],
+                  ifAbsent: () => artistSongs);
+            }
+            artistListSongs.addAll(artistSongsMap);
+          }));
+          break;
+      }
+    }
+
+    // Processes albums and artists in parallel
+    await Future.wait(futures);
     songLog.value = '';
 
-    // Remove músicas com base em duração e pastas ignoradas
-    int ignoreTime =
-        sharedController.getShared(SharedAttributes.ignoreTime) as int;
-    List<String> ignoreFolder = sharedController
-        .getShared(SharedAttributes.ignoreFolder) as List<String>;
-
-    songList = songList.where((song) {
-      if (ignoreFolder.contains(song.data.split('/').reversed.skip(1).first) ||
-          (song.duration != null && song.duration! < (ignoreTime * 1000))) {
-        return false;
-      } else {
-        return true;
+    // Removes songs based on duration and ignored folders
+    for (var type in typeInore) {
+      switch (type) {
+        case IgnoresLoad.duration:
+          final int ignoreTime =
+              sharedController.getShared(SharedAttributes.ignoreTime) as int;
+          songList = songList.where((song) {
+            if (song.duration != null && song.duration! < (ignoreTime * 1000)) {
+              return false;
+            } else {
+              return true;
+            }
+          }).toList();
+          break;
+        case IgnoresLoad.folders:
+          final List<String> ignoreFolder = sharedController
+              .getShared(SharedAttributes.ignoreFolder) as List<String>;
+          songList = songList.where((song) {
+            if (ignoreFolder
+                .contains(song.data.split('/').reversed.skip(1).first)) {
+              return false;
+            } else {
+              return true;
+            }
+          }).toList();
+          break;
       }
-    }).toList();
+    }
 
-    // Atualiza a lista de todas as músicas no estado
+    // Updates the list of all songs in the state
     songAppList.value = songList;
 
-    // Carrega as músicas
+    // Load musics
     await songLoad(songList, 0);
   }
 
@@ -592,6 +640,7 @@ class PlayerController extends BaseAudioHandler
     }
   }
 
+  // ==================================================
   Future<void> removePlaylist(String title) async {
     if (playlistList.contains(title)) {
       playlistList.remove(title);
@@ -601,6 +650,7 @@ class PlayerController extends BaseAudioHandler
     }
   }
 
+  // ==================================================
   Future<void> renamePlaylist(String oldTitle, String newTitle) async {
     if (playlistList.contains(oldTitle)) {
       playlistList.remove(oldTitle);
@@ -616,6 +666,7 @@ class PlayerController extends BaseAudioHandler
     }
   }
 
+  // ==================================================
   Future<void> addSongsPlaylist(String title, List<SongModel> songs) async {
     if (!playlistList.contains(title)) {
       await addPlaylist(title);
@@ -632,6 +683,7 @@ class PlayerController extends BaseAudioHandler
     }
   }
 
+  // ==================================================
   Future<void> removeSongsPlaylist(String title, List<SongModel> songs) async {
     if (playlistListSongs.containsKey(title)) {
       playlistListSongs[title]
