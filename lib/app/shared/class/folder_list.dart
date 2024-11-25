@@ -88,8 +88,8 @@ class FolderList extends GetView<PlayerController> {
               ),
               trailing: Obx(() {
                 List<String> listFolderIgnore = List<String>.from(
-                  sharedController.getShared(SharedAttributes.ignoreFolder)
-                      as List<String>,
+                  sharedController
+                      .getShared<List<String>>(SharedAttributes.ignoreFolder),
                 );
 
                 final RxBool isIgnored = listFolderIgnore.contains(title).obs;

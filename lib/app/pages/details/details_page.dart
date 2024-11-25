@@ -100,7 +100,7 @@ class _DetailsPageState extends State<DetailsPage>
                         automaticallyImplyLeading: false,
                         backgroundColor: Colors.transparent,
                         systemOverlayStyle: sharedController
-                                .getShared(SharedAttributes.darkMode) as bool
+                                .getShared<bool>(SharedAttributes.darkMode)
                             ? chromeController
                                 .loadThemeByType(ThemeTypes.defaultDark)
                             : chromeController

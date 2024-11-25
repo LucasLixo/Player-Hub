@@ -154,7 +154,7 @@ class HomePage extends StatelessWidget {
                       subtitle: Obx(() {
                         return Text(
                           SortType.getTypeTitlebyCode(sharedController
-                              .getShared(SharedAttributes.getSongs)),
+                              .getShared<int>(SharedAttributes.getSongs)),
                           style: Theme.of(context).textTheme.labelMedium,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

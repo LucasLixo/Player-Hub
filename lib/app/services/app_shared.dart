@@ -53,7 +53,7 @@ class AppShared extends GetxController {
 
   // ==================================================
   Future<void> updatedLocale() async {
-    final int code = await getShared(SharedAttributes.defaultLanguage);
+    final int code = getShared<int>(SharedAttributes.defaultLanguage);
 
     await Get.updateLocale(Locale(
       AppLanguages.getLanguagesLocale[code][0],
@@ -62,7 +62,7 @@ class AppShared extends GetxController {
   }
 
   // ==================================================
-  dynamic getShared(SharedAttributes appShared) {
+  T getShared<T>(SharedAttributes appShared) {
     return sharedMap[appShared.name];
   }
 

@@ -45,7 +45,8 @@ class EqualizerPage extends StatelessWidget with AppFunctions {
         actions: <Widget>[
           Obx(() {
             return Switch(
-              value: sharedController.getShared(SharedAttributes.equalizeMode),
+              value: sharedController
+                  .getShared<bool>(SharedAttributes.equalizeMode),
               onChanged: (bool value) async {
                 await equalizerController.toggleEqualizer(value);
               },
@@ -98,7 +99,7 @@ class EqualizerPage extends StatelessWidget with AppFunctions {
                   return _customEQ(
                     context,
                     enabled: sharedController
-                        .getShared(SharedAttributes.equalizeMode),
+                        .getShared<bool>(SharedAttributes.equalizeMode),
                     bandLevelRange: equalizerController.bandLevelRange.value!,
                   );
                 })
@@ -163,8 +164,9 @@ class EqualizerPage extends StatelessWidget with AppFunctions {
               quarterTurns: -1,
               child: Center(
                 child: Obx(() {
-                  final RxDouble result = (sharedController.getShared(
-                          SharedAttributes.frequency)[bandId] as double)
+                  final RxDouble result = sharedController
+                      .getShared<List<double>>(
+                          SharedAttributes.frequency)[bandId]
                       .obs;
 
                   EqualizerFlutter.setBandLevel(

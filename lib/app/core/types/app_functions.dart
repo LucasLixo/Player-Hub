@@ -34,7 +34,7 @@ mixin AppFunctions {
     try {
       await toast.invokeMethod('showToast', {
         'message': message,
-        'darkMode': sharedController.getShared(SharedAttributes.darkMode),
+        'darkMode': sharedController.getShared<bool>(SharedAttributes.darkMode),
       });
     } on PlatformException catch (e) {
       debugPrint("Erro ao exibir toast: ${e.message}");

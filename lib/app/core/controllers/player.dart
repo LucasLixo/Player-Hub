@@ -181,7 +181,7 @@ class PlayerController extends BaseAudioHandler
   Future<void> _initPlaylist() async {
     playlistList.clear();
     playlistList.assignAll(sharedController
-        .getShared(SharedAttributes.listAllPlaylist) as List<String>);
+        .getShared<List<String>>(SharedAttributes.listAllPlaylist));
 
     playlistListSongs.clear();
     for (int index = 0; index < playlistList.length; index++) {
@@ -223,7 +223,7 @@ class PlayerController extends BaseAudioHandler
     late Future<List<SongModel>> songQuery;
 
     // Adiciona a busca de músicas baseado no tipo de ordenação selecionado
-    switch (sharedController.getShared(SharedAttributes.getSongs) as int) {
+    switch (sharedController.getShared<int>(SharedAttributes.getSongs)) {
       // Por data adicionada
       case 0:
         songQuery = QuerySongs.getQuerySongs(
@@ -383,7 +383,7 @@ class PlayerController extends BaseAudioHandler
       switch (type) {
         case IgnoresLoad.duration:
           final int ignoreTime =
-              sharedController.getShared(SharedAttributes.ignoreTime) as int;
+              sharedController.getShared<int>(SharedAttributes.ignoreTime);
           songList = songList.where((song) {
             if (song.duration != null && song.duration! < (ignoreTime * 1000)) {
               return false;
@@ -394,7 +394,7 @@ class PlayerController extends BaseAudioHandler
           break;
         case IgnoresLoad.folders:
           final List<String> ignoreFolder = sharedController
-              .getShared(SharedAttributes.ignoreFolder) as List<String>;
+              .getShared<List<String>>(SharedAttributes.ignoreFolder);
           songList = songList.where((song) {
             if (ignoreFolder
                 .contains(song.data.split('/').reversed.skip(1).first)) {
@@ -451,7 +451,7 @@ class PlayerController extends BaseAudioHandler
     await handleCurrentIndex(index);
 
     // Modo de playlist (Loop, Shuffle, etc)
-    switch (sharedController.getShared(SharedAttributes.playlistMode) as int) {
+    switch (sharedController.getShared<int>(SharedAttributes.playlistMode)) {
       // Modo loop playlist
       case 0:
         await modeShufflePlaylist();
@@ -612,7 +612,7 @@ class PlayerController extends BaseAudioHandler
   // ==================================================
   // Alterna entre modos da playlist (loop, shuffle)
   Future<void> togglePlaylist() async {
-    switch (sharedController.getShared(SharedAttributes.playlistMode) as int) {
+    switch (sharedController.getShared<int>(SharedAttributes.playlistMode)) {
       case 0:
         await modeLoopPlaylist();
         sharedController.setShared(SharedAttributes.playlistMode, 1);

@@ -51,12 +51,14 @@ class EqualizerController extends GetxController with AppFunctions {
     for (int i = 0; i < 5; i++) {
       await EqualizerFlutter.setBandLevel(
         i,
-        sharedController.getShared(SharedAttributes.frequency)[i].toInt(),
+        sharedController
+            .getShared<List<double>>(SharedAttributes.frequency)[i]
+            .toInt(),
       );
     }
 
     await EqualizerFlutter.setEnabled(
-      sharedController.getShared(SharedAttributes.equalizeMode) as bool,
+      sharedController.getShared<bool>(SharedAttributes.equalizeMode),
     );
   }
 
@@ -90,7 +92,9 @@ class EqualizerController extends GetxController with AppFunctions {
     for (int i = 0; i < 5; i++) {
       await EqualizerFlutter.setBandLevel(
         i,
-        sharedController.getShared(SharedAttributes.frequency)[i].toInt(),
+        sharedController
+            .getShared<List<double>>(SharedAttributes.frequency)[i]
+            .toInt(),
       );
     }
     await showToast(value

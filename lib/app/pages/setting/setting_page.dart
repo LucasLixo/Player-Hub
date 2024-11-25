@@ -90,7 +90,7 @@ class _SettingPageState extends State<SettingPage> {
                 title: Text(
                   'setting_ignore'.trParams({
                     'seconds': sharedController
-                        .getShared(SharedAttributes.ignoreTime)
+                        .getShared<int>(SharedAttributes.ignoreTime)
                         .toString(),
                   }),
                   style: Theme.of(context).textTheme.bodyLarge,
@@ -100,8 +100,8 @@ class _SettingPageState extends State<SettingPage> {
                   activeColor: AppColors.current().primary,
                   min: 0,
                   max: 120,
-                  value: (sharedController
-                          .getShared(SharedAttributes.ignoreTime) as int)
+                  value: sharedController
+                      .getShared<int>(SharedAttributes.ignoreTime)
                       .toDouble(),
                   onChanged: (value) async {
                     await sharedController.setShared(
@@ -121,7 +121,8 @@ class _SettingPageState extends State<SettingPage> {
               ),
               subtitle: Obx(() {
                 return Text(
-                  sharedController.getShared(SharedAttributes.equalizeMode)
+                  sharedController
+                          .getShared<bool>(SharedAttributes.equalizeMode)
                       ? 'app_enable'.tr
                       : 'app_disable'.tr,
                   style: Theme.of(context).textTheme.labelMedium,
@@ -144,7 +145,7 @@ class _SettingPageState extends State<SettingPage> {
               ),
               subtitle: Obx(() {
                 return Text(
-                  sharedController.getShared(SharedAttributes.darkMode)
+                  sharedController.getShared<bool>(SharedAttributes.darkMode)
                       ? 'app_enable'.tr
                       : 'app_disable'.tr,
                   style: Theme.of(context).textTheme.labelMedium,
@@ -152,7 +153,8 @@ class _SettingPageState extends State<SettingPage> {
               }),
               trailing: Obx(() {
                 return Switch(
-                  value: sharedController.getShared(SharedAttributes.darkMode),
+                  value: sharedController
+                      .getShared<bool>(SharedAttributes.darkMode),
                   onChanged: (bool value) async {
                     await sharedController.setShared(
                       SharedAttributes.darkMode,
@@ -170,11 +172,11 @@ class _SettingPageState extends State<SettingPage> {
               ),
               subtitle: Obx(() {
                 if (sharedController
-                    .getShared(SharedAttributes.changeLanguage)) {
+                    .getShared<bool>(SharedAttributes.changeLanguage)) {
                   return Text(
                     AppLanguages.getLanguagesTitleByCode(
                       sharedController
-                          .getShared(SharedAttributes.defaultLanguage),
+                          .getShared<int>(SharedAttributes.defaultLanguage),
                     ),
                     style: Theme.of(context).textTheme.labelMedium,
                   );

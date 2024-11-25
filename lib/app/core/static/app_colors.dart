@@ -7,7 +7,7 @@ abstract class AppColors {
   // ==================================================
   static ThemeColors current() {
     return ThemeColors.current(
-      isDark: Get.find<AppShared>().getShared(SharedAttributes.darkMode),
+      isDark: Get.find<AppShared>().getShared<bool>(SharedAttributes.darkMode),
     );
   }
 

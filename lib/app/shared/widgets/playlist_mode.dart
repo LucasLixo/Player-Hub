@@ -15,7 +15,7 @@ Widget playlistMode() {
     },
     child: Obx(() {
       IconData icon;
-      switch (sharedController.getShared(SharedAttributes.playlistMode)) {
+      switch (sharedController.getShared<int>(SharedAttributes.playlistMode)) {
         case 0:
           icon = Icons.shuffle;
           break;
