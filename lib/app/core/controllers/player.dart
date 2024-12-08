@@ -270,7 +270,7 @@ class PlayerController extends BaseAudioHandler
     futures.add(pauseSong());
 
     // Executa todas as operações em paralelo
-    final results = await Future.wait(futures);
+    final List<dynamic> results = await Future.wait(futures);
 
     // Extraindo os resultados
     songs.addAll(results[0] as List<SongModel>);
@@ -283,16 +283,8 @@ class PlayerController extends BaseAudioHandler
 
     await songAllLoad(
       songs,
-      typeLoad: [
-        UpdatedTypeLoad.folder,
-        UpdatedTypeLoad.image,
-        UpdatedTypeLoad.album,
-        UpdatedTypeLoad.artist,
-      ],
-      typeInore: [
-        IgnoresLoad.duration,
-        IgnoresLoad.folders,
-      ],
+      typeLoad: UpdatedTypeLoad.values,
+      typeInore: IgnoresLoad.values,
     );
   }
 
@@ -387,9 +379,8 @@ class PlayerController extends BaseAudioHandler
           songList = songList.where((song) {
             if (song.duration != null && song.duration! < (ignoreTime * 1000)) {
               return false;
-            } else {
-              return true;
             }
+            return true;
           }).toList();
           break;
         case IgnoresLoad.folders:
@@ -399,9 +390,8 @@ class PlayerController extends BaseAudioHandler
             if (ignoreFolder
                 .contains(song.data.split('/').reversed.skip(1).first)) {
               return false;
-            } else {
-              return true;
             }
+            return true;
           }).toList();
           break;
       }

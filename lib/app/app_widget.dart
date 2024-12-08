@@ -39,7 +39,8 @@ class _AppWidgetState extends State<AppWidget> with WidgetsBindingObserver {
 
     if (state == AppLifecycleState.resumed) {
       _onEnterApp();
-    } else if (state == AppLifecycleState.paused) {
+    }
+    if (state == AppLifecycleState.paused) {
       _onExitApp();
     }
   }

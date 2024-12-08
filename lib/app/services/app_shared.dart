@@ -43,8 +43,14 @@ class AppShared extends GetxController {
     documentDir = await getApplicationDocumentsDirectory();
 
     final List<SharedAttributes> listSettings = SharedAttributes.values;
+    final List<SharedAttributes> removeSettings = [
+      SharedAttributes.equalizeMode,
+    ];
 
     for (var setting in listSettings) {
+      if (removeSettings.contains(setting)) {
+        continue;
+      }
       final dynamic value = SharedAttributes.getValueShared(_boxApp, setting);
       SharedAttributes.getAttributesMap[setting.name] = value;
       sharedMap[setting.name] = value;

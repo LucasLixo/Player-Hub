@@ -28,8 +28,7 @@ mixin AppFunctions {
   Future<void> showToast(String message) async {
     final AppShared sharedController = Get.find<AppShared>();
 
-    final MethodChannel toast =
-        const MethodChannel("${AppManifest.package}/toast");
+    const MethodChannel toast = MethodChannel("${AppManifest.package}/toast");
 
     try {
       await toast.invokeMethod('showToast', {
@@ -42,15 +41,8 @@ mixin AppFunctions {
   }
 
   // ==================================================
-  void printDebug(dynamic debug) {
-    print('================================\n');
-    print(debug);
-    print('\n================================');
-  }
-
-  // ==================================================
   String getGenerateHash([int length = 32]) {
-    const chars =
+    const String chars =
         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
     return List.generate(

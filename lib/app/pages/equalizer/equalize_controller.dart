@@ -12,8 +12,8 @@ import 'package:player_hub/app/core/types/app_functions.dart';
 
 class EqualizerController extends GetxController with AppFunctions {
   // ==================================================
-  Rx<List<int>?> bandLevelRange = Rxn<List<int>>();
-  Rx<List<int>?> bandCenterFrequencies = Rxn<List<int>>();
+  final Rx<List<int>?> bandLevelRange = Rxn<List<int>>();
+  final Rx<List<int>?> bandCenterFrequencies = Rxn<List<int>>();
 
   // ==================================================
   final PlayerController playerController = Get.find<PlayerController>();

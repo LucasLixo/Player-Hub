@@ -65,7 +65,7 @@ Future<void> crudMusic({
                 size: 28,
               ),
               onTap: () async {
-                Navigator.of(context).pop();
+                Get.back();
                 await Get.toNamed(AppRoutes.edit, arguments: {
                   'song': song,
                 });
@@ -85,7 +85,7 @@ Future<void> crudMusic({
                 size: 28,
               ),
               onTap: () async {
-                Navigator.of(context).pop();
+                Get.back();
                 await sharedFiles();
               },
             ),
@@ -103,7 +103,7 @@ Future<void> crudMusic({
                 size: 28,
               ),
               onTap: () async {
-                Navigator.of(context).pop();
+                Get.back();
                 await addPlaylist(songs: [song]);
               },
             ),

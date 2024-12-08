@@ -39,7 +39,7 @@ Future<void> dialogText({
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pop();
+                      Get.back();
                     },
                     child: SizedBox(
                       width: Get.width * 0.3,
@@ -53,7 +53,7 @@ Future<void> dialogText({
                   Obx(() {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pop();
+                        Get.back();
                       },
                       child: Container(
                         width: Get.width * 0.3,

@@ -71,7 +71,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: AppRoutes.equalizer,
-      page: () => EqualizerPage(),
+      page: () => const EqualizerPage(),
       transitionDuration: const Duration(milliseconds: 300),
       transition: Transition.rightToLeft,
     ),

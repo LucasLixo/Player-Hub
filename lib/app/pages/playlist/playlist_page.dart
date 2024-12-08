@@ -84,7 +84,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                     final bool? result = await dialogBool(
                       title: 'crud_sheet7'.tr,
                     );
-                    if (result != null && result) {
+                    if (result == true) {
                       await playerController
                           .removePlaylist(widget.playlistTitle);
                     }

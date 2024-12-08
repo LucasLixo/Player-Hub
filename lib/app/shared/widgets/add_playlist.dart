@@ -74,7 +74,8 @@ Future<void> addPlaylist({
                       return GestureDetector(
                         onTap: () async {
                           await playerController.addSongsPlaylist(title, songs);
-                          Navigator.of(context).pop();
+
+                          Get.back();
                         },
                         child: Container(
                           padding: const EdgeInsets.all(8.0),

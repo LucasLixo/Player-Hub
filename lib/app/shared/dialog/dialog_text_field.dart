@@ -73,7 +73,7 @@ Future<String?> dialogTextField({
                 onSubmitted: (String? value) {
                   String currentTitle = text.value.trim();
                   if (currentTitle.isNotEmpty && value != null) {
-                    Navigator.of(context).pop(currentTitle);
+                    Get.back(result: currentTitle);
                   }
                 },
               ),
@@ -84,7 +84,7 @@ Future<String?> dialogTextField({
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pop(null);
+                      Get.back(result: null);
                     },
                     child: SizedBox(
                       width: Get.width * 0.3,
@@ -100,7 +100,7 @@ Future<String?> dialogTextField({
                       onTap: () {
                         String currentTitle = text.value.trim();
                         if (currentTitle.isNotEmpty) {
-                          Navigator.of(context).pop(currentTitle);
+                          Get.back(result: currentTitle);
                         }
                       },
                       child: Container(

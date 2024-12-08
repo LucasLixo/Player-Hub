@@ -33,7 +33,7 @@ Future<bool?> dialogBool({
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pop(false);
+                      Get.back(result: false);
                     },
                     child: SizedBox(
                       width: Get.width * 0.3,
@@ -47,7 +47,7 @@ Future<bool?> dialogBool({
                   Obx(() {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pop(true);
+                        Get.back(result: true);
                       },
                       child: Container(
                         width: Get.width * 0.3,

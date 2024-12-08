@@ -13,16 +13,16 @@ import 'package:helper_hub/src/theme_widget.dart';
 import 'package:player_hub/app/pages/equalizer/equalize_controller.dart';
 
 class EqualizerPage extends StatelessWidget with AppFunctions {
-  final EqualizerController equalizerController =
-      Get.find<EqualizerController>();
-  final AppShared sharedController = Get.find<AppShared>();
-
-  EqualizerPage({
+  const EqualizerPage({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    final EqualizerController equalizerController =
+        Get.find<EqualizerController>();
+    final AppShared sharedController = Get.find<AppShared>();
+
     return Scaffold(
       backgroundColor: AppColors.current().background,
       appBar: AppBar(
@@ -118,6 +118,9 @@ class EqualizerPage extends StatelessWidget with AppFunctions {
     required bool enabled,
     required List<int> bandLevelRange,
   }) {
+    final EqualizerController equalizerController =
+        Get.find<EqualizerController>();
+
     int bandId = 0;
 
     return Column(
@@ -149,6 +152,8 @@ class EqualizerPage extends StatelessWidget with AppFunctions {
     required double minLevel,
     required double maxLevel,
   }) {
+    final AppShared sharedController = Get.find<AppShared>();
+
     return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,

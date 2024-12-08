@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:player_hub/app/core/enums/theme_types.dart';
-// import 'package:player_hub/app/pages/edit/edit_controller.dart';
 import 'package:player_hub/app/services/app_chrome.dart';
 import 'package:player_hub/app/services/app_shared.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
@@ -17,7 +16,6 @@ import 'package:helper_hub/src/theme_widget.dart';
 import 'package:share_plus/share_plus.dart';
 
 class EditPage extends StatelessWidget with AppFunctions {
-  // final EditController editController = Get.find<EditController>();
   final PlayerController playerController = Get.find<PlayerController>();
   final AppShared sharedController = Get.find<AppShared>();
   final AppChrome chromeController = Get.find<AppChrome>();
@@ -57,13 +55,13 @@ class EditPage extends StatelessWidget with AppFunctions {
         "${'edit_save'.tr}: ${sharedController.getTitle(song.id, song.title)}",
       );
     } catch (e) {
-      printDebug('Failed to save information.');
+      // print('Failed to save information.');
     }
   }
 
   Future<void> _pickerFile() async {
     try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
+      final FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['jpg', 'jpeg', 'png'],
       );
@@ -72,7 +70,7 @@ class EditPage extends StatelessWidget with AppFunctions {
         imagePicker.value = File(result.files.single.path!);
       }
     } catch (e) {
-      printDebug('Failed to pick file.');
+      // print('Failed to pick file.');
     }
   }
 

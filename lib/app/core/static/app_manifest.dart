@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:math';
-import 'dart:convert';
+import 'dart:convert' as convert;
 
 import 'package:flutter/services.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -10,7 +10,7 @@ import 'package:get/instance_manager.dart';
 
 abstract class AppManifest {
   // ==================================================
-  static final AppShared sharedController = Get.find<AppShared>();
+  static final AppShared _sharedController = Get.find<AppShared>();
 
   // ==================================================
   static const String title = 'Player Hub';
@@ -33,15 +33,15 @@ abstract class AppManifest {
     switch (type) {
       case ImageQuality.low:
         file = File(
-            '${sharedController.documentDir.path}/${id}_${ImageQuality.low.name}.jpg');
+            '${_sharedController.documentDir.path}/${id}_${ImageQuality.low.name}.jpg');
         break;
       case ImageQuality.high:
         file = File(
-            '${sharedController.documentDir.path}/${id}_${ImageQuality.high.name}.jpg');
+            '${_sharedController.documentDir.path}/${id}_${ImageQuality.high.name}.jpg');
         break;
     }
 
-    return file.readAsBytes();
+    return await file.readAsBytes();
   }
 
   // ==================================================
@@ -50,7 +50,7 @@ abstract class AppManifest {
     required ImageQuality type,
   }) async {
     final File targetFile =
-        File('${sharedController.documentDir.path}/${id}_${type.name}.jpg');
+        File('${_sharedController.documentDir.path}/${id}_${type.name}.jpg');
 
     if (!await targetFile.exists()) {
       await _generateImageFile(id: id);
@@ -65,9 +65,9 @@ abstract class AppManifest {
     required Uint8List bytes,
   }) async {
     final File fileLow = File(
-        '${sharedController.documentDir.path}/${id}_${ImageQuality.low.name}.jpg');
+        '${_sharedController.documentDir.path}/${id}_${ImageQuality.low.name}.jpg');
     final File fileHigh = File(
-        '${sharedController.documentDir.path}/${id}_${ImageQuality.high.name}.jpg');
+        '${_sharedController.documentDir.path}/${id}_${ImageQuality.high.name}.jpg');
 
     await fileLow.writeAsBytes(bytes);
     await fileHigh.writeAsBytes(bytes);
@@ -80,8 +80,8 @@ abstract class AppManifest {
     final OnAudioQuery audioQuery = OnAudioQuery();
 
     final List<String> filePaths = [
-      '${sharedController.documentDir.path}/${id}_${ImageQuality.low.name}.jpg',
-      '${sharedController.documentDir.path}/${id}_${ImageQuality.high.name}.jpg',
+      '${_sharedController.documentDir.path}/${id}_${ImageQuality.low.name}.jpg',
+      '${_sharedController.documentDir.path}/${id}_${ImageQuality.high.name}.jpg',
     ];
 
     final List<Uint8List?> dataResults = await Future.wait([
@@ -130,15 +130,15 @@ abstract class AppManifest {
 
   // ==================================================
   static String encodeToBase64(String input) {
-    List<int> bytes = utf8.encode(input);
-    String encoded = base64.encode(bytes);
+    List<int> bytes = convert.utf8.encode(input);
+    String encoded = convert.base64.encode(bytes);
     return encoded;
   }
 
   // ==================================================
   static String decodeFromBase64(String encoded) {
-    List<int> decodedBytes = base64.decode(encoded);
-    String decoded = utf8.decode(decodedBytes);
+    List<int> decodedBytes = convert.base64.decode(encoded);
+    String decoded = convert.utf8.decode(decodedBytes);
     return decoded;
   }
 }

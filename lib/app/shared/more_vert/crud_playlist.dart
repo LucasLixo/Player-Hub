@@ -54,7 +54,7 @@ Future<void> crudPlaylist({
                 size: 28,
               ),
               onTap: () async {
-                Navigator.of(context).pop();
+                Get.back();
                 final String? result = await dialogTextField(
                   title: 'crud_sheet9'.tr,
                   description: playlistTitle,
@@ -84,8 +84,8 @@ Future<void> crudPlaylist({
                 final bool? result = await dialogBool(
                   title: 'crud_sheet7'.tr,
                 );
-                Navigator.of(context).pop();
-                if (result != null && result) {
+                Get.back();
+                if (result == true) {
                   await playerController.removePlaylist(playlistTitle);
                 }
               },
