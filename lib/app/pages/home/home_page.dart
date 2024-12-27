@@ -12,10 +12,10 @@ import 'package:player_hub/app/core/static/app_manifest.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/services/app_chrome.dart';
+import 'package:player_hub/app/shared/class/center_text.dart';
 import 'package:player_hub/app/shared/class/shortcut.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/services/app_shared.dart';
-import 'package:helper_hub/src/theme_widget.dart';
 import 'package:player_hub/app/shared/widgets/album_list.dart';
 import 'package:player_hub/app/shared/class/folder_list.dart';
 import 'package:player_hub/app/shared/dialog/dialog_text_field.dart';
@@ -71,7 +71,9 @@ class HomePage extends StatelessWidget {
                 size: 32,
               ),
             ),
-            const Space(),
+            const SizedBox(
+              width: 8,
+            ),
             GestureDetector(
               onTap: () async {
                 await Get.toNamed(AppRoutes.search);
@@ -82,7 +84,9 @@ class HomePage extends StatelessWidget {
                 size: 32,
               ),
             ),
-            const Space(),
+            const SizedBox(
+              width: 8,
+            ),
           ],
           bottom: TabBar(
             isScrollable: true,
@@ -268,7 +272,7 @@ class HomePage extends StatelessWidget {
         ),
         bottomNavigationBar: Obx(
           () => playerController.songAppList.isEmpty
-              ? const Space(size: 0)
+              ? const SizedBox.shrink()
               : const Shortcut(),
         ),
       ),

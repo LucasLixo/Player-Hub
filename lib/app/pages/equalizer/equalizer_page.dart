@@ -9,7 +9,6 @@ import 'package:player_hub/app/core/enums/shared_attibutes.dart';
 import 'package:player_hub/app/services/app_shared.dart';
 import 'package:player_hub/app/core/types/app_functions.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
-import 'package:helper_hub/src/theme_widget.dart';
 import 'package:player_hub/app/pages/equalizer/equalize_controller.dart';
 
 class EqualizerPage extends StatelessWidget with AppFunctions {
@@ -159,9 +158,8 @@ class EqualizerPage extends StatelessWidget with AppFunctions {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          const Space(
-            size: 16,
-            orientation: Axis.vertical,
+          const SizedBox(
+            height: 16,
           ),
           SizedBox(
             height: 250,
@@ -209,9 +207,8 @@ class EqualizerPage extends StatelessWidget with AppFunctions {
               ),
             ),
           ),
-          const Space(
-            size: 12,
-            orientation: Axis.vertical,
+          const SizedBox(
+            height: 12,
           ),
           Text(
             '${freq ~/ 1000} Hz',

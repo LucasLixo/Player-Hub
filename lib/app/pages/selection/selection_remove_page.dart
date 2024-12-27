@@ -9,7 +9,6 @@ import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/static/app_manifest.dart';
 import 'package:player_hub/app/services/app_chrome.dart';
 import 'package:player_hub/app/services/app_shared.dart';
-import 'package:helper_hub/src/theme_widget.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:player_hub/app/pages/selection/selection_controller.dart';
@@ -105,7 +104,9 @@ class _SelectionRemovePageState extends State<SelectionRemovePage> {
                 ),
               );
             }),
-            const Space(),
+            const SizedBox(
+              width: 8,
+            ),
           ],
         ),
         body: Obx(() {

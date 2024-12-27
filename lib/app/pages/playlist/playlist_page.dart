@@ -11,7 +11,6 @@ import 'package:player_hub/app/services/app_chrome.dart';
 import 'package:player_hub/app/shared/class/shortcut.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
-import 'package:helper_hub/src/theme_widget.dart';
 import 'package:player_hub/app/shared/dialog/dialog_bool.dart';
 import 'package:player_hub/app/shared/widgets/music_list.dart';
 
@@ -96,7 +95,9 @@ class _PlaylistPageState extends State<PlaylistPage> {
                     size: 32,
                   ),
                 ),
-                const Space(),
+                const SizedBox(
+                  width: 8,
+                ),
               ]
             : null,
       ),
@@ -114,7 +115,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
       ),
       bottomNavigationBar: Obx(
         () => playerController.songList.isEmpty
-            ? const Space(size: 0)
+            ? const SizedBox.shrink()
             : const Shortcut(),
       ),
     );

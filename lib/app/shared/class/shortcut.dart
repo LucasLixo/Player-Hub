@@ -6,7 +6,6 @@ import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/services/app_shared.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
-import 'package:helper_hub/src/theme_widget.dart';
 
 class Shortcut extends StatefulWidget {
   const Shortcut({super.key});
@@ -46,7 +45,7 @@ class _ShortcutState extends State<Shortcut>
         () {
           final currentSong = playerController.currentSong.value;
           if (playerController.songList.isEmpty) {
-            return const Space(size: 0);
+            return const SizedBox.shrink();
           }
           if (currentSong == null) {
             playerController
@@ -134,7 +133,7 @@ class _ShortcutState extends State<Shortcut>
             );
           }
 
-          return const Space(size: 0);
+          return const SizedBox.shrink();
         },
       ),
     );

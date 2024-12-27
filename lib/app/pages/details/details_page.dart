@@ -13,7 +13,7 @@ import 'package:player_hub/app/services/app_shared.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/types/app_functions.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
-import 'package:helper_hub/src/theme_widget.dart';
+import 'package:player_hub/app/shared/class/center_text.dart';
 import 'package:player_hub/app/shared/more_vert/crud_music.dart';
 import 'package:player_hub/app/shared/widgets/playlist_mode.dart';
 import 'package:player_hub/app/shared/more_vert/detailts_sheet.dart';
@@ -76,13 +76,13 @@ class _DetailsPageState extends State<DetailsPage>
                         currentImage,
                         fit: BoxFit.cover,
                       )
-                    : const Space(size: 0),
+                    : const SizedBox.shrink(),
               ),
               Positioned.fill(
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 16.0, sigmaY: 16.0),
                   child: Container(
-                    color: Colors.black.withOpacity(0.4),
+                    color: Colors.black.withValues(alpha: 0.4),
                   ),
                 ),
               ),
@@ -127,7 +127,9 @@ class _DetailsPageState extends State<DetailsPage>
                               size: 32,
                             ),
                           ),
-                          const Space(),
+                          const SizedBox(
+                            width: 8,
+                          ),
                           GestureDetector(
                             onTap: () async {
                               await crudMusic(
@@ -140,7 +142,9 @@ class _DetailsPageState extends State<DetailsPage>
                               size: 32,
                             ),
                           ),
-                          const Space(),
+                          const SizedBox(
+                            width: 8,
+                          ),
                         ],
                       ),
                       ClipRRect(
@@ -157,9 +161,8 @@ class _DetailsPageState extends State<DetailsPage>
                                 height: Get.width,
                               ),
                       ),
-                      const Space(
-                        size: 12,
-                        orientation: Axis.vertical,
+                      const SizedBox(
+                        height: 12,
                       ),
                       Text(
                         sharedController.getTitle(
@@ -175,9 +178,8 @@ class _DetailsPageState extends State<DetailsPage>
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      const Space(
-                        size: 4,
-                        orientation: Axis.vertical,
+                      const SizedBox(
+                        height: 4,
                       ),
                       Text(
                         sharedController.getArtist(
@@ -193,9 +195,8 @@ class _DetailsPageState extends State<DetailsPage>
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      const Space(
-                        size: 4,
-                        orientation: Axis.vertical,
+                      const SizedBox(
+                        height: 4,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -220,9 +221,8 @@ class _DetailsPageState extends State<DetailsPage>
                           ),
                         ],
                       ),
-                      const Space(
-                        size: 4,
-                        orientation: Axis.vertical,
+                      const SizedBox(
+                        height: 4,
                       ),
                       Slider(
                         thumbColor: Colors.white,
@@ -237,9 +237,8 @@ class _DetailsPageState extends State<DetailsPage>
                           );
                         },
                       ),
-                      const Space(
-                        size: 4,
-                        orientation: Axis.vertical,
+                      const SizedBox(
+                        height: 4,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -279,9 +278,8 @@ class _DetailsPageState extends State<DetailsPage>
                           detailsSheet(),
                         ],
                       ),
-                      const Space(
-                        size: 16,
-                        orientation: Axis.vertical,
+                      const SizedBox(
+                        height: 16,
                       ),
                     ],
                   ),

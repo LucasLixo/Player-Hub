@@ -1,4 +1,3 @@
-import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
 import 'package:player_hub/app/routes/app_imports.dart';

@@ -10,7 +10,6 @@ import 'package:player_hub/app/services/app_shared.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/shared/class/shortcut.dart';
-import 'package:helper_hub/src/theme_widget.dart';
 import 'package:player_hub/app/shared/widgets/music_list.dart';
 
 class SearchPage extends StatelessWidget {
@@ -122,7 +121,7 @@ class SearchPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Obx(
               () => playerController.songSearchList.isEmpty
-                  ? const Space(size: 0)
+                  ? const SizedBox.shrink()
                   : GestureDetector(
                       onTap: () {
                         focusNode.unfocus();
@@ -137,7 +136,7 @@ class SearchPage extends StatelessWidget {
         ),
         bottomNavigationBar: Obx(
           () => playerController.songAppList.isEmpty
-              ? const Space(size: 0)
+              ? const SizedBox.shrink()
               : GestureDetector(
                   onTap: () {
                     focusNode.unfocus();

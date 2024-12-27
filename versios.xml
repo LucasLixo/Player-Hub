@@ -1,61 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<en-US>
-    Offline Music Player
-    List by folder
-    Background audio
-    Dark and light mode
-    Skip audios per second
-    Adding an equalizer & Album
-    Bug fixes
-    List by artist
-    List by album
-    Bug fixes
-</en-US>
-<es-ES>
-    Reproductor de música sin conexión
-    Lista por carpeta
-    Audio de fondo
-    Modo oscuro y claro
-    Saltar audios por segundo
-    Agregar un ecualizador & Album
-    Corrección de errores
-    Lista por artista
-    Lista por álbum
-    Corrección de errores
-</es-ES>
-<es-US>
-    Reproductor de música sin conexión
-    Lista por carpeta
-    Audio de fondo
-    Modo oscuro y claro
-    Saltar audios por segundo
-    Agregar un ecualizador & Album
-    Corrección de errores
-    Lista por artista
-    Lista por álbum
-    Corrección de errores
-</es-US>
-<pt-BR>
-    Music Player Offline
-    Lista por pasta
-    Audio em segundo plano
-    Modo escuro e claro
-    Ignorar audios por segundo
-    Adição de um equalizador & Album
-    Correção de bugs
-    Lista por artista
-    Lista por album
-    Correção de bugs
-</pt-BR>
-<pt-PT>
-    Jogador de música offline
-    Lista por pasta
-    Áudio de fundo
-    Modo escuro e leve
-    Saltar áudio por segundo
-    Adição de um equalizador & Album
-    Correção de bugs
-    Lista por artista
-    Lista por album
-    Correção de bugs
-</pt-PT>
+<notes>
+    <generic>
+        <en-US>
+            Offline Music Player
+            List by folder
+            Background audio
+            Dark and light mode
+            Skip audios per second
+            Adding an equalizer & Album
+            Bug fixes
+            List by artist
+            List by album
+            Bug fixes
+        </en-US>
+        <es-ES>
+            Reproductor de música sin conexión
+            Lista por carpeta
+            Audio de fondo
+            Modo oscuro y claro
+            Saltar audios por segundo
+            Agregar un ecualizador & Album
+            Corrección de errores
+            Lista por artista
+            Lista por álbum
+            Corrección de errores
+        </es-ES>
+        <es-US>
+            Reproductor de música sin conexión
+            Lista por carpeta
+            Audio de fondo
+            Modo oscuro y claro
+            Saltar audios por segundo
+            Agregar un ecualizador & Album
+            Corrección de errores
+            Lista por artista
+            Lista por álbum
+            Corrección de errores
+        </es-US>
+        <pt-BR>
+            Music Player Offline
+            Lista por pasta
+            Audio em segundo plano
+            Modo escuro e claro
+            Ignorar audios por segundo
+            Adição de um equalizador & Album
+            Correção de bugs
+            Lista por artista
+            Lista por album
+            Correção de bugs
+        </pt-BR>
+        <pt-PT>
+            Jogador de música offline
+            Lista por pasta
+            Áudio de fundo
+            Modo escuro e leve
+            Saltar áudio por segundo
+            Adição de um equalizador & Album
+            Correção de bugs
+            Lista por artista
+            Lista por album
+            Correção de bugs
+        </pt-PT>
+    </generic>
+</notes>

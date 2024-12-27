@@ -53,7 +53,7 @@ abstract class AppManifest {
         File('${_sharedController.documentDir.path}/${id}_${type.name}.jpg');
 
     if (!await targetFile.exists()) {
-      await _generateImageFile(id: id);
+      _generateImageFile(id: id);
     }
 
     return targetFile.path;

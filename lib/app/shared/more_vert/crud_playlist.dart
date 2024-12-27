@@ -3,7 +3,6 @@ import 'package:get/route_manager.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:get/instance_manager.dart';
-import 'package:helper_hub/src/theme_widget.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:player_hub/app/shared/dialog/dialog_bool.dart';
 import 'package:player_hub/app/shared/dialog/dialog_text_field.dart';
@@ -23,9 +22,8 @@ Future<void> crudPlaylist({
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            const Space(
-              size: 12,
-              orientation: Axis.vertical,
+            const SizedBox(
+              height: 12,
             ),
             FractionallySizedBox(
               widthFactor: 0.7,
@@ -36,9 +34,8 @@ Future<void> crudPlaylist({
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            const Space(
-              size: 12,
-              orientation: Axis.vertical,
+            const SizedBox(
+              height: 12,
             ),
             ListTile(
               tileColor: Colors.transparent,

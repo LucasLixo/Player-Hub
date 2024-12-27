@@ -12,7 +12,6 @@ import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/services/app_chrome.dart';
 import 'package:player_hub/app/services/app_shared.dart';
-import 'package:helper_hub/src/theme_widget.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({
@@ -181,7 +180,7 @@ class _SettingPageState extends State<SettingPage> {
                     style: Theme.of(context).textTheme.labelMedium,
                   );
                 } else {
-                  return const Space(size: 0);
+                  return const SizedBox.shrink();
                 }
               }),
               trailing: Obx(() {

@@ -4,7 +4,6 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:player_hub/app/services/app_shared.dart';
 import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/routes/app_routes.dart';
-import 'package:helper_hub/src/theme_widget.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:player_hub/app/shared/widgets/add_playlist.dart';
 import 'package:share_plus/share_plus.dart';
@@ -34,9 +33,8 @@ Future<void> crudMusic({
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            const Space(
-              size: 12,
-              orientation: Axis.vertical,
+            const SizedBox(
+              height: 12,
             ),
             FractionallySizedBox(
               widthFactor: 0.7,
@@ -47,9 +45,8 @@ Future<void> crudMusic({
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            const Space(
-              size: 12,
-              orientation: Axis.vertical,
+            const SizedBox(
+              height: 12,
             ),
             ListTile(
               tileColor: Colors.transparent,

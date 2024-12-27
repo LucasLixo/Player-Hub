@@ -9,7 +9,6 @@ import 'package:player_hub/app/core/static/app_colors.dart';
 import 'package:player_hub/app/core/controllers/player.dart';
 import 'package:player_hub/app/core/static/app_manifest.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:helper_hub/src/theme_widget.dart';
 
 Widget detailsSheet() {
   final PlayerController playerController = Get.find<PlayerController>();
@@ -26,7 +25,7 @@ Widget detailsSheet() {
             final songIndex = playerController.songIndex.value;
 
             if (songList.isEmpty) {
-              return const Space(size: 0);
+              return const SizedBox.shrink();
             }
 
             return SizedBox(
@@ -62,7 +61,7 @@ Widget detailsSheet() {
                             color: AppColors.current().text,
                             size: 32,
                           )
-                        : const Space(size: 0),
+                        : const SizedBox.shrink(),
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: FutureBuilder<Uint8List>(

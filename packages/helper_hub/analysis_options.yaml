@@ -2,7 +2,7 @@ include: package:flutter_lints/flutter.yaml
 
 linter:
   rules:
-    - avoid_print
-    - implementation_imports
-    - prefer_const_constructors
+    avoid_print: true
+    implementation_imports : true
+    prefer_const_constructors: true
     # prefer_single_quotes: true

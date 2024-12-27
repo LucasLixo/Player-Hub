@@ -58,7 +58,7 @@ internal fun updateAppWidget(
             setImageViewBitmap(R.id.headline_image, imageBitmap)
         }
 
-        // Intent para abrir o aplicativo ao clicar no widget
+        // Intent to open the application when clicking on the widget
         val intent = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
             context,
@@ -67,10 +67,10 @@ internal fun updateAppWidget(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        // Associa o PendingIntent ao widget_container
+        // Associate the PendingIntent with the widget_container
         setOnClickPendingIntent(R.id.widget_container, pendingIntent)
     }
 
-    // Atualiza o widget
+    // Update the widget
     appWidgetManager.updateAppWidget(appWidgetId, views)
 }
