@@ -6,8 +6,8 @@ Future<void> main() async {
     // ['flutter', 'pub', 'get'],
     // ['dart', 'analyze'],
     // ['flutter', 'pub', 'run', 'flutter_launcher_icons'],
-    ['flutter', 'build', 'apk', '--release', '--obfuscate', '--split-debug-info=./build/symbols/apk'],
-    ['flutter', 'build', 'appbundle', '--release', '--obfuscate', '--split-debug-info=./build/symbols/appbundle'],
+    // ['flutter', 'build', 'apk', '--release', '--obfuscate', '--split-debug-info=./build/symbols/apk'],
+    // ['flutter', 'build', 'appbundle', '--release', '--obfuscate', '--split-debug-info=./build/symbols/appbundle'],
   ];
 
   for (var command in commands) {
@@ -27,10 +27,10 @@ Future<void> main() async {
   const Map<String, String> pathFinaly = {
     'build/app/outputs/flutter-apk/app-release.apk': 'app-release',
     'build/app/outputs/bundle/release/app-release.aab': 'appbundle-release',
-    'build/symbols/apk': 'apk-symbols',
-    'build/symbols/appbundle': 'appbundle-symbols',
+    'build/symbols/apk/*': 'apk-symbols',
+    'build/symbols/appbundle/*': 'appbundle-symbols',
     // 'build/app/intermediates/merged_native_libs/release/out/lib': 'native-symbols',
-    'build/app/intermediates/merged_native_libs/release/mergeReleaseNativeLibs/out/lib': 'native-symbols',
+    'build/app/intermediates/merged_native_libs/release/mergeReleaseNativeLibs/out/lib/*': 'native-symbols',
   };
 
   for (var i = 0; i < pathFinaly.length; i++) {
