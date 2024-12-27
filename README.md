@@ -22,12 +22,25 @@
 [![Telegram Channel](https://img.shields.io/badge/Telegram-Seal-blue?style=flat&logo=telegram)](https://t.me/LukasAngo)
 
 &nbsp;&nbsp;| &nbsp;&nbsp;
-<a href="https://play.google.com/store/apps/details?id=hub.player.listen">Google Play</a>
+<a href="https://play.google.com/store/apps/details?id=hub.player.listen">Play Store</a>
 &nbsp;&nbsp;| &nbsp;&nbsp;
 
 </div>
 
-## Screenshots
+## 📖 Features
+
+- Offline Music Player
+- List by folder
+- Background audio
+- Dark and light mode
+- Skip audios per second
+- Adding an equalizer & Album
+- Bug fixes
+- List by artist
+- List by album
+- Bug fixes
+
+## 📱 Screenshots
 
 <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
   <img src="./fastlane/en-us/Screenshots (1).png" alt="Screenshot 1" style="margin: 1px;" width="19%" />
@@ -37,7 +50,28 @@
   <img src="./fastlane/en-us/Screenshots (5).png" alt="Screenshot 5" style="margin: 1px;" width="19%" />
 </div>
 
-## Licença
+## ⬇️ Download
+
+For most devices, to install the **app-release.zip** version of the apks
+
+- Download the latest stable version from [GitHub releases](https://github.com/LucasLixo/Player-Hub/releases/latest)
+  - Install the [pre-release](https://github.com/LucasLixo/Player-Hub/releases/) versions to help us test out new features & changes
+
+- Stable releases are also available on [Google Play](https://play.google.com/store/apps/details?id=hub.player.listen)
+
+## 💬 Contact
+
+Join our [Telegram Channel](https://t.me/LukasAngo) 
+
+## ⭐️ Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=LucasLixo/Player-Hub&type=Timeline)](https://star-history.com/#LucasLixo/Player-Hub&Timeline)
+
+## 📃 License
+
+[![GitHub](https://img.shields.io/github/license/LucasLixo/Player-Hub?style=for-the-badge)](https://github.com/LucasLixo/Player-Hub/blob/main/LICENSE)
+
+## 🧱 Credits
 
 >[!Warning]
 >
@@ -56,3 +90,9 @@
 >flutter_phoenix,
 >equalizer_flutter,
 >home_widget.
+
+<div align="right">
+<table><td>
+<a href="#start-of-content">👆 Scroll to top</a>
+</td></table>
+</div>
