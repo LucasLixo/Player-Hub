@@ -45,13 +45,13 @@ internal fun updateAppWidget(
     val widgetData = HomeWidgetPlugin.getData(context)
     val views = RemoteViews(context.packageName, R.layout.visualizer_music).apply {
 
-        var title = widgetData.getString("headline_title", null)
+        val title = widgetData.getString("headline_title", null)
         setTextViewText(R.id.headline_title, title ?: "Music")
 
-        var subtitle = widgetData.getString("headline_subtitle", null)
+        val subtitle = widgetData.getString("headline_subtitle", null)
         setTextViewText(R.id.headline_subtitle, subtitle ?: "Artist")
 
-        var image = widgetData.getString("headline_image", null)
+        val image = widgetData.getString("headline_image", null)
         val imageFile = File(image)
         if (imageFile.exists()) {
             val imageBitmap: Bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)

@@ -1,0 +1,15 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        mavenLocal()
+        gradlePluginPortal()
+    }
+}
+
+plugins {
+    id "com.android.application" version "8.3.2" apply false
+    id "org.jetbrains.kotlin.android" version "2.0.20" apply false
+}
+
+rootProject.name = 'on_audio_query'

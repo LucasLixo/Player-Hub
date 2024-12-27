@@ -25,19 +25,23 @@ dependencies:
   get_storage: 2.1.1
   flutter_launcher_icons: 0.14.1
   audio_service: 0.18.15
-  on_audio_query: 2.9.0
+  on_audio_query: 
+    path: packages/on_audio_query
+    version: 2.9.0
   just_audio: 0.9.41
   just_audio_background:
     path: packages/just_audio_background
-    version: any
+    version: 0.0.1-beta.13
   just_audio_platform_interface: 4.3.0
   path_provider: 2.1.4
   flutter_phoenix: 1.1.1
-  equalizer_flutter: 0.0.1
+  equalizer_flutter: 
+    path: packages/equalizer_flutter
+    version: 0.0.1
   home_widget: 0.7.0
   share_plus: 9.0.0
   file_picker: 8.0.7
-  connectivity_plus: 6.1.0
+  # connectivity_plus: 6.1.0
 
 dev_dependencies:
   flutter_test:

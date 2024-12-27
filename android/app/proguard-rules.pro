@@ -57,3 +57,8 @@
     public *** warn(...);
     public *** error(...);
 }
+
+# Keep Play Core classes
+-keep class com.google.android.play.core.** { *; }
+-keep class io.flutter.embedding.engine.deferredcomponents.** { *; }
+-dontwarn com.google.android.play.core.**

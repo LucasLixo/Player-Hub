@@ -7,19 +7,22 @@
         {
             "name": "player",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "toolArgs": ["--no-enable-impeller"]
         },
         {
             "name": "player (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
+            "toolArgs": ["--no-enable-impeller"]
         },
         {
             "name": "player (release mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "toolArgs": ["--no-enable-impeller"]
         }
     ]
 }
