@@ -16,7 +16,7 @@ Future<void> main() async {
 
   const String outputPath = 'build/output';
 
-  final outputDir = Directory(outputPath);
+  final Directory outputDir = Directory(outputPath);
   if (!await outputDir.exists()) {
     await outputDir.create(recursive: true);
   }
